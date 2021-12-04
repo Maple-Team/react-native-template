@@ -5561,6 +5561,11 @@ react-is@^16.7.0, react-is@^16.8.1:
   resolved "https://registry.npmmirror.com/react-is/download/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha1-eJcppNw23imZ3BVt1sHZwYzqVqQ=
 
+react-native-ble-manager@^8.0.0:
+  version "8.0.0"
+  resolved "https://registry.npmmirror.com/react-native-ble-manager/download/react-native-ble-manager-8.0.0.tgz#771ec4d1d583808b2c66311236f55d9ef42b5adc"
+  integrity sha512-lpEeiLYPVpr7OF7YeA5DcYyXQGfAjXgSAGCGgopVPwNZD5nI9hbsjv5PpXEKAa0906LWxEqJSSsrSms7VsLvDQ==
+
 react-native-codegen@^0.0.7:
   version "0.0.7"
   resolved "https://registry.npmmirror.com/react-native-codegen/download/react-native-codegen-0.0.7.tgz#86651c5c5fec67a8077ef7f4e36f7ed459043e14"

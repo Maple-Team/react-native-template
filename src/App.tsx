@@ -2,8 +2,9 @@
  * @format
  */
 
-import React from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {
+  NativeAppEventEmitter,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -12,8 +13,9 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
-import {Button, Provider, Toast} from '@ant-design/react-native';
+import {Button, Provider} from '@ant-design/react-native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
+import BleManager from 'react-native-ble-manager';
 
 const Section: React.FC<{
   title: string;
@@ -49,7 +51,16 @@ const App = () => {
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
+  const handleDiscoverPeripheral = useCallback(data => {
+    console.log(data);
+  }, []);
 
+  useEffect(() => {
+    NativeAppEventEmitter.addListener(
+      'BleManagerDiscoverPeripheral',
+      handleDiscoverPeripheral,
+    );
+  }, [handleDiscoverPeripheral]);
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
@@ -68,10 +79,26 @@ const App = () => {
             <Button
               type="primary"
               onPress={() => {
-                console.log('111');
-                Toast.info('222');
+                BleManager.start({showAlert: false})
+                  .then(() => {
+                    console.log('Module initialized');
+                  })
+                  .catch(console.error);
               }}>
               Start
+            </Button>
+            <View style={styles.gap} />
+            <Button
+              type="primary"
+              onPress={() => {
+                BleManager.scan([], 5, true)
+                  .then(res => {
+                    // Success code
+                    console.log('Scan started', res);
+                  })
+                  .catch(console.error);
+              }}>
+              Scan
             </Button>
           </View>
         </Provider>
@@ -96,6 +123,9 @@ const styles = StyleSheet.create({
   },
   highlight: {
     fontWeight: '700',
+  },
+  gap: {
+    height: 40,
   },
 });
 
