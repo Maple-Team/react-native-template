@@ -12,7 +12,7 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
-
+import {Button, Provider, Toast} from '@ant-design/react-native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 const Section: React.FC<{
@@ -56,15 +56,25 @@ const App = () => {
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-        </View>
+        <Provider>
+          <View
+            style={{
+              backgroundColor: isDarkMode ? Colors.black : Colors.white,
+            }}>
+            <Section title="Step One">
+              Edit <Text style={styles.highlight}>App.tsx</Text> to change this
+              screen and then come back to see your edits.
+            </Section>
+            <Button
+              type="primary"
+              onPress={() => {
+                console.log('111');
+                Toast.info('222');
+              }}>
+              Start
+            </Button>
+          </View>
+        </Provider>
       </ScrollView>
     </SafeAreaView>
   );
