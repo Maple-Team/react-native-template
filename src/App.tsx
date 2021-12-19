@@ -1,88 +1,39 @@
-/**
- * @format
- */
+import React, {useContext} from 'react'
+import {Text, useColorScheme} from 'react-native'
+import {Button} from '@ant-design/react-native'
+import {Colors} from 'react-native/Libraries/NewAppScreen'
+import {NavigationContainer} from '@react-navigation/native'
+import {createNativeStackNavigator, NativeStackHeaderProps} from '@react-navigation/native-stack'
 
-import React, {useCallback, useEffect} from 'react';
-import {
-  NativeAppEventEmitter,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
-import {Button, Provider} from '@ant-design/react-native';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
+// USE CONTEXT as global state management
+const Stack = createNativeStackNavigator()
 
-const Section: React.FC<{
-  title: string;
-}> = ({children, title}) => {
-  const isDarkMode = useColorScheme() === 'dark';
+const HomeScreen = ({navigation}: NativeStackHeaderProps) => {
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-};
+    <Button onPress={() => navigation.navigate('Profile', {name: 'Jane'})}>
+      Go to Jane's profile
+    </Button>
+  )
+}
+const ProfileScreen = ({navigation, route}: NativeStackHeaderProps) => {
+  return <Text>This is {route?.params?.name}'s profile</Text>
+}
 
 const App = () => {
-  const isDarkMode = useColorScheme() === 'dark';
+  const isDarkMode = useColorScheme() === 'dark'
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+  }
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Provider></Provider>
-      </ScrollView>
-    </SafeAreaView>
-  );
-};
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={HomeScreen} options={{title: 'Welcome'}} />
+        <Stack.Screen name="Profile" component={ProfileScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  )
+}
 
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  gap: {
-    height: 40,
-  },
-});
-
-export default App;
+export default App
