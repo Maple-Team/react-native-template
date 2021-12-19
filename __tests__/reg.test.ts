@@ -1,11 +1,9 @@
-import {PHONE_REGEX} from './reg'
+import {PHONE_REGEX} from '../src/utils/reg'
 
 describe('phone reg test', () => {
-  console.log(PHONE_REGEX)
-
   test('number test', () => {
     const phone1 = '9234234422' // 9开头10位
-    expect(new RegExp(PHONE_REGEX).test(phone1)).toBe(true)
+    expect(PHONE_REGEX.test(phone1)).toBe(true)
     const phone2 = '923423442' // 9开头9位
     expect(PHONE_REGEX.test(phone2)).toBe(false)
     const phone3 = '8234234424' // 非9开头10位
@@ -15,7 +13,7 @@ describe('phone reg test', () => {
   })
   test('word test', () => {
     const phone1 = 'abcabcabca' // 10位字符
-    expect(PHONE_REGEX.test(phone1)).toBe(false)
+    expect(new RegExp(PHONE_REGEX).test(phone1)).toBe(false)
     const phone2 = 'abcad32324' // 10为字符
     expect(PHONE_REGEX.test(phone2)).toBe(false)
   })
