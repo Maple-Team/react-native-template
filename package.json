@@ -12,8 +12,6 @@
   "dependencies": {
     "@ant-design/react-native": "^4.2.0",
     "@react-native-async-storage/async-storage": "^1.15.4",
-    "@react-native-community/cameraroll": "^4.1.2",
-    "@react-native-community/segmented-control": "^2.2.2",
     "@react-native-community/slider": "^4.1.12",
     "@react-native-picker/picker": "^2.2.1",
     "@react-navigation/native": "^6.0.6",
@@ -33,9 +31,13 @@
     "react-native-device-info": "^8.4.8",
     "react-native-elements": "^3.4.2",
     "react-native-gesture-handler": "^2.0.0",
+    "react-native-mask-input": "^1.1.1",
     "react-native-pager-view": "^5.4.9",
+    "react-native-permissions": "^3.2.0",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.10.1",
+    "react-native-sensors": "^7.3.3",
+    "react-native-webview": "^11.15.0",
     "rn-fetch-blob": "^0.12.0"
   },
   "devDependencies": {
