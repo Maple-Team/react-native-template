@@ -1,5 +1,5 @@
-import {CommonHeader} from '../typings/request'
-import {LoginUser} from '../typings/user'
+import { CommonHeader } from '../typings/request'
+import { LoginUser } from '../typings/user'
 
 interface State {
   token?: string
@@ -17,7 +17,7 @@ export interface Action<T> {
 export function reducer<T>(state: State, action: Action<T>): State {
   switch (action.type) {
     case 'updateToken':
-      return {...state, token: action.paremter.type}
+      return { ...state, token: action.paremter.type }
     default:
       throw new Error()
   }

@@ -1,5 +1,5 @@
-import React, {useMemo, useEffect} from 'react'
-import {NavigationContainer} from '@react-navigation/native'
+import React, { useMemo, useEffect } from 'react'
+import { NavigationContainer } from '@react-navigation/native'
 import BottomTabNavigator from './navigation/bottomTab'
 import AccountStack from './navigation/accountStack'
 

@@ -14,13 +14,7 @@ const isAndroid = Platform.OS === 'android'
  */
 const DatePicker = ({ value, onDateChange, dateType }) => {
   const _minimumDate =
-    dateType === 'birth'
-      ? dayjs()
-          .subtract(70, 'y')
-          .toDate()
-      : dayjs()
-          .add(1, 'y')
-          .toDate()
+    dateType === 'birth' ? dayjs().subtract(70, 'y').toDate() : dayjs().add(1, 'y').toDate()
 
   return !isAndroid ? (
     <DatePickerIOS

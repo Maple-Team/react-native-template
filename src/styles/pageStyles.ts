@@ -1,4 +1,4 @@
-import StyleSheet from 'react-native-adaptive-stylesheet';
+import StyleSheet from 'react-native-adaptive-stylesheet'
 
 export default StyleSheet.create({
   container: {
@@ -19,4 +19,4 @@ export default StyleSheet.create({
     flexDirection: 'row',
     padding: 40,
   },
-});
+})

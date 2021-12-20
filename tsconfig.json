@@ -31,19 +31,19 @@
       ],
       "@/*": [
         "./src/*"
-      ],
+      ]
     }
   },
   "exclude": [
     "node_modules",
     "babel.config.js",
-    "metro.config.js",
+    "metro.config.js"
   ],
   "include": [
-    "jest2.config.tss",
+    "jest.config.ts",
     "src/**/*.ts",
     "src/**/*.tsx",
     "__tests__/**/*.ts",
-    "__tests__/**/*.tsx",
+    "__tests__/**/*.tsx"
   ]
 }

@@ -24,7 +24,7 @@ function Rect(x, y, width, height) {
   this.height = height
 }
 
-Rect.prototype.containsPoint = function(x, y) {
+Rect.prototype.containsPoint = function (x, y) {
   return x >= this.x && y >= this.y && x <= this.x + this.width && y <= this.y + this.height
 }
 

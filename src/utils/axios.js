@@ -35,7 +35,7 @@ const _axios = axios.create({
 })
 // Add a request interceptor
 _axios.interceptors.request.use(
-  async function(config) {
+  async function (config) {
     config.headers['User-Agent'] = await getUserAgent()
     config.headers.accessToken = await AsyncStorage.getItem('accessToken')
     config.headers.source = os
@@ -54,7 +54,7 @@ _axios.interceptors.request.use(
     // })
     return config
   },
-  function(error) {
+  function (error) {
     Toast.fail(error.msg, 1)
     Logger.log(`[development error] [request]: ${error}`)
     return Promise.reject(error)

@@ -15,16 +15,16 @@ module.exports = api => {
         ],
       ],
       plugins: [
-        ['@babel/plugin-proposal-private-methods', {loose: true}],
-        ['@babel/plugin-proposal-private-property-in-object', {loose: true}],
-        ['@babel/plugin-proposal-class-properties', {loose: true}],
+        ['@babel/plugin-proposal-private-methods', { loose: true }],
+        ['@babel/plugin-proposal-private-property-in-object', { loose: true }],
+        ['@babel/plugin-proposal-class-properties', { loose: true }],
       ],
     }
   }
   return {
     presets: ['module:metro-react-native-babel-preset'],
     plugins: [
-      ['import', {libraryName: '@ant-design/react-native'}],
+      ['import', { libraryName: '@ant-design/react-native' }],
       [
         'module-resolver',
         {

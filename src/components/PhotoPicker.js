@@ -257,12 +257,8 @@ export default class PhotoPicker extends PureComponent {
   }
   render() {
     const { error, bg, hint } = this.props
-    const {
-      cameraPermissionVisible,
-      storagePermissionVisible,
-      progress,
-      showSettingVisible,
-    } = this.state
+    const { cameraPermissionVisible, storagePermissionVisible, progress, showSettingVisible } =
+      this.state
     const width = Math.floor((1 - progress) * 283)
     const left = Math.ceil(progress * 283)
     return (

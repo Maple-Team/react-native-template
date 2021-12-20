@@ -16,11 +16,7 @@ export default function FloatingDatePicker({
 }) {
   const [visible, setVisible] = useState(false)
   const [value, setValue] = useState(
-    _value
-      ? dayjs(_value).toDate()
-      : dayjs()
-          .subtract(20, 'y')
-          .toDate()
+    _value ? dayjs(_value).toDate() : dayjs().subtract(20, 'y').toDate()
   )
   const onClose = () => setVisible(false)
   const onOpen = () => setVisible(true)
@@ -45,9 +41,7 @@ export default function FloatingDatePicker({
           if (!value) {
             // NOTE 出生年月默认20年前
             if (dateType === 'birth') {
-              __value = dayjs()
-                .subtract(20, 'y')
-                .toDate()
+              __value = dayjs().subtract(20, 'y').toDate()
             } else {
               __value = dayjs().toDate()
             }

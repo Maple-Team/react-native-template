@@ -1,25 +1,25 @@
 export default {
-  debug: function() {
+  debug: function () {
     if (__DEV__) {
       console.debug(`[${new Date()}] `, ...arguments)
     }
   },
-  info: function() {
+  info: function () {
     if (__DEV__) {
       console.info(`[${new Date()}] `, ...arguments)
     }
   },
-  log: function() {
+  log: function () {
     if (__DEV__) {
       console.log(`[${new Date()}] `, ...arguments)
     }
   },
-  error: function() {
+  error: function () {
     if (__DEV__) {
       console.error(`[${new Date()}] `, ...arguments)
     }
   },
-  gap: function() {
+  gap: function () {
     console.debug('------------------------------------------------------------------------------')
   },
 }

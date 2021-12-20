@@ -1,12 +1,12 @@
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import React from 'react'
-import {Text, View} from 'react-native'
+import { Text, View } from 'react-native'
 
 const Tab = createBottomTabNavigator()
 
 function ApplyNavigator() {
   return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text>Home!</Text>
     </View>
   )
@@ -14,14 +14,14 @@ function ApplyNavigator() {
 
 function OrdersNavigator() {
   return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text>Settings!</Text>
     </View>
   )
 }
 function UserNavigator() {
   return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text>Settings!</Text>
     </View>
   )
