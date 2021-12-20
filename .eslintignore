@@ -1,0 +1,7 @@
+.eslintrc.js
+babel.config.js
+coverage
+index.js
+jest.setup.js
+metro.config.js
+__mocks__

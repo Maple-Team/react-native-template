@@ -1,4 +1,4 @@
-import { PHONE_REGEX } from '../src/utils/reg'
+import { PHONE_REGEX } from '../../src/utils/reg'
 
 describe('phone reg test', () => {
   test('number test', () => {
