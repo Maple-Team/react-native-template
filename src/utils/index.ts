@@ -36,7 +36,7 @@ export async function errorCaptured(func: Function) {
   try {
     const res = await func()
     return [null, res]
-  } catch (e) {
+  } catch (e: unknown) {
     return [e, null]
   }
 }

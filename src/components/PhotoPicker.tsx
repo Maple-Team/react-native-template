@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import { View, Image, TouchableOpacity, Platform } from 'react-native'
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker'
-import { Logger, errorCaptured, Constants, responsive } from '../utils'
+import {  errorCaptured } from '../utils'
 import { Toast } from '@ant-design/react-native'
 import upload from '../services/upload'
 import StyleSheet from 'react-native-adaptive-stylesheet'

@@ -65,7 +65,7 @@ export type ValidateCodeType =
   | 'MODIFY_PASSWORD'
   | 'MODIFY_BANKCARD'
   | 'CONFIRM'
-interface ValidateCodeParameter {
+export interface ValidateCodeParameter {
   phone: string
   sendChannel: 'SMS'
   type: ValidateCodeType

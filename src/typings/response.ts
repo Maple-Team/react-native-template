@@ -38,7 +38,7 @@ export interface Version {
   versionType: string
 }
 
-interface Brand {
+export interface Brand {
   channelInfo: ChannelInfo
   isValidateCode: APPLY_BOOL
   smsSendEnable: APPLY_BOOL
@@ -64,4 +64,10 @@ interface ChannelInfo {
   policyUrl: string
   serviceUrl: string
   videoAuthUrl: string
+}
+
+export interface Dict {
+  name: string
+  code: string
+  nameCn: string
 }
