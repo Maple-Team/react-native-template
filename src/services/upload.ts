@@ -3,7 +3,7 @@ import { Platform } from 'react-native'
 import commonConfig from '../utils/config'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import RNFetchBlob from 'rn-fetch-blob'
-import { Logger, getBaseUrl } from '../utils'
+import { Logger, getBaseUrl } from '../utils/index.ts'
 import DeviceInfo from 'react-native-device-info'
 
 const { getUserAgent, getBuildNumber } = DeviceInfo

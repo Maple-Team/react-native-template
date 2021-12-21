@@ -1,21 +1,16 @@
-import { create } from 'apisauce'
-import commonConfig from './config'
-import { Platform } from 'react-native'
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { Toast } from '@ant-design/react-native'
-import Logger from './logger'
-import DeviceInfo from 'react-native-device-info'
-import AppModule from '../modules/AppModule'
-const { getUserAgent, getBuildNumber } = DeviceInfo
 
-const { brandName: inputChannel } = commonConfig
+import DeviceInfo from 'react-native-device-info'
+import AppModule from '@/modules/AppModule'
+import { CommonHeader } from '@/typings/request'
+import { Response } from '@/typings/response'
+import { API_CODE } from '@/typings/enum'
+import emitter from '@/eventbus'
+
+const { getBuildNumber } = DeviceInfo
 const AXIOS_TIMEOUT = 10000
 
-let os = Platform.OS.toLowerCase()
-if (os === 'android') {
-  os = 'APP'
-}
-os = os.toUpperCase()
 let url
 switch (AppModule.ENVIRONMENT) {
   case 'production':
@@ -23,63 +18,68 @@ switch (AppModule.ENVIRONMENT) {
     break
   case 'test':
   default:
-    url = '' // TODO
+    url = 'http://218.17.185.83:9182'
     break
 }
-const baseURL = url
-const api = create({
+const api = axios.create({
   timeout: AXIOS_TIMEOUT,
-  baseURL,
+  baseURL: url,
   validateStatus: status => status >= 200 && status < 300,
 })
-// Add a request interceptor
-api.axiosInstance.interceptors.request.use(
-  async function (config: any) {
-    config.headers['User-Agent'] = await getUserAgent() // TODO 从AsyncStorage里面取
-    config.headers.accessToken = await AsyncStorage.getItem('accessToken')
-    config.headers.source = os
-    config.headers.deviceId = await AsyncStorage.getItem('deviceId')
-    config.headers.requestId = await AsyncStorage.getItem('deviceId')
-    config.headers.versionId = getBuildNumber()
-    config.headers.inputChannel = `${inputChannel}_${os}`
 
-    // // Note 每个请求过来开启网络监听
-    // unsubscribe = NetInfo.addEventListener(async state => {
-    //   const _isEmulator = await isEmulator()
-    //   if (!_isEmulator) {
-    //     console.log('Connection type', state)
-    //   }
-    //   // todo 网络状况提醒
-    // })
+api.interceptors.request.use(
+  async function (config: AxiosRequestConfig) {
+    const headers = config.headers as CommonHeader
+    if (headers) {
+      headers.inputChannel = (await AsyncStorage.getItem('inputChannel')) || ''
+      headers.deviceId = (await AsyncStorage.getItem('deviceId')) || ''
+      headers.gps = (await AsyncStorage.getItem('gps')) || ''
+      headers.merchantId = (await AsyncStorage.getItem('merchantId')) || ''
+      headers.source = 'APP'
+      headers.versionId = getBuildNumber()
+      const channel = await AsyncStorage.getItem('channel')
+      if (channel) {
+        headers.channel = channel
+      }
+      const accessToken = await AsyncStorage.getItem('accessToken')
+      if (accessToken) {
+        headers.accessToken = accessToken
+      }
+    }
     return config
   },
-  function (error: any) {
-    Toast.fail(error.msg, 1)
-    Logger.log(`[development error] [request]: ${error}`)
+  function (error: AxiosError) {
+    emitter.emit('REQUEST_ERROR', error.message)
     return Promise.reject(error)
   }
 )
 
-api.axiosInstance.interceptors.response.use(
-  (response: { data: { status: any; body: any; code: any; data: any } }) => {
-    // unsubscribe()
-    // fixme code data整理
-    const { status, body, code, data } = response.data
-    // 处理业务逻辑错误
-    if (code === 200) {
-      return data
+api.interceptors.response.use(
+  (response: AxiosResponse) => {
+    const {
+      status: { code, msg, msgCn },
+      body,
+    } = response.data as Response<any>
+    if (code === API_CODE.SUCCESS) {
+      return body ?? false
+    } else {
+      // 处理业务逻辑错误
+      const message = __DEV__ ? msgCn : msg
+      switch (code) {
+        case API_CODE.SESSION_EXPIRED:
+          emitter.emit('SESSION_EXPIRED')
+          break
+        default:
+          emitter.emit('MESSAGE', message)
+          break
+      }
+      return false
     }
-    // TODO 事件总线
   },
-  (error: any) => {
-    Logger.log('[development error] [response]: ', error)
-    // 提醒超时错误等
-    Toast.fail('There might be something wrong with your network, please try again later.', 2)
-    // Do something with response error
+  (error: AxiosError) => {
+    emitter.emit('RESPONSE_ERROR', error.message)
     return Promise.reject(error)
   }
 )
 
 export default api
-
-// TODO eventbus react-native-events/react-native-event-listeners/mitt等 观察者模式

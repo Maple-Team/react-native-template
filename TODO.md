@@ -1,16 +1,14 @@
 ## 1.0
 
-- [ ] eventbus: mitt
-- [ ] screen fit: react-native-adaptive-stylesheet
-- [ ] style:
+- [x] eventbus: mitt
+- [x] screen fit: react-native-adaptive-stylesheet
+- [x] style:
   - [ ] color
   - [ ] edge
   - [ ] radius
-- [ ] font:
-- [ ] loading:
-- [ ] toast
-- [ ] 屏幕适配
-- [ ] request
+- [x] font:
+- [ ] loading/toast
+- [x] request
 - [ ] permission
 - [ ] i18n
 - [ ] device
@@ -35,3 +33,4 @@
 - [ReactNativeScreenUtil](https://github.com/lizhuoyuan/ReactNativeScreenUtil)
 - [react-native-size-matters](https://github.com/nirsky/react-native-size-matters)
 - [屏幕适配](https://reactnative.520wcf.com/ping-mu-shi-pei.html)
+- [dimensions](https://reactnative.dev/docs/dimensions)

@@ -1821,6 +1821,11 @@
   resolved "https://registry.npmmirror.com/@types/json-schema/download/@types/json-schema-7.0.9.tgz?cache=0&sync_timestamp=1637265456183&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Fjson-schema%2Fdownload%2F%40types%2Fjson-schema-7.0.9.tgz#97edc9037ea0c38585320b28964dde3b39e4660d"
   integrity sha1-l+3JA36gw4WFMgsolk3eOznkZg0=
 
+"@types/lodash@^4.14.178":
+  version "4.14.178"
+  resolved "https://registry.npmmirror.com/@types/lodash/download/@types/lodash-4.14.178.tgz#341f6d2247db528d4a13ddbb374bcdc80406f4f8"
+  integrity sha512-0d5Wd09ItQWH1qFbEyQ7oTQ3GZrMfth5JkbN3EvTKLXcHLRDSXeLnlvlOn0wvxVIwK5o2M8JzP/OWz7T3NRsbw==
+
 "@types/node@*":
   version "17.0.0"
   resolved "https://registry.npmmirror.com/@types/node/download/@types/node-17.0.0.tgz#62797cee3b8b497f6547503b2312254d4fe3c2bb"
@@ -2205,13 +2210,6 @@ anymatch@^3.0.3:
     normalize-path "^3.0.0"
     picomatch "^2.0.4"
 
-apisauce@^2.1.2:
-  version "2.1.5"
-  resolved "https://registry.npmmirror.com/apisauce/download/apisauce-2.1.5.tgz#546229f8f145711b3b022065afb0f43bd304ecb3"
-  integrity sha512-bkMlz0ZUnyS8vDigej9UBYo5dne9/bQrkgIiIkGaiDHF6e5OxhYRLJDYu65V/Ox86tmWVwepIntAoTmk4Db0Hg==
-  dependencies:
-    axios "^0.21.4"
-
 appdirsjs@^1.2.4:
   version "1.2.6"
   resolved "https://registry.npmmirror.com/appdirsjs/download/appdirsjs-1.2.6.tgz?cache=0&sync_timestamp=1634808607886&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fappdirsjs%2Fdownload%2Fappdirsjs-1.2.6.tgz#fccf9ee543315492867cacfcfd4a2b32257d30ac"
@@ -2353,12 +2351,12 @@ atob@^2.1.2:
   resolved "https://registry.npm.taobao.org/atob/download/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
   integrity sha1-bZUX654DDSQ2ZmZR6GvZ9vE1M8k=
 
-axios@^0.21.4:
-  version "0.21.4"
-  resolved "https://registry.npmmirror.com/axios/download/axios-0.21.4.tgz#c67b90dc0568e5c1cf2b0b858c43ba28e2eda575"
-  integrity sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==
+axios@^0.24.0:
+  version "0.24.0"
+  resolved "https://registry.npmmirror.com/axios/download/axios-0.24.0.tgz#804e6fa1e4b9c5288501dd9dff56a7a0940d20d6"
+  integrity sha512-Q6cWsys88HoPgAaFAVUb0WpPk0O8iTeisR9IMqy9G8AbO4NlpVknrnQS03zzF9PGAWgO3cgletO3VjV/P7VztA==
   dependencies:
-    follow-redirects "^1.14.0"
+    follow-redirects "^1.14.4"
 
 babel-core@^7.0.0-bridge.0:
   version "7.0.0-bridge.0"
@@ -3855,7 +3853,7 @@ flow-parser@^0.121.0:
   resolved "https://registry.npmmirror.com/flow-parser/download/flow-parser-0.121.0.tgz#9f9898eaec91a9f7c323e9e992d81ab5c58e618f"
   integrity sha1-n5iY6uyRqffDI+npktgatcWOYY8=
 
-follow-redirects@^1.14.0:
+follow-redirects@^1.14.4:
   version "1.14.6"
   resolved "https://registry.npmmirror.com/follow-redirects/download/follow-redirects-1.14.6.tgz#8cfb281bbc035b3c067d6cd975b0f6ade6e855cd"
   integrity sha512-fhUl5EwSJbbl8AR+uYL2KQDxLkdSjZGR36xy46AO7cOMTrCMON6Sa28FmAnC2tRTDbd/Uuzz3aJBv7EBN7JH8A==
@@ -6638,6 +6636,11 @@ react-is@^17.0.1:
   resolved "https://registry.npmmirror.com/react-is/download/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
   integrity sha1-5pHUqOnHiTZWVVOas3J2Kw77VPA=
 
+react-native-action-sheet@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.nlark.com/react-native-action-sheet/download/react-native-action-sheet-2.2.0.tgz#309a87f53bf4e7b17fdd9d24b10b8dcbaebb7230"
+  integrity sha1-MJqH9Tv057F/3Z0ksQuNy667cjA=
+
 react-native-actions-sheet@^0.5.8:
   version "0.5.8"
   resolved "https://registry.npmmirror.com/react-native-actions-sheet/download/react-native-actions-sheet-0.5.8.tgz#9367a7a2cbadd7b0cff82eb5e72c27578c13222d"
@@ -6662,6 +6665,11 @@ react-native-collapsible@^1.6.0:
   resolved "https://registry.nlark.com/react-native-collapsible/download/react-native-collapsible-1.6.0.tgz#ca261ffff16914f872059bb0972e3a78c4b37f9c"
   integrity sha1-yiYf//FpFPhyBZuwly46eMSzf5w=
 
+react-native-contacts@^7.0.3:
+  version "7.0.3"
+  resolved "https://registry.npmmirror.com/react-native-contacts/download/react-native-contacts-7.0.3.tgz#6677a892f03a57316e81b68eb416d86a5f14d3b5"
+  integrity sha512-4favQKHnm3boukTbroFoIt9fyDtrJ4kFSTgeMaUk7oxukts+S+By1M5eJU13cizkQZHqL1sM8SOkKdy4N4Og+w==
+
 react-native-device-info@^8.4.8:
   version "8.4.8"
   resolved "https://registry.npmmirror.com/react-native-device-info/download/react-native-device-info-8.4.8.tgz#fc92ae423e47db6cfbf30c30012e09cee63727fa"
@@ -6680,6 +6688,11 @@ react-native-elements@^3.4.2:
     opencollective-postinstall "^2.0.3"
     react-native-ratings "8.0.4"
     react-native-size-matters "^0.3.1"
+
+react-native-geolocation-service@^5.3.0-beta.4:
+  version "5.3.0-beta.4"
+  resolved "https://registry.npmmirror.com/react-native-geolocation-service/download/react-native-geolocation-service-5.3.0-beta.4.tgz#8061396f734028b0ecbf8316a2cda9179df19210"
+  integrity sha512-8Z/FP1ls02fnvqXCII+dDS329lP3UigNR4eIHUjPQdHu/DRGMRCpJJuj05hcq37UJL/zVVsXnPFdLA9lCOWYCQ==
 
 react-native-gesture-handler@^2.0.0:
   version "2.1.0"
@@ -6752,6 +6765,13 @@ react-native-screens@^3.10.1:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
 
+react-native-select-contact@^1.6.3:
+  version "1.6.3"
+  resolved "https://registry.nlark.com/react-native-select-contact/download/react-native-select-contact-1.6.3.tgz#4aef99118f1feb862b7d3198740b011888db2b14"
+  integrity sha1-Su+ZEY8f64YrfTGYdAsBGIjbKxQ=
+  optionalDependencies:
+    react-native-action-sheet "^2.2.0"
+
 react-native-sensors@^7.3.3:
   version "7.3.3"
   resolved "https://registry.nlark.com/react-native-sensors/download/react-native-sensors-7.3.3.tgz#27725c0656670557c92e6847917d4fece0e31bba"
@@ -6763,6 +6783,16 @@ react-native-size-matters@^0.3.1:
   version "0.3.1"
   resolved "https://registry.nlark.com/react-native-size-matters/download/react-native-size-matters-0.3.1.tgz#24d0cfc335a2c730f6d58bd7b43ea5a41be4b49f"
   integrity sha1-JNDPwzWixzD21YvXtD6lpBvktJ8=
+
+react-native-size-matters@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.npm.taobao.org/react-native-size-matters/download/react-native-size-matters-0.4.0.tgz#01bfd0d59454318f4e0b13fe9c1eb0523d70f2e0"
+  integrity sha1-Ab/Q1ZRUMY9OCxP+nB6wUj1w8uA=
+
+react-native-splash-screen@^3.3.0:
+  version "3.3.0"
+  resolved "https://registry.npmmirror.com/react-native-splash-screen/download/react-native-splash-screen-3.3.0.tgz#3af71ed17afe50fee69590a45aec399d071ead02"
+  integrity sha512-rGjt6HkoSXxMqH4SQUJ1gnPQlPJV8+J47+4yhgTIan4bVvAwJhEeJH7wWt9hXSdH4+VfwTS0GTaflj1Tw83IhA==
 
 react-native-startup-time@^2.0.0:
   version "2.0.0"

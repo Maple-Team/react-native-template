@@ -1,3 +1,5 @@
+import { AxiosRequestHeaders } from 'axios'
+
 interface RegisterParameter {
   phone: string
   idcard: string
@@ -6,7 +8,7 @@ interface RegisterParameter {
   validateCode: string
 }
 export type APPLY_SOURCE = 'APP' | 'H5'
-export interface CommonHeader {
+export interface CommonHeader extends AxiosRequestHeaders {
   /**
    * 进件端版本号
    */
@@ -26,7 +28,7 @@ export interface CommonHeader {
   /**
    * 营销渠道
    */
-  channel?: string
+  channel: string
   /**
    * GPS定位信息 <经度,纬度>
    */
@@ -35,6 +37,10 @@ export interface CommonHeader {
    * 设备ID
    */
   deviceId: string
+  /**
+   *
+   */
+  accessToken: string
 }
 
 interface LoginParameter {

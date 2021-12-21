@@ -1,10 +1,9 @@
-// 用户行为数据收集 v1.0
 import axios from './axios'
 import dayjs from 'dayjs'
-import AsyncStorage from '@react-native-community/async-storage'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { prefix, errorCaptured } from './request'
 import { Dimensions } from 'react-native'
-import Logger from './logger'
+
 // 1.数据模型
 let model = {
   applyId: '',
@@ -19,9 +18,9 @@ let tempRecord = {
   startTime: '',
   value: '',
 }
-
+//TODO
 const _getDa = async () => {
-  let _model = JSON.parse(await AsyncStorage.getItem('da'))
+  let _model = JSON.parse((await AsyncStorage.getItem('da')) || '')
   model = Object.assign(model, _model)
 }
 // 2.读取本地数据

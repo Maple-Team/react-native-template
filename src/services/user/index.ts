@@ -1,4 +1,4 @@
-import { get, post, del } from '../../utils'
+import { get, post, del } from '../../utils/index.ts'
 import url from './constant'
 
 const {

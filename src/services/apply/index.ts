@@ -1,4 +1,4 @@
-import { get, Logger } from '../../utils'
+import { get, Logger } from '../../utils/index.ts'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 const TIMEOUT = 2000
 // 首页

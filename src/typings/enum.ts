@@ -73,7 +73,7 @@ export enum API_CODE {
   /**
    * 会话超时	引导重新登录
    */
-  SESSION_TIMEOUT = '997',
+  SESSION_EXPIRED = '997',
   /**
    * 用户名或密码错误	弹出异常信息
    */
