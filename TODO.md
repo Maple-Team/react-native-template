@@ -7,7 +7,8 @@
   - [ ] edge
   - [ ] radius
 - [x] font:
-- [ ] loading/toast
+- [ ] assets image: 1x 2x 3x
+- [x] loading/toast
 - [x] request
 - [ ] permission
 - [ ] i18n
@@ -18,8 +19,6 @@
 - [ ] 第三方 sdk
   - [ ] 极光
   - [ ] liveness
-- [ ] changelog
-- [ ] version
 - [ ] android build
 
 ## 1.2

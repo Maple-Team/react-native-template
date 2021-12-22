@@ -1,5 +1,3 @@
-import { AxiosRequestHeaders } from 'axios'
-
 export interface RegisterParameter {
   phone: string
   idcard: string
@@ -8,7 +6,7 @@ export interface RegisterParameter {
   validateCode: string
 }
 export type APPLY_SOURCE = 'APP' | 'H5'
-export interface CommonHeader extends AxiosRequestHeaders {
+export interface CommonHeader {
   /**
    * 进件端版本号
    */
@@ -59,12 +57,14 @@ export interface ChangePwdParmeter {
   comfirmPassword: string
   validateCode: string
 }
+
 export type ValidateCodeType =
   | 'LOGIN'
   | 'REGISTER'
   | 'MODIFY_PASSWORD'
   | 'MODIFY_BANKCARD'
   | 'CONFIRM'
+
 export interface ValidateCodeParameter {
   phone: string
   sendChannel: 'SMS'

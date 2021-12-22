@@ -1,20 +1,28 @@
-// https://github.com/developit/mitt
-// https://github.com/lufinkey/react-native-events
-// https://classic.yarnpkg.com/en/package/react-native-event-listeners
-
 import mitt, { Emitter } from 'mitt'
+import type { DispatchMapType } from './type'
 
+/**
+ * 弹窗消息类型
+ */
+type MessageType = 'info' | 'success' | 'fail' | 'offline'
+
+/**
+ * 通用事件类型及参数
+ */
 export type Events = {
   SESSION_EXPIRED?: string
-  MESSAGE: string
-  LOADING: string
+  SHOW_MESSAGE: { message: string; type: MessageType }
+  SHOW_LOADING?: string
   LOGIN_SUCCESS?: string
   LOGOUT_SUCCESS?: string
   RESPONSE_ERROR: string
   REQUEST_ERROR: string
-  REQUEST_LOADING: Boolean
+  REQUEST_LOADING: { dispatchType: DispatchMapType; loading: boolean }
 }
 
+/**
+ * 事件管理实例
+ */
 const emitter: Emitter<Events> = mitt<Events>()
 
 export default emitter

@@ -1,5 +1,5 @@
 import { BOOL } from './common'
-import { APPLY_STATE } from './enum'
+import { APPLY_STATE } from '../state/enum'
 import { APPLY_SOURCE } from './request'
 import { Gender, ImageType, SocialInfo } from './user'
 

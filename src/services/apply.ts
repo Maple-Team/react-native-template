@@ -1,4 +1,6 @@
-import {
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
+import type {
   ApplyResponse,
   ApplyStep1,
   ApplyStep2,
@@ -13,13 +15,12 @@ import {
   Product,
   ProductParemeter,
 } from '@/typings/apply'
-import { Device } from '@/typings/device'
-import { Brand, Dict, Version } from '@/typings/response'
+import type { Device } from '@/typings/device'
+import type { Brand, Dict, Version } from '@/typings/response'
+
 import { request } from '@/utils/http'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const TIMEOUT = 2000
-// 首页
 
 /**
  * 字典请求，网络不好时从缓存里面取
@@ -66,7 +67,9 @@ export async function queryVersion() {
     url: '/smart-loan/app/version',
   })
 }
-
+/**
+ * 每步的申请参数
+ */
 export type ApplyStep =
   | ApplyStep1
   | ApplyStep2
@@ -81,11 +84,11 @@ export type ApplyStep =
  * @param params
  * @returns
  */
-export async function submit(params: ApplyStep) {
+export async function submit(data: ApplyStep) {
   return request<ApplyResponse>({
     url: '/smart-loan/apply/step',
     method: 'POST',
-    params,
+    data,
   })
 }
 /**
@@ -93,23 +96,23 @@ export async function submit(params: ApplyStep) {
  * @param params
  * @returns
  */
-export async function submitDevice(params: Device) {
+export async function submitDevice(data: Device) {
   return request<null>({
     url: '/smart-loan/login/deviceInfo',
     method: 'POST',
-    params,
+    data,
   })
 }
 /**
  * 获取产品信息
- * @param params
+ * @param data
  * @returns
  */
-export async function queryProduct(params: ProductParemeter) {
+export async function queryProduct(data: ProductParemeter) {
   return request<Product>({
     url: '/smart-loan/product/v1/getProduct',
     method: 'POST',
-    params,
+    data,
   })
 }
 /**
@@ -117,10 +120,22 @@ export async function queryProduct(params: ProductParemeter) {
  * @param params
  * @returns
  */
-export async function scheduleCalc(params: CalculateParameter) {
+export async function scheduleCalc(data: CalculateParameter) {
   return request<Calculate>({
     url: '/smart-loan/contract/scheduleCalc',
     method: 'POST',
-    params,
+    data,
+  })
+}
+/**
+ * 首页PV
+ * @param data
+ * @returns
+ */
+export async function pv(data: CalculateParameter) {
+  return request<Calculate>({
+    url: '/smart-loan/app/index',
+    method: 'delete',
+    data,
   })
 }

@@ -1,51 +1,51 @@
-import React, { useMemo, useEffect } from 'react'
+import React, { useEffect, useReducer } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
-import BottomTabNavigator from './navigation/bottomTab'
-import AccountStack from './navigation/accountStack'
-// import { Provider, Button, Toast, WhiteSpace, WingBlank, portal } from '@ant-design/react-native'
+import { Toast } from '@ant-design/react-native'
 
-// function showToast() {
-//   // multiple toast
-//   Toast.info('This is a toast tips 1 !!!', 4)
-//   Toast.info('This is a toast tips 2 !!!', 3)
-//   Toast.info('This is a toast tips 3 !!!', 1)
-// }
-// function successToast() {
-//   Toast.success('Load success !!!', 1)
-// }
-// function showToastNoMask() {
-//   Toast.info('Toast without mask !!!', 1, undefined, false)
-// }
-// function failToast() {
-//   Toast.fail('Load failed !!!')
-// }
-// function offline() {
-//   Toast.offline('Network connection failed !!!')
-// }
-// function loadingToast() {
-//   Toast.loading('Loading...', 1, () => {
-//     console.log('Load complete !!!')
-//   })
-// }
+import BottomTabNavigator from '@/navigation/bottomTab'
+import AccountStack from '@/navigation/accountStack'
+import { initiateState, reducer } from '@/state'
+import emitter from '@/eventbus'
 
-// TODO splash display logic
+const MESSAGE_DURATION = 1000
+Toast.config({
+  duration: MESSAGE_DURATION,
+  onClose: () => {},
+  mask: true,
+  stackable: true, // FIXME ?
+})
 
-// TODO useReducer
 const App = () => {
-  const isLoggedIn = useMemo(() => {
-    return false
+  const [state] = useReducer(reducer, initiateState)
+  useEffect(() => {
+    emitter.on('SESSION_EXPIRED', () => {
+      // 登录超时，TODO 跳转登录页面
+    })
+    emitter.on('LOGOUT_SUCCESS', () => {
+      // 登出，TODO 处理跳转
+    })
+    emitter.on('LOGIN_SUCCESS', () => {
+      // 登出，TODO 处理跳转
+    })
+    emitter.on('SHOW_LOADING', () => {
+      Toast.loading('', 1000)
+    })
+    emitter.on('REQUEST_ERROR', e => {
+      console.error(`request: ${e}`)
+    })
+    emitter.on('RESPONSE_ERROR', e => {
+      console.error(`response: ${e}`)
+      // TODO 错误上报
+    })
+    emitter.on('SHOW_MESSAGE', ({ message, type }) => {
+      Toast[type](message, MESSAGE_DURATION) //TODO 可见message实例：维持一个，维持已有展示时间
+    })
   }, [])
 
-  useEffect(() => {}, [])
+  // TODO splash display logic
   return (
     <NavigationContainer>
-      {isLoggedIn ? (
-        // Screens for logged in users
-        <BottomTabNavigator />
-      ) : (
-        // Auth screens
-        <AccountStack />
-      )}
+      {state.user ? <BottomTabNavigator /> : <AccountStack />}
     </NavigationContainer>
   )
 }

@@ -1,12 +1,14 @@
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
+import axios from 'axios'
+import type { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import DeviceInfo from 'react-native-device-info'
 
 import AppModule from '@/modules/AppModule'
-import { CommonHeader } from '@/typings/request'
-import { API_CODE, APPLY_STATE } from '@/typings/enum'
+import type { CommonHeader } from '@/typings/request'
+import type { Status } from '@/typings/response'
+import { API_CODE, APPLY_STATE } from '@/state/enum'
 import emitter from '@/eventbus'
-import { Status } from '@/typings/response'
+import { DispatchRVMap } from '@/eventbus/type'
 
 const { getBuildNumber } = DeviceInfo
 const AXIOS_TIMEOUT = 10000
@@ -28,7 +30,7 @@ const api = axios.create({
 
 api.interceptors.request.use(
   async function (config: AxiosRequestConfig) {
-    const headers = config.headers as CommonHeader
+    const headers = config.headers as unknown as CommonHeader // FIXME
     if (headers) {
       headers.inputChannel = (await AsyncStorage.getItem('inputChannel')) || ''
       headers.deviceId = (await AsyncStorage.getItem('deviceId')) || ''
@@ -45,11 +47,9 @@ api.interceptors.request.use(
         headers.accessToken = accessToken
       }
     }
-    emitter.emit('REQUEST_LOADING', true)
     return config
   },
   function (error: AxiosError) {
-    emitter.emit('REQUEST_LOADING', false)
     emitter.emit('REQUEST_ERROR', error.message)
     return Promise.reject(error)
   }
@@ -61,7 +61,6 @@ api.interceptors.response.use(
       status: { code, msg, msgCn },
       body,
     } = response.data as Response<any>
-    emitter.emit('REQUEST_LOADING', false)
     if (code === API_CODE.SUCCESS) {
       return body ?? false
     } else {
@@ -72,7 +71,7 @@ api.interceptors.response.use(
           emitter.emit('SESSION_EXPIRED')
           break
         default:
-          emitter.emit('MESSAGE', message)
+          emitter.emit('SHOW_MESSAGE', { message, type: 'fail' })
           break
       }
       return false
@@ -80,15 +79,34 @@ api.interceptors.response.use(
   },
   (error: AxiosError) => {
     emitter.emit('RESPONSE_ERROR', error.message)
-    emitter.emit('REQUEST_LOADING', false)
     return Promise.reject(error)
   }
 )
 
+/**
+ * 更新每个请求的请求状态
+ * @param url 请求接口url
+ * @param loading 请求状态
+ */
+export const updateRequestStatus = (url: string, loading: boolean) => {
+  emitter.emit('REQUEST_LOADING', {
+    dispatchType: DispatchRVMap[url],
+    loading,
+  })
+}
+/**
+ * 统一请求入口
+ * @param config
+ * @returns
+ */
 export const request = async <T = any>(config: AxiosRequestConfig): Promise<T> => {
   try {
-    return api.request({ method: 'GET', ...config })
+    updateRequestStatus(config.url!, true)
+    const res = api.request({ method: 'GET', ...config })
+    updateRequestStatus(config.url!, false)
+    return res as unknown as Promise<T>
   } catch (error) {
+    updateRequestStatus(config.url!, false)
     return Promise.reject(error)
   }
 }

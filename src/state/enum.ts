@@ -1,3 +1,4 @@
+// FIXME more elegant
 export enum APPLY_STATE {
   /**
    * 	申请中 点击首页继续申请流程
@@ -103,3 +104,6 @@ export enum API_CODE {
    */
   LOW_APP_VERSION = '985',
 }
+
+// export type ApplyState = typeof APPLY_STATE
+// export type ApplyCode = typeof API_CODE

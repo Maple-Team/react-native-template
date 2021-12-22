@@ -1,5 +1,5 @@
 import { BOOL } from './common'
-import { APPLY_STATE } from './enum'
+import { APPLY_STATE } from '../state/enum'
 
 export type UserState = 'ACTIVE' | 'UNACTIVE' | 'BLACK_LIST'
 export type Gender = 'male' | 'female'

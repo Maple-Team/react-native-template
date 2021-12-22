@@ -1,6 +1,6 @@
-import { LoginUser, RegisterUser, ResetPwdParameter, ValidCode } from '@/typings/account'
-import { LoginParameter, RegisterParameter, ValidateCodeParameter } from '@/typings/request'
-import { UserInfo } from '@/typings/user'
+import type { LoginUser, RegisterUser, ResetPwdParameter, ValidCode } from '@/typings/account'
+import type { LoginParameter, RegisterParameter, ValidateCodeParameter } from '@/typings/request'
+import type { UserInfo } from '@/typings/user'
 import { request } from '@/utils/http'
 
 /**
