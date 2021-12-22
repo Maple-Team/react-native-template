@@ -1,43 +1,19 @@
+import { BOOL } from './common'
 import { APPLY_STATE } from './enum'
-export type APPLY_BOOL = 'Y' | 'N'
-interface RegisterUser {
-  org: string
-  password: string
-  phone: string
-  regTime: number
-  status: string
-  userId: number
-  userType: string
-}
+
 export type UserState = 'ACTIVE' | 'UNACTIVE' | 'BLACK_LIST'
 export type Gender = 'male' | 'female'
-enum UserLevel {
+
+export enum UserLevel {
   NORMAL = '0',
   WHITE = '1',
 }
-export interface LoginUser {
-  email: string
-  firstName: string
-  idcard: string
-  isWhite: UserLevel
-  lastName: string
-  middleName: string
-  name: string
-  password: string
-  phone: string
-  regTime: number
-  sex: Gender
-  status: UserState
-  userAuthStatus: APPLY_BOOL
-  userId: number
-  userType: 'CUSTOMER'
-}
 
-interface Body {
+export interface UserInfo {
   applyId: number
   applyStatus: APPLY_STATE
   canReApplyDays: number
-  continuedLoan: APPLY_BOOL
+  continuedLoan: BOOL
   contractNo: string
   currentStep: number
   customerDto: Customer
@@ -56,7 +32,7 @@ interface Body {
   phone: string
   sex: string
   totalSteps: number
-  userAuthStatus: APPLY_BOOL
+  userAuthStatus: BOOL
   userId: number
   videoAuthFlag: string
 }
@@ -89,7 +65,7 @@ interface Customer {
   homeAddrProvince: string
   homeAddrProvinceCode: string
   idcard: string
-  isAutoRepayment: APPLY_BOOL
+  isAutoRepayment: BOOL
   lastName: string
   liabilities: number
   maritalStatus: string
@@ -113,7 +89,7 @@ interface Customer {
 export interface SocialInfo {
   authPhone: string
   authType: string
-  isAuth: APPLY_BOOL
+  isAuth: BOOL
   thirdCode: 'whatsApp'
   thirdName: 'whatsApp'
 }

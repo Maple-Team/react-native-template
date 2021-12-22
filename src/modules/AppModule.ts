@@ -9,6 +9,7 @@ import { NativeModules } from 'react-native'
 const { AppModule } = NativeModules
 interface AppModuleInterface {
   ENVIRONMENT: 'production' | 'test' | 'development'
+  BASE_URL: string //TODO
   // createCalendarEvent(name: string, location: string): void; method
 }
 export default AppModule as AppModuleInterface

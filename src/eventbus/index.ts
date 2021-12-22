@@ -12,6 +12,7 @@ export type Events = {
   LOGOUT_SUCCESS?: string
   RESPONSE_ERROR: string
   REQUEST_ERROR: string
+  REQUEST_LOADING: Boolean
 }
 
 const emitter: Emitter<Events> = mitt<Events>()

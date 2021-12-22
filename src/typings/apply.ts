@@ -1,8 +1,9 @@
+import { BOOL } from './common'
 import { APPLY_STATE } from './enum'
 import { APPLY_SOURCE } from './request'
-import { APPLY_BOOL, Gender, ImageType, SocialInfo } from './user'
+import { Gender, ImageType, SocialInfo } from './user'
 
-interface ApplyResponse {
+export interface ApplyResponse {
   accessToken: string
   applyId: number
   applyStatus: APPLY_STATE
@@ -10,7 +11,7 @@ interface ApplyResponse {
   ocrResult?: OcrResult
 }
 
-interface OcrResult {
+export interface OcrResult {
   addressAll: string
   birthday: string
   fathersurname: string
@@ -19,7 +20,7 @@ interface OcrResult {
   mothersurname: string
   userName: string
 }
-interface ApplyStep1 {
+export interface ApplyStep1 {
   deviceId: string
   phone: string
   idcard: string
@@ -27,7 +28,7 @@ interface ApplyStep1 {
   currentStep: number
   totalSteps: number
 }
-interface ApplyStep2 {
+export interface ApplyStep2 {
   applyId: number
   currentStep: number
   totalSteps: number
@@ -47,33 +48,33 @@ interface ApplyStep2 {
   companyAddrDetail: string
   incumbency: string
 }
-interface ApplyStep3 {
+export interface ApplyStep3 {
   applyId: number
   currentStep: number
   totalSteps: number
   contacts: Contact[]
 }
-type ContactRelationCode = 'CHILDREN' | 'FRIEND'
-type ContactRelation = 'Friend' | 'Hijos'
-interface Contact {
+export type ContactRelationCode = 'CHILDREN' | 'FRIEND'
+export type ContactRelation = 'Friend' | 'Hijos'
+export interface Contact {
   contactName: string
   contactRelation: ContactRelation
   contactRelationCode: ContactRelationCode
   contactPhone: string
 }
 
-interface ApplyStep4 {
+export interface ApplyStep4 {
   applyId: number
   currentStep: number
   totalSteps: number
   images: Image[]
 }
 
-interface Image {
+export interface Image {
   imageId: number
 }
 
-interface ApplyStep5 {
+export interface ApplyStep5 {
   applyId: number
   currentStep: number
   totalSteps: number
@@ -99,16 +100,16 @@ interface ApplyStep5 {
   name: string
 }
 
-interface ApplyStep6 {
+export interface ApplyStep6 {
   applyId: number
   currentStep: number
   totalSteps: number
   images: Image[]
   livenessId: string
-  livenessAuthFlag: APPLY_BOOL
+  livenessAuthFlag: BOOL
 }
 export type BankCardType = 'CARD'
-interface ApplyStep7 {
+export interface ApplyStep7 {
   applyId: number
   currentStep: number
   totalSteps: number
@@ -117,7 +118,7 @@ interface ApplyStep7 {
   bankCardNo: string
 }
 
-interface ApplyStep8 {
+export interface ApplyStep8 {
   applyId: number
   gps: string
   currentStep: number
@@ -130,12 +131,12 @@ interface ApplyStep8 {
   displayLoanDays: number
 }
 
-interface ProductParemeter {
+export interface ProductParemeter {
   phone: string
   source: APPLY_SOURCE
 }
 
-interface Product {
+export interface Product {
   amountStep: number
   loanStep: number
   maxAmount: number
@@ -147,28 +148,28 @@ interface Product {
   products: ProductItem[]
 }
 
-interface ProductItem {
+export interface ProductItem {
   amountStep: number
-  available: APPLY_BOOL
+  available: BOOL
   displayLoanDays: number
   loanCode: string
   loanTerms: number
   maxViewAmount: number
 }
 
-interface CalculateParameter {
+export interface CalculateParameter {
   displayLoanDays: number
   loanAmt: number
   loanCode: string
   loanDay: number
 }
 
-interface Calculate {
+export interface Calculate {
   actualAmount: number
   applyDate: string
   dailyInterestRate: number
   extendFeeRate: number
-  instalmentMark: APPLY_BOOL
+  instalmentMark: BOOL
   interest: number
   interestRate: number
   loanPmtDueDate: string
@@ -182,7 +183,7 @@ interface Calculate {
   txnAmt: number
 }
 
-interface TermSchedule {
+export interface TermSchedule {
   currTerm: number
   loanPmtDueDate: string
   loanTermInterest: number
@@ -192,10 +193,10 @@ interface TermSchedule {
   freeMark?: string
 }
 
-interface ImageUploadParameter {
+export interface ImageUploadParameter {
   applyId: number
   type: ImageType
   image: '' // FIXME
   deviceId: string
-  isSupplement: APPLY_BOOL
+  isSupplement: BOOL
 }

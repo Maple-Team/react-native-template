@@ -9,7 +9,7 @@ import ScreenBrightness from '@adrianso/react-native-device-brightness'
 import dayjs from 'dayjs'
 import NfcManager from 'react-native-nfc-manager'
 import { NativeModules } from 'react-native'
-import { errorCaptured } from './request'
+import { errorCaptured } from './util'
 import { Device } from '@/typings/device'
 
 const _locales = RNLocalize.getLocales()

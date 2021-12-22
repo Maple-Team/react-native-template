@@ -1,12 +1,5 @@
-import { API_CODE, APPLY_STATE } from './enum'
-import { APPLY_BOOL, LoginUser } from './user'
-
-export interface Response<T> {
-  body?: T
-  sourceId?: string
-  sourceName?: APPLY_STATE
-  status: Status
-}
+import { BOOL } from './common'
+import { API_CODE } from './enum'
 
 export interface Status {
   code: API_CODE
@@ -14,24 +7,9 @@ export interface Status {
   msgCn: string
 }
 
-export interface Account {
-  ip: string
-  /**
-   * 贷款次数
-   */
-  loanCount: number
-  accessToken: string
-  user: LoginUser
-  deviceId: string
-}
-
-export interface ValidCode {
-  kaptcha: string
-}
-
 export interface Version {
   filePath: string
-  isForceUpdate: APPLY_BOOL
+  isForceUpdate: BOOL
   versionDesc: string
   versionId: number
   versionNo: string
@@ -40,15 +18,15 @@ export interface Version {
 
 export interface Brand {
   channelInfo: ChannelInfo
-  isValidateCode: APPLY_BOOL
-  smsSendEnable: APPLY_BOOL
+  isValidateCode: BOOL
+  smsSendEnable: BOOL
   smsWaitInterval: number
   codeValidatecount: number
-  handheldUploadFlag: APPLY_BOOL
+  handheldUploadFlag: BOOL
   serviceInfo: ServiceInfo
 }
 
-interface ServiceInfo {
+export interface ServiceInfo {
   email: string
   fb: string
   ccphone: string
@@ -59,7 +37,7 @@ interface ServiceInfo {
   svcCorpAddr: string
 }
 
-interface ChannelInfo {
+export interface ChannelInfo {
   privacyUrl: string
   policyUrl: string
   serviceUrl: string

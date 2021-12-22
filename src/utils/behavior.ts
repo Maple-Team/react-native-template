@@ -1,7 +1,6 @@
-import axios from './axios'
+import axios from './http'
 import dayjs from 'dayjs'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { prefix, errorCaptured } from './request'
 import { Dimensions } from 'react-native'
 
 // 1.数据模型

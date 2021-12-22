@@ -1,29 +1,28 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-
 import DeviceInfo from 'react-native-device-info'
+
 import AppModule from '@/modules/AppModule'
 import { CommonHeader } from '@/typings/request'
-import { Response } from '@/typings/response'
-import { API_CODE } from '@/typings/enum'
+import { API_CODE, APPLY_STATE } from '@/typings/enum'
 import emitter from '@/eventbus'
+import { Status } from '@/typings/response'
 
 const { getBuildNumber } = DeviceInfo
 const AXIOS_TIMEOUT = 10000
 
-let url
-switch (AppModule.ENVIRONMENT) {
-  case 'production':
-    url = ' ' //TODO
-    break
-  case 'test':
-  default:
-    url = 'http://218.17.185.83:9182'
-    break
+export interface Response<T = any> {
+  body?: T
+  sourceId?: string
+  sourceName?: APPLY_STATE
+  status: Status
 }
+
+export type BaseResponse<T = any> = Promise<Response<T>>
+
 const api = axios.create({
   timeout: AXIOS_TIMEOUT,
-  baseURL: url,
+  baseURL: AppModule.BASE_URL,
   validateStatus: status => status >= 200 && status < 300,
 })
 
@@ -46,9 +45,11 @@ api.interceptors.request.use(
         headers.accessToken = accessToken
       }
     }
+    emitter.emit('REQUEST_LOADING', true)
     return config
   },
   function (error: AxiosError) {
+    emitter.emit('REQUEST_LOADING', false)
     emitter.emit('REQUEST_ERROR', error.message)
     return Promise.reject(error)
   }
@@ -60,6 +61,7 @@ api.interceptors.response.use(
       status: { code, msg, msgCn },
       body,
     } = response.data as Response<any>
+    emitter.emit('REQUEST_LOADING', false)
     if (code === API_CODE.SUCCESS) {
       return body ?? false
     } else {
@@ -78,8 +80,15 @@ api.interceptors.response.use(
   },
   (error: AxiosError) => {
     emitter.emit('RESPONSE_ERROR', error.message)
+    emitter.emit('REQUEST_LOADING', false)
     return Promise.reject(error)
   }
 )
 
-export default api
+export const request = async <T = any>(config: AxiosRequestConfig): Promise<T> => {
+  try {
+    return api.request({ method: 'GET', ...config })
+  } catch (error) {
+    return Promise.reject(error)
+  }
+}

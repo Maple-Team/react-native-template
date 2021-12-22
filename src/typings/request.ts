@@ -1,6 +1,6 @@
 import { AxiosRequestHeaders } from 'axios'
 
-interface RegisterParameter {
+export interface RegisterParameter {
   phone: string
   idcard: string
   password: string
@@ -43,7 +43,7 @@ export interface CommonHeader extends AxiosRequestHeaders {
   accessToken: string
 }
 
-interface LoginParameter {
+export interface LoginParameter {
   phone: string
   code: string
   password: string
@@ -52,7 +52,7 @@ interface LoginParameter {
   loginType: 'CODE_LOGIN' | 'PWD_LOGIN'
 }
 
-interface ChangePwdParmeter {
+export interface ChangePwdParmeter {
   phone: string
   idcard: string
   password: string

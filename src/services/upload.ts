@@ -1,18 +1,14 @@
-import { errorCaptured } from '../utils/request'
-import { Platform } from 'react-native'
-import commonConfig from '../utils/config'
+import { errorCaptured } from '../utils/util'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import RNFetchBlob from 'rn-fetch-blob'
-import { Logger, getBaseUrl } from '../utils/index.ts'
 import DeviceInfo from 'react-native-device-info'
 
-const { getUserAgent, getBuildNumber } = DeviceInfo
-const { inputChannel } = commonConfig
-let os = Platform.OS.toLowerCase()
-if (os === 'android') {
-  os = 'APP'
+const getBaseUrl = () => {
+  return ''
 }
-os = os.toUpperCase()
+const { getUserAgent, getBuildNumber } = DeviceInfo
+const inputChannel = ''
+
 // upload files
 export default async function uploadImages({
   response,
@@ -26,7 +22,7 @@ export default async function uploadImages({
   onUploadProgress: (sent: number, total: number) => void
 }) {
   const accessToken = (await AsyncStorage.getItem('accessToken')) || ''
-  const source = os
+  const source = 'APP'
   const deviceId = (await AsyncStorage.getItem('deviceId')) || ''
   const versionId = getBuildNumber()
   const userAgent = await getUserAgent()
@@ -34,14 +30,14 @@ export default async function uploadImages({
     RNFetchBlob.config({ timeout: 120 * 1000 })
       .fetch(
         'POST',
-        `${getBaseUrl()}/upeso-loan/apply/uploadImage`,
+        `${getBaseUrl()}/smart-loan/image/v2/oneImage`,
         {
           accessToken,
           source,
           deviceId,
           requestId: deviceId,
           versionId,
-          inputChannel: `${inputChannel}_${os}`,
+          inputChannel,
           'Content-Type': 'multipart/form-data',
           'User-Agent': userAgent,
         },
@@ -69,11 +65,9 @@ export default async function uploadImages({
       })
   )
   if (err) {
-    Logger.log('upload err', err)
     return Promise.reject(err)
   } else {
     const { imageId } = res
-    Logger.log(`upload success imageId: ${imageId}`)
     return imageId
   }
 }
