@@ -6,19 +6,28 @@ import React, { useEffect, useReducer, useState } from 'react'
 import { Text, View } from 'react-native'
 import { Button } from '@ant-design/react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { useTranslation } from 'react-i18next'
 
 const SigninScreen = ({ navigation }: NativeStackHeaderProps) => {
   const [loading, setLoading] = useState(false)
   const [state, dispatch] = useReducer(reducer, initiateState)
+  const { t } = useTranslation()
+
   useEffect(() => {
-    emitter.on('REQUEST_LOADING', _loading => setLoading(_loading))
+    emitter.on('REQUEST_LOADING', ({ dispatchType, loading: _loading }) => {
+      switch (dispatchType) {
+        case 'LOGIN':
+          setLoading(_loading) // TODO 整合到reducer里面去
+          break
+      }
+    })
     console.log(navigation)
   }, [navigation])
 
   return (
     <SafeAreaView>
       <View>
-        <Text>1</Text>
+        <Text>{t('title')}</Text>
         <Button
           loading={loading}
           onPress={async () =>

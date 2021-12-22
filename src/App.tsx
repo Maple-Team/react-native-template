@@ -6,6 +6,7 @@ import BottomTabNavigator from '@/navigation/bottomTab'
 import AccountStack from '@/navigation/accountStack'
 import { initiateState, reducer } from '@/state'
 import emitter from '@/eventbus'
+import '@/locales/i18n'
 
 const MESSAGE_DURATION = 1000
 Toast.config({
