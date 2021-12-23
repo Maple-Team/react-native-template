@@ -1,10 +1,31 @@
+import type { DispatchMapType } from '@/eventbus/type'
+import { DictTypeArray, NormalTypeArray } from '@/eventbus/type'
 import type { UserInfo } from '@/typings/user'
 import type { CommonHeader } from '../typings/request'
 
 interface State {
   header: CommonHeader
   user?: UserInfo
+  /**
+   * 加载请求的状态
+   * 借鉴dva-loading的思路 https://github.com/dvajs/dva/tree/master/packages/dva-loading
+   */
+  loading: {
+    /**
+     * 是否全局显示, TODO IMPLEMENTTAION
+     */
+    global?: boolean
+    effects: {
+      /**
+       * 单个请求的请求状态
+       */
+      [key: string]: boolean
+    }
+  }
 }
+/**
+ * App全局状态设定
+ */
 export const initiateState: State = {
   header: {
     versionId: '',
@@ -15,6 +36,9 @@ export const initiateState: State = {
     gps: '',
     deviceId: '',
     accessToken: '',
+  },
+  loading: {
+    effects: {},
   },
 }
 export const UPDATE_TOKEN = 'UPDATE_TOKEN'
@@ -38,6 +62,10 @@ type Action =
   | {
       type: typeof UPDATE_USERINFO
       user: UserInfo
+    }
+  | {
+      type: DispatchMapType
+      loading: boolean
     }
 
 export function reducer(state: State, action: Action): State {
@@ -72,6 +100,16 @@ export function reducer(state: State, action: Action): State {
         user: action.user,
       }
     default:
-      throw state
+      if ([...NormalTypeArray, ...DictTypeArray].includes(action.type)) {
+        return {
+          ...state,
+          loading: {
+            effects: {
+              [`${action.type}`]: action.loading,
+            },
+          },
+        }
+      }
+      return { ...state }
   }
 }

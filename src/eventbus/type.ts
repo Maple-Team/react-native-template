@@ -1,4 +1,4 @@
-const DictTypeArray = [
+export const DictTypeArray = [
   'INDUSTRY',
   'PROFESSION',
   'MONTHLY_INCOME',
@@ -15,7 +15,7 @@ const DictTypeArray = [
   'LOAN_PURPOSE',
   'CARD_NO_TYPE',
 ] as const
-const NormalTypeArray = [
+export const NormalTypeArray = [
   'LOGIN',
   'LOGOUT',
   'REGISTER',
@@ -32,6 +32,7 @@ const NormalTypeArray = [
   'PV',
   'BRAND',
 ] as const
+
 type NormalType = typeof NormalTypeArray[number]
 type DictType = typeof DictTypeArray[number]
 
@@ -41,7 +42,7 @@ type DictType = typeof DictTypeArray[number]
 export type DispatchMapType = DictType | NormalType
 
 // @ts-ignore
-let _DispatchMap: Record<DispatchMapType, string> = {
+let _dispatchMap: Record<DispatchMapType, string> = {
   LOGIN: '/smart-loan/user/login',
   LOGOUT: '/smart-loan/user/logout',
   REGISTER: '/smart-loan/user/registeredUser',
@@ -60,17 +61,17 @@ let _DispatchMap: Record<DispatchMapType, string> = {
 }
 
 DictTypeArray.forEach(k => {
-  _DispatchMap[k] = `/smart-loan/dictionary/${k}`
+  _dispatchMap[k] = `/smart-loan/dictionary/${k}`
 })
 const _DispatchRvMap: Record<string, DispatchMapType> = {}
-Object.keys(_DispatchMap).forEach(key => {
-  _DispatchRvMap[_DispatchMap[key as DispatchMapType]] = key as DispatchMapType
+Object.keys(_dispatchMap).forEach(key => {
+  _DispatchRvMap[_dispatchMap[key as DispatchMapType]] = key as DispatchMapType
 })
 
 /**
  * dispatch type与url映射map
  */
-export const DispatchMap = _DispatchMap
+export const DispatchMap = _dispatchMap
 /**
  * url与dispatch type映射map
  */

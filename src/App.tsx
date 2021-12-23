@@ -9,15 +9,24 @@ import emitter from '@/eventbus'
 import '@/locales/i18n'
 
 const MESSAGE_DURATION = 1000
+// FIXME 是否确保一个toast/message的显示时间符合其设置的时间，
+// 即后续的toast/message是否会顶掉前一个toast/message
+
 Toast.config({
+  /**
+   * 自动关闭的延时，单位秒. 为0时，需要手动调用rmove来关闭
+   */
   duration: MESSAGE_DURATION,
   onClose: () => {},
   mask: true,
-  stackable: true, // FIXME ?
+  /**
+   * 是否允许叠加显示 boolean
+   */
+  stackable: false,
 })
 
 const App = () => {
-  const [state] = useReducer(reducer, initiateState)
+  const [state, dispatch] = useReducer(reducer, initiateState)
   useEffect(() => {
     emitter.on('SESSION_EXPIRED', () => {
       // 登录超时，TODO 跳转登录页面
@@ -39,7 +48,14 @@ const App = () => {
       // TODO 错误上报
     })
     emitter.on('SHOW_MESSAGE', ({ message, type }) => {
-      Toast[type](message, MESSAGE_DURATION) //TODO 可见message实例：维持一个，维持已有展示时间
+      Toast[type](message, MESSAGE_DURATION)
+    })
+    // 监听请求状态
+    emitter.on('REQUEST_LOADING', ({ dispatchType, loading }) => {
+      dispatch({
+        type: dispatchType,
+        loading,
+      })
     })
   }, [])
 
