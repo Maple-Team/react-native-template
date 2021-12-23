@@ -1,35 +1,11 @@
-import React, { PureComponent } from 'react'
-import { Text } from 'react-native'
-import AsyncStorage from '@react-native-community/async-storage'
-import NavigationUtil from '../navigation/NavigationUtil'
-import { I18n } from '../utils'
+import React, { useReducer } from 'react'
+import { Text, View } from 'react-native'
+import { initiateState, reducer } from '@/state'
+import { useTranslation } from 'react-i18next'
 
-export default class HeaderRight extends PureComponent {
-  state = {
-    isLogin: false,
-  }
-  componentDidMount() {
-    this._getState()
-  }
-  _getState = async () => {
-    const isLogin = await AsyncStorage.getItem('accessToken')
-    this.setState({ isLogin })
-  }
+export default function HeaderRight() {
+  const [state] = useReducer(reducer, initiateState)
+  const { t } = useTranslation()
 
-  render() {
-    return (
-      !this.state.isLogin && (
-        <Text
-          onPress={() => NavigationUtil.goPage('Login')}
-          style={{
-            paddingRight: 17,
-            color: '#fff',
-            fontSize: 14,
-            textTransform: 'capitalize',
-          }}>
-          {I18n.t('common.login')}
-        </Text>
-      )
-    )
-  }
+  return !state.user ? <Text onPress={() => {}}>{t('login')}</Text> : <View />
 }

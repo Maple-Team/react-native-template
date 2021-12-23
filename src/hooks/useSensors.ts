@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { gyroscope, setUpdateIntervalForType, SensorTypes } from 'react-native-sensors'
 
 const NS2S = 1.0 / 1000000000.0
@@ -9,13 +9,14 @@ interface Sendor {
 }
 // 将弧度转化为角度
 const toDegree = (radians: number) => radians * (180 / Math.PI)
-const GyroscopeSensor = ({ onSensor }: { onSensor: (data: Sendor) => void }) => {
+const useSensor = () => {
+  const [sensor, setSensor] = useState<Sendor>()
   const slow = useCallback(() => {
     return () => setUpdateIntervalForType(SensorTypes.gyroscope, 1000)
   }, [])
-  const fast = useCallback(() => {
-    return () => setUpdateIntervalForType(SensorTypes.gyroscope, 400)
-  }, [])
+  // const fast = useCallback(() => {
+  //   return () => setUpdateIntervalForType(SensorTypes.gyroscope, 400)
+  // }, [])
   useEffect(() => {
     slow()
     const subscribe = () => {
@@ -33,7 +34,7 @@ const GyroscopeSensor = ({ onSensor }: { onSensor: (data: Sendor) => void }) => 
             x1 = x * (1 + dT)
             y1 = y * (1 + dT)
             z1 = z * (1 + dT)
-            onSensor({
+            setSensor({
               angleX: `${x},${toDegree(x1)}`,
               angleY: `${y},${toDegree(y1)}`,
               angleZ: `${z},${toDegree(z1)}`,
@@ -44,7 +45,7 @@ const GyroscopeSensor = ({ onSensor }: { onSensor: (data: Sendor) => void }) => 
         },
         err => {
           console.log(err)
-          onSensor({
+          setSensor({
             angleX: '0.0,0.0',
             angleY: '0.0,0.0',
             angleZ: '0.0,0.0',
@@ -53,13 +54,13 @@ const GyroscopeSensor = ({ onSensor }: { onSensor: (data: Sendor) => void }) => 
       )
       return subscription
     }
-    subscribe()
+    const subscription = subscribe()
     return () => {
-      // subscription.remove()
+      // FIXME
+      subscription.remove()
     }
-  }, [onSensor, slow])
-
-  return <></>
+  }, [sensor, slow])
+  return [sensor]
 }
 
-export default GyroscopeSensor
+export default useSensor

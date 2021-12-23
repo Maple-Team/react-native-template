@@ -1,5 +1,6 @@
 {
-  "submit": "提交",
-  "cancel": "取消",
-  "back": "返回"
+  "submit": "submit",
+  "cancel": "cancel",
+  "back": "back",
+  "login": "login"
 }

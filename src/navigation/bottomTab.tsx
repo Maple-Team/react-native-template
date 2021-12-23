@@ -6,7 +6,7 @@ const Tab = createBottomTabNavigator()
 
 function ApplyNavigator() {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <View>
       <Text>Home!</Text>
     </View>
   )
@@ -14,14 +14,14 @@ function ApplyNavigator() {
 
 function OrdersNavigator() {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <View>
       <Text>Settings!</Text>
     </View>
   )
 }
 function UserNavigator() {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <View>
       <Text>Settings!</Text>
     </View>
   )

@@ -18,6 +18,6 @@
 interface IColor {
   primary: string
 }
-export const color: IColor = {
-  primary: '',
+export const Color: IColor = {
+  primary: '#ff9501',
 }
