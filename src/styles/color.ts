@@ -1,23 +1,16 @@
-// export default {
-//   primaryColor: '#00A24D',
-//   tintColor,
-//   tabIconDefault: '#ccc',
-//   tabIconSelected: tintColor,
-//   tabBar: '#fefefe',
-//   errorBackground: 'red',
-//   errorText: '#fff',
-//   warningBackground: '#EAEB5E',
-//   warningText: '#666804',
-//   noticeBackground: tintColor,
-//   noticeText: '#fff',
-//   formPlaceholderColor: '#A0B0B4',
-//   formTextError: '#FF0F20',
-//   formTextColor: '#111111',
-//   labelPrefix: '#DA8282',
-// }
 interface IColor {
   primary: string
+  labelColor: string
+  placeholderColor: string
+  errorColor: string
+  valueColor: string
+  fieldBorderColor: string
 }
 export const Color: IColor = {
-  primary: '#ff9501',
+  primary: '#0123F7',
+  labelColor: '#333230',
+  valueColor: '#333230',
+  placeholderColor: '',
+  errorColor: '',
+  fieldBorderColor: '#B4CCE2',
 }
