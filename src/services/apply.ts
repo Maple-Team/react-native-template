@@ -17,6 +17,8 @@ import type {
 } from '@/typings/apply'
 import type { Device } from '@/typings/device'
 import type { Brand, Dict, Version } from '@/typings/response'
+import type { BaseResponse } from '@/utils/http'
+import type { BehaviorModel } from '@/utils/behavior'
 
 import { request } from '@/utils/http'
 
@@ -136,6 +138,18 @@ export async function pv(data: CalculateParameter) {
   return request<Calculate>({
     url: '/smart-loan/app/index',
     method: 'delete',
+    data,
+  })
+}
+/**
+ * 行为上传
+ * @param data
+ * @returns
+ */
+export async function uploadBehavior(data: BehaviorModel) {
+  return request<BaseResponse>({
+    url: '/smart-loan/app/index', // TODO
+    method: 'post',
     data,
   })
 }

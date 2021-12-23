@@ -11,10 +11,10 @@
 - [x] loading/toast
 - [x] request
 - [ ] permission
-- [ ] i18n
+- [x] i18n
 - [ ] device
 - [ ] gps
-- [ ] 行为埋点
+- [x] 行为埋点
 - [ ] 第三方埋点
 - [ ] 第三方 sdk
   - [ ] 极光
