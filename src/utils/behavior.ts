@@ -8,15 +8,17 @@ import type {
   BehaviorModel,
   BehaviorRecords,
   EnterID,
-  InputTypeId,
+  InputTypeID,
   LeaveID,
-  SelectTypeId,
+  SelectTypeID,
   PAGE_ID,
+  MatchedIDs,
+  ClickTypeID,
 } from '@/typings/behavior'
 
 const window = Dimensions.get('window')
-export default class Behavior {
-  private model: BehaviorModel = {
+export default class Behavior<T extends PAGE_ID> {
+  private model: BehaviorModel<T> = {
     screenWidth: `${window.width}`,
     screenHeight: `${window.height}`,
     applyId: '',
@@ -24,20 +26,20 @@ export default class Behavior {
     internalIp: '',
     records: [],
   }
-  private tempRecord: Pick<BehaviorRecords, 'startTime' | 'value'> = {
+  private tempRecord: Pick<BehaviorRecords<T>, 'startTime' | 'value'> = {
     startTime: '',
     value: '',
   }
-  constructor(initModel: BehaviorModel | null) {
+  constructor(initModel?: BehaviorModel<T>) {
     if (initModel) {
       this.model = initModel
     }
   }
 
-  private findUnElement(arr: BehaviorRecords[], id: PAGE_ID) {
+  private findUnElement(arr: BehaviorRecords<T>[], id: PAGE_ID) {
     return this.find(arr, id, (a, b) => a !== b)
   }
-  private findElement(arr: BehaviorRecords[], id: PAGE_ID) {
+  private findElement(arr: BehaviorRecords<T>[], id: PAGE_ID) {
     return this.find(arr, id, (a, b) => a === b)
   }
   /**
@@ -47,7 +49,7 @@ export default class Behavior {
    * @param cb
    * @returns
    */
-  private find(arr: BehaviorRecords[], id: PAGE_ID, cb: (a: PAGE_ID, b: PAGE_ID) => boolean) {
+  private find(arr: BehaviorRecords<T>[], id: PAGE_ID, cb: (a: PAGE_ID, b: PAGE_ID) => boolean) {
     let index = -1
     arr.some((item, i) => {
       if (cb(item.id.substring(0, 3) as PAGE_ID, id)) {
@@ -75,7 +77,7 @@ export default class Behavior {
    * @param id
    * @param val
    */
-  setStartModify(id: InputTypeId, val: string) {
+  setStartModify(id: MatchedIDs<T, InputTypeID>, val: string) {
     this.tempRecord.startTime = this.getNowTime()
     this.tempRecord.value = val || ''
     console.log('setStartModify', this.tempRecord)
@@ -87,7 +89,7 @@ export default class Behavior {
    * @param val
    * @returns
    */
-  setEndModify(id: InputTypeId, val: string) {
+  setEndModify(id: MatchedIDs<T, InputTypeID>, val: string) {
     let _val = val || ''
     if (this.tempRecord.value?.toString() === _val.toString()) {
       return
@@ -108,7 +110,7 @@ export default class Behavior {
    * @param newValue
    * @param oldValue
    */
-  setModify(id: SelectTypeId, newValue: string, oldValue: string) {
+  setModify(id: MatchedIDs<T, SelectTypeID>, newValue: string, oldValue: string) {
     this.model.records.push({
       id,
       oldValue: (oldValue || '').toString(),
@@ -122,7 +124,7 @@ export default class Behavior {
    * 设置离开页面时间
    * @param id
    */
-  setLeavePageTime(id: LeaveID) {
+  setLeavePageTime(id: MatchedIDs<T, LeaveID>) {
     this.model.records.push({ id, startTime: this.getNowTime() })
     this.save2storage()
   }
@@ -130,7 +132,15 @@ export default class Behavior {
    * 设置进入页面时间
    * @param id
    */
-  setEnterPageTime(id: EnterID) {
+  setEnterPageTime(id: MatchedIDs<T, EnterID>) {
+    this.model.records.push({ id, startTime: this.getNowTime() })
+    this.save2storage()
+  }
+  /**
+   * 点击提交
+   * @param id
+   */
+  setClickTime(id: MatchedIDs<T, ClickTypeID>) {
     this.model.records.push({ id, startTime: this.getNowTime() })
     this.save2storage()
   }
