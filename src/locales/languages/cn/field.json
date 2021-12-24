@@ -1,6 +1,30 @@
 {
+  "firstName": {
+    "label": "",
+    "placeholder": "",
+    "invalid": "",
+    "required": ""
+  },
+  "lastname": {
+    "label": "",
+    "placeholder": "",
+    "invalid": "",
+    "required": ""
+  },
+  "password": {
+    "label": "",
+    "placeholder": "",
+    "invalid": "",
+    "required": ""
+  },
   "phone": {
-    "prompt": "",
+    "label": "",
+    "placeholder": "",
+    "invalid": "",
+    "required": ""
+  },
+  "validateCode": {
+    "label": "",
     "placeholder": "",
     "invalid": "",
     "required": ""
