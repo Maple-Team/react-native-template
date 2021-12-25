@@ -54,8 +54,8 @@ export interface ApplyStep3 {
   totalSteps: number
   contacts: Contact[]
 }
-export type ContactRelationCode = 'CHILDREN' | 'FRIEND'
-export type ContactRelation = 'Friend' | 'Hijos'
+type ContactRelationCode = 'CHILDREN' | 'FRIEND'
+type ContactRelation = 'Friend' | 'Hijos'
 export interface Contact {
   contactName: string
   contactRelation: ContactRelation
@@ -108,7 +108,7 @@ export interface ApplyStep6 {
   livenessId: string
   livenessAuthFlag: BOOL
 }
-export type BankCardType = 'CARD'
+export type BankCardType = 'CARD' | 'CLABE'
 export interface ApplyStep7 {
   applyId: number
   currentStep: number
