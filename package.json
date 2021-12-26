@@ -10,7 +10,9 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "format": "prettier . --ext .js,.jsx,.ts,.tsx --write",
     "prepare": "husky install",
-    "add-field": "ts-node scripts/add-field.ts"
+    "add-field": "ts-node scripts/add-field.ts",
+    "rn": "ts-node scripts/change-name.ts",
+    "android:release": "react-native run-android --variant release"
   },
   "dependencies": {
     "@adrianso/react-native-device-brightness": "^1.2.5",
@@ -70,6 +72,7 @@
     "@types/jest": "^27.0.3",
     "@types/js-beautify": "^1.13.3",
     "@types/lodash": "^4.14.178",
+    "@types/mockjs": "^1.0.4",
     "@types/react-native": "^0.66.4",
     "@types/react-test-renderer": "^17.0.1",
     "@typescript-eslint/eslint-plugin": "^5.7.0",
@@ -85,6 +88,7 @@
     "js-beautify": "^1.14.0",
     "lint-staged": ">=10",
     "metro-react-native-babel-preset": "^0.66.2",
+    "mockjs": "^1.1.0",
     "prettier": "^2.5.1",
     "react-native-localize": "^2.1.6",
     "ts-node": "^10.4.0",

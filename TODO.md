@@ -3,11 +3,11 @@
 - [x] eventbus: mitt
 - [x] screen fit: react-native-adaptive-stylesheet
 - [x] style:
-  - [ ] color
-  - [ ] edge
-  - [ ] radius
+  - [x] color
+  - [x] edge
+  - [x] radius
 - [x] font:
-- [ ] assets image: 1x 2x 3x
+- [x] assets image: 1x 2x 3x
 - [x] loading/toast
 - [x] request
 - [ ] permission
@@ -18,9 +18,15 @@
 - [ ] 第三方埋点
 - [ ] 第三方 sdk
   - [ ] 极光
+    - [ ] [push_gplay](https://api.srv.jpush.cn/v1/website/downloads/sdk/push_gplay)
+    - [ ] [jcore-react-native](https://github.com/jpush/jcore-react-native/blob/master/package.json)
+    - [ ] [jpush-react-native](https://github.com/jpush/jpush-react-native/blob/master/index.d.ts)
   - [ ] liveness
-- [ ] android build
-- [ ] 命令行输入字段(接收多个字段)，产生对应的 field，并排序
+- [ ] android build: [signed-apk-android](https://reactnative.dev/docs/signed-apk-android)
+- [x] 脚本：
+  - [x] 命令行输入字段(接收多个字段)，产生对应的 field，并排序
+- [ ] background tasks
+  - [ ] fetch 站内信: [headless-js-android](https://reactnative.dev/docs/headless-js-android) || or 全局的页面做请求?
 
 ## 1.1
 
