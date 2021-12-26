@@ -17,13 +17,16 @@ const rename = (o: string, n: string) =>
 
 ;(async () => {
   const program = new Command()
-  program.option('-o, --on', 'old name').option('-n, --nn', 'new name')
+  program
+    .option('-o, --on', 'old name')
+    .option('-n, --nn', 'new name')
+    .option('-e, --ext', 'ext extension')
   program.parse(process.argv)
-  const [oldName, newName] = program.args
+  const [oldName, newName, ext] = program.args
   try {
-    await rename(`${oldName}.png`, `${newName}.png`)
-    await rename(`${oldName}@2x.png`, `${newName}@2x.png`)
-    await rename(`${oldName}@3x.png`, `${newName}@3x.png`)
+    await rename(`${oldName}.${ext}`, `${newName}.${ext}`)
+    await rename(`${oldName}@2x.${ext}`, `${newName}@2x.${ext}`)
+    await rename(`${oldName}@3x.${ext}`, `${newName}@3x.${ext}`)
     console.log('done')
   } catch (error) {
     console.error(error)

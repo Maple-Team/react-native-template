@@ -18,7 +18,7 @@ import type {
 import type { Device } from '@/typings/device'
 import type { Brand, Dict, Version } from '@/typings/response'
 import type { BaseResponse } from '@/utils/http'
-import type { BehaviorModel } from '@/utils/behavior'
+import type { BehaviorModel, PAGE_ID } from '@/typings/behavior'
 
 import { request } from '@/utils/http'
 
@@ -137,7 +137,7 @@ export async function scheduleCalc(data: CalculateParameter) {
 export async function pv(data: CalculateParameter) {
   return request<Calculate>({
     url: '/smart-loan/app/index',
-    method: 'delete',
+    method: 'DELETE',
     data,
   })
 }
@@ -146,10 +146,10 @@ export async function pv(data: CalculateParameter) {
  * @param data
  * @returns
  */
-export async function uploadBehavior(data: BehaviorModel) {
+export async function uploadBehavior<T extends PAGE_ID>(data: BehaviorModel<T>) {
   return request<BaseResponse>({
-    url: '/smart-loan/app/index', // TODO
-    method: 'post',
+    url: '', // TODO add url
+    method: 'POST',
     data,
   })
 }

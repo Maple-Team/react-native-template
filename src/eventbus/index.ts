@@ -19,6 +19,7 @@ export type Events = {
   RESPONSE_ERROR: string
   REQUEST_ERROR: string
   REQUEST_LOADING: { dispatchType: DispatchMapType; loading: boolean }
+  NETWORK_CONNECTED: boolean
 }
 
 /**

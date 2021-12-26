@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from 'react'
+import React, { useEffect, useReducer, useState, StrictMode } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { Toast } from '@ant-design/react-native'
 import {
@@ -12,17 +12,36 @@ import {
 } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import StyleSheet from 'react-native-adaptive-stylesheet'
+import { Text } from 'react-native-elements'
+import { QueryClient, QueryClientProvider } from 'react-query'
+import NetInfo from '@react-native-community/netinfo'
+import { onlineManager } from 'react-query'
+import * as RNLocalize from 'react-native-localize'
 
 import BottomTabNavigator from '@/navigation/bottomTab'
 import AccountStack from '@/navigation/accountStack'
 import { initiateState, reducer } from '@/state'
 import emitter from '@/eventbus'
-import '@/locales/i18n'
-import { navigationRef, navigate } from './navigation/rootNavigation'
-import { Color } from './styles/color'
-import { Text } from 'react-native-elements'
+import i18n, { getI18nConfig } from '@/locales/i18n'
+import { navigationRef } from '@/navigation/rootNavigation'
+import { Color } from '@/styles/color'
+import { MESSAGE_DURATION } from '@/utils/constant'
 
-const MESSAGE_DURATION = 1000
+onlineManager.setEventListener(setOnline => {
+  return NetInfo.addEventListener(state => {
+    const isConnected = state.isConnected || false
+    emitter.emit('NETWORK_CONNECTED', isConnected)
+    setOnline(state.isConnected || false)
+  })
+})
+
+const queryClient = new QueryClient()
+if (__DEV__) {
+  import('react-query-native-devtools').then(({ addPlugin }) => {
+    addPlugin({ queryClient })
+  })
+}
+
 // FIXME 是否确保一个toast/message的显示时间符合其设置的时间，
 // 即后续的toast/message是否会顶掉前一个toast/message
 
@@ -40,44 +59,11 @@ Toast.config({
 })
 const PERSISTENCE_KEY = 'NAVIGATION_STATE'
 const window = Dimensions.get('window')
-const App = () => {
-  const [state, dispatch] = useReducer(reducer, initiateState)
-  useEffect(() => {
-    emitter.on('SESSION_EXPIRED', () => {
-      navigate('signin', null)
-    })
-    emitter.on('LOGOUT_SUCCESS', () => {
-      navigate('signin', null) //TODO 携带手机号
-    })
-    emitter.on('LOGIN_SUCCESS', user => {
-      if (user) {
-        console.log(user) //TODO switch user state
-      } else {
-        navigate('home', null)
-      }
-    })
-    emitter.on('SHOW_LOADING', () => {
-      Toast.loading('', 1000)
-    })
-    emitter.on('REQUEST_ERROR', e => {
-      console.error(`request: ${e}`)
-    })
-    emitter.on('RESPONSE_ERROR', e => {
-      console.error(`response: ${e}`)
-      // TODO 错误上报
-    })
-    emitter.on('SHOW_MESSAGE', ({ message, type }) => {
-      Toast[type](message, MESSAGE_DURATION)
-    })
-    // 监听请求状态
-    emitter.on('REQUEST_LOADING', ({ dispatchType, loading }) => {
-      dispatch({
-        type: dispatchType,
-        loading,
-      })
-    })
-  }, [])
 
+const App = () => {
+  const [state] = useReducer(reducer, initiateState)
+
+  // 处理实体键返回逻辑
   useEffect(() => {
     const backAction = () => {
       Alert.alert('Hold on!', 'Are you sure you want to go back?', [
@@ -92,6 +78,19 @@ const App = () => {
     }
     const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction)
     return () => backHandler.remove()
+  }, [])
+
+  // 处理语言
+  useEffect(() => {
+    const locales = RNLocalize.getLocales()
+    console.log('locales:', locales)
+    const lng = locales[0].languageTag
+    // TODO change language
+    // FIXME 'i18next: init: i18next is already initialized. You should call init just once!'
+    RNLocalize.addEventListener('change', (e: any) => {
+      console.log(e)
+    })
+    i18n.init(getI18nConfig(lng))
   }, [])
 
   const [isReady, setIsReady] = useState(__DEV__ ? false : true)
@@ -133,12 +132,16 @@ const App = () => {
 
   // TODO splash display logic
   return (
-    <NavigationContainer
-      ref={navigationRef}
-      initialState={initialState}
-      onStateChange={_ => AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(_))}>
-      {state.user ? <BottomTabNavigator /> : <AccountStack />}
-    </NavigationContainer>
+    <StrictMode>
+      <QueryClientProvider client={queryClient}>
+        <NavigationContainer
+          ref={navigationRef}
+          initialState={initialState}
+          onStateChange={_ => AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(_))}>
+          {state.user ? <BottomTabNavigator /> : <AccountStack />}
+        </NavigationContainer>
+      </QueryClientProvider>
+    </StrictMode>
   )
 }
 
@@ -148,9 +151,9 @@ const loadingStyles = StyleSheet.create({
   container: {
     width: window.width,
     height: window.height,
-    flex: 1,
     justiftContent: 'center',
-    flexDirection: 'row',
+    alignItems: 'center',
+    flexDirection: 'column',
     padding: 10,
   },
   loadingHint: {

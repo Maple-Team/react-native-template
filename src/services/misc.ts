@@ -1,0 +1,35 @@
+import { BaseResponse, request } from '@/utils/http'
+
+/**
+ * 站内信数量
+ * @param data
+ * @returns
+ */
+export async function queryZhanLetter() {
+  return request<BaseResponse>({
+    url: '', // TODO add url
+    method: 'get',
+  })
+}
+/**
+ * 站内信列表
+ * @param data
+ * @returns
+ */
+export async function queryZhanLetterList() {
+  return request<BaseResponse>({
+    url: '', // TODO add url
+    method: 'get',
+  })
+}
+/**
+ * 站内信详情
+ * @param data
+ * @returns
+ */
+export async function queryZhanLetterDetail() {
+  return request<BaseResponse>({
+    url: '', // TODO add url
+    method: 'get',
+  })
+}

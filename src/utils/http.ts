@@ -24,7 +24,7 @@ export type BaseResponse<T = any> = Promise<Response<T>>
 
 const api = axios.create({
   timeout: AXIOS_TIMEOUT,
-  baseURL: AppModule.BASE_URL,
+  baseURL: AppModule.getBaseUrl(),
   validateStatus: status => status >= 200 && status < 300,
 })
 

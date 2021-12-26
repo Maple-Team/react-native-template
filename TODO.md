@@ -22,9 +22,13 @@
     - [ ] [jcore-react-native](https://github.com/jpush/jcore-react-native/blob/master/package.json)
     - [ ] [jpush-react-native](https://github.com/jpush/jpush-react-native/blob/master/index.d.ts)
   - [ ] liveness
-- [ ] android build: [signed-apk-android](https://reactnative.dev/docs/signed-apk-android)
+- [ ] android build:
+  - [ ] build aab release
+  - [signed-apk-android](https://reactnative.dev/docs/signed-apk-android)
+  - [ ] 分环境
 - [x] 脚本：
   - [x] 命令行输入字段(接收多个字段)，产生对应的 field，并排序
+  - [x] 资源图片重命名
 - [ ] background tasks
   - [ ] fetch 站内信: [headless-js-android](https://reactnative.dev/docs/headless-js-android) || or 全局的页面做请求?
 
