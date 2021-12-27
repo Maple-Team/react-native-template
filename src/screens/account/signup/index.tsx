@@ -10,7 +10,7 @@ import { initiateState, reducer, UPDATE_TOKEN } from '@/state'
 import styles from './style'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
-const SigninScreen = ({ navigation }: NativeStackHeaderProps) => {
+const SignupScreen = ({ navigation }: NativeStackHeaderProps) => {
   const [state, dispatch] = useReducer(reducer, initiateState)
   const { t } = useTranslation()
 
@@ -46,9 +46,9 @@ const SigninScreen = ({ navigation }: NativeStackHeaderProps) => {
               style={[styles.signup, styles.btn]}
               loading={state.loading.effects.LOGIN}
               onPress={async () => {
-                navigation.navigate('SignUp')
+                navigation.navigate('SignIn')
               }}>
-              {t('signup')}
+              {t('back')}
             </Button>
           </View>
         </View>
@@ -57,4 +57,4 @@ const SigninScreen = ({ navigation }: NativeStackHeaderProps) => {
   )
 }
 
-export default SigninScreen
+export default SignupScreen

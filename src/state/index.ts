@@ -22,6 +22,7 @@ interface State {
       [key: string]: boolean
     }
   }
+  isFirst: boolean
 }
 /**
  * App全局状态设定
@@ -40,11 +41,13 @@ export const initiateState: State = {
   loading: {
     effects: {},
   },
+  isFirst: false,
 }
 export const UPDATE_TOKEN = 'UPDATE_TOKEN'
 export const UPDATE_GPS = 'UPDATE_GPS'
 export const UPDATE_DEVICEID = 'UPDATE_DEVICEID'
 export const UPDATE_USERINFO = 'UPDATE_USERINFO'
+export const UPDATE_IS_FIRST = 'UPDATE_IS_FIRST'
 
 type Action =
   | {
@@ -66,6 +69,10 @@ type Action =
   | {
       type: DispatchMapType
       loading: boolean
+    }
+  | {
+      type: typeof UPDATE_IS_FIRST
+      isFirst: boolean
     }
 
 export function reducer(state: State, action: Action): State {
@@ -98,6 +105,11 @@ export function reducer(state: State, action: Action): State {
       return {
         ...state,
         user: action.user,
+      }
+    case UPDATE_IS_FIRST:
+      return {
+        ...state,
+        isFirst: action.isFirst,
       }
     default:
       if ([...NormalTypeArray, ...DictTypeArray].includes(action.type)) {

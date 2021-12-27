@@ -17,18 +17,6 @@ export default StyleSheet.create({
     alignItems: 'center',
     flex: 1,
   },
-
-  logoWrapper: {
-    marginTop: 100,
-    alignItems: 'center',
-  },
-  logo: {
-    width: 96,
-    height: 96,
-  },
-  moneyya: {
-    marginTop: 18.5,
-  },
   form: {
     borderRadius: 15,
     backgroundColor: '#FFF',

@@ -2,5 +2,6 @@
   "submit": "submit",
   "cancel": "cancel",
   "back": "back",
-  "login": "login"
+  "signin": "登录",
+  "signup": "注册"
 }

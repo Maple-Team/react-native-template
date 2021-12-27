@@ -6741,6 +6741,11 @@ react-native-adaptive-stylesheet@^0.3.2:
   resolved "https://registry.npmmirror.com/react-native-adaptive-stylesheet/download/react-native-adaptive-stylesheet-0.3.2.tgz#3f0779d86a09ebdebc6387d5f9034248824f531a"
   integrity sha1-Pwd52GoJ6968Y4fV+QNCSIJPUxo=
 
+react-native-app-intro-slider@^4.0.4:
+  version "4.0.4"
+  resolved "https://registry.nlark.com/react-native-app-intro-slider/download/react-native-app-intro-slider-4.0.4.tgz#fa5cda7057db62c448ac975ffd2ba0cff94cc8d8"
+  integrity sha1-+lzacFfbYsRIrJdf/Sugz/lMyNg=
+
 react-native-codegen@^0.0.7:
   version "0.0.7"
   resolved "https://registry.npmmirror.com/react-native-codegen/download/react-native-codegen-0.0.7.tgz#86651c5c5fec67a8077ef7f4e36f7ed459043e14"
