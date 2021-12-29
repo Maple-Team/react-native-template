@@ -4,17 +4,12 @@ import StyleSheet from 'react-native-adaptive-stylesheet'
 
 export default StyleSheet.create<{
   flex1: ViewStyle
-  tab: ViewStyle
-  tabBar: ViewStyle
-  tabBarAct: ViewStyle
-  tabBarText: TextStyle
-  tabBarTextAct: TextStyle
   container: ViewStyle
   wrap: ViewStyle
-  formWrap: ViewStyle
   form: ViewStyle
+  signin: ViewStyle
+  signup: ViewStyle
   btn: ViewStyle
-  btnWrap: ViewStyle
   bg: ImageStyle
   label: TextStyle
   formItem: ViewStyle
@@ -26,68 +21,32 @@ export default StyleSheet.create<{
   error: TextStyle
 }>({
   flex1: { flex: 1 },
-  tab: {
-    paddingTop: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignContent: 'center',
-  },
-  tabBar: {
-    width: '50%',
-    paddingVertical: 18,
-    backgroundColor: '#fff',
-    borderTopRightRadius: 15,
-    borderTopLeftRadius: 15,
-    alignItems: 'center',
-  },
-  tabBarAct: {
-    backgroundColor: 'rgba(255,255,255, .78)',
-  },
-  tabBarText: {
-    color: '#333230',
-    fontSize: 15,
-    textTransform: 'capitalize',
-  },
-  tabBarTextAct: {},
   container: {
     flex: 1,
   },
   wrap: {
+    alignContent: 'space-around',
     paddingHorizontal: 10,
     flex: 1,
   },
   form: {
-    width: '100%',
-    borderBottomLeftRadius: 15,
-    borderBottomRightRadius: 15,
+    marginTop: 75,
+    backgroundColor: 'rgba(255,255,255, .5)',
+    borderRadius: 9,
     paddingHorizontal: 10,
-    paddingTop: 40,
-    backgroundColor: 'rgba(255,255,255, .78)',
-    paddingBottom: 200 - 14 - 50,
-    zIndex: 99,
+    paddingTop: 80,
+    paddingBottom: 47.5,
   },
-  formWrap: {
-    alignItems: 'center',
-    paddingBottom: 30,
+  signin: {
+    backgroundColor: Color.primary,
   },
-  btnWrap: {
-    alignItems: 'center',
-    position: 'absolute',
-    justifyContent: 'center',
-    bottom: 0,
-    zIndex: 999,
-    width: 103 + 28,
-    height: 103 + 28,
-    borderRadius: (103 + 28) / 2,
-    backgroundColor: 'rgba(255,255,255, .0)', // FIXME
+  signup: {
+    backgroundColor: '#FFF',
+    marginTop: 29,
   },
   btn: {
-    backgroundColor: Color.primary,
-    width: 103,
-    height: 103,
-    borderRadius: 103 / 2,
+    borderRadius: 9,
   },
-
   bg: {
     position: 'absolute',
     left: 0,

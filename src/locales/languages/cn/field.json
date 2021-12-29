@@ -18,10 +18,10 @@
     "required": ""
   },
   "phone": {
-    "label": "",
-    "placeholder": "",
-    "invalid": "",
-    "required": ""
+    "label": "手机号",
+    "placeholder": "手机号",
+    "invalid": "手机号格式不正确",
+    "required": "手机号必需"
   },
   "validateCode": {
     "label": "",

@@ -4,20 +4,24 @@ import { View, Image } from 'react-native'
 import { Button } from '@ant-design/react-native'
 import { useTranslation } from 'react-i18next'
 
-import Logo from '../logo'
+import { Logo } from '@components/logo'
 import { login } from '@/services/user'
 import { initiateState, reducer, UPDATE_TOKEN } from '@/state'
 import styles from './style'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
-const SignupScreen = ({ navigation }: NativeStackHeaderProps) => {
+export const SignupScreen = ({ navigation }: NativeStackHeaderProps) => {
   const [state, dispatch] = useReducer(reducer, initiateState)
   const { t } = useTranslation()
 
   return (
     <SafeAreaView>
       <View style={styles.container}>
-        <Image source={require('@/assets/images/bg.webp')} resizeMode="stretch" style={styles.bg} />
+        <Image
+          source={require('@/assets/images/account/bg.webp')}
+          resizeMode="stretch"
+          style={styles.bg}
+        />
         <View style={styles.wrap}>
           <Logo />
           <View style={styles.form}>
@@ -56,5 +60,3 @@ const SignupScreen = ({ navigation }: NativeStackHeaderProps) => {
     </SafeAreaView>
   )
 }
-
-export default SignupScreen

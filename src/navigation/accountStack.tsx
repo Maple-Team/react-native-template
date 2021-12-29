@@ -1,15 +1,20 @@
 import { useEventListener } from '@/hooks/useListener'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React, { useEffect } from 'react'
-import SignIn from '@/screens/account/signin'
-import SignUp from '@/screens/account/signup'
+import { SigninScreen } from '@/screens/account/signin'
+import { SignupScreen } from '@/screens/account/signup'
+import { EntryScreen } from '@/screens/account/entry'
 import emitter from '@/eventbus'
 import { useNavigation } from '@react-navigation/native'
 // import { useQuery } from 'react-query'
 // import { queryBrand } from '@/services/apply'
 import { Provider } from '@ant-design/react-native'
-
-const Stack = createNativeStackNavigator()
+export type RootStackParamList = {
+  Entry: undefined
+  SignIn: undefined
+  SignUp: undefined
+}
+const Stack = createNativeStackNavigator<RootStackParamList>()
 
 function AccountStack() {
   const navigation = useNavigation()
@@ -26,13 +31,13 @@ function AccountStack() {
 
   // const query = useQuery('brand', queryBrand)
   // console.log('brand', query.data)
-
   return (
     <Provider>
-      <Stack.Navigator>
+      <Stack.Navigator initialRouteName="Entry">
         <Stack.Group screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="SignIn" component={SignIn} />
-          <Stack.Screen name="SignUp" component={SignUp} />
+          <Stack.Screen key="Entry" name="Entry" component={EntryScreen} />
+          <Stack.Screen key="SignIn" name="SignIn" component={SigninScreen} />
+          <Stack.Screen key="SignUp" name="SignUp" component={SignupScreen} />
         </Stack.Group>
       </Stack.Navigator>
     </Provider>

@@ -36,6 +36,10 @@ export default class Behavior<T extends PAGE_ID> {
     }
   }
 
+  getCurrentModel() {
+    return this.model
+  }
+
   private findUnElement(arr: BehaviorRecords<T>[], id: PAGE_ID) {
     return this.find(arr, id, (a, b) => a !== b)
   }

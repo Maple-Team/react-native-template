@@ -12,21 +12,20 @@
     "required": ""
   },
   "password": {
-    "label": "",
-    "placeholder": "",
-    "invalid": "",
-    "required": ""
+    "label": "password",
+    "placeholder": "password",
+    "required": "password required"
   },
   "phone": {
-    "label": "",
-    "placeholder": "",
-    "invalid": "",
-    "required": ""
+    "label": "Phone",
+    "placeholder": "Phone",
+    "invalid": "Phone invalid",
+    "required": "Phone Required"
   },
   "validateCode": {
-    "label": "",
-    "placeholder": "",
-    "invalid": "",
-    "required": ""
+    "label": "Validate Code",
+    "placeholder": "Validate Code",
+    "invalid": "Validate Code Invalid",
+    "required": "Validate Code Required"
   }
 }

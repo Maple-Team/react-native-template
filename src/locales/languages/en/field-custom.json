@@ -1,0 +1,6 @@
+{
+  "field": {
+    "short": "{{field}} is too short",
+    "long": "{{field}} is too long"
+  }
+}
