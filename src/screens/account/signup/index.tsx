@@ -11,7 +11,7 @@ import debounce from 'lodash.debounce'
 import styles from './style'
 import { REGEX_PHONE } from '@/utils/reg'
 import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT } from '@/utils/constant'
-import { Input, PasswordInput, Picker, ValidateCode } from '@components/form/FormItem'
+import { Input, PasswordInput, NormalPicker, ValidateCode } from '@components/form/FormItem'
 
 interface FormModel {
   phone: string
@@ -102,7 +102,7 @@ export const SignupScreen = ({ navigation }: NativeStackHeaderProps) => {
                   showPwd={showConfirmPwd}
                   onToggle={() => setShowConfirmPwd(!showConfirmPwd)}
                 />
-                <Picker
+                <NormalPicker
                   field="confirmPassword"
                   label={t('confirmPassword.label')}
                   onChange={handleChange('confirmPassword')}
@@ -110,7 +110,10 @@ export const SignupScreen = ({ navigation }: NativeStackHeaderProps) => {
                   placeholder={t('confirmPassword.placeholder')}
                   error={errors.confirmPassword}
                   title={'confirmPassword'}
-                  dataSource={[]}
+                  dataSource={[
+                    { name: 'xx', code: '22' },
+                    { name: 'yy', code: '33' },
+                  ]}
                 />
                 <View>
                   <Button

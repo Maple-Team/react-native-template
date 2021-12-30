@@ -44,12 +44,20 @@ export function NormalPicker<T extends Dict>({
             style={[formItemStyles.input]}
             onPressIn={() => setVisible(true)}
           />
-          <Pressable style={formItemStyles.suffixWrap} onPress={() => setVisible(true)}>
+          <Pressable
+            style={formItemStyles.suffixWrap}
+            android_disableSound={true}
+            android_ripple={{ color: 'red' }}
+            onPress={() => {
+              console.log('pressed')
+              setVisible(true)
+            }}>
             <Image
               style={formItemStyles.suffix}
               source={require('@assets/images/common/right.webp')}
               resizeMode="cover"
             />
+            <Text>111</Text>
           </Pressable>
         </View>
         <ErrorMessage name={field}>
