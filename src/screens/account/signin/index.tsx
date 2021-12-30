@@ -1,9 +1,8 @@
 import React, { useMemo, useReducer, useState } from 'react'
-import { View, Image, SafeAreaView, TextInput, Pressable } from 'react-native'
+import { View, Image, SafeAreaView, Pressable } from 'react-native'
 import { Button } from '@ant-design/react-native'
-import { useTranslation } from 'react-i18next'
 import { ScrollView } from 'react-native-gesture-handler'
-import { ErrorMessage, Formik } from 'formik'
+import { Formik } from 'formik'
 import * as Yup from 'yup'
 import debounce from 'lodash.debounce'
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
@@ -16,6 +15,8 @@ import { REGEX_PHONE } from '@/utils/reg'
 import { DEBOUNCE_WAIT, DEBOUNCE_OPTIONS } from '@/utils/constant'
 import { useNavigation } from '@react-navigation/native'
 import { RootStackParamList } from '@navigation/accountStack'
+import { Input, PasswordInput, ValidateCode } from '@components/form/FormItem'
+import { useTranslation } from 'react-i18next'
 
 interface FormModel {
   phone: string
@@ -30,6 +31,8 @@ export const SigninScreen = () => {
   const tabs = [{ title: 'Password login' }, { title: 'Verification code login' }]
   const tabPanels = [<PasswdTab />, <ValidTab />]
   const [index, setIndex] = useState<number>(0)
+  const { t } = useTranslation()
+  const navigation = useNavigation<SignInScreenProp>()
   return (
     <SafeAreaView style={styles.flex1}>
       <Image
@@ -37,7 +40,7 @@ export const SigninScreen = () => {
         resizeMode="stretch"
         style={styles.bg}
       />
-      <ScrollView style={styles.flex1}>
+      <ScrollView style={styles.flex1} keyboardShouldPersistTaps="handled">
         <View style={styles.container}>
           <View style={styles.wrap}>
             <Logo />
@@ -45,6 +48,7 @@ export const SigninScreen = () => {
               {tabs.map((tab, i) => {
                 return (
                   <Pressable
+                    key={tab.title}
                     onPress={() => setIndex(i)}
                     style={[styles.tabBar, i === index ? styles.tabBarAct : {}]}>
                     <Text styles={styles.tabBarText}>{tab.title}</Text>
@@ -53,6 +57,12 @@ export const SigninScreen = () => {
               })}
             </View>
             {tabPanels[index]}
+            <View style={styles.jump}>
+              <Text styles={styles.jumpText}>Don't have an account ? </Text>
+              <Text styles={styles.jumpLink} onPress={() => navigation.navigate('SignUp')}>
+                {t('signup')}
+              </Text>
+            </View>
           </View>
         </View>
       </ScrollView>
@@ -83,81 +93,32 @@ const PasswdTab = () => {
     DEBOUNCE_WAIT,
     DEBOUNCE_OPTIONS
   )
+  const [showPwd, setShowPwd] = useState<boolean>(false)
   return (
     <Formik<FormModel> initialValues={initialValue} onSubmit={onSubmit} validationSchema={schema}>
       {({ handleChange, handleSubmit, values, setFieldValue, errors }) => (
         <View style={styles.formWrap}>
           <View style={styles.form}>
-            <View style={styles.formItem}>
-              <Text styles={styles.label}>{t('phone.label')}</Text>
-              <View style={styles.inputWrap}>
-                <TextInput
-                  onChangeText={handleChange('phone')}
-                  maxLength={11}
-                  value={values.phone}
-                  placeholder={t('phone.placeholder')}
-                  style={[styles.input]}
-                />
-                {values.phone ? (
-                  errors.phone ? (
-                    <Pressable onPress={() => setFieldValue('phone', '')}>
-                      <Image
-                        style={styles.suffix}
-                        source={require('@/assets/images/common/clear.webp')}
-                        resizeMode="cover"
-                      />
-                    </Pressable>
-                  ) : (
-                    <Image
-                      style={styles.suffix}
-                      source={require('@/assets/images/common/correct.webp')}
-                      resizeMode="cover"
-                    />
-                  )
-                ) : (
-                  <></>
-                )}
-              </View>
-              <ErrorMessage name="phone">
-                {msg => <Text styles={[styles.warn, styles.error]}>{msg}</Text>}
-              </ErrorMessage>
-            </View>
-
-            <View style={styles.formItem}>
-              <Text styles={styles.label}>{t('password.label')}</Text>
-              <View style={styles.inputWrap}>
-                <TextInput
-                  onChangeText={handleChange('password')}
-                  maxLength={11}
-                  value={values.password}
-                  placeholder={t('password.placeholder')}
-                  style={[styles.input]}
-                  textContentType="password"
-                />
-                {values.password ? (
-                  errors.password ? (
-                    <Pressable onPress={() => setFieldValue('password', '')}>
-                      <Image
-                        style={styles.suffix}
-                        source={require('@/assets/images/common/clear.webp')}
-                        resizeMode="cover"
-                      />
-                    </Pressable>
-                  ) : (
-                    <Image
-                      style={styles.suffix}
-                      source={require('@/assets/images/common/correct.webp')}
-                      resizeMode="cover"
-                    />
-                  )
-                ) : (
-                  <></>
-                )}
-              </View>
-              <ErrorMessage name="phone">
-                {msg => <Text styles={[styles.warn, styles.error]}>{msg}</Text>}
-              </ErrorMessage>
-            </View>
+            <Input
+              field="phone"
+              label={t('phone.label')}
+              onChangeText={handleChange('phone')}
+              value={values.phone}
+              onClear={() => setFieldValue('phone', '')}
+              placeholder={t('phone.placeholder')}
+              error={errors.phone}
+            />
+            <PasswordInput
+              field="password"
+              label={t('password.label')}
+              onChangeText={handleChange('password')}
+              value={values.password}
+              onClear={() => setFieldValue('password', '')}
+              placeholder={t('password.placeholder')}
+              error={errors.password}
+              showPwd={showPwd}
+              onToggle={() => setShowPwd(!showPwd)}
+            />
           </View>
           <View style={styles.btnWrap}>
             <Button
@@ -196,7 +157,6 @@ const ValidTab = () => {
     (values: FormModel2) => {
       console.log(values)
       navigation.navigate('SignIn')
-      //TODO
     },
     DEBOUNCE_WAIT,
     DEBOUNCE_OPTIONS
@@ -206,82 +166,34 @@ const ValidTab = () => {
       {({ handleChange, handleSubmit, values, setFieldValue, errors }) => (
         <View style={styles.formWrap}>
           <View style={styles.form}>
-            <View style={styles.formItem}>
-              <Text styles={styles.label}>{t('phone.label')}</Text>
-              <View style={styles.inputWrap}>
-                <TextInput
-                  onChangeText={handleChange('phone')}
-                  maxLength={11}
-                  value={values.phone}
-                  placeholder={t('phone.placeholder')}
-                  style={[styles.input]}
-                />
-                {values.phone ? (
-                  errors.phone ? (
-                    <Pressable onPress={() => setFieldValue('phone', '')}>
-                      <Image
-                        style={styles.suffix}
-                        source={require('@/assets/images/common/clear.webp')}
-                        resizeMode="cover"
-                      />
-                    </Pressable>
-                  ) : (
-                    <Image
-                      style={styles.suffix}
-                      source={require('@/assets/images/common/correct.webp')}
-                      resizeMode="cover"
-                    />
-                  )
-                ) : (
-                  <></>
-                )}
-              </View>
-              <ErrorMessage name="phone">
-                {msg => <Text styles={[styles.warn, styles.error]}>{msg}</Text>}
-              </ErrorMessage>
-            </View>
+            <Input
+              field="phone"
+              label={t('phone.label')}
+              onChangeText={handleChange('phone')}
+              value={values.phone}
+              onClear={() => setFieldValue('phone', '')}
+              placeholder={t('phone.placeholder')}
+              error={errors.phone}
+            />
 
-            <View style={styles.formItem}>
-              <Text styles={styles.label}>{t('validateCode.label')}</Text>
-              <View style={styles.inputWrap}>
-                <TextInput
-                  onChangeText={handleChange('validateCode')}
-                  maxLength={11}
-                  value={values.validateCode}
-                  placeholder={t('validateCode.placeholder')}
-                  style={[styles.input]}
-                />
-                {values.validateCode ? (
-                  errors.validateCode ? (
-                    <Pressable onPress={() => setFieldValue('validateCode', '')}>
-                      <Image
-                        style={styles.suffix}
-                        source={require('@/assets/images/common/clear.webp')}
-                        resizeMode="cover"
-                      />
-                    </Pressable>
-                  ) : (
-                    <Image
-                      style={styles.suffix}
-                      source={require('@/assets/images/common/correct.webp')}
-                      resizeMode="cover"
-                    />
-                  )
-                ) : (
-                  <></>
-                )}
-              </View>
-              <ErrorMessage name="validateCode">
-                {msg => <Text styles={[styles.warn, styles.error]}>{msg}</Text>}
-              </ErrorMessage>
-            </View>
+            <ValidateCode
+              field="validateCode"
+              label={t('validateCode.label')}
+              onChangeText={handleChange('validateCode')}
+              value={values.validateCode}
+              onClear={() => setFieldValue('validateCode', '')}
+              placeholder={t('validateCode.placeholder')}
+              error={errors.validateCode}
+              validateCodeType="LOGIN"
+              phone={values.phone}
+            />
           </View>
 
           <View style={styles.btnWrap}>
             <Button
               style={[styles.btn]}
               type="primary"
-              loading={state.loading.effects.LOGIN}
+              disabled={state.loading.effects.LOGIN}
               // @ts-ignore
               onPress={handleSubmit}>
               <Text>{t('signin')}</Text>

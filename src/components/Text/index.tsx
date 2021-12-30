@@ -8,10 +8,16 @@ import StyleSheet from 'react-native-adaptive-stylesheet'
 export default ({
   children,
   styles,
+  onPress,
 }: {
   children: any
   styles?: RegisteredStyle<TextStyle> | RegisteredStyle<TextStyle>[]
-}) => <Text style={[textStyle.text, styles]}>{children}</Text>
+  onPress?: () => void
+}) => (
+  <Text style={[textStyle.text, styles]} onPress={onPress}>
+    {children}
+  </Text>
+)
 
 const textStyle = StyleSheet.create<{ text: TextStyle }>({
   text: {

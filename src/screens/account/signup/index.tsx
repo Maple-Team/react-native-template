@@ -1,62 +1,130 @@
 import { NativeStackHeaderProps } from '@react-navigation/native-stack'
-import React, { useReducer } from 'react'
-import { View, Image } from 'react-native'
+import React, { useMemo, useState } from 'react'
+import { View, SafeAreaView } from 'react-native'
 import { Button } from '@ant-design/react-native'
 import { useTranslation } from 'react-i18next'
+import { ScrollView } from 'react-native-gesture-handler'
+import { Formik } from 'formik'
+import * as Yup from 'yup'
+import debounce from 'lodash.debounce'
 
-import { Logo } from '@components/logo'
-import { login } from '@/services/user'
-import { initiateState, reducer, UPDATE_TOKEN } from '@/state'
 import styles from './style'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { REGEX_PHONE } from '@/utils/reg'
+import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT } from '@/utils/constant'
+import { Input, PasswordInput, Picker, ValidateCode } from '@components/form/FormItem'
 
+interface FormModel {
+  phone: string
+  validateCode: string
+  password: string
+  confirmPassword: string
+}
 export const SignupScreen = ({ navigation }: NativeStackHeaderProps) => {
-  const [state, dispatch] = useReducer(reducer, initiateState)
   const { t } = useTranslation()
-
+  const schema = Yup.object().shape({
+    phone: Yup.string()
+      .min(10, t('field.short', { field: 'Phone' }))
+      .max(10, t('field.long', { field: 'Phone' }))
+      .matches(REGEX_PHONE, t('phone.invalid'))
+      .required(t('phone.required')),
+    password: Yup.string().required(t('password.required')),
+    confirmPassword: Yup.string().required(t('password.required')),
+    validateCode: Yup.string()
+      .min(6, t('field.short', { field: 'Validate Code' }))
+      .max(6, t('field.long', { field: 'Validate Code' }))
+      .matches(REGEX_PHONE, t('validateCode.invalid'))
+      .required(t('phone.required')),
+  })
+  const initialValue = useMemo<FormModel>(
+    () => ({ phone: '', password: '', confirmPassword: '', validateCode: '' }),
+    []
+  )
+  const onSubmit = debounce(
+    (values: FormModel) => {
+      console.log(values)
+      navigation.navigate('SignIn')
+      //TODO
+    },
+    DEBOUNCE_WAIT,
+    DEBOUNCE_OPTIONS
+  )
+  const [showPwd, setShowPwd] = useState<boolean>(false)
+  const [showConfirmPwd, setShowConfirmPwd] = useState<boolean>(false)
   return (
-    <SafeAreaView>
-      <View style={styles.container}>
-        <Image
-          source={require('@/assets/images/account/bg.webp')}
-          resizeMode="stretch"
-          style={styles.bg}
-        />
-        <View style={styles.wrap}>
-          <Logo />
-          <View style={styles.form}>
-            <Button
-              style={[styles.signin, styles.btn]}
-              type="primary"
-              loading={state.loading.effects.LOGIN}
-              onPress={async () => {
-                login({
-                  loginType: 'PWD_LOGIN',
-                  password: '',
-                  phone: '',
-                  deviceId: state.header.deviceId,
-                  gps: state.header.gps,
-                  code: '',
-                }).then(user => {
-                  dispatch({
-                    type: UPDATE_TOKEN,
-                    token: user.email, // FIXME
-                  })
-                })
-              }}>
-              {t('signin')}
-            </Button>
-            <Button
-              style={[styles.signup, styles.btn]}
-              loading={state.loading.effects.LOGIN}
-              onPress={async () => {
-                navigation.navigate('SignIn')
-              }}>
-              {t('back')}
-            </Button>
-          </View>
+    <SafeAreaView style={styles.sav}>
+      <ScrollView style={styles.scroll} keyboardShouldPersistTaps="handled">
+        <View style={styles.container}>
+          <Formik<FormModel>
+            initialValues={initialValue}
+            onSubmit={onSubmit}
+            validationSchema={schema}>
+            {({ handleChange, handleSubmit, values, setFieldValue, errors, isValid }) => (
+              <>
+                <Input
+                  field="phone"
+                  label={t('phone.label')}
+                  onChangeText={handleChange('phone')}
+                  value={values.phone}
+                  onClear={() => setFieldValue('phone', '')}
+                  placeholder={t('phone.placeholder')}
+                  error={errors.phone}
+                />
+                <ValidateCode
+                  field="validateCode"
+                  label={t('validateCode.label')}
+                  onChangeText={handleChange('validateCode')}
+                  value={values.validateCode}
+                  onClear={() => setFieldValue('validateCode', '')}
+                  placeholder={t('validateCode.placeholder')}
+                  error={errors.validateCode}
+                  validateCodeType="LOGIN"
+                  phone={values.phone}
+                />
+                <PasswordInput
+                  field="password"
+                  label={t('password.label')}
+                  onChangeText={handleChange('password')}
+                  value={values.password}
+                  onClear={() => setFieldValue('password', '')}
+                  placeholder={t('password.placeholder')}
+                  error={errors.password}
+                  showPwd={showPwd}
+                  onToggle={() => setShowPwd(!showPwd)}
+                />
+                <PasswordInput
+                  field="confirmPassword"
+                  label={t('confirmPassword.label')}
+                  onChangeText={handleChange('confirmPassword')}
+                  value={values.confirmPassword}
+                  onClear={() => setFieldValue('confirmPassword', '')}
+                  placeholder={t('confirmPassword.placeholder')}
+                  error={errors.confirmPassword}
+                  showPwd={showConfirmPwd}
+                  onToggle={() => setShowConfirmPwd(!showConfirmPwd)}
+                />
+                <Picker
+                  field="confirmPassword"
+                  label={t('confirmPassword.label')}
+                  onChange={handleChange('confirmPassword')}
+                  value={values.confirmPassword}
+                  placeholder={t('confirmPassword.placeholder')}
+                  error={errors.confirmPassword}
+                  title={'confirmPassword'}
+                  dataSource={[]}
+                />
+                <View>
+                  <Button
+                    type={isValid ? 'primary' : undefined}
+                    // @ts-ignore
+                    onPress={handleSubmit}>
+                    {t('submit')}
+                  </Button>
+                </View>
+              </>
+            )}
+          </Formik>
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   )
 }

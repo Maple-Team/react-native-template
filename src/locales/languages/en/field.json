@@ -1,4 +1,11 @@
 {
+  "confirmPassword": {
+    "label": "confirmPassword",
+    "placeholder": "confirmPassword",
+    "invalid": "confirmPassword invalid",
+    "required": "confirmPassword required",
+    "notSame": "confirmPassword not same with password"
+  },
   "firstName": {
     "label": "",
     "placeholder": "",
@@ -26,6 +33,9 @@
     "label": "Validate Code",
     "placeholder": "Validate Code",
     "invalid": "Validate Code Invalid",
-    "required": "Validate Code Required"
+    "required": "Validate Code Required",
+    "get": "Get Code",
+    "wait": "Please wait {{num}} to get code",
+    "maxTime": "最大次数，请稍候再试"
   }
 }

@@ -14,16 +14,12 @@ export default StyleSheet.create<{
   formWrap: ViewStyle
   form: ViewStyle
   btn: ViewStyle
+  btnText: TextStyle
   btnWrap: ViewStyle
   bg: ImageStyle
-  label: TextStyle
-  formItem: ViewStyle
-  inputWrap: ViewStyle
-  normal: ViewStyle | TextStyle
-  warn: ViewStyle | TextStyle
-  suffix: ImageStyle
-  input: ViewStyle | TextStyle
-  error: TextStyle
+  jump: ViewStyle
+  jumpText: TextStyle
+  jumpLink: TextStyle
 }>({
   flex1: { flex: 1 },
   tab: {
@@ -62,9 +58,8 @@ export default StyleSheet.create<{
     borderBottomRightRadius: 15,
     paddingHorizontal: 10,
     paddingTop: 40,
-    backgroundColor: 'rgba(255,255,255, .78)',
+    backgroundColor: 'rgba(255,255,255, 1)',
     paddingBottom: 200 - 14 - 50,
-    zIndex: 99,
   },
   formWrap: {
     alignItems: 'center',
@@ -79,15 +74,20 @@ export default StyleSheet.create<{
     width: 103 + 28,
     height: 103 + 28,
     borderRadius: (103 + 28) / 2,
-    backgroundColor: 'rgba(255,255,255, .0)', // FIXME
+    backgroundColor: 'rgba(255,255,255, 1)',
   },
   btn: {
     backgroundColor: Color.primary,
     width: 103,
     height: 103,
     borderRadius: 103 / 2,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-
+  btnText: {
+    color: '#fff',
+    fontSize: 20,
+  },
   bg: {
     position: 'absolute',
     left: 0,
@@ -96,38 +96,15 @@ export default StyleSheet.create<{
     zIndex: -1,
     height: '100%',
   },
-  formItem: {
-    marginBottom: 20,
+  jump: {
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
-  label: {
-    paddingLeft: 5,
-    color: '#333230',
-    fontSize: 18,
+  jumpLink: {
+    color: '#FFEA00',
+    textDecorationLine: 'underline',
   },
-  inputWrap: {
-    position: 'relative',
-  },
-  input: {
-    borderBottomWidth: 1,
-    height: 34,
-    color: '#333230',
-    fontSize: 15,
-  },
-  suffix: {
-    width: 22,
-    height: 22,
-    position: 'absolute',
-    right: 10,
-    zIndex: 999,
-    bottom: 6, //FIXME 垂直居中问题
-  },
-  normal: { borderBottomColor: '#B4CCE2' },
-  warn: {
-    borderBottomColor: '#ff0000',
-    color: '#ff0000',
-  },
-  error: {
-    position: 'absolute',
-    bottom: -16,
+  jumpText: {
+    color: '#fff',
   },
 })

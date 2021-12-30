@@ -1,7 +1,9 @@
 {
-  "submit": "submit",
-  "cancel": "cancel",
-  "back": "back",
-  "signin": "登录",
-  "signup": "注册"
+  "submit": "Submit",
+  "cancel": "Cancel",
+  "back": "Back",
+  "signin": "SignIn",
+  "signup": "SignUp",
+  "close": "Close",
+  "confirm": "Confirm"
 }

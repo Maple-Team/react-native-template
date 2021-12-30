@@ -7,5 +7,5 @@ export default function HeaderRight() {
   const [state] = useReducer(reducer, initiateState)
   const { t } = useTranslation()
 
-  return !state.user ? <Text onPress={() => {}}>{t('login')}</Text> : <View />
+  return !state.user ? <Text onPress={() => {}}>{t('signin')}</Text> : <View />
 }

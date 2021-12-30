@@ -1,30 +1,21 @@
-import { Dimensions } from 'react-native'
+import { TextStyle, ViewStyle } from 'react-native'
 import StyleSheet from 'react-native-adaptive-stylesheet'
 
-export default StyleSheet.create({
+export default StyleSheet.create<{
+  sav: ViewStyle
+  scroll: ViewStyle
+  container: ViewStyle
+  btn: ViewStyle | TextStyle
+}>({
+  sav: { flex: 1 },
+  scroll: { flex: 1, backgroundColor: '#E6F1F8', paddingHorizontal: 10, paddingVertical: 20 },
   container: {
     flex: 1,
+    paddingHorizontal: 27.5,
+    backgroundColor: '#fff',
+    paddingVertical: 10,
+    borderRadius: 5,
   },
-  bg: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
-  },
-  wrap: {
-    paddingHorizontal: 10,
-    alignItems: 'center',
-    flex: 1,
-  },
-  form: {
-    borderRadius: 15,
-    backgroundColor: '#FFF',
-    flex: 1,
-    width: '100%',
-  },
-  signin: {},
-  signup: { marginTop: 29 },
   btn: {
     borderRadius: 9,
   },

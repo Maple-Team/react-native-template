@@ -1,4 +1,5 @@
-import { BaseResponse, request } from '@/utils/http'
+import { request } from '@/utils/http'
+import type { BaseResponse } from '@/utils/http'
 
 /**
  * 站内信数量

@@ -47,5 +47,5 @@ export interface ChannelInfo {
 export interface Dict {
   name: string
   code: string
-  nameCn: string
+  nameCn?: string
 }

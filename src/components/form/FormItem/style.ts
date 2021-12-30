@@ -1,14 +1,20 @@
+import { Color } from '@/styles/color'
 import type { ImageStyle, TextStyle, ViewStyle } from 'react-native'
 import StyleSheet from 'react-native-adaptive-stylesheet'
 
 export default StyleSheet.create<{
-  label: TextStyle
   formItem: ViewStyle
+  label: TextStyle
   inputWrap: ViewStyle
+  input: ViewStyle | TextStyle
+  suffixWrap: ViewStyle
+  suffix: ImageStyle
+  validBtnWrapDisabled: ViewStyle
+  validBtnWrap: ViewStyle
+  validBtn: TextStyle
+  validBtnDisabled: TextStyle
   normal: ViewStyle | TextStyle
   warn: ViewStyle | TextStyle
-  suffix: ImageStyle
-  input: ViewStyle | TextStyle
   error: TextStyle
 }>({
   formItem: {
@@ -28,13 +34,36 @@ export default StyleSheet.create<{
     color: '#333230',
     fontSize: 15,
   },
+  suffixWrap: {
+    flexDirection: 'row',
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    right: 0,
+    height: '100%',
+  },
   suffix: {
     width: 22,
     height: 22,
-    position: 'absolute',
-    right: 10,
-    zIndex: 999,
-    bottom: 6, //FIXME 垂直居中问题
+    marginRight: 11.5,
+  },
+  validBtnWrap: {
+    backgroundColor: Color.primary,
+    borderRadius: 6,
+    paddingHorizontal: 15,
+    justifyContent: 'center',
+    height: '90%',
+    marginRight: 5,
+  },
+  validBtnWrapDisabled: {
+    backgroundColor: '#eee',
+  },
+  validBtn: {
+    fontSize: 14,
+    color: '#FFF',
+  },
+  validBtnDisabled: {
+    color: '#eee',
   },
   normal: { borderBottomColor: '#B4CCE2' },
   warn: {
