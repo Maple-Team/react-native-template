@@ -64,6 +64,7 @@
     "react-native-startup-time": "^2.0.0",
     "react-native-vector-icons": "^9.0.0",
     "react-native-webview": "^11.15.0",
+    "react-native-wheel-picker-android": "^2.0.6",
     "react-query": "^3.34.6",
     "rn-fetch-blob": "^0.12.0",
     "yup": "^0.32.11"

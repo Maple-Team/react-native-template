@@ -61,6 +61,11 @@ const PERSISTENCE_KEY = 'NAVIGATION_STATE'
 const window = Dimensions.get('window')
 
 const App = () => {
+  // return (
+  //   <View>
+  //     <Text>2</Text>
+  //   </View>
+  // )
   const [state] = useReducer(reducer, initiateState)
 
   // 处理实体键返回逻辑

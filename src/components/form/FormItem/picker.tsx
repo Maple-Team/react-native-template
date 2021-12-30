@@ -31,7 +31,6 @@ export function NormalPicker<T extends Dict>({
 }: PickerProps<T>) {
   const [visible, setVisible] = useState<boolean>(false)
   const Picker = ModalWrap(WheelPicker)
-
   return (
     <>
       <View style={formItemStyles.formItem}>
@@ -44,7 +43,12 @@ export function NormalPicker<T extends Dict>({
             style={[formItemStyles.input]}
             onPressIn={() => setVisible(true)}
           />
-          <Pressable style={formItemStyles.suffixWrap} onPress={() => setVisible(true)}>
+          <Pressable
+            style={formItemStyles.suffixWrap}
+            onPress={() => {
+              console.log('pressed')
+              setVisible(true)
+            }}>
             <Image
               style={formItemStyles.suffix}
               source={require('@assets/images/common/right.webp')}
@@ -56,16 +60,14 @@ export function NormalPicker<T extends Dict>({
           {msg => <Text styles={[formItemStyles.warn, formItemStyles.error]}>{msg}</Text>}
         </ErrorMessage>
       </View>
-      {visible && (
-        <Picker
-          dataSource={dataSource}
-          visible={visible}
-          onClose={() => setVisible(false)}
-          onConfirm={v => onChange(v.code || '')}
-          title={title}
-          value={value}
-        />
-      )}
+      <Picker
+        dataSource={dataSource}
+        visible={visible}
+        onClose={() => setVisible(false)}
+        onConfirm={code => onChange(code)}
+        title={title}
+        value={value}
+      />
     </>
   )
 }

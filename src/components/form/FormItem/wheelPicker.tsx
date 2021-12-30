@@ -1,57 +1,55 @@
-import Picker from '@gregfrench/react-native-wheel-picker'
-import type { Dict } from '@typings/response'
-import type { ViewStyle, TextStyle } from 'react-native'
+import { WheelPicker as WheelCurvedPicker } from 'react-native-wheel-picker-android'
+import type { Dict } from '@/typings/response'
+import { ViewStyle, View, ActivityIndicator } from 'react-native'
 import StyleSheet from 'react-native-adaptive-stylesheet'
 import React, { useEffect, useState } from 'react'
-
-const PickerItem = Picker.Item
-
-export const WheelPicker = ({
+import { Color } from '@/styles/color'
+export interface WheelPickerProps<T extends Dict> {
+  dataSource: T[]
+  selected: string
+  onChange: (value: number) => void
+}
+export function WheelPicker<T extends Dict>({
   dataSource,
   selected,
   onChange,
-}: {
-  dataSource: Dict[]
-  selected: Partial<Dict>
-  onChange: (value: Dict) => void
-}) => {
-  const [selectedItem, setSelectedItem] = useState<number>(0)
-  const [itemList] = useState(dataSource)
+}: WheelPickerProps<T>) {
+  const [selectedIndex, setSelectedIndex] = useState<number>(0)
   useEffect(() => {
     if (dataSource) {
-      const index = dataSource.findIndex(item => item.code === selected.code)
-      setSelectedItem(index)
+      const index = dataSource.findIndex(item => item.code === selected)
+      setSelectedIndex(index < 0 ? 0 : index)
     }
   }, [dataSource, selected])
+  if (dataSource.length === 0) {
+    return (
+      <View style={wheelPickerStyles.container}>
+        <ActivityIndicator size="large" color={Color.primary} />
+      </View>
+    )
+  }
   return (
-    <Picker
-      style={wheelStyles.container}
-      lineColor="#000000" //to set top and bottom line color (Without gradients)
-      lineGradientColorFrom="#008000" //to set top and bottom starting gradient line color
-      lineGradientColorTo="#FF5733" //to set top and bottom ending gradient
-      selectedValue={selectedItem}
-      itemStyle={wheelStyles.item}
-      onValueChange={index => {
-        setSelectedItem(index)
-        onChange(dataSource[index])
-      }}>
-      {itemList.map(value => (
-        <PickerItem label={value.name} value={value.code} key={value.code} />
-      ))}
-    </Picker>
+    <View style={wheelPickerStyles.container}>
+      <WheelCurvedPicker
+        selectedItem={selectedIndex}
+        data={dataSource.map(({ name }) => name)}
+        onItemSelected={(index: number) => {
+          setSelectedIndex(index)
+          onChange(index)
+        }}
+        selectedItemTextFontFamily="ArialMT"
+        itemTextFontFamily="ArialMT"
+      />
+    </View>
   )
 }
 
-const wheelStyles = StyleSheet.create<{
+const wheelPickerStyles = StyleSheet.create<{
   container: ViewStyle
-  item: ViewStyle | TextStyle
 }>({
   container: {
-    width: 150,
     height: 180,
-  },
-  item: {
-    color: 'black',
-    fontSize: 26,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 })

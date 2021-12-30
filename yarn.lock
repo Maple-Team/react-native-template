@@ -6066,6 +6066,11 @@ mockjs@^1.1.0:
   dependencies:
     commander "*"
 
+moment@^2.22.0:
+  version "2.29.1"
+  resolved "https://registry.npmmirror.com/moment/download/moment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
+  integrity sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==
+
 ms@2.0.0:
   version "2.0.0"
   resolved "https://registry.npmmirror.com/ms/download/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
@@ -6947,6 +6952,13 @@ react-native-webview@^11.15.0:
   dependencies:
     escape-string-regexp "2.0.0"
     invariant "2.2.4"
+
+react-native-wheel-picker-android@^2.0.6:
+  version "2.0.6"
+  resolved "https://registry.npmmirror.com/react-native-wheel-picker-android/download/react-native-wheel-picker-android-2.0.6.tgz#e6698cc67e9ba3882b1138c0b1626daf7a512646"
+  integrity sha1-5mmMxn6bo4grETjAsWJtr3pRJkY=
+  dependencies:
+    moment "^2.22.0"
 
 react-native@0.66.4:
   version "0.66.4"

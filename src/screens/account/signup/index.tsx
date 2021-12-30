@@ -11,13 +11,14 @@ import debounce from 'lodash.debounce'
 import styles from './style'
 import { REGEX_PHONE } from '@/utils/reg'
 import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT } from '@/utils/constant'
-import { Input, PasswordInput, Picker, ValidateCode } from '@components/form/FormItem'
+import { Input, PasswordInput, NormalPicker, ValidateCode } from '@components/form/FormItem'
 
 interface FormModel {
   phone: string
   validateCode: string
   password: string
   confirmPassword: string
+  confirmPassword2: string
 }
 export const SignupScreen = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
@@ -36,7 +37,13 @@ export const SignupScreen = ({ navigation }: NativeStackHeaderProps) => {
       .required(t('phone.required')),
   })
   const initialValue = useMemo<FormModel>(
-    () => ({ phone: '', password: '', confirmPassword: '', validateCode: '' }),
+    () => ({
+      phone: '',
+      password: '',
+      confirmPassword: '',
+      validateCode: '',
+      confirmPassword2: '33',
+    }),
     []
   )
   const onSubmit = debounce(
@@ -102,14 +109,14 @@ export const SignupScreen = ({ navigation }: NativeStackHeaderProps) => {
                   showPwd={showConfirmPwd}
                   onToggle={() => setShowConfirmPwd(!showConfirmPwd)}
                 />
-                <Picker
-                  field="confirmPassword"
-                  label={t('confirmPassword.label')}
-                  onChange={handleChange('confirmPassword')}
-                  value={values.confirmPassword}
+                <NormalPicker
+                  field="confirmPassword2"
+                  label={t('confirmPassword.label') + '2'}
+                  onChange={handleChange('confirmPassword2')}
+                  value={values.confirmPassword2}
                   placeholder={t('confirmPassword.placeholder')}
-                  error={errors.confirmPassword}
-                  title={'confirmPassword'}
+                  error={errors.confirmPassword2}
+                  title={'confirmPassword2'}
                   dataSource={[]}
                 />
                 <View>

@@ -1,4 +1,4 @@
-package com.moneyya;
+package com.moneyya.nativemodule;
 
 import androidx.annotation.NonNull;
 

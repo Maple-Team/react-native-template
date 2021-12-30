@@ -1,4 +1,11 @@
 {
+  "confirmPassword": {
+    "label": "confirmPassword",
+    "placeholder": "confirmPassword",
+    "invalid": "confirmPassword invalid",
+    "required": "confirmPassword required",
+    "notSame": "confirmPassword not same with password"
+  },
   "firstName": {
     "label": "",
     "placeholder": "",
@@ -12,21 +19,23 @@
     "required": ""
   },
   "password": {
-    "label": "",
-    "placeholder": "",
-    "invalid": "",
-    "required": ""
+    "label": "password",
+    "placeholder": "password",
+    "required": "password required"
   },
   "phone": {
-    "label": "手机号",
-    "placeholder": "手机号",
-    "invalid": "手机号格式不正确",
-    "required": "手机号必需"
+    "label": "Phone",
+    "placeholder": "Phone",
+    "invalid": "Phone invalid",
+    "required": "Phone Required"
   },
   "validateCode": {
-    "label": "",
-    "placeholder": "",
-    "invalid": "",
-    "required": ""
+    "label": "Validate Code",
+    "placeholder": "Validate Code",
+    "invalid": "Validate Code Invalid",
+    "required": "Validate Code Required",
+    "get": "Get Code",
+    "wait": "Please wait {{num}} to get code",
+    "maxTime": "最大次数，请稍候再试"
   }
 }
