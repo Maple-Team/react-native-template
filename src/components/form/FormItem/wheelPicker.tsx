@@ -1,5 +1,5 @@
 import Picker from '@gregfrench/react-native-wheel-picker'
-import type { Dict } from '@typings/response'
+import type { Dict } from '@/typings/response'
 import type { ViewStyle, TextStyle } from 'react-native'
 import StyleSheet from 'react-native-adaptive-stylesheet'
 import React, { useEffect, useState } from 'react'
