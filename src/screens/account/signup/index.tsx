@@ -1,17 +1,18 @@
 import { NativeStackHeaderProps } from '@react-navigation/native-stack'
 import React, { useMemo, useState } from 'react'
-import { View, SafeAreaView } from 'react-native'
-import { Button } from '@ant-design/react-native'
+import { View, SafeAreaView, StatusBar } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 import debounce from 'lodash.debounce'
 
-import styles from './style'
+import { PageStyles, Text } from '@/components'
 import { REGEX_PHONE } from '@/utils/reg'
 import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT } from '@/utils/constant'
-import { Input, PasswordInput, NormalPicker, ValidateCode } from '@components/form/FormItem'
+import { Input, PasswordInput, ValidateCode } from '@components/form/FormItem'
+import { ApplyButton } from '@components/form/FormItem/applyButton'
+import { Color } from '@/styles/color'
 
 interface FormModel {
   phone: string
@@ -58,74 +59,68 @@ export const SignupScreen = ({ navigation }: NativeStackHeaderProps) => {
   const [showPwd, setShowPwd] = useState<boolean>(false)
   const [showConfirmPwd, setShowConfirmPwd] = useState<boolean>(false)
   return (
-    <SafeAreaView style={styles.sav}>
-      <ScrollView style={styles.scroll} keyboardShouldPersistTaps="handled">
-        <View style={styles.container}>
+    <SafeAreaView style={PageStyles.sav}>
+      <StatusBar translucent={false} backgroundColor={Color.primary} barStyle="default" />
+      <ScrollView style={PageStyles.scroll} keyboardShouldPersistTaps="handled">
+        <View style={PageStyles.container}>
           <Formik<FormModel>
             initialValues={initialValue}
             onSubmit={onSubmit}
             validationSchema={schema}>
             {({ handleChange, handleSubmit, values, setFieldValue, errors, isValid }) => (
               <>
-                <Input
-                  field="phone"
-                  label={t('phone.label')}
-                  onChangeText={handleChange('phone')}
-                  value={values.phone}
-                  onClear={() => setFieldValue('phone', '')}
-                  placeholder={t('phone.placeholder')}
-                  error={errors.phone}
-                />
-                <ValidateCode
-                  field="validateCode"
-                  label={t('validateCode.label')}
-                  onChangeText={handleChange('validateCode')}
-                  value={values.validateCode}
-                  onClear={() => setFieldValue('validateCode', '')}
-                  placeholder={t('validateCode.placeholder')}
-                  error={errors.validateCode}
-                  validateCodeType="LOGIN"
-                  phone={values.phone}
-                />
-                <PasswordInput
-                  field="password"
-                  label={t('password.label')}
-                  onChangeText={handleChange('password')}
-                  value={values.password}
-                  onClear={() => setFieldValue('password', '')}
-                  placeholder={t('password.placeholder')}
-                  error={errors.password}
-                  showPwd={showPwd}
-                  onToggle={() => setShowPwd(!showPwd)}
-                />
-                <PasswordInput
-                  field="confirmPassword"
-                  label={t('confirmPassword.label')}
-                  onChangeText={handleChange('confirmPassword')}
-                  value={values.confirmPassword}
-                  onClear={() => setFieldValue('confirmPassword', '')}
-                  placeholder={t('confirmPassword.placeholder')}
-                  error={errors.confirmPassword}
-                  showPwd={showConfirmPwd}
-                  onToggle={() => setShowConfirmPwd(!showConfirmPwd)}
-                />
-                <NormalPicker
-                  field="confirmPassword2"
-                  label={t('confirmPassword.label') + '2'}
-                  onChange={handleChange('confirmPassword2')}
-                  value={values.confirmPassword2}
-                  placeholder={t('confirmPassword.placeholder')}
-                  error={errors.confirmPassword2}
-                  title={'confirmPassword2'}
-                  dataSource={[]}
-                />
-                <View>
-                  <Button
+                <View style={PageStyles.form}>
+                  <Input
+                    field="phone"
+                    label={t('phone.label')}
+                    onChangeText={handleChange('phone')}
+                    value={values.phone}
+                    onClear={() => setFieldValue('phone', '')}
+                    placeholder={t('phone.placeholder')}
+                    error={errors.phone}
+                  />
+                  <ValidateCode
+                    field="validateCode"
+                    label={t('validateCode.label')}
+                    onChangeText={handleChange('validateCode')}
+                    value={values.validateCode}
+                    onClear={() => setFieldValue('validateCode', '')}
+                    placeholder={t('validateCode.placeholder')}
+                    error={errors.validateCode}
+                    validateCodeType="LOGIN"
+                    phone={values.phone}
+                  />
+                  <PasswordInput
+                    field="password"
+                    label={t('password.label')}
+                    onChangeText={handleChange('password')}
+                    value={values.password}
+                    onClear={() => setFieldValue('password', '')}
+                    placeholder={t('password.placeholder')}
+                    error={errors.password}
+                    showPwd={showPwd}
+                    onToggle={() => setShowPwd(!showPwd)}
+                  />
+                  <PasswordInput
+                    field="confirmPassword"
+                    label={t('confirmPassword.label')}
+                    onChangeText={handleChange('confirmPassword')}
+                    value={values.confirmPassword}
+                    onClear={() => setFieldValue('confirmPassword', '')}
+                    placeholder={t('confirmPassword.placeholder')}
+                    error={errors.confirmPassword}
+                    showPwd={showConfirmPwd}
+                    onToggle={() => setShowConfirmPwd(!showConfirmPwd)}
+                  />
+                </View>
+                <View style={PageStyles.btnWrap}>
+                  <ApplyButton
                     type={isValid ? 'primary' : undefined}
-                    // @ts-ignore
-                    onPress={handleSubmit}>
-                    {t('submit')}
-                  </Button>
+                    handleSubmit={handleSubmit}
+                    // loading={state}
+                  >
+                    <Text>{t('submit')}</Text>
+                  </ApplyButton>
                 </View>
               </>
             )}

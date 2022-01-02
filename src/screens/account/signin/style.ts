@@ -1,4 +1,3 @@
-import { Color } from '@/styles/color'
 import { ImageStyle, TextStyle, ViewStyle } from 'react-native'
 import StyleSheet from 'react-native-adaptive-stylesheet'
 
@@ -13,9 +12,6 @@ export default StyleSheet.create<{
   wrap: ViewStyle
   formWrap: ViewStyle
   form: ViewStyle
-  btn: ViewStyle
-  btnText: TextStyle
-  btnWrap: ViewStyle
   bg: ImageStyle
   jump: ViewStyle
   jumpText: TextStyle
@@ -64,29 +60,6 @@ export default StyleSheet.create<{
   formWrap: {
     alignItems: 'center',
     paddingBottom: 30,
-  },
-  btnWrap: {
-    alignItems: 'center',
-    position: 'absolute',
-    justifyContent: 'center',
-    bottom: 0,
-    zIndex: 999,
-    width: 103 + 28,
-    height: 103 + 28,
-    borderRadius: (103 + 28) / 2,
-    backgroundColor: 'rgba(255,255,255, 1)',
-  },
-  btn: {
-    backgroundColor: Color.primary,
-    width: 103,
-    height: 103,
-    borderRadius: 103 / 2,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  btnText: {
-    color: '#fff',
-    fontSize: 20,
   },
   bg: {
     position: 'absolute',

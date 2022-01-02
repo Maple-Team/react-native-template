@@ -1,6 +1,5 @@
 import React, { useMemo, useReducer, useState } from 'react'
-import { View, Image, SafeAreaView, Pressable } from 'react-native'
-import { Button } from '@ant-design/react-native'
+import { View, Image, SafeAreaView, Pressable, StatusBar } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
@@ -14,9 +13,10 @@ import styles from './style'
 import { REGEX_PHONE } from '@/utils/reg'
 import { DEBOUNCE_WAIT, DEBOUNCE_OPTIONS } from '@/utils/constant'
 import { useNavigation } from '@react-navigation/native'
-import { RootStackParamList } from '@navigation/accountStack'
-import { Input, PasswordInput, ValidateCode } from '@components/form/FormItem'
+import type { AccountStackParamList } from '@navigation/accountStack'
+import { Input, PasswordInput, ValidateCode, ApplyButton } from '@components/form/FormItem'
 import { useTranslation } from 'react-i18next'
+import { Color } from '@/styles/color'
 
 interface FormModel {
   phone: string
@@ -35,6 +35,7 @@ export const SigninScreen = () => {
   const navigation = useNavigation<SignInScreenProp>()
   return (
     <SafeAreaView style={styles.flex1}>
+      <StatusBar translucent={false} backgroundColor={Color.primary} barStyle="default" />
       <Image
         source={require('@/assets/images/account/bg.webp')}
         resizeMode="stretch"
@@ -69,7 +70,7 @@ export const SigninScreen = () => {
     </SafeAreaView>
   )
 }
-type SignInScreenProp = NativeStackNavigationProp<RootStackParamList, 'SignIn'>
+type SignInScreenProp = NativeStackNavigationProp<AccountStackParamList, 'SignIn'>
 
 const PasswdTab = () => {
   const [state] = useReducer(reducer, initiateState)
@@ -96,7 +97,7 @@ const PasswdTab = () => {
   const [showPwd, setShowPwd] = useState<boolean>(false)
   return (
     <Formik<FormModel> initialValues={initialValue} onSubmit={onSubmit} validationSchema={schema}>
-      {({ handleChange, handleSubmit, values, setFieldValue, errors }) => (
+      {({ handleChange, handleSubmit, values, setFieldValue, errors, isValid }) => (
         <View style={styles.formWrap}>
           <View style={styles.form}>
             <Input
@@ -120,16 +121,13 @@ const PasswdTab = () => {
               onToggle={() => setShowPwd(!showPwd)}
             />
           </View>
-          <View style={styles.btnWrap}>
-            <Button
-              style={[styles.btn]}
-              type="primary"
-              loading={state.loading.effects.LOGIN}
-              // @ts-ignore
-              onPress={handleSubmit}>
-              <Text>{t('signin')}</Text>
-            </Button>
-          </View>
+          <ApplyButton
+            type={isValid ? 'primary' : undefined}
+            handleSubmit={handleSubmit}
+            // loading={state}
+            disabled={state.loading.effects.LOGIN}>
+            <Text>{t('submit')}</Text>
+          </ApplyButton>
         </View>
       )}
     </Formik>
@@ -163,7 +161,7 @@ const ValidTab = () => {
   )
   return (
     <Formik<FormModel2> initialValues={initialValue} onSubmit={onSubmit} validationSchema={schema}>
-      {({ handleChange, handleSubmit, values, setFieldValue, errors }) => (
+      {({ handleChange, handleSubmit, values, setFieldValue, errors, isValid }) => (
         <View style={styles.formWrap}>
           <View style={styles.form}>
             <Input
@@ -188,17 +186,13 @@ const ValidTab = () => {
               phone={values.phone}
             />
           </View>
-
-          <View style={styles.btnWrap}>
-            <Button
-              style={[styles.btn]}
-              type="primary"
-              disabled={state.loading.effects.LOGIN}
-              // @ts-ignore
-              onPress={handleSubmit}>
-              <Text>{t('signin')}</Text>
-            </Button>
-          </View>
+          <ApplyButton
+            type={isValid ? 'primary' : undefined}
+            handleSubmit={handleSubmit}
+            // loading={state}
+            disabled={state.loading.effects.LOGIN}>
+            <Text>{t('signin')}</Text>
+          </ApplyButton>
         </View>
       )}
     </Formik>

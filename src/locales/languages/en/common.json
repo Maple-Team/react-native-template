@@ -5,5 +5,8 @@
   "signin": "SignIn",
   "signup": "SignUp",
   "close": "Close",
-  "confirm": "Confirm"
+  "confirm": "Confirm",
+  "home": "Home",
+  "order": "Order",
+  "account": "Account"
 }

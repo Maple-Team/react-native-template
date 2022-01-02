@@ -3,5 +3,10 @@
   "cancel": "取消",
   "back": "返回",
   "signin": "登录",
-  "signup": "注册"
+  "signup": "注册",
+  "close": "Close",
+  "confirm": "Confirm",
+  "Home": "Home",
+  "Order": "Order",
+  "Account": "Account"
 }

@@ -2,18 +2,11 @@ import emitter from '@/eventbus'
 import { useEventListener } from '@/hooks/useListener'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import React, { useEffect } from 'react'
-import { Text, View } from 'react-native'
+import { Text, View, Image } from 'react-native'
+import { ApplyStack } from './applyStack'
 import { navigate } from './rootNavigation'
 
 const Tab = createBottomTabNavigator()
-
-function ApplyNavigator() {
-  return (
-    <View>
-      <Text>Home!</Text>
-    </View>
-  )
-}
 
 function OrdersNavigator() {
   return (
@@ -48,9 +41,48 @@ function BottomTab() {
   }, [])
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Home" component={ApplyNavigator} />
-      <Tab.Screen name="Order" component={OrdersNavigator} />
-      <Tab.Screen name="User" component={UserNavigator} />
+      <Tab.Screen
+        name="Home"
+        key="Home"
+        component={ApplyStack}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ focused }) => {
+            const src = focused
+              ? require('@/assets/images/common/active/home.webp')
+              : require('@/assets/images/common/normal/home.webp')
+            return <Image source={src} resizeMode="cover" />
+          },
+        }}
+      />
+      <Tab.Screen
+        name="Order"
+        key="Order"
+        component={OrdersNavigator}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ focused }) => {
+            const src = focused
+              ? require('@/assets/images/common/active/bills.webp')
+              : require('@/assets/images/common/normal/bills.webp')
+            return <Image source={src} resizeMode="cover" />
+          },
+        }}
+      />
+      <Tab.Screen
+        name="Account"
+        key="Account"
+        component={UserNavigator}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ focused }) => {
+            const src = focused
+              ? require('@/assets/images/common/active/account.webp')
+              : require('@/assets/images/common/normal/account.webp')
+            return <Image source={src} resizeMode="cover" />
+          },
+        }}
+      />
     </Tab.Navigator>
   )
 }

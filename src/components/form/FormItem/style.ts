@@ -16,6 +16,9 @@ export default StyleSheet.create<{
   normal: ViewStyle | TextStyle
   warn: ViewStyle | TextStyle
   error: TextStyle
+  btnWrap: ViewStyle
+  btn: ViewStyle
+  btnText: TextStyle
 }>({
   formItem: {
     marginBottom: 20,
@@ -30,9 +33,10 @@ export default StyleSheet.create<{
   },
   input: {
     borderBottomWidth: 1,
-    height: 34,
     color: '#333230',
     fontSize: 15,
+    paddingVertical: 10, //FIXME
+    paddingLeft: 6.5,
   },
   suffixWrap: {
     flexDirection: 'row',
@@ -73,5 +77,29 @@ export default StyleSheet.create<{
   error: {
     position: 'absolute',
     bottom: -16,
+  },
+  btnWrap: {
+    alignItems: 'center',
+    position: 'absolute',
+    justifyContent: 'center',
+    bottom: 0,
+    zIndex: 999,
+    width: 103 + 28,
+    height: 103 + 28,
+    borderRadius: (103 + 28) / 2,
+    backgroundColor: 'rgba(255,255,255, 1)',
+  },
+  btn: {
+    backgroundColor: Color.primary,
+    width: 103,
+    height: 103,
+    borderRadius: 103 / 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderColor: Color.primary,
+  },
+  btnText: {
+    color: '#fff',
+    fontSize: 20,
   },
 })

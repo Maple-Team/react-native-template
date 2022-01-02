@@ -8,32 +8,32 @@ import {
   Platform,
   ActivityIndicator,
   View,
-  Dimensions,
+  // Dimensions,
 } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import StyleSheet from 'react-native-adaptive-stylesheet'
 import { Text } from 'react-native-elements'
 import { QueryClient, QueryClientProvider } from 'react-query'
-import NetInfo from '@react-native-community/netinfo'
-import { onlineManager } from 'react-query'
+// import NetInfo from '@react-native-community/netinfo'
+// import { onlineManager } from 'react-query'
 import * as RNLocalize from 'react-native-localize'
 
 import BottomTabNavigator from '@/navigation/bottomTab'
 import AccountStack from '@/navigation/accountStack'
 import { initiateState, reducer } from '@/state'
-import emitter from '@/eventbus'
+// import emitter from '@/eventbus'
 import i18n, { getI18nConfig } from '@/locales/i18n'
 import { navigationRef } from '@/navigation/rootNavigation'
 import { Color } from '@/styles/color'
 import { MESSAGE_DURATION } from '@/utils/constant'
 
-onlineManager.setEventListener(setOnline => {
-  return NetInfo.addEventListener(state => {
-    const isConnected = state.isConnected || false
-    emitter.emit('NETWORK_CONNECTED', isConnected)
-    setOnline(state.isConnected || false)
-  })
-})
+// onlineManager.setEventListener(setOnline => {
+//   return NetInfo.addEventListener(state => {
+//     const isConnected = state.isConnected || false
+//     emitter.emit('NETWORK_CONNECTED', isConnected)
+//     setOnline(state.isConnected || false)
+//   })
+// })
 
 const queryClient = new QueryClient()
 if (__DEV__) {
@@ -58,14 +58,8 @@ Toast.config({
   stackable: false,
 })
 const PERSISTENCE_KEY = 'NAVIGATION_STATE'
-const window = Dimensions.get('window')
 
 const App = () => {
-  // return (
-  //   <View>
-  //     <Text>2</Text>
-  //   </View>
-  // )
   const [state] = useReducer(reducer, initiateState)
 
   // 处理实体键返回逻辑
@@ -127,6 +121,7 @@ const App = () => {
   }, [isReady])
 
   if (!isReady) {
+    // FIXME 样式问题
     return (
       <View style={loadingStyles.container}>
         <ActivityIndicator size="large" color={Color.primary} />
@@ -143,7 +138,7 @@ const App = () => {
           ref={navigationRef}
           initialState={initialState}
           onStateChange={_ => AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(_))}>
-          {state.user ? <BottomTabNavigator /> : <AccountStack />}
+          {!state.user ? <BottomTabNavigator /> : <AccountStack />}
         </NavigationContainer>
       </QueryClientProvider>
     </StrictMode>
@@ -154,12 +149,11 @@ export default App
 
 const loadingStyles = StyleSheet.create({
   container: {
-    width: window.width,
-    height: window.height,
     justiftContent: 'center',
+    alignContent: 'center',
     alignItems: 'center',
-    flexDirection: 'column',
     padding: 10,
+    flex: 1,
   },
   loadingHint: {
     marginTop: 10,
