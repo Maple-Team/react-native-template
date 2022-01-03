@@ -27,6 +27,7 @@ export default StyleSheet.create<{
     paddingLeft: 5,
     color: '#333230',
     fontSize: 18,
+    textTransform: 'capitalize',
   },
   inputWrap: {
     position: 'relative',

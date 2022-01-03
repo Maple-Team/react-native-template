@@ -1,37 +1,32 @@
 import React from 'react'
 import { View, Image, StatusBar, ImageBackground } from 'react-native'
-// import { useNavigation } from '@react-navigation/native'
-// import { useTranslation } from 'react-i18next'
+import { useNavigation } from '@react-navigation/native'
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { ApplyStackParamList } from '@navigation/applyStack'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { Text } from '@/components'
+import { TabHeader, Text } from '@/components'
 import { ScrollView } from 'react-native-gesture-handler'
-import Styles from './step1Style'
 import { Button } from '@ant-design/react-native'
 import { Color } from '@/styles/color'
 import Swiper from 'react-native-swiper'
+import stepStyles from './step1Style'
 
 export function Step1() {
-  // const { t } = useTranslation()
-  // const navigation = useNavigation<Step1ScreenProp>()
+  const navigation = useNavigation<Step1ScreenProp>()
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar translucent={false} backgroundColor="#fff" barStyle="dark-content" />
       <ScrollView
         style={{ paddingTop: 0, paddingHorizontal: 0 }}
         keyboardShouldPersistTaps="handled">
-        <View
-          style={{
-            flex: 1,
-          }}>
+        <View>
           <ImageBackground
             source={require('@/assets/images/apply/banner.webp')}
             resizeMode="cover"
             style={{
               height: 284,
             }}>
-            <Header />
+            <TabHeader />
           </ImageBackground>
           <View
             style={{
@@ -73,6 +68,7 @@ export function Step1() {
                 <Text styles={{ fontSize: 22 }}>$ </Text>6600
               </Text>
               <Button
+                onPress={() => navigation.navigate('Step8')}
                 type="primary"
                 style={{ backgroundColor: Color.primary, width: '100%', borderRadius: 9 }}>
                 Continue Loan
@@ -80,9 +76,9 @@ export function Step1() {
             </View>
           </View>
         </View>
-        <View style={{ paddingHorizontal: 10, paddingTop: 24.5 }}>
-          <View style={{ alignItems: 'center' }}>
-            <Text>Easy steps to get and pay for a loan:</Text>
+        <View style={stepStyles.ad}>
+          <View style={stepStyles.adTextWrap}>
+            <Text styles={stepStyles.adText}>Easy steps to get and pay for a loan:</Text>
           </View>
           <Slider />
         </View>
@@ -91,53 +87,58 @@ export function Step1() {
   )
 }
 
-type Step1ScreenProp = NativeStackNavigationProp<ApplyStackParamList, 'Step1'>
-const Header = () => (
-  <View style={Styles.header}>
-    <View style={Styles.headerLeft}>
-      <Image
-        style={Styles.logo}
-        source={require('@/assets/images/apply/logo.webp')}
-        resizeMode="cover"
-      />
-      <Image
-        style={Styles.moneyya}
-        source={require('@/assets/images/apply/moneyya.webp')}
-        resizeMode="cover"
-      />
-    </View>
-    <View style={Styles.headerRight}>
-      <Image
-        style={Styles.notice}
-        source={require('@/assets/images/common/notice.webp')}
-        resizeMode="cover"
-      />
-      <Image
-        style={Styles.help}
-        source={require('@/assets/images/common/active/help.webp')}
-        resizeMode="cover"
-      />
-    </View>
-  </View>
+const Slider = () => (
+  <Swiper
+    style={{ alignItems: 'center' }}
+    autoplay={true}
+    autoplayTimeout={6}
+    loop={true}
+    showsPagination={true}
+    dot={dot}
+    height={232}
+    activeDot={activeDot}>
+    {data.map(item => (
+      <View style={stepStyles.sliderItem} key={item.title}>
+        <View style={stepStyles.sliderContent}>
+          <View style={stepStyles.sliderAd}>
+            <Image source={item.ad} resizeMode="cover" />
+          </View>
+          <View style={stepStyles.textWrap}>
+            <Text styles={stepStyles.sliderTitle}>{item.title}</Text>
+            <Text styles={stepStyles.sliderSubTitle}>{item.text}</Text>
+          </View>
+          <View style={stepStyles.numWrap}>
+            <Image source={item.num} resizeMode="cover" />
+          </View>
+        </View>
+      </View>
+    ))}
+  </Swiper>
 )
+
+type Step1ScreenProp = NativeStackNavigationProp<ApplyStackParamList, 'Step1'>
+
 const data = [
   {
     key: 'one',
     title: 'Convenient operation',
     text: 'Fill up information within 5 mins',
     ad: require('@/assets/images/apply/ad1.webp'),
+    num: require('@/assets/images/apply/1.webp'),
   },
   {
     key: 'two',
     title: 'Fast Approval',
     text: 'Verification finished within 2 hours',
     ad: require('@/assets/images/apply/ad2.webp'),
+    num: require('@/assets/images/apply/2.webp'),
   },
   {
     key: 'three',
     title: 'Get the disbursement',
     text: 'Disbursement within 24 hours',
     ad: require('@/assets/images/apply/ad3.webp'),
+    num: require('@/assets/images/apply/2.webp'), //FIXME
   },
 ]
 const dot = (
@@ -149,7 +150,7 @@ const dot = (
       borderRadius: 2,
       marginHorizontal: 4,
       zIndex: 998,
-      marginBottom: 25,
+      marginBottom: -65,
     }}
   />
 )
@@ -163,7 +164,7 @@ const activeDot = (
         borderRadius: 2,
         marginHorizontal: 4,
         zIndex: 998,
-        marginBottom: 25,
+        marginBottom: -65,
       },
       {
         backgroundColor: Color.primary,
@@ -171,79 +172,4 @@ const activeDot = (
       },
     ]}
   />
-)
-
-const Slider = () => (
-  <Swiper
-    style={{}}
-    autoplay={true}
-    autoplayTimeout={6}
-    loop={true}
-    showsPagination={true}
-    dot={dot}
-    height={234}
-    activeDot={activeDot}>
-    {data.map(item => (
-      <View
-        style={{
-          width: 325,
-          position: 'relative',
-          paddingTop: 20,
-          paddingLeft: 11.5,
-          paddingBottom: 20,
-          marginHorizontal: 14,
-          borderRadius: 5,
-        }}
-        key={item.title}>
-        <View style={{ height: 200, paddingBottom: 20 }}>
-          <View
-            style={{
-              zIndex: 99,
-              backgroundColor: '#fff',
-              width: 116 + 20.5 * 2,
-              height: 116 + 20.5 * 2,
-              borderRadius: (116 + 20.5 * 2) / 2,
-              alignItems: 'center',
-              position: 'absolute',
-              justifyContent: 'center',
-            }}>
-            <Image source={require('@/assets/images/apply/ad1.webp')} resizeMode="cover" />
-          </View>
-          <View
-            style={{
-              borderRadius: 15,
-              borderColor: 'rgba(216, 222, 236, 1)',
-              borderWidth: 1,
-              width: '100%',
-              backgroundColor: '#fff',
-              paddingBottom: 11,
-            }}>
-            <View
-              style={{
-                position: 'absolute',
-                height: '100%',
-                alignItems: 'center',
-                justifyContent: 'center',
-                left: 29.5,
-              }}>
-              <Image source={require('@/assets/images/apply/1.webp')} resizeMode="cover" />
-            </View>
-            <View style={{ alignItems: 'center', paddingTop: 145 }}>
-              <Text styles={{ color: Color.primary, fontSize: 16, fontFamily: 'Aller' }}>
-                {item.title}
-              </Text>
-              <Text
-                styles={{
-                  color: 'rgba(123, 123, 123, 1)',
-                  fontSize: 16,
-                  fontFamily: 'Aller',
-                }}>
-                {item.text}
-              </Text>
-            </View>
-          </View>
-        </View>
-      </View>
-    ))}
-  </Swiper>
 )

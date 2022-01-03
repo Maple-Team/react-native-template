@@ -2,26 +2,13 @@ import emitter from '@/eventbus'
 import { useEventListener } from '@/hooks/useListener'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import React, { useEffect } from 'react'
-import { Text, View, Image } from 'react-native'
+import { Image } from 'react-native'
 import { ApplyStack } from './applyStack'
+import { OrderStack } from './orderStack'
+import { UserStack } from './userStack'
 import { navigate } from './rootNavigation'
 
 const Tab = createBottomTabNavigator()
-
-function OrdersNavigator() {
-  return (
-    <View>
-      <Text>Settings!</Text>
-    </View>
-  )
-}
-function UserNavigator() {
-  return (
-    <View>
-      <Text>Settings!</Text>
-    </View>
-  )
-}
 
 function BottomTab() {
   useEventListener()
@@ -58,7 +45,7 @@ function BottomTab() {
       <Tab.Screen
         name="Order"
         key="Order"
-        component={OrdersNavigator}
+        component={OrderStack}
         options={{
           headerShown: false,
           tabBarIcon: ({ focused }) => {
@@ -72,7 +59,7 @@ function BottomTab() {
       <Tab.Screen
         name="Account"
         key="Account"
-        component={UserNavigator}
+        component={UserStack}
         options={{
           headerShown: false,
           tabBarIcon: ({ focused }) => {
