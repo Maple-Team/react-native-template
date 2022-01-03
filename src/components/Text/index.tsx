@@ -101,7 +101,7 @@ export default ({
   children: any
   styles?: RegisteredStyle<TextStyle> | RegisteredStyle<TextStyle>[]
   onPress?: () => void
-  fontSize: number
+  fontSize?: number
   fontWeight?: 'bold'
   color?: string
   fontFamily?: string

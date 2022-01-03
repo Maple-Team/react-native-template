@@ -18,11 +18,11 @@ import { Input, PasswordInput, ValidateCode, ApplyButton } from '@components/for
 import { useTranslation } from 'react-i18next'
 import { Color } from '@/styles/color'
 
-interface FormModel {
+interface PwdFormModel {
   phone: string
   password: string
 }
-interface FormModel2 {
+interface ValidateCodeFormModel {
   phone: string
   validateCode: string
 }
@@ -59,8 +59,14 @@ export const SigninScreen = () => {
             </View>
             {tabPanels[index]}
             <View style={styles.jump}>
-              <Text styles={styles.jumpText}>Don't have an account ? </Text>
-              <Text styles={styles.jumpLink} onPress={() => navigation.navigate('SignUp')}>
+              <Text fontSize={19} color="#fff">
+                Don't have an account ?{' '}
+              </Text>
+              <Text
+                fontSize={19}
+                color="rgba(255, 234, 0, 1)"
+                styles={styles.jumpLink}
+                onPress={() => navigation.navigate('SignUp')}>
                 {t('signup')}
               </Text>
             </View>
@@ -84,9 +90,9 @@ const PasswdTab = () => {
       .required(t('phone.required')),
     password: Yup.string().required(t('password.required')),
   })
-  const initialValue = useMemo<FormModel>(() => ({ phone: '', password: '' }), [])
+  const initialValue = useMemo<PwdFormModel>(() => ({ phone: '', password: '' }), [])
   const onSubmit = debounce(
-    (values: FormModel) => {
+    (values: PwdFormModel) => {
       console.log(values)
       navigation.navigate('SignIn')
       //TODO
@@ -96,7 +102,10 @@ const PasswdTab = () => {
   )
   const [showPwd, setShowPwd] = useState<boolean>(false)
   return (
-    <Formik<FormModel> initialValues={initialValue} onSubmit={onSubmit} validationSchema={schema}>
+    <Formik<PwdFormModel>
+      initialValues={initialValue}
+      onSubmit={onSubmit}
+      validationSchema={schema}>
       {({ handleChange, handleSubmit, values, setFieldValue, errors, isValid }) => (
         <View style={styles.formWrap}>
           <View style={styles.form}>
@@ -120,6 +129,15 @@ const PasswdTab = () => {
               showPwd={showPwd}
               onToggle={() => setShowPwd(!showPwd)}
             />
+            <Pressable
+              style={{ alignItems: 'flex-end' }}
+              onPress={() => {
+                navigation.navigate('Reset')
+              }}>
+              <Text color="rgba(51, 50, 48, 1)" fontSize={15}>
+                {t('forget-password')}
+              </Text>
+            </Pressable>
           </View>
           <ApplyButton
             type={isValid ? 'primary' : undefined}
@@ -150,9 +168,9 @@ const ValidTab = () => {
       .matches(REGEX_PHONE, t('validateCode.invalid'))
       .required(t('phone.required')),
   })
-  const initialValue = useMemo<FormModel2>(() => ({ phone: '', validateCode: '' }), [])
+  const initialValue = useMemo<ValidateCodeFormModel>(() => ({ phone: '', validateCode: '' }), [])
   const onSubmit = debounce(
-    (values: FormModel2) => {
+    (values: ValidateCodeFormModel) => {
       console.log(values)
       navigation.navigate('SignIn')
     },
@@ -160,7 +178,10 @@ const ValidTab = () => {
     DEBOUNCE_OPTIONS
   )
   return (
-    <Formik<FormModel2> initialValues={initialValue} onSubmit={onSubmit} validationSchema={schema}>
+    <Formik<ValidateCodeFormModel>
+      initialValues={initialValue}
+      onSubmit={onSubmit}
+      validationSchema={schema}>
       {({ handleChange, handleSubmit, values, setFieldValue, errors, isValid }) => (
         <View style={styles.formWrap}>
           <View style={styles.form}>

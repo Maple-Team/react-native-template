@@ -26,6 +26,7 @@ export function NormalPicker<T extends Dict>({
   field,
   label,
   title,
+  error,
   placeholder,
   dataSource,
 }: PickerProps<T>) {
@@ -40,8 +41,9 @@ export function NormalPicker<T extends Dict>({
             editable={false}
             value={value}
             placeholder={placeholder}
-            style={[formItemStyles.input]}
             onPressIn={() => setVisible(true)}
+            style={[formItemStyles.input, error ? { borderBottomColor: 'red' } : {}]}
+            placeholderTextColor={'rgba(156, 171, 185, 1)'}
           />
           <Pressable
             style={formItemStyles.suffixWrap}

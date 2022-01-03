@@ -1,7 +1,7 @@
 import { useEventListener } from '@/hooks/useListener'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React from 'react'
-import { SigninScreen, EntryScreen, SignupScreen } from '@/screens/account'
+import { SigninScreen, EntryScreen, SignupScreen, ResetScreen } from '@/screens/account'
 // import { useQuery } from 'react-query'
 // import { queryBrand } from '@/services/apply'
 import { Provider } from '@ant-design/react-native'
@@ -13,6 +13,7 @@ export type AccountStackParamList = {
   Entry: undefined
   SignIn: undefined
   SignUp: undefined
+  Reset: undefined
 }
 const Stack = createNativeStackNavigator<AccountStackParamList>()
 
@@ -49,8 +50,14 @@ function AccountStack() {
             key="SignIn"
             name="SignIn"
             component={SigninScreen}
+            options={{ headerShown: false, statusBarHidden: true }}
+          />
+          <Stack.Screen
+            key="SignUp"
+            name="SignUp"
+            component={SignupScreen}
             options={({ navigation }) => ({
-              title: t('signin'),
+              title: t('signup'),
               headerLeft: () => (
                 <HeaderLeft
                   onPress={() => {
@@ -61,11 +68,11 @@ function AccountStack() {
             })}
           />
           <Stack.Screen
-            key="SignUp"
-            name="SignUp"
-            component={SignupScreen}
+            key="Reset"
+            name="Reset"
+            component={ResetScreen}
             options={({ navigation }) => ({
-              title: t('signup'),
+              title: t('Reset'),
               headerLeft: () => (
                 <HeaderLeft
                   onPress={() => {

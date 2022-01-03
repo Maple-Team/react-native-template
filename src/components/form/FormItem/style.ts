@@ -25,7 +25,7 @@ export default StyleSheet.create<{
   },
   label: {
     paddingLeft: 5,
-    color: '#333230',
+    color: 'rgba(51, 50, 48, 1)',
     fontSize: 18,
     textTransform: 'capitalize',
   },
@@ -34,7 +34,8 @@ export default StyleSheet.create<{
   },
   input: {
     borderBottomWidth: 1,
-    color: '#333230',
+    color: 'rgba(51, 50, 48, 1)',
+    borderBottomColor: 'rgba(180, 204, 226, 1)',
     fontSize: 15,
     paddingVertical: 10, //FIXME
     paddingLeft: 6.5,

@@ -1,6 +1,6 @@
 import { NativeStackHeaderProps } from '@react-navigation/native-stack'
 import React, { useMemo, useState } from 'react'
-import { View, SafeAreaView, StatusBar, Image } from 'react-native'
+import { View, SafeAreaView, StatusBar } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Formik } from 'formik'
@@ -21,7 +21,7 @@ interface FormModel {
   confirmPassword: string
   confirmPassword2: string
 }
-export const SignupScreen = ({ navigation }: NativeStackHeaderProps) => {
+export const ResetScreen = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
   const schema = Yup.object().shape({
     phone: Yup.string()
@@ -112,29 +112,6 @@ export const SignupScreen = ({ navigation }: NativeStackHeaderProps) => {
                     showPwd={showConfirmPwd}
                     onToggle={() => setShowConfirmPwd(!showConfirmPwd)}
                   />
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      flexWrap: 'wrap',
-                      justifyContent: 'flex-start',
-                    }}>
-                    <Image
-                      source={require('@/assets/images/account/check.webp')}
-                      resizeMode="cover"
-                    />
-                    <Text fontSize={13} color="rgba(144, 146, 155, 1)">
-                      Agree with Moneyya{' '}
-                    </Text>
-                    <Text fontSize={13} color={Color.primary}>
-                      Terms of Service{' '}
-                    </Text>
-                    <Text fontSize={13} color="rgba(144, 146, 155, 1)">
-                      and{' '}
-                    </Text>
-                    <Text fontSize={13} color={Color.primary}>
-                      Privacy Policy
-                    </Text>
-                  </View>
                 </View>
                 <View style={PageStyles.btnWrap}>
                   <ApplyButton

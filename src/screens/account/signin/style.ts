@@ -14,7 +14,6 @@ export default StyleSheet.create<{
   form: ViewStyle
   bg: ImageStyle
   jump: ViewStyle
-  jumpText: TextStyle
   jumpLink: TextStyle
 }>({
   flex1: { flex: 1 },
@@ -36,7 +35,7 @@ export default StyleSheet.create<{
     backgroundColor: 'rgba(255,255,255, .78)',
   },
   tabBarText: {
-    color: '#333230',
+    color: 'rgba(51, 50, 48, 1)',
     fontSize: 15,
     textTransform: 'capitalize',
   },
@@ -72,12 +71,9 @@ export default StyleSheet.create<{
   jump: {
     flexDirection: 'row',
     justifyContent: 'center',
+    marginBottom: 50,
   },
   jumpLink: {
-    color: '#FFEA00',
     textDecorationLine: 'underline',
-  },
-  jumpText: {
-    color: '#fff',
   },
 })

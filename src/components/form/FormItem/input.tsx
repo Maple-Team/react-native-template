@@ -38,9 +38,10 @@ export const Input = ({
           maxLength={11}
           value={value}
           placeholder={placeholder}
-          style={[styles.input]}
+          style={[styles.input, error ? { borderBottomColor: 'red' } : {}]}
           keyboardType={keyboardType}
           onFocus={onFocus}
+          placeholderTextColor={'rgba(156, 171, 185, 1)'}
           onBlur={onBlur}
         />
         {value ? (

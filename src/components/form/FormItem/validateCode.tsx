@@ -71,8 +71,9 @@ export const ValidateCode = ({
           maxLength={6}
           value={value}
           placeholder={placeholder}
-          style={[styles.input]}
           keyboardType={keyboardType}
+          style={[styles.input, error ? { borderBottomColor: 'red' } : {}]}
+          placeholderTextColor={'rgba(156, 171, 185, 1)'}
         />
         <View style={styles.suffixWrap}>
           {value ? (

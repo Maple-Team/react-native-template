@@ -17,6 +17,8 @@ import { DEBOUNCE_WAIT, DEBOUNCE_OPTIONS } from '@/utils/constant'
 import Behavior from '@/utils/behavior'
 import { getStorageValue } from '@/utils/storage'
 import type { BehaviorModel } from '@/typings/behavior'
+import { Input } from '@components/form/FormItem'
+import { Color } from '@/styles/color'
 
 interface FormModel {
   phone: string
@@ -72,47 +74,15 @@ export const EntryScreen = ({ navigation }: NativeStackHeaderProps) => {
                 {({ handleChange, handleSubmit, values, setFieldValue, errors }) => (
                   <>
                     <View style={styles.formItem}>
-                      <Text fontSize={15} styles={styles.label}>
-                        {t('phone.label')}
-                      </Text>
-                      <View style={styles.inputWrap}>
-                        <TextInput
-                          onChangeText={handleChange('phone')}
-                          maxLength={11}
-                          onBlur={() => {
-                            console.log('onblur', values.phone)
-                            behavior?.setEndModify('P01_C01_I_FIRSTNAME', values.phone)
-                          }}
-                          onFocus={() => {
-                            console.log('onFocus', values.phone)
-                            behavior?.setStartModify('P01_C01_I_FIRSTNAME', values.phone)
-                          }}
-                          value={values.phone}
-                          style={[styles.input]}
-                        />
-                        {values.phone ? (
-                          errors.phone ? (
-                            <Pressable onPress={() => setFieldValue('phone', '')}>
-                              <Image
-                                style={styles.suffix}
-                                source={require('@/assets/images/common/clear.webp')}
-                                resizeMode="cover"
-                              />
-                            </Pressable>
-                          ) : (
-                            <Image
-                              style={styles.suffix}
-                              source={require('@/assets/images/common/correct.webp')}
-                              resizeMode="cover"
-                            />
-                          )
-                        ) : (
-                          <></>
-                        )}
-                      </View>
-                      <ErrorMessage name="phone">
-                        {msg => <Text styles={[styles.warn, styles.error]}>{msg}</Text>}
-                      </ErrorMessage>
+                      <Input
+                        field="phone"
+                        label={t('phone.label')}
+                        onChangeText={handleChange('phone')}
+                        value={values.phone}
+                        onClear={() => setFieldValue('phone', '')}
+                        placeholder={t('phone.placeholder')}
+                        error={errors.phone}
+                      />
                     </View>
 
                     <Button
@@ -132,7 +102,7 @@ export const EntryScreen = ({ navigation }: NativeStackHeaderProps) => {
                 onPress={async () => {
                   navigation.navigate('SignUp')
                 }}>
-                <Text>{t('signup')}</Text>
+                <Text color={Color.primary}>{t('signup')}</Text>
               </Button>
             </View>
           </View>

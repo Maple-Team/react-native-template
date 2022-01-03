@@ -138,7 +138,7 @@ const App = () => {
           ref={navigationRef}
           initialState={initialState}
           onStateChange={_ => AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(_))}>
-          {!state.user ? <BottomTabNavigator /> : <AccountStack />}
+          {state.user ? <BottomTabNavigator /> : <AccountStack />}
         </NavigationContainer>
       </QueryClientProvider>
     </StrictMode>

@@ -26,6 +26,7 @@ export const PasswordInput = ({
   onFocus,
   onBlur,
   onToggle,
+  error,
   label,
   showPwd,
   placeholder,
@@ -40,11 +41,12 @@ export const PasswordInput = ({
           maxLength={11} // FIXME
           value={value}
           placeholder={placeholder}
-          style={[styles.input]}
           keyboardType={keyboardType}
           onFocus={onFocus}
           onBlur={onBlur}
           secureTextEntry={showPwd}
+          style={[styles.input, error ? { borderBottomColor: 'red' } : {}]}
+          placeholderTextColor={'rgba(156, 171, 185, 1)'}
         />
         {value ? (
           <View style={styles.suffixWrap}>
@@ -69,7 +71,11 @@ export const PasswordInput = ({
         )}
       </View>
       <ErrorMessage name={field}>
-        {msg => <Text styles={[styles.warn, styles.error]}>{msg}</Text>}
+        {msg => (
+          <Text color="red" styles={[styles.warn, styles.error]}>
+            {msg}
+          </Text>
+        )}
       </ErrorMessage>
     </View>
   )

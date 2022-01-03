@@ -25,6 +25,7 @@ export function NormalDatePicker({
   value,
   field,
   label,
+  error,
   title,
   placeholder,
 }: PickerProps) {
@@ -39,8 +40,9 @@ export function NormalDatePicker({
             editable={false}
             value={value}
             placeholder={placeholder}
-            style={[formItemStyles.input]}
             onPressIn={() => setVisible(true)}
+            style={[formItemStyles.input, error ? { borderBottomColor: 'red' } : {}]}
+            placeholderTextColor={'rgba(156, 171, 185, 1)'}
           />
           <Pressable
             style={formItemStyles.suffixWrap}
