@@ -20,6 +20,7 @@ export type Events = {
   REQUEST_ERROR: string
   REQUEST_LOADING: { dispatchType: DispatchMapType; loading: boolean }
   NETWORK_CONNECTED: boolean
+  FIRST_INIT: boolean
 }
 
 /**

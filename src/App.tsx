@@ -17,16 +17,17 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 // import NetInfo from '@react-native-community/netinfo'
 // import { onlineManager } from 'react-query'
 import * as RNLocalize from 'react-native-localize'
-
 import BottomTabNavigator from '@/navigation/bottomTab'
 import AccountStack from '@/navigation/accountStack'
 import { initiateState, reducer } from '@/state'
-// import emitter from '@/eventbus'
 import i18n, { getI18nConfig } from '@/locales/i18n'
 import { navigationRef } from '@/navigation/rootNavigation'
 import { Color } from '@/styles/color'
 import { MESSAGE_DURATION } from '@/utils/constant'
 import SplashScreen from 'react-native-splash-screen'
+import { getStorageValue } from '@/utils/storage'
+import Init from '@screens/init'
+import emitter from '@/eventbus'
 
 // onlineManager.setEventListener(setOnline => {
 //   return NetInfo.addEventListener(state => {
@@ -96,8 +97,22 @@ const App = () => {
     i18n.init(getI18nConfig(lng))
   }, [])
 
+  useEffect(() => {
+    emitter.on('FIRST_INIT', first => {
+      setHasInit(!first)
+    })
+  }, [])
   const [isReady, setIsReady] = useState(__DEV__ ? false : true)
   const [initialState, setInitialState] = useState()
+  const [hasInit, setHasInit] = useState<boolean>()
+
+  useEffect(() => {
+    const query = async () => {
+      const value = (await getStorageValue('hasInit')) as boolean
+      setHasInit(!value)
+    }
+    query()
+  }, [])
 
   // NOTE 处理用户上一次打开的页面(进件过程) https://reactnavigation.org/docs/state-persistence
   useEffect(() => {
@@ -125,16 +140,9 @@ const App = () => {
   }, [isReady])
 
   if (!isReady) {
-    // FIXME 样式问题
-    return (
-      <View style={loadingStyles.container}>
-        <ActivityIndicator size="large" color={Color.primary} />
-        <Text style={loadingStyles.loadingHint}>Loading...</Text>
-      </View>
-    )
+    return <Loading />
   }
 
-  // TODO splash display logic
   return (
     <StrictMode>
       <QueryClientProvider client={queryClient}>
@@ -142,7 +150,15 @@ const App = () => {
           ref={navigationRef}
           initialState={initialState}
           onStateChange={_ => AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(_))}>
-          {state.user ? <BottomTabNavigator /> : <AccountStack />}
+          {hasInit === undefined ? (
+            <Loading />
+          ) : hasInit === true ? (
+            <Init />
+          ) : state.user ? (
+            <BottomTabNavigator />
+          ) : (
+            <AccountStack />
+          )}
         </NavigationContainer>
       </QueryClientProvider>
     </StrictMode>
@@ -163,3 +179,9 @@ const loadingStyles = StyleSheet.create({
     marginTop: 10,
   },
 })
+const Loading = () => (
+  <View style={loadingStyles.container}>
+    <ActivityIndicator size="large" color={Color.primary} />
+    <Text style={loadingStyles.loadingHint}>Loading...</Text>
+  </View>
+)

@@ -22,7 +22,7 @@ interface State {
       [key: string]: boolean
     }
   }
-  isFirst: boolean
+  hasInit: boolean
 }
 /**
  * App全局状态设定
@@ -41,7 +41,7 @@ export const initiateState: State = {
   loading: {
     effects: {},
   },
-  isFirst: false,
+  hasInit: false,
 }
 export const UPDATE_TOKEN = 'UPDATE_TOKEN'
 export const UPDATE_GPS = 'UPDATE_GPS'
@@ -72,7 +72,7 @@ type Action =
     }
   | {
       type: typeof UPDATE_IS_FIRST
-      isFirst: boolean
+      hasInit: boolean
     }
 
 export function reducer(state: State, action: Action): State {
@@ -109,7 +109,7 @@ export function reducer(state: State, action: Action): State {
     case UPDATE_IS_FIRST:
       return {
         ...state,
-        isFirst: action.isFirst,
+        hasInit: action.hasInit,
       }
     default:
       if ([...NormalTypeArray, ...DictTypeArray].includes(action.type)) {

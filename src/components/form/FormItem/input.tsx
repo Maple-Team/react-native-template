@@ -29,6 +29,7 @@ export const Input = ({
   placeholder,
   keyboardType,
 }: InputProps) => {
+  console.log({ error })
   return (
     <View style={styles.formItem}>
       <Text styles={styles.label}>{label}</Text>
@@ -71,7 +72,11 @@ export const Input = ({
         )}
       </View>
       <ErrorMessage name={field}>
-        {msg => <Text styles={[styles.warn, styles.error]}>{msg}</Text>}
+        {msg => (
+          <Text color="red" styles={[styles.warn, styles.error]}>
+            {msg}
+          </Text>
+        )}
       </ErrorMessage>
     </View>
   )

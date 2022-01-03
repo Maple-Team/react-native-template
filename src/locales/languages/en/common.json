@@ -8,5 +8,7 @@
   "confirm": "Confirm",
   "home": "Home",
   "order": "Order",
-  "account": "Account"
+  "done": "Done",
+  "account": "Account",
+  "resetpwd": "忘记密码"
 }

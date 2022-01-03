@@ -72,7 +72,7 @@ function AccountStack() {
             name="Reset"
             component={ResetScreen}
             options={({ navigation }) => ({
-              title: t('Reset'),
+              title: t('resetpwd'),
               headerLeft: () => (
                 <HeaderLeft
                   onPress={() => {

@@ -1,10 +1,10 @@
 import { NativeStackHeaderProps } from '@react-navigation/native-stack'
-import React, { useEffect, useMemo, useReducer, useState } from 'react'
-import { View, Image, SafeAreaView, TextInput, Pressable } from 'react-native'
+import React, { useEffect, useMemo, useReducer } from 'react'
+import { View, SafeAreaView, StatusBar, ImageBackground } from 'react-native'
 import { Button } from '@ant-design/react-native'
 import { useTranslation } from 'react-i18next'
 import { ScrollView } from 'react-native-gesture-handler'
-import { ErrorMessage, Formik } from 'formik'
+import { Formik } from 'formik'
 import * as Yup from 'yup'
 import debounce from 'lodash.debounce'
 
@@ -14,11 +14,9 @@ import { initiateState, reducer } from '@/state'
 import styles from './style'
 import { REGEX_PHONE } from '@/utils/reg'
 import { DEBOUNCE_WAIT, DEBOUNCE_OPTIONS } from '@/utils/constant'
-import Behavior from '@/utils/behavior'
-import { getStorageValue } from '@/utils/storage'
-import type { BehaviorModel } from '@/typings/behavior'
 import { Input } from '@components/form/FormItem'
 import { Color } from '@/styles/color'
+import { queryBrand } from '@/services/apply'
 
 interface FormModel {
   phone: string
@@ -38,76 +36,70 @@ export const EntryScreen = ({ navigation }: NativeStackHeaderProps) => {
   const initialValue = useMemo<FormModel>(() => ({ phone: '' }), [])
   const onSubmit = debounce(
     (values: FormModel) => {
-      console.log(values, behavior?.getCurrentModel())
+      console.log(values)
       navigation.navigate('SignIn')
-      //TODO
     },
     DEBOUNCE_WAIT,
     DEBOUNCE_OPTIONS
   )
-  const [behavior, setBehavior] = useState<Behavior<'P01'>>()
-
   useEffect(() => {
-    async function _getBehavior() {
-      const value = (await getStorageValue('p')) as BehaviorModel<'P01'>
-      setBehavior(new Behavior(value))
-    }
-    _getBehavior()
+    queryBrand().then(res => {
+      console.log(res)
+    })
   }, [])
   return (
     <SafeAreaView style={styles.flex1}>
-      <Image
+      <StatusBar translucent backgroundColor="transparent" />
+      <ImageBackground
         source={require('@/assets/images/account/bg.webp')}
-        resizeMode="stretch"
-        style={styles.bg}
-      />
-      <ScrollView style={styles.flex1}>
-        <View style={styles.container}>
-          <View style={styles.wrap}>
-            <Logo />
-
-            <View style={styles.form}>
-              <Formik<FormModel>
-                initialValues={initialValue}
-                onSubmit={onSubmit}
-                validationSchema={schema}>
-                {({ handleChange, handleSubmit, values, setFieldValue, errors }) => (
-                  <>
-                    <View style={styles.formItem}>
-                      <Input
-                        field="phone"
-                        label={t('phone.label')}
-                        onChangeText={handleChange('phone')}
-                        value={values.phone}
-                        onClear={() => setFieldValue('phone', '')}
-                        placeholder={t('phone.placeholder')}
-                        error={errors.phone}
-                      />
-                    </View>
-
-                    <Button
-                      style={[styles.signin, styles.btn]}
-                      type="primary"
-                      loading={state.loading.effects.LOGIN}
-                      // @ts-ignore
-                      onPress={handleSubmit}>
-                      <Text>{t('signin')}</Text>
-                    </Button>
-                  </>
-                )}
-              </Formik>
-              <Button
-                style={[styles.signup, styles.btn]}
-                loading={state.loading.effects.LOGIN}
-                onPress={async () => {
-                  navigation.navigate('SignUp')
-                }}>
-                <Text color={Color.primary}>{t('signup')}</Text>
-              </Button>
+        resizeMode="cover"
+        style={styles.bg}>
+        <ScrollView style={styles.flex1}>
+          <View style={styles.container}>
+            <View style={styles.wrap}>
+              <Logo />
+              <View style={styles.form}>
+                <Formik<FormModel>
+                  initialValues={initialValue}
+                  onSubmit={onSubmit}
+                  validationSchema={schema}>
+                  {({ handleChange, handleSubmit, values, setFieldValue, errors }) => (
+                    <>
+                      <View style={styles.formItem}>
+                        <Input
+                          field="phone"
+                          label={t('phone.label')}
+                          onChangeText={handleChange('phone')}
+                          value={values.phone}
+                          onClear={() => setFieldValue('phone', '')}
+                          placeholder={t('phone.placeholder')}
+                          error={errors.phone}
+                        />
+                      </View>
+                      <Button
+                        style={[styles.signin, styles.btn]}
+                        type="primary"
+                        loading={state.loading.effects.LOGIN}
+                        // @ts-ignore
+                        onPress={handleSubmit}>
+                        <Text>{t('signin')}</Text>
+                      </Button>
+                    </>
+                  )}
+                </Formik>
+                <Button
+                  style={[styles.signup, styles.btn]}
+                  loading={state.loading.effects.LOGIN}
+                  onPress={async () => {
+                    navigation.navigate('SignUp')
+                  }}>
+                  <Text color={Color.primary}>{t('signup')}</Text>
+                </Button>
+              </View>
             </View>
           </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </ImageBackground>
     </SafeAreaView>
   )
 }

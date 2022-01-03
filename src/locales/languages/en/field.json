@@ -1,5 +1,5 @@
 {
-  "confirmPassword": {
+  "comfirmPassword": {
     "label": "confirmPassword",
     "placeholder": "confirmPassword",
     "invalid": "confirmPassword invalid",

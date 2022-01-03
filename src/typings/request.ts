@@ -1,6 +1,5 @@
 export interface RegisterParameter {
   phone: string
-  idcard: string
   password: string
   comfirmPassword: string
   validateCode: string

@@ -105,13 +105,22 @@ export default ({
   fontWeight?: 'bold'
   color?: string
   fontFamily?: string
-}) => (
-  <Text
-    style={[textStyle.text, styles, { fontSize, color, fontWeight, fontFamily }]}
-    onPress={onPress}>
-    {children}
-  </Text>
-)
+}) => {
+  if (color) {
+    return (
+      <Text
+        style={[textStyle.text, styles, { fontSize, color, fontWeight, fontFamily }]}
+        onPress={onPress}>
+        {children}
+      </Text>
+    )
+  }
+  return (
+    <Text style={[textStyle.text, styles, { fontSize, fontWeight, fontFamily }]} onPress={onPress}>
+      {children}
+    </Text>
+  )
+}
 
 const textStyle = StyleSheet.create<{ text: TextStyle }>({
   text: {
