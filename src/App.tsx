@@ -26,6 +26,7 @@ import i18n, { getI18nConfig } from '@/locales/i18n'
 import { navigationRef } from '@/navigation/rootNavigation'
 import { Color } from '@/styles/color'
 import { MESSAGE_DURATION } from '@/utils/constant'
+import SplashScreen from 'react-native-splash-screen'
 
 // onlineManager.setEventListener(setOnline => {
 //   return NetInfo.addEventListener(state => {
@@ -62,6 +63,9 @@ const PERSISTENCE_KEY = 'NAVIGATION_STATE'
 const App = () => {
   const [state] = useReducer(reducer, initiateState)
 
+  useEffect(() => {
+    SplashScreen.hide()
+  }, [])
   // 处理实体键返回逻辑
   useEffect(() => {
     const backAction = () => {
