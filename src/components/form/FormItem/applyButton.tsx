@@ -19,7 +19,7 @@ export const ApplyButton = ({
   return (
     <View style={styles.btnWrap}>
       <Button
-        style={[styles.btn]}
+        style={[styles.btn, type === 'ghost' ? styles.btnInvalid : {}]}
         type={type}
         loading={loading}
         disabled={disabled}

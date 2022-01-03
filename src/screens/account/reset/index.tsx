@@ -1,5 +1,5 @@
 import { NativeStackHeaderProps } from '@react-navigation/native-stack'
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useReducer, useState } from 'react'
 import { View, SafeAreaView, StatusBar } from 'react-native'
 import { useTranslation } from 'react-i18next'
 import { ScrollView } from 'react-native-gesture-handler'
@@ -8,20 +8,18 @@ import * as Yup from 'yup'
 import debounce from 'lodash.debounce'
 
 import { PageStyles, Text } from '@/components'
-import { REGEX_PHONE } from '@/utils/reg'
+import { REGEX_PHONE, REGEX_VALIDATE_CODE } from '@/utils/reg'
 import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT } from '@/utils/constant'
 import { Input, PasswordInput, ValidateCode } from '@components/form/FormItem'
 import { ApplyButton } from '@components/form/FormItem/applyButton'
 import { Color } from '@/styles/color'
+import { reset } from '@/services/user'
+import type { ResetPwdParameter } from '@/typings/account'
+import { reducer, initiateState } from '@/state'
+import emitter from '@/eventbus'
 
-interface FormModel {
-  phone: string
-  validateCode: string
-  password: string
-  confirmPassword: string
-  confirmPassword2: string
-}
 export const ResetScreen = ({ navigation }: NativeStackHeaderProps) => {
+  const [state] = useReducer(reducer, initiateState)
   const { t } = useTranslation()
   const schema = Yup.object().shape({
     phone: Yup.string()
@@ -30,28 +28,32 @@ export const ResetScreen = ({ navigation }: NativeStackHeaderProps) => {
       .matches(REGEX_PHONE, t('phone.invalid'))
       .required(t('phone.required')),
     password: Yup.string().required(t('password.required')),
-    confirmPassword: Yup.string().required(t('password.required')),
+    comfirmPassword: Yup.string().required(t('password.required')),
     validateCode: Yup.string()
-      .min(6, t('field.short', { field: 'Validate Code' }))
-      .max(6, t('field.long', { field: 'Validate Code' }))
-      .matches(REGEX_PHONE, t('validateCode.invalid'))
-      .required(t('phone.required')),
+      .min(4, t('field.short', { field: 'Validate Code' }))
+      .max(4, t('field.long', { field: 'Validate Code' }))
+      .required(t('validateCode.required'))
+      .matches(REGEX_VALIDATE_CODE, t('validateCode.invalid')),
   })
-  const initialValue = useMemo<FormModel>(
+  const initialValue = useMemo<ResetPwdParameter>(
     () => ({
       phone: '',
       password: '',
-      confirmPassword: '',
+      comfirmPassword: '',
       validateCode: '',
-      confirmPassword2: '33',
     }),
     []
   )
   const onSubmit = debounce(
-    (values: FormModel) => {
+    (values: ResetPwdParameter) => {
       console.log(values)
-      navigation.navigate('SignIn')
-      //TODO
+      reset(values).then(() => {
+        emitter.emit('SHOW_MESSAGE', {
+          type: 'success',
+          message: t('resetpwd.success'),
+        })
+        navigation.navigate('SignIn')
+      })
     },
     DEBOUNCE_WAIT,
     DEBOUNCE_OPTIONS
@@ -63,7 +65,7 @@ export const ResetScreen = ({ navigation }: NativeStackHeaderProps) => {
       <StatusBar translucent={false} backgroundColor={Color.primary} barStyle="default" />
       <ScrollView style={PageStyles.scroll} keyboardShouldPersistTaps="handled">
         <View style={PageStyles.container}>
-          <Formik<FormModel>
+          <Formik<ResetPwdParameter>
             initialValues={initialValue}
             onSubmit={onSubmit}
             validationSchema={schema}>
@@ -78,6 +80,7 @@ export const ResetScreen = ({ navigation }: NativeStackHeaderProps) => {
                     onClear={() => setFieldValue('phone', '')}
                     placeholder={t('phone.placeholder')}
                     error={errors.phone}
+                    keyboardType="phone-pad"
                   />
                   <ValidateCode
                     field="validateCode"
@@ -87,8 +90,9 @@ export const ResetScreen = ({ navigation }: NativeStackHeaderProps) => {
                     onClear={() => setFieldValue('validateCode', '')}
                     placeholder={t('validateCode.placeholder')}
                     error={errors.validateCode}
-                    validateCodeType="LOGIN"
+                    validateCodeType="MODIFY_PASSWORD"
                     phone={values.phone}
+                    keyboardType="number-pad"
                   />
                   <PasswordInput
                     field="password"
@@ -102,24 +106,23 @@ export const ResetScreen = ({ navigation }: NativeStackHeaderProps) => {
                     onToggle={() => setShowPwd(!showPwd)}
                   />
                   <PasswordInput
-                    field="confirmPassword"
-                    label={t('confirmPassword.label')}
-                    onChangeText={handleChange('confirmPassword')}
-                    value={values.confirmPassword}
-                    onClear={() => setFieldValue('confirmPassword', '')}
-                    placeholder={t('confirmPassword.placeholder')}
-                    error={errors.confirmPassword}
+                    field="comfirmPassword"
+                    label={t('comfirmPassword.label')}
+                    onChangeText={handleChange('comfirmPassword')}
+                    value={values.comfirmPassword}
+                    onClear={() => setFieldValue('comfirmPassword', '')}
+                    placeholder={t('comfirmPassword.placeholder')}
+                    error={errors.comfirmPassword}
                     showPwd={showConfirmPwd}
                     onToggle={() => setShowConfirmPwd(!showConfirmPwd)}
                   />
                 </View>
                 <View style={PageStyles.btnWrap}>
                   <ApplyButton
-                    type={isValid ? 'primary' : undefined}
+                    type={isValid ? 'primary' : 'ghost'}
                     handleSubmit={handleSubmit}
-                    // loading={state}
-                  >
-                    <Text>{t('submit')}</Text>
+                    loading={state.loading.effects.RESET}>
+                    <Text color={isValid ? '#fff' : '#aaa'}>{t('submit')}</Text>
                   </ApplyButton>
                 </View>
               </>

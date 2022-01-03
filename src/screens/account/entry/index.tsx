@@ -10,22 +10,26 @@ import debounce from 'lodash.debounce'
 
 import { Logo } from '@/components/logo'
 import Text from '@/components/Text'
-import { initiateState, reducer } from '@/state'
+import { initiateState, reducer, UPDATE_DEVICEID, UPDATE_GPS, UPDATE_VESIONID } from '@/state'
 import styles from './style'
 import { REGEX_PHONE } from '@/utils/reg'
 import { DEBOUNCE_WAIT, DEBOUNCE_OPTIONS } from '@/utils/constant'
 import { Input } from '@components/form/FormItem'
 import { Color } from '@/styles/color'
-import { queryBrand } from '@/services/apply'
+import AppModule from '@/modules/AppModule'
+import RNAdvertisingId from 'react-native-advertising-id'
+import DeviceInfo from 'react-native-device-info'
+import { usePersmission } from '@/utils/permission'
+import { useLoction } from '@/hooks/useLocation'
 
 interface FormModel {
   phone: string
 }
 
 export const EntryScreen = ({ navigation }: NativeStackHeaderProps) => {
-  const [state] = useReducer(reducer, initiateState)
+  usePersmission()
+  const [state, dispatch] = useReducer(reducer, initiateState)
   const { t } = useTranslation()
-
   const schema = Yup.object().shape({
     phone: Yup.string()
       .min(10, t('field.short', { field: 'Phone' }))
@@ -43,10 +47,40 @@ export const EntryScreen = ({ navigation }: NativeStackHeaderProps) => {
     DEBOUNCE_OPTIONS
   )
   useEffect(() => {
-    queryBrand().then(res => {
-      console.log(res)
+    const versionID = AppModule.getVersionID()
+    dispatch({
+      type: UPDATE_VESIONID,
+      versionID,
     })
+    //FIXME
+    async function query() {
+      RNAdvertisingId.getAdvertisingId()
+        .then(({ advertisingId }: { advertisingId: string }) => {
+          dispatch({
+            type: UPDATE_DEVICEID,
+            deviceId: advertisingId,
+          })
+        })
+        .catch((e: any) => {
+          console.error('googleID', e)
+          DeviceInfo.getAndroidId().then(id => {
+            dispatch({
+              type: UPDATE_DEVICEID,
+              deviceId: id,
+            })
+          })
+        })
+    }
+    query()
   }, [])
+  const location = useLoction()
+  useEffect(() => {
+    dispatch({
+      type: UPDATE_GPS,
+      gps: `${location.latitude},${location.longitude}`,
+    })
+  }, [location])
+
   return (
     <SafeAreaView style={styles.flex1}>
       <StatusBar translucent backgroundColor="transparent" />

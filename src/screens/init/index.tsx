@@ -3,7 +3,7 @@ import { View, Text, StatusBar, ImageBackground } from 'react-native'
 import AppIntroSlider from 'react-native-app-intro-slider'
 import styles from './style'
 import { setStorageItem } from '@/utils/storage'
-import { initiateState, reducer, UPDATE_IS_FIRST } from '@/state'
+import { initiateState, reducer, UPDATE_HAS_INIT } from '@/state'
 import { Color } from '@/styles/color'
 import { useTranslation } from 'react-i18next'
 import emitter from '@/eventbus'
@@ -62,7 +62,7 @@ export default function Init() {
         doneLabel={t('done')}
         onDone={() => {
           setStorageItem('hasInit', true)
-          dispatch({ type: UPDATE_IS_FIRST, hasInit: true })
+          dispatch({ type: UPDATE_HAS_INIT, hasInit: true })
           emitter.emit('FIRST_INIT', true)
         }}
       />

@@ -15,6 +15,8 @@ target 'moneyya' do
 
   pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
 
+  pod 'react-native-advertising-id', :path => '../node_modules/react-native-advertising-id'
+
   target 'moneyyaTests' do
     inherit! :complete
     # Pods for testing

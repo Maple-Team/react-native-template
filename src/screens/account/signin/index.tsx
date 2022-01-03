@@ -10,13 +10,14 @@ import { Logo } from '@/components/logo'
 import Text from '@/components/Text'
 import { initiateState, reducer } from '@/state'
 import styles from './style'
-import { REGEX_PHONE } from '@/utils/reg'
+import { REGEX_PHONE, REGEX_VALIDATE_CODE } from '@/utils/reg'
 import { DEBOUNCE_WAIT, DEBOUNCE_OPTIONS } from '@/utils/constant'
 import { useNavigation } from '@react-navigation/native'
 import type { AccountStackParamList } from '@navigation/accountStack'
 import { Input, PasswordInput, ValidateCode, ApplyButton } from '@components/form/FormItem'
 import { useTranslation } from 'react-i18next'
 import { Color } from '@/styles/color'
+import { login } from '@/services/user'
 
 interface PwdFormModel {
   phone: string
@@ -28,11 +29,12 @@ interface ValidateCodeFormModel {
 }
 
 export const SigninScreen = () => {
-  const tabs = [{ title: 'Password login' }, { title: 'Verification code login' }]
+  const { t } = useTranslation()
+  const tabs = [{ title: t('Password.login') }, { title: t('Verification.code.login') }]
   const tabPanels = [<PasswdTab />, <ValidTab />]
   const [index, setIndex] = useState<number>(0)
-  const { t } = useTranslation()
   const navigation = useNavigation<SignInScreenProp>()
+
   return (
     <SafeAreaView style={styles.flex1}>
       <StatusBar translucent={false} backgroundColor={Color.primary} barStyle="default" />
@@ -90,12 +92,17 @@ const PasswdTab = () => {
       .required(t('phone.required')),
     password: Yup.string().required(t('password.required')),
   })
-  const initialValue = useMemo<PwdFormModel>(() => ({ phone: '', password: '' }), [])
+  const initialValue = useMemo<PwdFormModel>(() => ({ phone: '9868965898', password: '' }), [])
   const onSubmit = debounce(
     (values: PwdFormModel) => {
-      console.log(values)
-      navigation.navigate('SignIn')
-      //TODO
+      login({
+        ...values,
+        gps: state.header.gps,
+        deviceId: state.header.deviceId,
+        loginType: 'PWD_LOGIN',
+      }).then(res => {
+        console.log(res, navigation)
+      })
     },
     DEBOUNCE_WAIT,
     DEBOUNCE_OPTIONS
@@ -117,6 +124,7 @@ const PasswdTab = () => {
               onClear={() => setFieldValue('phone', '')}
               placeholder={t('phone.placeholder')}
               error={errors.phone}
+              keyboardType="phone-pad"
             />
             <PasswordInput
               field="password"
@@ -140,11 +148,11 @@ const PasswdTab = () => {
             </Pressable>
           </View>
           <ApplyButton
-            type={isValid ? 'primary' : undefined}
+            type={isValid ? 'primary' : 'ghost'}
             handleSubmit={handleSubmit}
             // loading={state}
             disabled={state.loading.effects.LOGIN}>
-            <Text>{t('submit')}</Text>
+            <Text color={isValid ? '#fff' : '#aaa'}>{t('submit')}</Text>
           </ApplyButton>
         </View>
       )}
@@ -163,16 +171,25 @@ const ValidTab = () => {
       .matches(REGEX_PHONE, t('phone.invalid'))
       .required(t('phone.required')),
     validateCode: Yup.string()
-      .min(6, t('field.short', { field: 'Validate Code' }))
-      .max(6, t('field.long', { field: 'Validate Code' }))
-      .matches(REGEX_PHONE, t('validateCode.invalid'))
-      .required(t('phone.required')),
+      .min(4, t('field.short', { field: 'Validate Code' }))
+      .max(4, t('field.long', { field: 'Validate Code' }))
+      .required(t('validateCode.required'))
+      .matches(REGEX_VALIDATE_CODE, t('validateCode.invalid')),
   })
-  const initialValue = useMemo<ValidateCodeFormModel>(() => ({ phone: '', validateCode: '' }), [])
+  const initialValue = useMemo<ValidateCodeFormModel>(
+    () => ({ phone: '9868965898', validateCode: '' }),
+    []
+  )
   const onSubmit = debounce(
     (values: ValidateCodeFormModel) => {
-      console.log(values)
-      navigation.navigate('SignIn')
+      login({
+        ...values,
+        gps: state.header.gps,
+        deviceId: state.header.deviceId,
+        loginType: 'CODE_LOGIN',
+      }).then(res => {
+        console.log(res, navigation)
+      })
     },
     DEBOUNCE_WAIT,
     DEBOUNCE_OPTIONS
@@ -193,8 +210,8 @@ const ValidTab = () => {
               onClear={() => setFieldValue('phone', '')}
               placeholder={t('phone.placeholder')}
               error={errors.phone}
+              keyboardType="phone-pad"
             />
-
             <ValidateCode
               field="validateCode"
               label={t('validateCode.label')}
@@ -205,6 +222,7 @@ const ValidTab = () => {
               error={errors.validateCode}
               validateCodeType="LOGIN"
               phone={values.phone}
+              keyboardType="number-pad"
             />
           </View>
           <ApplyButton
@@ -212,7 +230,7 @@ const ValidTab = () => {
             handleSubmit={handleSubmit}
             // loading={state}
             disabled={state.loading.effects.LOGIN}>
-            <Text>{t('signin')}</Text>
+            <Text color={isValid ? '#fff' : '#aaa'}>{t('signin')}</Text>
           </ApplyButton>
         </View>
       )}

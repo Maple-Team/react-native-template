@@ -40,7 +40,7 @@ export const ValidateCode = ({
 }: InputProps) => {
   const { t } = useTranslation()
   const [count, setCount] = useState<number>(60)
-  const [times, setTimtes] = useState<number>(3)
+  const [times, setTimtes] = useState<number>(300) //FIXME
   const [isPlaying, setPlaying] = useState<boolean>(false)
 
   const handlePress = debounce(
@@ -78,7 +78,7 @@ export const ValidateCode = ({
       <View style={styles.inputWrap}>
         <TextInput
           onChangeText={onChangeText}
-          maxLength={6}
+          maxLength={4}
           value={value}
           placeholder={placeholder}
           keyboardType={keyboardType}
@@ -109,7 +109,7 @@ export const ValidateCode = ({
           )}
           {count !== 60 ? (
             <>
-              {times <= 0 ? (
+              {times >= 0 ? (
                 <Pressable style={[styles.validBtnWrap, styles.validBtnWrapDisabled]}>
                   <Text color="#aaa" styles={[styles.validBtn, styles.validBtnDisabled]}>
                     {t('validateCode.wait', { num: count })}
@@ -133,11 +133,7 @@ export const ValidateCode = ({
         </View>
       </View>
       <ErrorMessage name={field}>
-        {msg => (
-          <Text color="red" styles={[styles.warn, styles.error]}>
-            {msg}
-          </Text>
-        )}
+        {msg => <Text styles={[styles.warn, styles.error]}>{msg}</Text>}
       </ErrorMessage>
     </View>
   )

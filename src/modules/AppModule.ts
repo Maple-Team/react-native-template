@@ -16,5 +16,6 @@ interface AppModuleInterface {
    * 获取baseURL
    */
   getBaseUrl(): string
+  getVersionID(): string
 }
 export default AppModule as AppModuleInterface

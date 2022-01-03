@@ -18,6 +18,7 @@ export default StyleSheet.create<{
   error: TextStyle
   btnWrap: ViewStyle
   btn: ViewStyle
+  btnInvalid: ViewStyle
   btnText: TextStyle
 }>({
   formItem: {
@@ -99,6 +100,10 @@ export default StyleSheet.create<{
     alignItems: 'center',
     justifyContent: 'center',
     borderColor: Color.primary,
+  },
+  btnInvalid: {
+    backgroundColor: '#eee',
+    borderColor: '#eee',
   },
   btnText: {
     color: '#fff',

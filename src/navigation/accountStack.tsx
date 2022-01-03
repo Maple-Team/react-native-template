@@ -1,6 +1,6 @@
 import { useEventListener } from '@/hooks/useListener'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { SigninScreen, EntryScreen, SignupScreen, ResetScreen } from '@/screens/account'
 // import { useQuery } from 'react-query'
 // import { queryBrand } from '@/services/apply'
@@ -8,6 +8,7 @@ import { Provider } from '@ant-design/react-native'
 import { useTranslation } from 'react-i18next'
 import { Color } from '@/styles/color'
 import { HeaderLeft } from '@components/header'
+import emitter from '@/eventbus'
 
 export type AccountStackParamList = {
   Entry: undefined
@@ -20,6 +21,11 @@ const Stack = createNativeStackNavigator<AccountStackParamList>()
 function AccountStack() {
   const { t } = useTranslation()
   useEventListener()
+  useEffect(() => {
+    emitter.on('LOGIN_SUCCESS', () => {
+      emitter.emit('SHOW_MESSAGE', { type: 'success', message: t('login.success') })
+    })
+  }, [t])
 
   // const query = useQuery('brand', queryBrand)
   // console.log('brand', query.data)

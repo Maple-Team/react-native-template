@@ -28,7 +28,7 @@ export const PasswordInput = ({
   onToggle,
   error,
   label,
-  showPwd,
+  showPwd = false,
   placeholder,
   keyboardType,
 }: InputProps) => {
@@ -44,7 +44,7 @@ export const PasswordInput = ({
           keyboardType={keyboardType}
           onFocus={onFocus}
           onBlur={onBlur}
-          secureTextEntry={showPwd}
+          secureTextEntry={!showPwd}
           style={[styles.input, error ? { borderBottomColor: 'red' } : {}]}
           placeholderTextColor={'rgba(156, 171, 185, 1)'}
         />
