@@ -1,8 +1,7 @@
 import React from 'react'
 import { View, ImageBackground, Image, Pressable } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { Text } from '@/components'
-import { Header } from '../order/list'
+import { TabHeader, Text } from '@/components'
 
 export function UserCenter() {
   return (
@@ -15,7 +14,7 @@ export function UserCenter() {
             style={{
               height: 309,
             }}>
-            <Header
+            <TabHeader
               title={require('@/assets/images/common/active/moneyya.webp')}
               notice={require('@/assets/images/common/active/notice.webp')}
               help={require('@/assets/images/common/active/help.webp')}
@@ -42,7 +41,9 @@ export function UserCenter() {
           ].map(({ img, title }) => (
             <Pressable key={title}>
               <Image source={img} resizeMode="cover" style={{ marginBottom: 14.5 }} />
-              <Text>{title}</Text>
+              <Text fontSize={16} color="rgba(51, 50, 48, 1)">
+                {title}
+              </Text>
             </Pressable>
           ))}
         </View>
@@ -81,7 +82,9 @@ export function UserCenter() {
                     borderStyle: 'dashed',
                     borderBottomColor: 'rgba(230, 241, 248, 1)',
                   }}>
-                  <Text>{title}</Text>
+                  <Text fontSize={15} color="rgba(51, 50, 48, 1)">
+                    {title}
+                  </Text>
                   <Image
                     resizeMode="cover"
                     source={require('@/assets/images/user-center/right.webp')}

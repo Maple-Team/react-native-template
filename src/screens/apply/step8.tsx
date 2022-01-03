@@ -45,8 +45,12 @@ export const Step8 = ({ navigation }: NativeStackHeaderProps) => {
               resizeMode="stretch"
               style={{ width: '100%', height: 159 }}>
               <View style={{ alignItems: 'center', paddingTop: 23.5 }}>
-                <Text>$6600</Text>
-                <Text>Loan Amount</Text>
+                <Text fontSize={25} fontWeight="bold" color="#fff">
+                  $6600
+                </Text>
+                <Text fontSize={13} color="#fff">
+                  Loan Amount
+                </Text>
                 <Slider
                   containerStyle={{ width: 330, height: 34 }}
                   minimumValue={3000}
@@ -69,8 +73,12 @@ export const Step8 = ({ navigation }: NativeStackHeaderProps) => {
                   justifyContent: 'space-between',
                   paddingHorizontal: 20,
                 }}>
-                <Text>3000</Text>
-                <Text>10000</Text>
+                <Text fontSize={11} color="#fff">
+                  3000
+                </Text>
+                <Text fontSize={11} color="#fff">
+                  10000
+                </Text>
               </View>
             </ImageBackground>
             <View
@@ -88,7 +96,9 @@ export const Step8 = ({ navigation }: NativeStackHeaderProps) => {
               <RightBottomDot />
               <RightTopDot />
               <View style={{ alignItems: 'center', paddingBottom: 24.5 }}>
-                <Text>Loan Days</Text>
+                <Text fontSize={15} color={Color.primary}>
+                  Loan Days
+                </Text>
               </View>
               <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
                 {[7, 15, 90, 150].map(item => (
@@ -100,7 +110,9 @@ export const Step8 = ({ navigation }: NativeStackHeaderProps) => {
                       paddingHorizontal: 33,
                       paddingVertical: 12.5,
                     }}>
-                    <Text>{`${item}`.padStart(2, '0')}</Text>
+                    <Text fontSize={13} color="#fff">
+                      {`${item}`.padStart(2, '0')}
+                    </Text>
                   </Pressable>
                 ))}
               </View>
@@ -113,7 +125,9 @@ export const Step8 = ({ navigation }: NativeStackHeaderProps) => {
                 borderStyle: 'dashed',
                 alignItems: 'center',
               }}>
-              <Text>Loan information</Text>
+              <Text fontSize={15} color={Color.primary}>
+                Loan information
+              </Text>
               <LeftBottomDot />
               <RightBottomDot />
               <ListInfo
@@ -127,12 +141,16 @@ export const Step8 = ({ navigation }: NativeStackHeaderProps) => {
               />
               <View style={{ paddingTop: 13, paddingBottom: 29.5 }}>
                 <Pressable style={{ alignItems: 'flex-start' }}>
-                  <Text>{'->'}Click here to modify bank card</Text>
+                  <Text fontSize={10} color={Color.primary}>
+                    {'->'}Click here to modify bank card
+                  </Text>
                 </Pressable>
               </View>
             </View>
             <View style={{ alignItems: 'center' }}>
-              <Text>Bill information</Text>
+              <Text fontSize={15} color={Color.primary}>
+                Bill information
+              </Text>
               <ListInfo
                 data={[
                   { name: 'First repayment date ', value: '261800', type: 'date' },
@@ -142,7 +160,20 @@ export const Step8 = ({ navigation }: NativeStackHeaderProps) => {
                     name: 'Second repayment amount ',
                     value: '261800',
                     type: 'money',
-                    extra: <Text>Free</Text>,
+                    extra: (
+                      <View
+                        style={{
+                          paddingHorizontal: 7,
+                          paddingVertical: 6,
+                          backgroundColor: Color.primary,
+                          borderRadius: 5,
+                          marginLeft: 9,
+                        }}>
+                        <Text fontSize={12} fontWeight="bold" color="#fff">
+                          Free
+                        </Text>
+                      </View>
+                    ),
                   },
                 ]}
               />
@@ -155,7 +186,9 @@ export const Step8 = ({ navigation }: NativeStackHeaderProps) => {
               handleSubmit={() => {}}
               // loading={state}
             >
-              <Text styles={{ color: '#fff' }}>{t('submit')}</Text>
+              <Text color="#fff" fontSize={19} fontFamily="Arial-BoldMT" fontWeight="bold">
+                {t('submit')}
+              </Text>
             </ApplyButton>
           </View>
         </View>
@@ -238,10 +271,18 @@ const ListInfo = ({
             borderStyle: 'dashed',
             paddingVertical: 10,
           }}>
-          <Text>
-            <Text>{item.name}</Text>
-            {item.extra}
-          </Text>
+          {item.extra ? (
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Text fontSize={12} color="rgba(132, 135, 137, 1)">
+                {item.name}
+              </Text>
+              {item.extra}
+            </View>
+          ) : (
+            <Text fontSize={12} color="rgba(132, 135, 137, 1)">
+              {item.name}
+            </Text>
+          )}
           <ValueText value={item.value} type={item.type} />
         </View>
       ))}
@@ -252,12 +293,28 @@ const ListInfo = ({
 const ValueText = ({ value, type }: { value: string; type: ValueType }) => {
   switch (type) {
     case 'bank':
-      return <Text>{value}***</Text>
+      return (
+        <Text fontSize={12} color="rgba(28, 37, 42, 1)">
+          {value}***
+        </Text>
+      )
     case 'day':
-      return <Text>{value}days</Text>
+      return (
+        <Text fontSize={12} color="rgba(28, 37, 42, 1)">
+          {value}days
+        </Text>
+      )
     case 'money':
-      return <Text>${value}</Text>
+      return (
+        <Text fontSize={12} color="rgba(28, 37, 42, 1)">
+          ${value}
+        </Text>
+      )
     default:
-      return <Text>{value}</Text>
+      return (
+        <Text fontSize={12} color="rgba(28, 37, 42, 1)">
+          {value}
+        </Text>
+      )
   }
 }

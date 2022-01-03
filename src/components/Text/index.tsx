@@ -47,7 +47,8 @@ const getFontFamily = (baseFontFamily: string, styles = {}) => {
   if (baseFontFamily === 'Arial-BoldMT' && Platform.OS === 'android') {
     return baseFontFamily
   }
-  const { fontWeight, fontStyle } = styles
+  const { fontWeight, fontStyle } = styles as TextStyle
+  //@ts-ignore
   const font = fonts[baseFontFamily]
   const weight = fontWeight ? font.fontWeights[fontWeight] : font.fontWeights.normal
   const style = fontStyle ? font.fontStyles[fontStyle] : font.fontStyles.normal
@@ -58,16 +59,18 @@ const getFontFamily = (baseFontFamily: string, styles = {}) => {
 }
 
 // 过滤 fontWeight fontStyle 属性, 生成新的 style 对象
-const omit = (obj, keys) => {
+
+const omit = (obj: { [x: string]: any }, keys: string | string[]) => {
   return Object.keys(obj).reduce((result, key) => {
     if (!keys.includes(key)) {
+      //@ts-ignore
       result[key] = obj[key]
     }
 
     return result
   }, {})
 }
-
+//@ts-ignore
 export const AppText = ({ style, ...props }) => {
   // Text style
   let resolvedStyle = StyleSheet.flatten(style) || {} // Note 处理未指定样式的Text组件
@@ -90,12 +93,22 @@ export default ({
   children,
   styles,
   onPress,
+  fontSize,
+  fontWeight,
+  fontFamily,
+  color,
 }: {
   children: any
   styles?: RegisteredStyle<TextStyle> | RegisteredStyle<TextStyle>[]
   onPress?: () => void
+  fontSize: number
+  fontWeight?: 'bold'
+  color?: string
+  fontFamily?: string
 }) => (
-  <Text style={[textStyle.text, styles]} onPress={onPress}>
+  <Text
+    style={[textStyle.text, styles, { fontSize, color, fontWeight, fontFamily }]}
+    onPress={onPress}>
     {children}
   </Text>
 )

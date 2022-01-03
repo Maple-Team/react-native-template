@@ -5,11 +5,10 @@ import StyleSheet from 'react-native-adaptive-stylesheet'
 export default StyleSheet.create<{
   scroll: ViewStyle
   container: ViewStyle
-  form: ViewStyle
+  loanInfo: ViewStyle
   btnWrap: ViewStyle
   ad: ViewStyle
   adTextWrap: ViewStyle
-  adText: TextStyle
   sliderItem: ViewStyle
   sliderAd: ViewStyle
   sliderContent: ViewStyle
@@ -17,6 +16,7 @@ export default StyleSheet.create<{
   textWrap: ViewStyle
   sliderTitle: TextStyle
   sliderSubTitle: TextStyle
+  cashWrap: ViewStyle
 }>({
   scroll: {
     flex: 1,
@@ -29,14 +29,11 @@ export default StyleSheet.create<{
     paddingBottom: 200 - 14 - 50,
     alignItems: 'center',
   },
-  form: {
-    flex: 1,
-    paddingHorizontal: 27.5,
-    backgroundColor: '#fff',
-    paddingVertical: 10,
-    borderRadius: 15,
+  loanInfo: {
+    alignItems: 'center',
+    paddingHorizontal: 10,
     width: '100%',
-    paddingBottom: 120,
+    top: -40,
   },
   ad: {
     paddingHorizontal: 10,
@@ -47,9 +44,7 @@ export default StyleSheet.create<{
     alignItems: 'center',
     marginBottom: 15,
   },
-  adText: {
-    fontSize: 18,
-  },
+
   btnWrap: {
     alignItems: 'center',
     bottom: -40,
@@ -93,13 +88,22 @@ export default StyleSheet.create<{
   },
   sliderTitle: {
     color: Color.primary,
-    fontSize: 16,
     marginBottom: 12.5,
     fontFamily: 'Aller',
   },
   sliderSubTitle: {
     color: 'rgba(123, 123, 123, 1)',
-    fontSize: 16,
     fontFamily: 'Aller',
+  },
+  cashWrap: {
+    bottom: 160 + 17,
+    zIndex: 99,
+    backgroundColor: '#fff',
+    width: 63 + 9 * 2,
+    height: 63 + 9 * 2,
+    borderRadius: (63 + 9 * 2) / 2,
+    alignItems: 'center',
+    position: 'absolute',
+    justifyContent: 'center',
   },
 })

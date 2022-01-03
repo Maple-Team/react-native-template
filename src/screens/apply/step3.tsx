@@ -7,7 +7,7 @@ import { Formik } from 'formik'
 import * as Yup from 'yup'
 import debounce from 'lodash.debounce'
 
-import { PageStyles, Text, Hint } from '@/components'
+import { PageStyles, Text } from '@/components'
 import { REGEX_PHONE } from '@/utils/reg'
 import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT } from '@/utils/constant'
 import { ApplyButton, IdcardPhotoPicker } from '@components/form/FormItem'
@@ -70,7 +70,9 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                     handleSubmit={handleSubmit}
                     // loading={state}
                   >
-                    <Text styles={{ color: '#fff' }}>{t('submit')}</Text>
+                    <Text fontSize={18} color="#fff">
+                      {t('submit')}
+                    </Text>
                   </ApplyButton>
                 </View>
               </>

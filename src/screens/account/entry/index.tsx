@@ -1,6 +1,6 @@
 import { NativeStackHeaderProps } from '@react-navigation/native-stack'
 import React, { useEffect, useMemo, useReducer, useState } from 'react'
-import { View, Image, SafeAreaView, TextInput, Pressable, StatusBar } from 'react-native'
+import { View, Image, SafeAreaView, TextInput, Pressable } from 'react-native'
 import { Button } from '@ant-design/react-native'
 import { useTranslation } from 'react-i18next'
 import { ScrollView } from 'react-native-gesture-handler'
@@ -17,7 +17,6 @@ import { DEBOUNCE_WAIT, DEBOUNCE_OPTIONS } from '@/utils/constant'
 import Behavior from '@/utils/behavior'
 import { getStorageValue } from '@/utils/storage'
 import type { BehaviorModel } from '@/typings/behavior'
-import { Color } from '@/styles/color'
 
 interface FormModel {
   phone: string
@@ -73,7 +72,9 @@ export const EntryScreen = ({ navigation }: NativeStackHeaderProps) => {
                 {({ handleChange, handleSubmit, values, setFieldValue, errors }) => (
                   <>
                     <View style={styles.formItem}>
-                      <Text styles={styles.label}>{t('phone.label')}</Text>
+                      <Text fontSize={15} styles={styles.label}>
+                        {t('phone.label')}
+                      </Text>
                       <View style={styles.inputWrap}>
                         <TextInput
                           onChangeText={handleChange('phone')}

@@ -28,25 +28,8 @@ export function Step1() {
             }}>
             <TabHeader />
           </ImageBackground>
-          <View
-            style={{
-              alignItems: 'center',
-              paddingHorizontal: 10,
-              width: '100%',
-              top: -40,
-            }}>
-            <View
-              style={{
-                bottom: 160,
-                zIndex: 99,
-                backgroundColor: '#fff',
-                width: 63 + 9 * 2,
-                height: 63 + 9 * 2,
-                borderRadius: (63 + 9 * 2) / 2,
-                alignItems: 'center',
-                position: 'absolute',
-                justifyContent: 'center',
-              }}>
+          <View style={stepStyles.loanInfo}>
+            <View style={stepStyles.cashWrap}>
               <Image source={require('@/assets/images/apply/cash.webp')} resizeMode="cover" />
             </View>
             <View
@@ -63,22 +46,45 @@ export function Step1() {
                 borderColor: 'rgba(216, 222, 236, 1)',
                 borderWidth: 1,
               }}>
-              <Text styles={{ fontSize: 14 }}>Available balance</Text>
-              <Text styles={{ fontSize: 57 }}>
-                <Text styles={{ fontSize: 22 }}>$ </Text>6600
+              <Text fontSize={14} color="rgba(1, 0, 56, 1)">
+                Available balance
               </Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'flex-start',
+                }}>
+                <Text
+                  fontSize={22}
+                  fontWeight="bold"
+                  color={Color.primary}
+                  //@ts-ignore
+                  styles={{ top: 12 }}>
+                  $
+                </Text>
+                <Text fontSize={57} color={Color.primary} fontWeight="bold">
+                  6,600
+                </Text>
+              </View>
               <Button
                 onPress={() => navigation.navigate('Step8')}
                 type="primary"
-                style={{ backgroundColor: Color.primary, width: '100%', borderRadius: 9 }}>
-                Continue Loan
+                style={{
+                  marginTop: 17,
+                  backgroundColor: Color.primary,
+                  width: '100%',
+                  borderRadius: 9,
+                }}>
+                <Text fontSize={18} color="#fff" fontWeight="bold">
+                  Continue Loan
+                </Text>
               </Button>
             </View>
           </View>
         </View>
         <View style={stepStyles.ad}>
           <View style={stepStyles.adTextWrap}>
-            <Text styles={stepStyles.adText}>Easy steps to get and pay for a loan:</Text>
+            <Text fontSize={18}>Easy steps to get and pay for a loan:</Text>
           </View>
           <Slider />
         </View>
@@ -104,8 +110,12 @@ const Slider = () => (
             <Image source={item.ad} resizeMode="cover" />
           </View>
           <View style={stepStyles.textWrap}>
-            <Text styles={stepStyles.sliderTitle}>{item.title}</Text>
-            <Text styles={stepStyles.sliderSubTitle}>{item.text}</Text>
+            <Text fontSize={16} styles={stepStyles.sliderTitle}>
+              {item.title}
+            </Text>
+            <Text fontSize={16} styles={stepStyles.sliderSubTitle}>
+              {item.text}
+            </Text>
           </View>
           <View style={stepStyles.numWrap}>
             <Image source={item.num} resizeMode="cover" />
