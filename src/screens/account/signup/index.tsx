@@ -44,9 +44,9 @@ export const SignupScreen = ({ navigation }: NativeStackHeaderProps) => {
   }
   const initialValue = useMemo<Model>(
     () => ({
-      phone: '',
-      password: '',
-      comfirmPassword: '',
+      phone: '9868965898',
+      password: 'a123456',
+      comfirmPassword: 'a123456',
       validateCode: '',
       hasAgree: undefined,
     }),

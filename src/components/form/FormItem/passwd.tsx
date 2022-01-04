@@ -8,7 +8,7 @@ import { ErrorMessage } from 'formik'
 interface InputProps {
   onChangeText: (text: string) => void
   onClear: () => void
-  value: string
+  value?: string
   error?: string
   onFocus?: () => void
   onBlur?: () => void

@@ -31,7 +31,7 @@ api.interceptors.request.use(
     const headers = config.headers as unknown as CommonHeader // FIXME
     if (headers) {
       headers.inputChannel = (await AsyncStorage.getItem('inputChannel')) || 'moneyya'
-      headers.deviceId = (await AsyncStorage.getItem('deviceId')) || ''
+      headers.deviceId = (await AsyncStorage.getItem('deviceId')) || '22'
       headers.gps = (await AsyncStorage.getItem('gps')) || '0,0'
       headers.merchantId = (await AsyncStorage.getItem('merchantId')) || 'xx'
       headers.source = 'APP'
@@ -55,6 +55,7 @@ api.interceptors.request.use(
 
 api.interceptors.response.use(
   (response: AxiosResponse) => {
+    __DEV__ && console.log('data', response.config.data)
     const {
       status: { code, msg, msgCn },
       body,

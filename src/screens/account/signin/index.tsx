@@ -8,7 +8,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
 
 import { Logo } from '@/components/logo'
 import Text from '@/components/Text'
-import { initiateState, reducer } from '@/state'
+import { initiateState, reducer, UPDATE_TOKEN } from '@/state'
 import styles from './style'
 import { REGEX_PHONE, REGEX_VALIDATE_CODE } from '@/utils/reg'
 import { DEBOUNCE_WAIT, DEBOUNCE_OPTIONS } from '@/utils/constant'
@@ -18,15 +18,8 @@ import { Input, PasswordInput, ValidateCode, ApplyButton } from '@components/for
 import { useTranslation } from 'react-i18next'
 import { Color } from '@/styles/color'
 import { login } from '@/services/user'
-
-interface PwdFormModel {
-  phone: string
-  password: string
-}
-interface ValidateCodeFormModel {
-  phone: string
-  validateCode: string
-}
+import emitter from '@/eventbus'
+import { LoginParameter } from '@/typings/request'
 
 export const SigninScreen = () => {
   const { t } = useTranslation()
@@ -81,7 +74,7 @@ export const SigninScreen = () => {
 type SignInScreenProp = NativeStackNavigationProp<AccountStackParamList, 'SignIn'>
 
 const PasswdTab = () => {
-  const [state] = useReducer(reducer, initiateState)
+  const [state, dispatch] = useReducer(reducer, initiateState)
   const navigation = useNavigation<SignInScreenProp>()
   const { t } = useTranslation()
   const schema = Yup.object().shape({
@@ -92,16 +85,23 @@ const PasswdTab = () => {
       .required(t('phone.required')),
     password: Yup.string().required(t('password.required')),
   })
-  const initialValue = useMemo<PwdFormModel>(() => ({ phone: '9868965898', password: '' }), [])
+  const initialValue = useMemo<Pick<LoginParameter, 'password' | 'phone'>>(
+    () => ({ phone: '9868965898', password: '' }),
+    []
+  )
   const onSubmit = debounce(
-    (values: PwdFormModel) => {
+    (values: Pick<LoginParameter, 'password' | 'phone'>) => {
       login({
         ...values,
         gps: state.header.gps,
         deviceId: state.header.deviceId,
         loginType: 'PWD_LOGIN',
       }).then(res => {
-        console.log(res, navigation)
+        dispatch({
+          type: UPDATE_TOKEN,
+          token: res.accessToken,
+        })
+        emitter.emit('LOGIN_SUCCESS', res)
       })
     },
     DEBOUNCE_WAIT,
@@ -109,7 +109,7 @@ const PasswdTab = () => {
   )
   const [showPwd, setShowPwd] = useState<boolean>(false)
   return (
-    <Formik<PwdFormModel>
+    <Formik<Pick<LoginParameter, 'phone' | 'password'>>
       initialValues={initialValue}
       onSubmit={onSubmit}
       validationSchema={schema}>
@@ -176,12 +176,12 @@ const ValidTab = () => {
       .required(t('validateCode.required'))
       .matches(REGEX_VALIDATE_CODE, t('validateCode.invalid')),
   })
-  const initialValue = useMemo<ValidateCodeFormModel>(
-    () => ({ phone: '9868965898', validateCode: '' }),
+  const initialValue = useMemo<Pick<LoginParameter, 'phone' | 'code'>>(
+    () => ({ phone: '9868965898', code: '' }),
     []
   )
   const onSubmit = debounce(
-    (values: ValidateCodeFormModel) => {
+    (values: Pick<LoginParameter, 'code' | 'phone'>) => {
       login({
         ...values,
         gps: state.header.gps,
@@ -195,7 +195,7 @@ const ValidTab = () => {
     DEBOUNCE_OPTIONS
   )
   return (
-    <Formik<ValidateCodeFormModel>
+    <Formik<Pick<LoginParameter, 'phone' | 'code'>>
       initialValues={initialValue}
       onSubmit={onSubmit}
       validationSchema={schema}>
@@ -213,13 +213,13 @@ const ValidTab = () => {
               keyboardType="phone-pad"
             />
             <ValidateCode
-              field="validateCode"
+              field="code"
               label={t('validateCode.label')}
-              onChangeText={handleChange('validateCode')}
-              value={values.validateCode}
-              onClear={() => setFieldValue('validateCode', '')}
+              onChangeText={handleChange('code')}
+              value={values.code}
+              onClear={() => setFieldValue('code', '')}
               placeholder={t('validateCode.placeholder')}
-              error={errors.validateCode}
+              error={errors.code}
               validateCodeType="LOGIN"
               phone={values.phone}
               keyboardType="number-pad"

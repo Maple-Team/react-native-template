@@ -30,13 +30,13 @@ interface State {
  */
 export const initiateState: State = {
   header: {
-    versionId: '',
+    versionId: 'debug',
     merchantId: 'xx',
     inputChannel: 'Moneyya',
     source: 'APP',
     channel: 'mk',
-    gps: '',
-    deviceId: '',
+    gps: '0,0',
+    deviceId: 'sd',
     accessToken: '',
   },
   loading: {

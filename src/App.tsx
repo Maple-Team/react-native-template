@@ -17,7 +17,7 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 // import NetInfo from '@react-native-community/netinfo'
 // import { onlineManager } from 'react-query'
 import * as RNLocalize from 'react-native-localize'
-import BottomTabNavigator from '@/navigation/bottomTab'
+import { BottomApplyStack } from '@/navigation/applyStack'
 import AccountStack from '@/navigation/accountStack'
 import { initiateState, reducer } from '@/state'
 import i18n, { getI18nConfig } from '@/locales/i18n'
@@ -63,7 +63,7 @@ const PERSISTENCE_KEY = 'NAVIGATION_STATE'
 
 const App = () => {
   const [state] = useReducer(reducer, initiateState)
-
+  const [token, setToken] = useState<string>(state.header.accessToken)
   useEffect(() => {
     SplashScreen.hide()
   }, [])
@@ -102,10 +102,21 @@ const App = () => {
       setHasInit(!first)
     })
   }, [])
+  useEffect(() => {
+    emitter.on('LOGIN_SUCCESS', u => {
+      setToken(u?.accessToken || '')
+    })
+  }, [])
+  useEffect(() => {
+    async function getToken() {
+      const t = ((await getStorageValue('accessToken')) || '') as string
+      setToken(t)
+    }
+    getToken()
+  }, [])
   const [isReady, setIsReady] = useState(__DEV__ ? false : true)
   const [initialState, setInitialState] = useState()
   const [hasInit, setHasInit] = useState<boolean>()
-
   useEffect(() => {
     const query = async () => {
       const value = (await getStorageValue('hasInit')) as boolean
@@ -119,7 +130,6 @@ const App = () => {
     const restoreState = async () => {
       try {
         const initialUrl = await Linking.getInitialURL()
-
         if (Platform.OS !== 'web' && initialUrl == null) {
           // Only restore state if there's no deep link and we're not on web
           const savedStateString = await AsyncStorage.getItem(PERSISTENCE_KEY)
@@ -154,8 +164,8 @@ const App = () => {
             <Loading />
           ) : hasInit === true ? (
             <Init />
-          ) : state.user ? (
-            <BottomTabNavigator />
+          ) : token ? (
+            <BottomApplyStack />
           ) : (
             <AccountStack />
           )}

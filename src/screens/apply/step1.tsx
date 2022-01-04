@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useReducer } from 'react'
 import { View, Image, StatusBar, ImageBackground } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
@@ -10,9 +10,32 @@ import { Button } from '@ant-design/react-native'
 import { Color } from '@/styles/color'
 import Swiper from 'react-native-swiper'
 import stepStyles from './step1Style'
+import { useSensor } from '@/hooks/useSensors'
+import { pv, queryBrand, queryVersion } from '@/services/apply'
+import { queryUserinfo } from '@/services/user'
+import { initiateState, reducer } from '@/state'
 
 export function Step1() {
   const navigation = useNavigation<Step1ScreenProp>()
+  const [state, dispatch] = useReducer(reducer, initiateState)
+  // const sensor = useSensor()
+  useEffect(() => {
+    queryBrand().then(res => {
+      console.log(res)
+    })
+    queryVersion().then(res => {
+      console.log(res)
+    })
+    pv()
+    queryUserinfo().then(res => {
+      console.log(res)
+      dispatch({
+        type: 'UPDATE_USERINFO',
+        user: res,
+      })
+    })
+  }, [])
+  console.log(state.user)
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar translucent={false} backgroundColor="#fff" barStyle="dark-content" />
@@ -67,7 +90,7 @@ export function Step1() {
                 </Text>
               </View>
               <Button
-                onPress={() => navigation.navigate('Step8')}
+                onPress={() => navigation.navigate('Step2')}
                 type="primary"
                 style={{
                   marginTop: 17,
@@ -103,7 +126,7 @@ const Slider = () => (
     dot={dot}
     height={232}
     activeDot={activeDot}>
-    {data.map(item => (
+    {ads.map(item => (
       <View style={stepStyles.sliderItem} key={item.title}>
         <View style={stepStyles.sliderContent}>
           <View style={stepStyles.sliderAd}>
@@ -128,7 +151,7 @@ const Slider = () => (
 
 type Step1ScreenProp = NativeStackNavigationProp<ApplyStackParamList, 'Step1'>
 
-const data = [
+const ads = [
   {
     key: 'one',
     title: 'Convenient operation',
@@ -148,7 +171,7 @@ const data = [
     title: 'Get the disbursement',
     text: 'Disbursement within 24 hours',
     ad: require('@/assets/images/apply/ad3.webp'),
-    num: require('@/assets/images/apply/2.webp'), //FIXME
+    num: require('@/assets/images/apply/3.webp'),
   },
 ]
 const dot = (

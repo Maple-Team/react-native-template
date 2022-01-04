@@ -16,7 +16,7 @@ import { REGEX_PHONE } from '@/utils/reg'
 interface InputProps {
   onChangeText: (text: string) => void
   onClear: () => void
-  value: string
+  value?: string
   error?: string
   field: string
   label: string

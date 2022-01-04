@@ -12,7 +12,7 @@ const toDegree = (radians: number) => radians * (180 / Math.PI)
 export const useSensor = () => {
   const [sensor, setSensor] = useState<Sendor>()
   const slow = useCallback(() => {
-    return () => setUpdateIntervalForType(SensorTypes.gyroscope, 5 * 1000)
+    return () => setUpdateIntervalForType(SensorTypes.gyroscope, 5 * 1000 * 2)
   }, [])
   // const fast = useCallback(() => {
   //   return () => setUpdateIntervalForType(SensorTypes.gyroscope, 400)

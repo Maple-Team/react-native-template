@@ -3,10 +3,10 @@ import { useEventListener } from '@/hooks/useListener'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import React, { useEffect } from 'react'
 import { Image } from 'react-native'
-import { ApplyStack } from './applyStack'
 import { OrderStack } from './orderStack'
 import { UserStack } from './userStack'
 import { navigate } from './rootNavigation'
+import { Step1 } from '@screens/apply'
 
 const Tab = createBottomTabNavigator()
 
@@ -31,7 +31,7 @@ function BottomTab() {
       <Tab.Screen
         name="Home"
         key="Home"
-        component={ApplyStack}
+        component={Step1}
         options={{
           headerShown: false,
           tabBarIcon: ({ focused }) => {

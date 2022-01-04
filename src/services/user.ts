@@ -34,7 +34,7 @@ export async function register(data: RegisterParameter) {
  * @returns
  */
 export async function login(data: LoginParameter) {
-  return request<LoginUser>({
+  return request<RegisterResponse>({
     url: '/smart-loan/user/login',
     method: 'POST',
     data,

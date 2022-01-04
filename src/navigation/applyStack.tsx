@@ -4,10 +4,13 @@ import { Provider } from '@ant-design/react-native'
 import { useEventListener } from '@/hooks/useListener'
 import { Color } from '@/styles/color'
 import { ImageStyle } from 'react-native'
-import { Step1, Step2, Step3, Step8 } from '@screens/apply'
+import { Step2, Step3, Step4, Step5, Step6, Step7, Step8 } from '@screens/apply'
+import type { ViewStyle } from 'react-native'
+import StyleSheet from 'react-native-adaptive-stylesheet'
+import { HeaderLeft, HeaderRight } from '@components/header'
+import BottomTab from './bottomTab'
 
 export type ApplyStackParamList = {
-  Step1: undefined
   Step2: undefined
   Step3: undefined
   Step4: undefined
@@ -25,7 +28,7 @@ export function ApplyStack() {
   return (
     <Provider>
       <Stack.Navigator
-        initialRouteName="Step1"
+        initialRouteName="Step2"
         screenOptions={() => ({
           headerStyle: {
             backgroundColor: Color.primary,
@@ -45,14 +48,6 @@ export function ApplyStack() {
           ),
         })}>
         <Stack.Group>
-          <Stack.Screen
-            key="Step1"
-            name="Step1"
-            component={Step1}
-            options={() => ({
-              headerShown: false,
-            })}
-          />
           <Stack.Screen
             key="Step2"
             name="Step2"
@@ -86,6 +81,70 @@ export function ApplyStack() {
             })}
           />
           <Stack.Screen
+            key="Step4"
+            name="Step4"
+            component={Step4}
+            options={({ navigation }) => ({
+              title: 'step3',
+              headerLeft: () => (
+                <HeaderLeft
+                  onPress={() => {
+                    navigation.goBack()
+                    // FIXME pop navigate 区别
+                  }}
+                />
+              ),
+            })}
+          />
+          <Stack.Screen
+            key="Step5"
+            name="Step5"
+            component={Step5}
+            options={({ navigation }) => ({
+              title: 'Step5',
+              headerLeft: () => (
+                <HeaderLeft
+                  onPress={() => {
+                    navigation.goBack()
+                    // FIXME pop navigate 区别
+                  }}
+                />
+              ),
+            })}
+          />
+          <Stack.Screen
+            key="Step6"
+            name="Step6"
+            component={Step6}
+            options={({ navigation }) => ({
+              title: 'Step6',
+              headerLeft: () => (
+                <HeaderLeft
+                  onPress={() => {
+                    navigation.goBack()
+                    // FIXME pop navigate 区别
+                  }}
+                />
+              ),
+            })}
+          />
+          <Stack.Screen
+            key="Step7"
+            name="Step7"
+            component={Step7}
+            options={({ navigation }) => ({
+              title: 'Step7',
+              headerLeft: () => (
+                <HeaderLeft
+                  onPress={() => {
+                    navigation.goBack()
+                    // FIXME pop navigate 区别
+                  }}
+                />
+              ),
+            })}
+          />
+          <Stack.Screen
             key="Step8"
             name="Step8"
             component={Step8}
@@ -107,14 +166,51 @@ export function ApplyStack() {
   )
 }
 
-import { ViewStyle } from 'react-native'
-import StyleSheet from 'react-native-adaptive-stylesheet'
-import { HeaderLeft, HeaderRight } from '@components/header'
-import {
-  NavigationContainerProps,
-  NavigationHelpers,
-  NavigationProp,
-} from '@react-navigation/native'
+export function BottomApplyStack() {
+  return (
+    <Provider>
+      <Stack.Navigator
+        initialRouteName="Bottom"
+        screenOptions={() => ({
+          headerStyle: {
+            backgroundColor: Color.primary,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+            fontFamily: 'ArialMT',
+          },
+          headerTitleAlign: 'center',
+        })}>
+        <Stack.Group>
+          <Stack.Screen
+            key="Bottom"
+            name="Bottom"
+            component={BottomTab}
+            options={() => ({
+              headerShown: false,
+            })}
+          />
+          <Stack.Screen
+            key="Apply"
+            name="Apply"
+            component={ApplyStack}
+            options={({ navigation }) => ({
+              title: 'step2',
+              headerLeft: () => (
+                <HeaderLeft
+                  onPress={() => {
+                    navigation.goBack()
+                  }}
+                />
+              ),
+            })}
+          />
+        </Stack.Group>
+      </Stack.Navigator>
+    </Provider>
+  )
+}
 
 export const Styles = StyleSheet.create<{
   logo: ImageStyle
