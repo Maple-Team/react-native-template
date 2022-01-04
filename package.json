@@ -20,6 +20,7 @@
     "@adrianso/react-native-device-brightness": "^1.2.5",
     "@ant-design/icons-react-native": "^2.3.2",
     "@ant-design/react-native": "^4.2.0",
+    "@gregfrench/react-native-wheel-picker": "^1.2.18",
     "@miblanchard/react-native-slider": "^2.1.0",
     "@react-native-async-storage/async-storage": "^1.15.4",
     "@react-native-community/datetimepicker": "^5.1.0",

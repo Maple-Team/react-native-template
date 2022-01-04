@@ -4,7 +4,7 @@ import type { KeyboardTypeOptions } from 'react-native'
 import formItemStyles from './style'
 import Text from '@components/Text'
 import { ErrorMessage } from 'formik'
-import { WheelPicker } from './wheelPicker'
+import { WheelPicker } from './wheelPicker2'
 import { ModalWrap } from './modalWrap'
 import type { Dict } from '@/typings/response'
 

@@ -1,15 +1,14 @@
+import { WheelPicker as WheelCurvedPicker } from 'react-native-wheel-picker-android'
 import type { Dict } from '@/typings/response'
 import { ViewStyle, View, ActivityIndicator } from 'react-native'
 import StyleSheet from 'react-native-adaptive-stylesheet'
 import React, { useEffect, useState } from 'react'
 import { Color } from '@/styles/color'
-import Picker from '@gregfrench/react-native-wheel-picker'
-const PickerItem = Picker.Item
 
 export interface WheelPickerProps<T extends Dict> {
   dataSource: T[]
   selected: string
-  onChange: (value: string) => void
+  onChange: (value: number) => void
 }
 export function WheelPicker<T extends Dict>({
   dataSource,
@@ -23,7 +22,6 @@ export function WheelPicker<T extends Dict>({
       setSelectedIndex(index < 0 ? 0 : index)
     }
   }, [dataSource, selected])
-
   if (dataSource.length === 0) {
     return (
       <View style={wheelPickerStyles.container}>
@@ -34,21 +32,16 @@ export function WheelPicker<T extends Dict>({
 
   return (
     <View style={wheelPickerStyles.container}>
-      <Picker
-        style={{ width: 150, height: 180 }}
-        lineColor="#000000" //to set top and bottom line color (Without gradients)
-        lineGradientColorFrom="#008000" //to set top and bottom starting gradient line color
-        lineGradientColorTo="#FF5733" //to set top and bottom ending gradient
-        selectedValue={selectedIndex}
-        itemStyle={{ color: 'black', fontSize: 26 }}
-        onValueChange={index => {
+      <WheelCurvedPicker
+        selectedItem={selectedIndex}
+        data={dataSource.map(({ name }) => name)}
+        onItemSelected={(index: number) => {
           setSelectedIndex(index)
-          onChange(dataSource[index].code)
-        }}>
-        {dataSource.map(({ name, code }) => (
-          <PickerItem label={name} value={code} key={code} />
-        ))}
-      </Picker>
+          onChange(index)
+        }}
+        selectedItemTextFontFamily="ArialMT"
+        itemTextFontFamily="ArialMT"
+      />
     </View>
   )
 }

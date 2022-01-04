@@ -5,7 +5,7 @@ import StyleSheet from 'react-native-adaptive-stylesheet'
 import Text from '@components/Text'
 import { useTranslation } from 'react-i18next'
 import { Dict } from '@/typings/response'
-import { WheelPickerProps } from './wheelPicker'
+import { WheelPickerProps } from './wheelPicker2'
 
 interface Props<T extends Dict> {
   dataSource: T[]

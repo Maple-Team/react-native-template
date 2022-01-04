@@ -1191,6 +1191,13 @@
     base64-js "^1.2.3"
     xmlbuilder "^14.0.0"
 
+"@gregfrench/react-native-wheel-picker@^1.2.18":
+  version "1.2.18"
+  resolved "https://registry.npmmirror.com/@gregfrench/react-native-wheel-picker/download/@gregfrench/react-native-wheel-picker-1.2.18.tgz#3204d2705794f3863e4fea8771582a646ffe1320"
+  integrity sha512-crIND0v0dz0chcXmQLMKX4fDY2b/9Y3Lmb8yg3V/We12GdlIO68IWwF1TWYknrZ5LPPDpjqwYVTjr/rFRdnToA==
+  dependencies:
+    "@react-native-picker/picker" "^1.9.4"
+
 "@hapi/hoek@^9.0.0":
   version "9.2.1"
   resolved "https://registry.npmmirror.com/@hapi/hoek/download/@hapi/hoek-9.2.1.tgz#9551142a1980503752536b5050fd99f4a7f13b17"
@@ -1630,6 +1637,11 @@
   version "7.1.6"
   resolved "https://registry.npmmirror.com/@react-native-community/netinfo/download/@react-native-community/netinfo-7.1.6.tgz#b1c5c7e93559eb2d3d493c9aac14cd45554a9261"
   integrity sha512-FsBpEpMaFRwWz+Z2HWcYP2wBN7wooTIuvnOvY5EBJwrJIu15UnTaSGT4ABhdMSP8I0loI75mJxuXVQ+BwR5UTg==
+
+"@react-native-picker/picker@^1.9.4":
+  version "1.16.8"
+  resolved "https://registry.npmmirror.com/@react-native-picker/picker/download/@react-native-picker/picker-1.16.8.tgz#2126ca54d4a5a3e9ea5e3f39ad1e6643f8e4b3d4"
+  integrity sha1-ISbKVNSlo+nqXj85rR5mQ/jks9Q=
 
 "@react-native-picker/picker@^2.2.1":
   version "2.2.1"
