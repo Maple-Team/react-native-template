@@ -1,5 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import MMKVStorage from 'react-native-mmkv-storage'
 
+export const MMKV = new MMKVStorage.Loader().initialize()
+// https://rnmmkv.vercel.app/#/creatinginstance
 /**
  * 取出存储的数据
  * @param key

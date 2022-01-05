@@ -5,8 +5,7 @@ import { Toast } from '@ant-design/react-native'
 import { useEffect, useReducer } from 'react'
 
 export const useEventListener = () => {
-  const [state, dispatch] = useReducer(reducer, initiateState)
-  console.log('state', state)
+  const [, dispatch] = useReducer(reducer, initiateState)
   // 处理事件监听
   useEffect(() => {
     emitter.on('SHOW_LOADING', () => {

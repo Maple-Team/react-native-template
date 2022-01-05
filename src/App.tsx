@@ -1,6 +1,6 @@
 import React, { useEffect, useReducer, useState, StrictMode } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
-import { Toast } from '@ant-design/react-native'
+import { Provider, Toast } from '@ant-design/react-native'
 import {
   BackHandler,
   Alert,
@@ -13,12 +13,9 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import StyleSheet from 'react-native-adaptive-stylesheet'
 import { Text } from 'react-native-elements'
-import { QueryClient, QueryClientProvider } from 'react-query'
-// import NetInfo from '@react-native-community/netinfo'
-// import { onlineManager } from 'react-query'
 import * as RNLocalize from 'react-native-localize'
-import { BottomApplyStack } from '@/navigation/applyStack'
-import AccountStack from '@/navigation/accountStack'
+import { MainStack } from '@/navigation/mainStack'
+import { AccountStack } from '@/navigation/accountStack'
 import { initiateState, reducer } from '@/state'
 import i18n, { getI18nConfig } from '@/locales/i18n'
 import { navigationRef } from '@/navigation/rootNavigation'
@@ -28,25 +25,13 @@ import SplashScreen from 'react-native-splash-screen'
 import { getStorageValue } from '@/utils/storage'
 import Init from '@screens/init'
 import emitter from '@/eventbus'
-
-// onlineManager.setEventListener(setOnline => {
-//   return NetInfo.addEventListener(state => {
-//     const isConnected = state.isConnected || false
-//     emitter.emit('NETWORK_CONNECTED', isConnected)
-//     setOnline(state.isConnected || false)
-//   })
-// })
-
-const queryClient = new QueryClient()
-if (__DEV__) {
-  import('react-query-native-devtools').then(({ addPlugin }) => {
-    addPlugin({ queryClient })
-  })
-}
+import { SafeAreaProvider } from 'react-native-safe-area-context'
+import { t } from 'i18next'
+import { useEventListener } from './hooks/useListener'
 
 // FIXME 是否确保一个toast/message的显示时间符合其设置的时间，
 // 即后续的toast/message是否会顶掉前一个toast/message
-
+// NOTE Authentication flows: https://reactnavigation.org/docs/auth-flow/
 Toast.config({
   /**
    * 自动关闭的延时，单位秒. 为0时，需要手动调用rmove来关闭
@@ -62,6 +47,7 @@ Toast.config({
 const PERSISTENCE_KEY = 'NAVIGATION_STATE'
 
 const App = () => {
+  useEventListener()
   const [state] = useReducer(reducer, initiateState)
   const [token, setToken] = useState<string>(state.header.accessToken)
   useEffect(() => {
@@ -89,7 +75,6 @@ const App = () => {
     const locales = RNLocalize.getLocales()
     console.log('locales:', locales)
     const lng = locales[0].languageTag
-    // TODO change language
     // FIXME 'i18next: init: i18next is already initialized. You should call init just once!'
     RNLocalize.addEventListener('change', (e: any) => {
       console.log(e)
@@ -105,12 +90,15 @@ const App = () => {
   useEffect(() => {
     emitter.on('LOGIN_SUCCESS', u => {
       setToken(u?.accessToken || '')
+      emitter.emit('SHOW_MESSAGE', { type: 'success', message: t('login.success') })
     })
   }, [])
+  // TODO 处理token超时
+  // TODO 处理登出
   useEffect(() => {
     async function getToken() {
-      const t = ((await getStorageValue('accessToken')) || '') as string
-      setToken(t)
+      const accesstoken = ((await getStorageValue('accessToken')) || '') as string
+      setToken(accesstoken)
     }
     getToken()
   }, [])
@@ -155,22 +143,26 @@ const App = () => {
 
   return (
     <StrictMode>
-      <QueryClientProvider client={queryClient}>
-        <NavigationContainer
-          ref={navigationRef}
-          initialState={initialState}
-          onStateChange={_ => AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(_))}>
-          {hasInit === undefined ? (
-            <Loading />
-          ) : hasInit === true ? (
-            <Init />
-          ) : token ? (
-            <BottomApplyStack />
-          ) : (
-            <AccountStack />
-          )}
-        </NavigationContainer>
-      </QueryClientProvider>
+      {/* <QueryClientProvider client={queryClient}> */}
+      <SafeAreaProvider>
+        <Provider>
+          <NavigationContainer
+            ref={navigationRef}
+            initialState={initialState}
+            onStateChange={_ => AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(_))}>
+            {hasInit === undefined ? (
+              <Loading />
+            ) : hasInit === true ? (
+              <Init />
+            ) : token ? (
+              <MainStack />
+            ) : (
+              <AccountStack />
+            )}
+          </NavigationContainer>
+        </Provider>
+      </SafeAreaProvider>
+      {/* </QueryClientProvider> */}
     </StrictMode>
   )
 }

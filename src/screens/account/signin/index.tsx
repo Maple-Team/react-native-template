@@ -1,5 +1,6 @@
 import React, { useMemo, useReducer, useState } from 'react'
-import { View, Image, SafeAreaView, Pressable, StatusBar } from 'react-native'
+import { View, Image, Pressable, StatusBar } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Formik } from 'formik'
 import * as Yup from 'yup'

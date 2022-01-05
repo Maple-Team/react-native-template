@@ -1,22 +1,20 @@
 import React, { useEffect, useReducer } from 'react'
 import { View, Image, StatusBar, ImageBackground } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import { ApplyStackParamList } from '@navigation/applyStack'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { TabHeader, Text } from '@/components'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Button } from '@ant-design/react-native'
 import { Color } from '@/styles/color'
 import Swiper from 'react-native-swiper'
-import stepStyles from './step1Style'
-import { useSensor } from '@/hooks/useSensors'
+import Styles from './style'
+// import { useSensor } from '@/hooks/useSensors'
 import { pv, queryBrand, queryVersion } from '@/services/apply'
 import { queryUserinfo } from '@/services/user'
 import { initiateState, reducer } from '@/state'
 
 export function Step1() {
-  const navigation = useNavigation<Step1ScreenProp>()
+  const navigation = useNavigation()
   const [state, dispatch] = useReducer(reducer, initiateState)
   // const sensor = useSensor()
   useEffect(() => {
@@ -51,8 +49,8 @@ export function Step1() {
             }}>
             <TabHeader />
           </ImageBackground>
-          <View style={stepStyles.loanInfo}>
-            <View style={stepStyles.cashWrap}>
+          <View style={Styles.loanInfo}>
+            <View style={Styles.cashWrap}>
               <Image source={require('@/assets/images/apply/cash.webp')} resizeMode="cover" />
             </View>
             <View
@@ -82,7 +80,7 @@ export function Step1() {
                   fontWeight="bold"
                   color={Color.primary}
                   //@ts-ignore
-                  styles={{ top: 12 }}>
+                  styles={{ top: 12, transform: { translateY: 12 } }}>
                   $
                 </Text>
                 <Text fontSize={57} color={Color.primary} fontWeight="bold">
@@ -90,7 +88,10 @@ export function Step1() {
                 </Text>
               </View>
               <Button
-                onPress={() => navigation.navigate('Step2')}
+                onPress={() => {
+                  // TODO
+                  navigation.getParent()?.navigate('Step2')
+                }}
                 type="primary"
                 style={{
                   marginTop: 17,
@@ -105,17 +106,20 @@ export function Step1() {
             </View>
           </View>
         </View>
-        <View style={stepStyles.ad}>
-          <View style={stepStyles.adTextWrap}>
-            <Text fontSize={18}>Easy steps to get and pay for a loan:</Text>
-          </View>
-          <Slider />
-        </View>
+        <AD />
       </ScrollView>
     </SafeAreaView>
   )
 }
 
+const AD = () => (
+  <View style={Styles.ad}>
+    <View style={Styles.adTextWrap}>
+      <Text fontSize={18}>Easy steps to get and pay for a loan:</Text>
+    </View>
+    <Slider />
+  </View>
+)
 const Slider = () => (
   <Swiper
     style={{ alignItems: 'center' }}
@@ -127,20 +131,20 @@ const Slider = () => (
     height={232}
     activeDot={activeDot}>
     {ads.map(item => (
-      <View style={stepStyles.sliderItem} key={item.title}>
-        <View style={stepStyles.sliderContent}>
-          <View style={stepStyles.sliderAd}>
+      <View style={Styles.sliderItem} key={item.title}>
+        <View style={Styles.sliderContent}>
+          <View style={Styles.sliderAd}>
             <Image source={item.ad} resizeMode="cover" />
           </View>
-          <View style={stepStyles.textWrap}>
-            <Text fontSize={16} styles={stepStyles.sliderTitle}>
+          <View style={Styles.textWrap}>
+            <Text fontSize={16} styles={Styles.sliderTitle}>
               {item.title}
             </Text>
-            <Text fontSize={16} styles={stepStyles.sliderSubTitle}>
+            <Text fontSize={16} styles={Styles.sliderSubTitle}>
               {item.text}
             </Text>
           </View>
-          <View style={stepStyles.numWrap}>
+          <View style={Styles.numWrap}>
             <Image source={item.num} resizeMode="cover" />
           </View>
         </View>
@@ -148,8 +152,6 @@ const Slider = () => (
     ))}
   </Swiper>
 )
-
-type Step1ScreenProp = NativeStackNavigationProp<ApplyStackParamList, 'Step1'>
 
 const ads = [
   {

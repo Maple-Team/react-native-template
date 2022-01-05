@@ -1,6 +1,7 @@
 import { NativeStackHeaderProps } from '@react-navigation/native-stack'
 import React, { useMemo } from 'react'
-import { View, SafeAreaView, StatusBar } from 'react-native'
+import { View, StatusBar } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Formik } from 'formik'
@@ -12,10 +13,10 @@ import { REGEX_PHONE } from '@/utils/reg'
 import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT } from '@/utils/constant'
 import { ApplyButton, IdcardPhotoPicker } from '@components/form/FormItem'
 import { Color } from '@/styles/color'
-import { ApplyStep2 } from '@/typings/apply'
+import { ApplyStep4 } from '@/typings/apply'
 import { useLoction } from '@/hooks/useLocation'
 
-type FormModel = Omit<ApplyStep2, 'applyId' | 'currentStep' | 'totalSteps'>
+type FormModel = Omit<ApplyStep4, 'applyId' | 'currentStep' | 'totalSteps'>
 export const Step4 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
   const schema = Yup.object().shape({
@@ -25,7 +26,7 @@ export const Step4 = ({ navigation }: NativeStackHeaderProps) => {
       .matches(REGEX_PHONE, t('phone.invalid'))
       .required(t('phone.required')),
   })
-  const initialValue = useMemo<FormModel>(() => ({ salaryDate: '' }), [])
+  const initialValue = useMemo<FormModel>(() => ({ images: [] }), [])
   const onSubmit = debounce(
     (values: FormModel) => {
       console.log(values)
@@ -56,6 +57,7 @@ export const Step4 = ({ navigation }: NativeStackHeaderProps) => {
                     field={'ss'}
                     label={'El frente de tu ID'}
                     bg={require('@assets/images/apply/id1.webp')}
+                    error={errors.images}
                   />
                   <IdcardPhotoPicker
                     onChange={handleChange('')}

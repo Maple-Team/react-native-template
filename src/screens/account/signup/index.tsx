@@ -1,6 +1,6 @@
-import { NativeStackHeaderProps } from '@react-navigation/native-stack'
 import React, { useEffect, useMemo, useReducer, useState } from 'react'
-import { View, SafeAreaView, StatusBar, Image, Pressable } from 'react-native'
+import { View, StatusBar, Image, Pressable } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Formik } from 'formik'
@@ -19,7 +19,7 @@ import { useLoction } from '@/hooks/useLocation'
 import { initiateState, reducer, UPDATE_GPS } from '@/state'
 import emitter from '@/eventbus'
 
-export const SignupScreen = ({ navigation }: NativeStackHeaderProps) => {
+export const SignupScreen = () => {
   const [state, dispatch] = useReducer(reducer, initiateState)
   const { t } = useTranslation()
   const schema = Yup.object().shape({
@@ -55,7 +55,6 @@ export const SignupScreen = ({ navigation }: NativeStackHeaderProps) => {
   const onSubmit = debounce(
     (values: RegisterParameter) => {
       register(values).then(res => {
-        console.log(res, navigation)
         dispatch({
           type: 'UPDATE_TOKEN',
           token: res.accessToken,

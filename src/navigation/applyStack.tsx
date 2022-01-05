@@ -8,9 +8,10 @@ import { Step2, Step3, Step4, Step5, Step6, Step7, Step8 } from '@screens/apply'
 import type { ViewStyle } from 'react-native'
 import StyleSheet from 'react-native-adaptive-stylesheet'
 import { HeaderLeft, HeaderRight } from '@components/header'
-import BottomTab from './bottomTab'
+import { BottomTab } from './bottomTab'
 
-export type ApplyStackParamList = {
+export type ApplyStackList = {
+  BottomTab: undefined
   Step2: undefined
   Step3: undefined
   Step4: undefined
@@ -28,7 +29,7 @@ export function ApplyStack() {
   return (
     <Provider>
       <Stack.Navigator
-        initialRouteName="Step2"
+        initialRouteName="Home"
         screenOptions={() => ({
           headerStyle: {
             backgroundColor: Color.primary,
@@ -42,26 +43,27 @@ export function ApplyStack() {
           headerRight: () => (
             <HeaderRight
               onPress={() => {
-                // FIXME
+                // go to help screen
               }}
             />
           ),
         })}>
         <Stack.Group>
           <Stack.Screen
+            key="Home"
+            name="Home"
+            component={BottomTab}
+            options={() => ({
+              headerShown: false,
+            })}
+          />
+          <Stack.Screen
             key="Step2"
             name="Step2"
             component={Step2}
             options={({ navigation }) => ({
               title: 'step2',
-              headerLeft: () => (
-                <HeaderLeft
-                  onPress={() => {
-                    navigation.goBack()
-                    // FIXME pop navigate 区别
-                  }}
-                />
-              ),
+              headerLeft: () => <HeaderLeft onPress={() => navigation.goBack()} />,
             })}
           />
           <Stack.Screen
@@ -70,14 +72,7 @@ export function ApplyStack() {
             component={Step3}
             options={({ navigation }) => ({
               title: 'step3',
-              headerLeft: () => (
-                <HeaderLeft
-                  onPress={() => {
-                    navigation.goBack()
-                    // FIXME pop navigate 区别
-                  }}
-                />
-              ),
+              headerLeft: () => <HeaderLeft onPress={() => navigation.goBack()} />,
             })}
           />
           <Stack.Screen
@@ -86,14 +81,7 @@ export function ApplyStack() {
             component={Step4}
             options={({ navigation }) => ({
               title: 'step3',
-              headerLeft: () => (
-                <HeaderLeft
-                  onPress={() => {
-                    navigation.goBack()
-                    // FIXME pop navigate 区别
-                  }}
-                />
-              ),
+              headerLeft: () => <HeaderLeft onPress={() => navigation.goBack()} />,
             })}
           />
           <Stack.Screen
@@ -102,14 +90,7 @@ export function ApplyStack() {
             component={Step5}
             options={({ navigation }) => ({
               title: 'Step5',
-              headerLeft: () => (
-                <HeaderLeft
-                  onPress={() => {
-                    navigation.goBack()
-                    // FIXME pop navigate 区别
-                  }}
-                />
-              ),
+              headerLeft: () => <HeaderLeft onPress={() => navigation.goBack()} />,
             })}
           />
           <Stack.Screen
@@ -118,14 +99,7 @@ export function ApplyStack() {
             component={Step6}
             options={({ navigation }) => ({
               title: 'Step6',
-              headerLeft: () => (
-                <HeaderLeft
-                  onPress={() => {
-                    navigation.goBack()
-                    // FIXME pop navigate 区别
-                  }}
-                />
-              ),
+              headerLeft: () => <HeaderLeft onPress={() => navigation.goBack()} />,
             })}
           />
           <Stack.Screen
@@ -134,14 +108,7 @@ export function ApplyStack() {
             component={Step7}
             options={({ navigation }) => ({
               title: 'Step7',
-              headerLeft: () => (
-                <HeaderLeft
-                  onPress={() => {
-                    navigation.goBack()
-                    // FIXME pop navigate 区别
-                  }}
-                />
-              ),
+              headerLeft: () => <HeaderLeft onPress={() => navigation.goBack()} />,
             })}
           />
           <Stack.Screen
@@ -150,60 +117,7 @@ export function ApplyStack() {
             component={Step8}
             options={({ navigation }) => ({
               title: 'step8',
-              headerLeft: () => (
-                <HeaderLeft
-                  onPress={() => {
-                    navigation.goBack()
-                    // FIXME pop navigate 区别
-                  }}
-                />
-              ),
-            })}
-          />
-        </Stack.Group>
-      </Stack.Navigator>
-    </Provider>
-  )
-}
-
-export function BottomApplyStack() {
-  return (
-    <Provider>
-      <Stack.Navigator
-        initialRouteName="Bottom"
-        screenOptions={() => ({
-          headerStyle: {
-            backgroundColor: Color.primary,
-          },
-          headerTintColor: '#fff',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-            fontFamily: 'ArialMT',
-          },
-          headerTitleAlign: 'center',
-        })}>
-        <Stack.Group>
-          <Stack.Screen
-            key="Bottom"
-            name="Bottom"
-            component={BottomTab}
-            options={() => ({
-              headerShown: false,
-            })}
-          />
-          <Stack.Screen
-            key="Apply"
-            name="Apply"
-            component={ApplyStack}
-            options={({ navigation }) => ({
-              title: 'step2',
-              headerLeft: () => (
-                <HeaderLeft
-                  onPress={() => {
-                    navigation.goBack()
-                  }}
-                />
-              ),
+              headerLeft: () => <HeaderLeft onPress={() => navigation.goBack()} />,
             })}
           />
         </Stack.Group>

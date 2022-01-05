@@ -1,5 +1,6 @@
 import React from 'react'
-import { View, SafeAreaView, Pressable } from 'react-native'
+import { View, Pressable } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import { Modal as AntModal } from '@ant-design/react-native'
 import StyleSheet from 'react-native-adaptive-stylesheet'
 import Text from '@components/Text'

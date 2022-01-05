@@ -1,6 +1,7 @@
 import { NativeStackHeaderProps } from '@react-navigation/native-stack'
 import React, { useMemo } from 'react'
-import { View, SafeAreaView, StatusBar } from 'react-native'
+import { View, StatusBar } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Formik } from 'formik'

@@ -1,6 +1,7 @@
 import { NativeStackHeaderProps } from '@react-navigation/native-stack'
 import React, { ReactNode } from 'react'
-import { View, SafeAreaView, StatusBar, ImageBackground, Pressable } from 'react-native'
+import { View, StatusBar, ImageBackground, Pressable } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
 import { ScrollView } from 'react-native-gesture-handler'
 import debounce from 'lodash.debounce'

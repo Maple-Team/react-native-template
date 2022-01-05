@@ -1,6 +1,7 @@
 import { NativeStackHeaderProps } from '@react-navigation/native-stack'
 import React, { useEffect, useMemo, useReducer } from 'react'
-import { View, SafeAreaView, StatusBar, ImageBackground } from 'react-native'
+import { View, StatusBar, ImageBackground } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import { Button } from '@ant-design/react-native'
 import { useTranslation } from 'react-i18next'
 import { ScrollView } from 'react-native-gesture-handler'
