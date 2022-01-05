@@ -4,14 +4,37 @@ import { UserLevel, Gender, UserState } from './user'
 export interface ValidCode {
   kaptcha: string
 }
+
+export interface RegisterResponse {
+  apply?: any
+  ip: string
+  loanCount: number
+  accessToken: string
+  user: RegisterUser
+  deviceId: string
+  customer?: any
+}
+
 export interface RegisterUser {
-  org: string
-  password: string
-  phone: string
-  regTime: number
-  status: string
   userId: number
+  org: string
+  phone: string
+  name?: any
+  lastName?: any
+  firstName?: any
+  middleName?: any
+  idcard?: any
+  email?: any
+  sex?: any
+  password: string
+  regTime: string
   userType: string
+  status: UserState
+  userAuthStatus?: BOOL
+  imageUrl?: any
+  company?: any
+  companyName?: any
+  isWhite?: BOOL
 }
 
 export interface LoginUser {
@@ -34,7 +57,6 @@ export interface LoginUser {
 
 export interface ResetPwdParameter {
   phone: string
-  idcard: string
   password: string
   comfirmPassword: string
   validateCode: string

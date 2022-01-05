@@ -9,10 +9,10 @@ interface Sendor {
 }
 // 将弧度转化为角度
 const toDegree = (radians: number) => radians * (180 / Math.PI)
-const useSensor = () => {
+export const useSensor = () => {
   const [sensor, setSensor] = useState<Sendor>()
   const slow = useCallback(() => {
-    return () => setUpdateIntervalForType(SensorTypes.gyroscope, 1000)
+    return () => setUpdateIntervalForType(SensorTypes.gyroscope, 5 * 1000 * 2)
   }, [])
   // const fast = useCallback(() => {
   //   return () => setUpdateIntervalForType(SensorTypes.gyroscope, 400)
@@ -60,7 +60,6 @@ const useSensor = () => {
       subscription.remove()
     }
   }, [sensor, slow])
-  return [sensor]
-}
 
-export default useSensor
+  return sensor
+}

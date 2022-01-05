@@ -1,31 +1,35 @@
 import { NativeStackHeaderProps } from '@react-navigation/native-stack'
-import React, { useEffect, useMemo, useReducer, useState } from 'react'
-import { View, Image, SafeAreaView, TextInput, Pressable } from 'react-native'
+import React, { useEffect, useMemo, useReducer } from 'react'
+import { View, SafeAreaView, StatusBar, ImageBackground } from 'react-native'
 import { Button } from '@ant-design/react-native'
 import { useTranslation } from 'react-i18next'
 import { ScrollView } from 'react-native-gesture-handler'
-import { ErrorMessage, Formik } from 'formik'
+import { Formik } from 'formik'
 import * as Yup from 'yup'
 import debounce from 'lodash.debounce'
 
 import { Logo } from '@/components/logo'
 import Text from '@/components/Text'
-import { initiateState, reducer } from '@/state'
+import { initiateState, reducer, UPDATE_DEVICEID, UPDATE_GPS, UPDATE_VESIONID } from '@/state'
 import styles from './style'
 import { REGEX_PHONE } from '@/utils/reg'
 import { DEBOUNCE_WAIT, DEBOUNCE_OPTIONS } from '@/utils/constant'
-import Behavior from '@/utils/behavior'
-import { getStorageValue } from '@/utils/storage'
-import type { BehaviorModel } from '@/typings/behavior'
+import { Input } from '@components/form/FormItem'
+import { Color } from '@/styles/color'
+import AppModule from '@/modules/AppModule'
+import RNAdvertisingId from 'react-native-advertising-id'
+import DeviceInfo from 'react-native-device-info'
+import { usePersmission } from '@/utils/permission'
+import { useLoction } from '@/hooks/useLocation'
 
 interface FormModel {
   phone: string
 }
 
 export const EntryScreen = ({ navigation }: NativeStackHeaderProps) => {
-  const [state] = useReducer(reducer, initiateState)
+  usePersmission()
+  const [state, dispatch] = useReducer(reducer, initiateState)
   const { t } = useTranslation()
-
   const schema = Yup.object().shape({
     phone: Yup.string()
       .min(10, t('field.short', { field: 'Phone' }))
@@ -36,106 +40,100 @@ export const EntryScreen = ({ navigation }: NativeStackHeaderProps) => {
   const initialValue = useMemo<FormModel>(() => ({ phone: '' }), [])
   const onSubmit = debounce(
     (values: FormModel) => {
-      console.log(values, behavior?.getCurrentModel())
+      console.log(values)
       navigation.navigate('SignIn')
-      //TODO
     },
     DEBOUNCE_WAIT,
     DEBOUNCE_OPTIONS
   )
-  const [behavior, setBehavior] = useState<Behavior<'P01'>>()
-
   useEffect(() => {
-    async function _getBehavior() {
-      const value = (await getStorageValue('p')) as BehaviorModel<'P01'>
-      setBehavior(new Behavior(value))
+    const versionID = AppModule.getVersionID()
+    dispatch({
+      type: UPDATE_VESIONID,
+      versionID,
+    })
+    //FIXME
+    async function query() {
+      RNAdvertisingId.getAdvertisingId()
+        .then(({ advertisingId }: { advertisingId: string }) => {
+          dispatch({
+            type: UPDATE_DEVICEID,
+            deviceId: advertisingId,
+          })
+        })
+        .catch((e: any) => {
+          console.error('googleID', e)
+          DeviceInfo.getAndroidId().then(id => {
+            dispatch({
+              type: UPDATE_DEVICEID,
+              deviceId: id,
+            })
+          })
+        })
     }
-    _getBehavior()
+    query()
   }, [])
+  const location = useLoction()
+  useEffect(() => {
+    dispatch({
+      type: UPDATE_GPS,
+      gps: `${location.latitude},${location.longitude}`,
+    })
+  }, [location])
+
   return (
     <SafeAreaView style={styles.flex1}>
-      <Image
+      <StatusBar translucent backgroundColor="transparent" />
+      <ImageBackground
         source={require('@/assets/images/account/bg.webp')}
-        resizeMode="stretch"
-        style={styles.bg}
-      />
-      <ScrollView style={styles.flex1}>
-        <View style={styles.container}>
-          <View style={styles.wrap}>
-            <Logo />
-
-            <View style={styles.form}>
-              <Formik<FormModel>
-                initialValues={initialValue}
-                onSubmit={onSubmit}
-                validationSchema={schema}>
-                {({ handleChange, handleSubmit, values, setFieldValue, errors }) => (
-                  <>
-                    <View style={styles.formItem}>
-                      <Text styles={styles.label}>{t('phone.label')}</Text>
-                      <View style={styles.inputWrap}>
-                        <TextInput
+        resizeMode="cover"
+        style={styles.bg}>
+        <ScrollView style={styles.flex1}>
+          <View style={styles.container}>
+            <View style={styles.wrap}>
+              <Logo />
+              <View style={styles.form}>
+                <Formik<FormModel>
+                  initialValues={initialValue}
+                  onSubmit={onSubmit}
+                  validationSchema={schema}>
+                  {({ handleChange, handleSubmit, values, setFieldValue, errors }) => (
+                    <>
+                      <View style={styles.formItem}>
+                        <Input
+                          field="phone"
+                          label={t('phone.label')}
                           onChangeText={handleChange('phone')}
-                          maxLength={11}
-                          onBlur={() => {
-                            console.log('onblur', values.phone)
-                            behavior?.setEndModify('P01_C01_I_FIRSTNAME', values.phone)
-                          }}
-                          onFocus={() => {
-                            console.log('onFocus', values.phone)
-                            behavior?.setStartModify('P01_C01_I_FIRSTNAME', values.phone)
-                          }}
                           value={values.phone}
-                          style={[styles.input]}
+                          onClear={() => setFieldValue('phone', '')}
+                          placeholder={t('phone.placeholder')}
+                          error={errors.phone}
                         />
-                        {values.phone ? (
-                          errors.phone ? (
-                            <Pressable onPress={() => setFieldValue('phone', '')}>
-                              <Image
-                                style={styles.suffix}
-                                source={require('@/assets/images/common/clear.webp')}
-                                resizeMode="cover"
-                              />
-                            </Pressable>
-                          ) : (
-                            <Image
-                              style={styles.suffix}
-                              source={require('@/assets/images/common/correct.webp')}
-                              resizeMode="cover"
-                            />
-                          )
-                        ) : (
-                          <></>
-                        )}
                       </View>
-                      <ErrorMessage name="phone">
-                        {msg => <Text styles={[styles.warn, styles.error]}>{msg}</Text>}
-                      </ErrorMessage>
-                    </View>
-
-                    <Button
-                      style={[styles.signin, styles.btn]}
-                      type="primary"
-                      loading={state.loading.effects.LOGIN}
-                      // @ts-ignore
-                      onPress={handleSubmit}>
-                      <Text>{t('signin')}</Text>
-                    </Button>
-                  </>
-                )}
-              </Formik>
-              <Button
-                style={[styles.signup, styles.btn]}
-                loading={state.loading.effects.LOGIN}
-                onPress={async () => {
-                  navigation.navigate('SignUp')
-                }}>
-                <Text>{t('signup')}</Text>
-              </Button>
+                      <Button
+                        style={[styles.signin, styles.btn]}
+                        type="primary"
+                        loading={state.loading.effects.LOGIN}
+                        // @ts-ignore
+                        onPress={handleSubmit}>
+                        <Text>{t('signin')}</Text>
+                      </Button>
+                    </>
+                  )}
+                </Formik>
+                <Button
+                  style={[styles.signup, styles.btn]}
+                  loading={state.loading.effects.LOGIN}
+                  onPress={async () => {
+                    navigation.navigate('SignUp')
+                  }}>
+                  <Text color={Color.primary}>{t('signup')}</Text>
+                </Button>
+              </View>
             </View>
           </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </ImageBackground>
     </SafeAreaView>
   )
 }

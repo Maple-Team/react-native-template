@@ -1,6 +1,7 @@
 import type { DispatchMapType } from '@/eventbus/type'
 import { DictTypeArray, NormalTypeArray } from '@/eventbus/type'
 import type { UserInfo } from '@/typings/user'
+import { setStorageItem } from '@/utils/storage'
 import type { CommonHeader } from '../typings/request'
 
 interface State {
@@ -22,32 +23,33 @@ interface State {
       [key: string]: boolean
     }
   }
-  isFirst: boolean
+  hasInit: boolean
 }
 /**
  * App全局状态设定
  */
 export const initiateState: State = {
   header: {
-    versionId: '',
-    merchantId: '',
-    inputChannel: '',
+    versionId: 'debug',
+    merchantId: 'xx',
+    inputChannel: 'Moneyya',
     source: 'APP',
-    channel: '',
-    gps: '',
-    deviceId: '',
+    channel: 'mk',
+    gps: '0,0',
+    deviceId: 'sd',
     accessToken: '',
   },
   loading: {
     effects: {},
   },
-  isFirst: false,
+  hasInit: false,
 }
 export const UPDATE_TOKEN = 'UPDATE_TOKEN'
 export const UPDATE_GPS = 'UPDATE_GPS'
 export const UPDATE_DEVICEID = 'UPDATE_DEVICEID'
+export const UPDATE_VESIONID = 'UPDATE_VESIONID'
 export const UPDATE_USERINFO = 'UPDATE_USERINFO'
-export const UPDATE_IS_FIRST = 'UPDATE_IS_FIRST'
+export const UPDATE_HAS_INIT = 'UPDATE_HAS_INIT'
 
 type Action =
   | {
@@ -71,13 +73,18 @@ type Action =
       loading: boolean
     }
   | {
-      type: typeof UPDATE_IS_FIRST
-      isFirst: boolean
+      type: typeof UPDATE_HAS_INIT
+      hasInit: boolean
+    }
+  | {
+      type: typeof UPDATE_VESIONID
+      versionID: string
     }
 
 export function reducer(state: State, action: Action): State {
   switch (action.type) {
     case UPDATE_TOKEN:
+      setStorageItem('accessToken', action.token)
       return {
         ...state,
         header: {
@@ -86,6 +93,7 @@ export function reducer(state: State, action: Action): State {
         },
       }
     case UPDATE_GPS:
+      setStorageItem('gps', action.gps)
       return {
         ...state,
         header: {
@@ -94,6 +102,7 @@ export function reducer(state: State, action: Action): State {
         },
       }
     case UPDATE_DEVICEID:
+      setStorageItem('deviceId', action.deviceId)
       return {
         ...state,
         header: {
@@ -101,15 +110,23 @@ export function reducer(state: State, action: Action): State {
           deviceId: action.deviceId,
         },
       }
+    case UPDATE_VESIONID:
+      return {
+        ...state,
+        header: {
+          ...state.header,
+          versionId: action.versionID,
+        },
+      }
     case UPDATE_USERINFO:
       return {
         ...state,
         user: action.user,
       }
-    case UPDATE_IS_FIRST:
+    case UPDATE_HAS_INIT:
       return {
         ...state,
-        isFirst: action.isFirst,
+        hasInit: action.hasInit,
       }
     default:
       if ([...NormalTypeArray, ...DictTypeArray].includes(action.type)) {

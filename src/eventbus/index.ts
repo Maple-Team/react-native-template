@@ -1,4 +1,4 @@
-import { LoginUser } from '@/typings/account'
+import { RegisterResponse } from '@/typings/account'
 import mitt, { Emitter } from 'mitt'
 import type { DispatchMapType } from './type'
 
@@ -14,12 +14,13 @@ export type Events = {
   SESSION_EXPIRED?: string
   SHOW_MESSAGE: { message: string; type: MessageType }
   SHOW_LOADING?: string
-  LOGIN_SUCCESS?: LoginUser
+  LOGIN_SUCCESS?: RegisterResponse
   LOGOUT_SUCCESS?: string
   RESPONSE_ERROR: string
   REQUEST_ERROR: string
   REQUEST_LOADING: { dispatchType: DispatchMapType; loading: boolean }
   NETWORK_CONNECTED: boolean
+  FIRST_INIT: boolean
 }
 
 /**

@@ -5,5 +5,14 @@
   "signin": "SignIn",
   "signup": "SignUp",
   "close": "Close",
-  "confirm": "Confirm"
+  "confirm": "Confirm",
+  "home": "Home",
+  "order": "Order",
+  "done": "Done",
+  "account": "Account",
+  "resetpwd": "忘记密码",
+  "login": {
+    "success": "登录成功"
+  },
+  "forget-password": "忘记密码"
 }

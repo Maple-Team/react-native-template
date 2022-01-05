@@ -3,7 +3,8 @@ import { Pressable, TextInput, View, Image } from 'react-native'
 import type { KeyboardTypeOptions } from 'react-native'
 import { ErrorMessage } from 'formik'
 import { useTranslation } from 'react-i18next'
-import { debounce } from 'lodash'
+import debounce from 'lodash.debounce'
+import { useInterval } from 'usehooks-ts'
 
 import type { ValidateCodeType } from '@/typings/request'
 import styles from './style'
@@ -15,7 +16,7 @@ import { REGEX_PHONE } from '@/utils/reg'
 interface InputProps {
   onChangeText: (text: string) => void
   onClear: () => void
-  value: string
+  value?: string
   error?: string
   field: string
   label: string
@@ -39,18 +40,12 @@ export const ValidateCode = ({
 }: InputProps) => {
   const { t } = useTranslation()
   const [count, setCount] = useState<number>(60)
-  const [times, setTimtes] = useState<number>(3)
+  const [times, setTimtes] = useState<number>(300) //FIXME
+  const [isPlaying, setPlaying] = useState<boolean>(false)
+
   const handlePress = debounce(
     () => {
-      const iid = setInterval(() => {
-        const _count = count - 1
-        if (_count <= 0) {
-          setCount(60)
-          clearInterval(iid)
-        } else {
-          setCount(_count)
-        }
-      }, 1000)
+      setPlaying(true)
       getValidateCode({ sendChannel: 'SMS', phone, type: validateCodeType }).then(code => {
         setTimtes(times - 1)
         console.log(code.kaptcha)
@@ -59,6 +54,21 @@ export const ValidateCode = ({
     DEBOUNCE_WAIT,
     DEBOUNCE_OPTIONS
   ) // FIXME
+
+  useInterval(
+    () => {
+      let _count = count - 1
+      if (_count <= 0) {
+        setPlaying(false)
+        setCount(60)
+      } else {
+        setCount(_count)
+      }
+    },
+    // Delay in milliseconds or null to stop it
+    isPlaying ? 1000 : null
+  )
+
   const isPhoneValid = useMemo(() => {
     return REGEX_PHONE.test(phone)
   }, [phone])
@@ -68,11 +78,12 @@ export const ValidateCode = ({
       <View style={styles.inputWrap}>
         <TextInput
           onChangeText={onChangeText}
-          maxLength={6}
+          maxLength={4}
           value={value}
           placeholder={placeholder}
-          style={[styles.input]}
           keyboardType={keyboardType}
+          style={[styles.input, error ? { borderBottomColor: 'red' } : {}]}
+          placeholderTextColor={'rgba(156, 171, 185, 1)'}
         />
         <View style={styles.suffixWrap}>
           {value ? (
@@ -98,9 +109,9 @@ export const ValidateCode = ({
           )}
           {count !== 60 ? (
             <>
-              {times > 0 ? (
+              {times >= 0 ? (
                 <Pressable style={[styles.validBtnWrap, styles.validBtnWrapDisabled]}>
-                  <Text styles={[styles.validBtn, styles.validBtnDisabled]}>
+                  <Text color="#aaa" styles={[styles.validBtn, styles.validBtnDisabled]}>
                     {t('validateCode.wait', { num: count })}
                   </Text>
                 </Pressable>
@@ -115,8 +126,7 @@ export const ValidateCode = ({
               disabled={!isPhoneValid}
               style={[styles.validBtnWrap, !isPhoneValid ? styles.validBtnWrapDisabled : {}]}
               android_disableSound={false}
-              onPress={handlePress}
-              android_ripple={{ color: '#f00', borderless: false, radius: 60 }}>
+              onPress={handlePress}>
               <Text styles={styles.validBtn}>{t('validateCode.get')}</Text>
             </Pressable>
           )}

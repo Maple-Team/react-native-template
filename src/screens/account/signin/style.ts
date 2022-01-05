@@ -1,4 +1,3 @@
-import { Color } from '@/styles/color'
 import { ImageStyle, TextStyle, ViewStyle } from 'react-native'
 import StyleSheet from 'react-native-adaptive-stylesheet'
 
@@ -13,12 +12,8 @@ export default StyleSheet.create<{
   wrap: ViewStyle
   formWrap: ViewStyle
   form: ViewStyle
-  btn: ViewStyle
-  btnText: TextStyle
-  btnWrap: ViewStyle
   bg: ImageStyle
   jump: ViewStyle
-  jumpText: TextStyle
   jumpLink: TextStyle
 }>({
   flex1: { flex: 1 },
@@ -40,7 +35,7 @@ export default StyleSheet.create<{
     backgroundColor: 'rgba(255,255,255, .78)',
   },
   tabBarText: {
-    color: '#333230',
+    color: 'rgba(51, 50, 48, 1)',
     fontSize: 15,
     textTransform: 'capitalize',
   },
@@ -65,29 +60,6 @@ export default StyleSheet.create<{
     alignItems: 'center',
     paddingBottom: 30,
   },
-  btnWrap: {
-    alignItems: 'center',
-    position: 'absolute',
-    justifyContent: 'center',
-    bottom: 0,
-    zIndex: 999,
-    width: 103 + 28,
-    height: 103 + 28,
-    borderRadius: (103 + 28) / 2,
-    backgroundColor: 'rgba(255,255,255, 1)',
-  },
-  btn: {
-    backgroundColor: Color.primary,
-    width: 103,
-    height: 103,
-    borderRadius: 103 / 2,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  btnText: {
-    color: '#fff',
-    fontSize: 20,
-  },
   bg: {
     position: 'absolute',
     left: 0,
@@ -99,12 +71,9 @@ export default StyleSheet.create<{
   jump: {
     flexDirection: 'row',
     justifyContent: 'center',
+    marginBottom: 50,
   },
   jumpLink: {
-    color: '#FFEA00',
     textDecorationLine: 'underline',
-  },
-  jumpText: {
-    color: '#fff',
   },
 })

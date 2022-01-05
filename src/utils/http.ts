@@ -1,7 +1,6 @@
 import axios from 'axios'
 import type { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import DeviceInfo from 'react-native-device-info'
 
 import AppModule from '@/modules/AppModule'
 import type { CommonHeader } from '@/typings/request'
@@ -10,7 +9,6 @@ import { API_CODE, APPLY_STATE } from '@/state/enum'
 import emitter from '@/eventbus'
 import { DispatchRVMap } from '@/eventbus/type'
 
-const { getBuildNumber } = DeviceInfo
 const AXIOS_TIMEOUT = 10000
 
 export interface Response<T = any> {
@@ -32,12 +30,12 @@ api.interceptors.request.use(
   async function (config: AxiosRequestConfig) {
     const headers = config.headers as unknown as CommonHeader // FIXME
     if (headers) {
-      headers.inputChannel = (await AsyncStorage.getItem('inputChannel')) || ''
-      headers.deviceId = (await AsyncStorage.getItem('deviceId')) || ''
-      headers.gps = (await AsyncStorage.getItem('gps')) || ''
-      headers.merchantId = (await AsyncStorage.getItem('merchantId')) || ''
+      headers.inputChannel = (await AsyncStorage.getItem('inputChannel')) || 'moneyya'
+      headers.deviceId = (await AsyncStorage.getItem('deviceId')) || '22'
+      headers.gps = (await AsyncStorage.getItem('gps')) || '0,0'
+      headers.merchantId = (await AsyncStorage.getItem('merchantId')) || 'xx'
       headers.source = 'APP'
-      headers.versionId = getBuildNumber()
+      headers.versionId = AppModule.getVersionID()
       const channel = await AsyncStorage.getItem('channel')
       if (channel) {
         headers.channel = channel
@@ -57,6 +55,7 @@ api.interceptors.request.use(
 
 api.interceptors.response.use(
   (response: AxiosResponse) => {
+    __DEV__ && console.log('data', response.config.data)
     const {
       status: { code, msg, msgCn },
       body,
@@ -74,11 +73,12 @@ api.interceptors.response.use(
           emitter.emit('SHOW_MESSAGE', { message, type: 'fail' })
           break
       }
-      return false
+      return Promise.reject(false)
     }
   },
   (error: AxiosError) => {
-    emitter.emit('RESPONSE_ERROR', error.message)
+    const message = (error || {}).message
+    message && emitter.emit('RESPONSE_ERROR', message)
     return Promise.reject(error)
   }
 )

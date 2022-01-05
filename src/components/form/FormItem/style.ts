@@ -16,23 +16,30 @@ export default StyleSheet.create<{
   normal: ViewStyle | TextStyle
   warn: ViewStyle | TextStyle
   error: TextStyle
+  btnWrap: ViewStyle
+  btn: ViewStyle
+  btnInvalid: ViewStyle
+  btnText: TextStyle
 }>({
   formItem: {
     marginBottom: 20,
   },
   label: {
     paddingLeft: 5,
-    color: '#333230',
+    color: 'rgba(51, 50, 48, 1)',
     fontSize: 18,
+    textTransform: 'capitalize',
   },
   inputWrap: {
     position: 'relative',
   },
   input: {
     borderBottomWidth: 1,
-    height: 34,
-    color: '#333230',
+    color: 'rgba(51, 50, 48, 1)',
+    borderBottomColor: 'rgba(180, 204, 226, 1)',
     fontSize: 15,
+    paddingVertical: 10, //FIXME
+    paddingLeft: 6.5,
   },
   suffixWrap: {
     flexDirection: 'row',
@@ -73,5 +80,33 @@ export default StyleSheet.create<{
   error: {
     position: 'absolute',
     bottom: -16,
+  },
+  btnWrap: {
+    alignItems: 'center',
+    position: 'absolute',
+    justifyContent: 'center',
+    bottom: 0,
+    zIndex: 999,
+    width: 103 + 28,
+    height: 103 + 28,
+    borderRadius: (103 + 28) / 2,
+    backgroundColor: 'rgba(255,255,255, 1)',
+  },
+  btn: {
+    backgroundColor: Color.primary,
+    width: 103,
+    height: 103,
+    borderRadius: 103 / 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderColor: Color.primary,
+  },
+  btnInvalid: {
+    backgroundColor: '#eee',
+    borderColor: '#eee',
+  },
+  btnText: {
+    color: '#fff',
+    fontSize: 20,
   },
 })

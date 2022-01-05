@@ -1,6 +1,5 @@
 import React, { useMemo, useReducer, useState } from 'react'
-import { View, Image, SafeAreaView, Pressable } from 'react-native'
-import { Button } from '@ant-design/react-native'
+import { View, Image, SafeAreaView, Pressable, StatusBar } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
@@ -9,32 +8,29 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
 
 import { Logo } from '@/components/logo'
 import Text from '@/components/Text'
-import { initiateState, reducer } from '@/state'
+import { initiateState, reducer, UPDATE_TOKEN } from '@/state'
 import styles from './style'
-import { REGEX_PHONE } from '@/utils/reg'
+import { REGEX_PHONE, REGEX_VALIDATE_CODE } from '@/utils/reg'
 import { DEBOUNCE_WAIT, DEBOUNCE_OPTIONS } from '@/utils/constant'
 import { useNavigation } from '@react-navigation/native'
-import { RootStackParamList } from '@navigation/accountStack'
-import { Input, PasswordInput, ValidateCode } from '@components/form/FormItem'
+import type { AccountStackParamList } from '@navigation/accountStack'
+import { Input, PasswordInput, ValidateCode, ApplyButton } from '@components/form/FormItem'
 import { useTranslation } from 'react-i18next'
-
-interface FormModel {
-  phone: string
-  password: string
-}
-interface FormModel2 {
-  phone: string
-  validateCode: string
-}
+import { Color } from '@/styles/color'
+import { login } from '@/services/user'
+import emitter from '@/eventbus'
+import { LoginParameter } from '@/typings/request'
 
 export const SigninScreen = () => {
-  const tabs = [{ title: 'Password login' }, { title: 'Verification code login' }]
+  const { t } = useTranslation()
+  const tabs = [{ title: t('Password.login') }, { title: t('Verification.code.login') }]
   const tabPanels = [<PasswdTab />, <ValidTab />]
   const [index, setIndex] = useState<number>(0)
-  const { t } = useTranslation()
   const navigation = useNavigation<SignInScreenProp>()
+
   return (
     <SafeAreaView style={styles.flex1}>
+      <StatusBar translucent={false} backgroundColor={Color.primary} barStyle="default" />
       <Image
         source={require('@/assets/images/account/bg.webp')}
         resizeMode="stretch"
@@ -58,8 +54,14 @@ export const SigninScreen = () => {
             </View>
             {tabPanels[index]}
             <View style={styles.jump}>
-              <Text styles={styles.jumpText}>Don't have an account ? </Text>
-              <Text styles={styles.jumpLink} onPress={() => navigation.navigate('SignUp')}>
+              <Text fontSize={19} color="#fff">
+                Don't have an account ?{' '}
+              </Text>
+              <Text
+                fontSize={19}
+                color="rgba(255, 234, 0, 1)"
+                styles={styles.jumpLink}
+                onPress={() => navigation.navigate('SignUp')}>
                 {t('signup')}
               </Text>
             </View>
@@ -69,10 +71,10 @@ export const SigninScreen = () => {
     </SafeAreaView>
   )
 }
-type SignInScreenProp = NativeStackNavigationProp<RootStackParamList, 'SignIn'>
+type SignInScreenProp = NativeStackNavigationProp<AccountStackParamList, 'SignIn'>
 
 const PasswdTab = () => {
-  const [state] = useReducer(reducer, initiateState)
+  const [state, dispatch] = useReducer(reducer, initiateState)
   const navigation = useNavigation<SignInScreenProp>()
   const { t } = useTranslation()
   const schema = Yup.object().shape({
@@ -83,20 +85,35 @@ const PasswdTab = () => {
       .required(t('phone.required')),
     password: Yup.string().required(t('password.required')),
   })
-  const initialValue = useMemo<FormModel>(() => ({ phone: '', password: '' }), [])
+  const initialValue = useMemo<Pick<LoginParameter, 'password' | 'phone'>>(
+    () => ({ phone: '9868965898', password: '' }),
+    []
+  )
   const onSubmit = debounce(
-    (values: FormModel) => {
-      console.log(values)
-      navigation.navigate('SignIn')
-      //TODO
+    (values: Pick<LoginParameter, 'password' | 'phone'>) => {
+      login({
+        ...values,
+        gps: state.header.gps,
+        deviceId: state.header.deviceId,
+        loginType: 'PWD_LOGIN',
+      }).then(res => {
+        dispatch({
+          type: UPDATE_TOKEN,
+          token: res.accessToken,
+        })
+        emitter.emit('LOGIN_SUCCESS', res)
+      })
     },
     DEBOUNCE_WAIT,
     DEBOUNCE_OPTIONS
   )
   const [showPwd, setShowPwd] = useState<boolean>(false)
   return (
-    <Formik<FormModel> initialValues={initialValue} onSubmit={onSubmit} validationSchema={schema}>
-      {({ handleChange, handleSubmit, values, setFieldValue, errors }) => (
+    <Formik<Pick<LoginParameter, 'phone' | 'password'>>
+      initialValues={initialValue}
+      onSubmit={onSubmit}
+      validationSchema={schema}>
+      {({ handleChange, handleSubmit, values, setFieldValue, errors, isValid }) => (
         <View style={styles.formWrap}>
           <View style={styles.form}>
             <Input
@@ -107,6 +124,7 @@ const PasswdTab = () => {
               onClear={() => setFieldValue('phone', '')}
               placeholder={t('phone.placeholder')}
               error={errors.phone}
+              keyboardType="phone-pad"
             />
             <PasswordInput
               field="password"
@@ -119,17 +137,23 @@ const PasswdTab = () => {
               showPwd={showPwd}
               onToggle={() => setShowPwd(!showPwd)}
             />
+            <Pressable
+              style={{ alignItems: 'flex-end' }}
+              onPress={() => {
+                navigation.navigate('Reset')
+              }}>
+              <Text color="rgba(51, 50, 48, 1)" fontSize={15}>
+                {t('forget-password')}
+              </Text>
+            </Pressable>
           </View>
-          <View style={styles.btnWrap}>
-            <Button
-              style={[styles.btn]}
-              type="primary"
-              loading={state.loading.effects.LOGIN}
-              // @ts-ignore
-              onPress={handleSubmit}>
-              <Text>{t('signin')}</Text>
-            </Button>
-          </View>
+          <ApplyButton
+            type={isValid ? 'primary' : 'ghost'}
+            handleSubmit={handleSubmit}
+            // loading={state}
+            disabled={state.loading.effects.LOGIN}>
+            <Text color={isValid ? '#fff' : '#aaa'}>{t('submit')}</Text>
+          </ApplyButton>
         </View>
       )}
     </Formik>
@@ -147,23 +171,35 @@ const ValidTab = () => {
       .matches(REGEX_PHONE, t('phone.invalid'))
       .required(t('phone.required')),
     validateCode: Yup.string()
-      .min(6, t('field.short', { field: 'Validate Code' }))
-      .max(6, t('field.long', { field: 'Validate Code' }))
-      .matches(REGEX_PHONE, t('validateCode.invalid'))
-      .required(t('phone.required')),
+      .min(4, t('field.short', { field: 'Validate Code' }))
+      .max(4, t('field.long', { field: 'Validate Code' }))
+      .required(t('validateCode.required'))
+      .matches(REGEX_VALIDATE_CODE, t('validateCode.invalid')),
   })
-  const initialValue = useMemo<FormModel2>(() => ({ phone: '', validateCode: '' }), [])
+  const initialValue = useMemo<Pick<LoginParameter, 'phone' | 'code'>>(
+    () => ({ phone: '9868965898', code: '' }),
+    []
+  )
   const onSubmit = debounce(
-    (values: FormModel2) => {
-      console.log(values)
-      navigation.navigate('SignIn')
+    (values: Pick<LoginParameter, 'code' | 'phone'>) => {
+      login({
+        ...values,
+        gps: state.header.gps,
+        deviceId: state.header.deviceId,
+        loginType: 'CODE_LOGIN',
+      }).then(res => {
+        console.log(res, navigation)
+      })
     },
     DEBOUNCE_WAIT,
     DEBOUNCE_OPTIONS
   )
   return (
-    <Formik<FormModel2> initialValues={initialValue} onSubmit={onSubmit} validationSchema={schema}>
-      {({ handleChange, handleSubmit, values, setFieldValue, errors }) => (
+    <Formik<Pick<LoginParameter, 'phone' | 'code'>>
+      initialValues={initialValue}
+      onSubmit={onSubmit}
+      validationSchema={schema}>
+      {({ handleChange, handleSubmit, values, setFieldValue, errors, isValid }) => (
         <View style={styles.formWrap}>
           <View style={styles.form}>
             <Input
@@ -174,31 +210,28 @@ const ValidTab = () => {
               onClear={() => setFieldValue('phone', '')}
               placeholder={t('phone.placeholder')}
               error={errors.phone}
+              keyboardType="phone-pad"
             />
-
             <ValidateCode
-              field="validateCode"
+              field="code"
               label={t('validateCode.label')}
-              onChangeText={handleChange('validateCode')}
-              value={values.validateCode}
-              onClear={() => setFieldValue('validateCode', '')}
+              onChangeText={handleChange('code')}
+              value={values.code}
+              onClear={() => setFieldValue('code', '')}
               placeholder={t('validateCode.placeholder')}
-              error={errors.validateCode}
+              error={errors.code}
               validateCodeType="LOGIN"
               phone={values.phone}
+              keyboardType="number-pad"
             />
           </View>
-
-          <View style={styles.btnWrap}>
-            <Button
-              style={[styles.btn]}
-              type="primary"
-              disabled={state.loading.effects.LOGIN}
-              // @ts-ignore
-              onPress={handleSubmit}>
-              <Text>{t('signin')}</Text>
-            </Button>
-          </View>
+          <ApplyButton
+            type={isValid ? 'primary' : undefined}
+            handleSubmit={handleSubmit}
+            // loading={state}
+            disabled={state.loading.effects.LOGIN}>
+            <Text color={isValid ? '#fff' : '#aaa'}>{t('signin')}</Text>
+          </ApplyButton>
         </View>
       )}
     </Formik>

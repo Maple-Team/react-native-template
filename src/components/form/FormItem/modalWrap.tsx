@@ -1,23 +1,36 @@
-import React, { ReactElement } from 'react'
+import React from 'react'
 import { View, SafeAreaView, Pressable } from 'react-native'
 import { Modal as AntModal } from '@ant-design/react-native'
 import StyleSheet from 'react-native-adaptive-stylesheet'
 import Text from '@components/Text'
 import { useTranslation } from 'react-i18next'
 import { Dict } from '@/typings/response'
+import { WheelPickerProps } from './wheelPicker2'
 
 interface Props<T extends Dict> {
   dataSource: T[]
   visible: boolean
   onClose: () => void
-  onConfirm: (value: Partial<T>) => void
+  onConfirm: (value: string) => void
   title: string
   value?: string
 }
-export function ModalWrap<T extends Dict>(Component: ReactElement) {
+
+export function ModalWrap<T extends Dict, P extends Props<T>>(
+  Component: React.ComponentType<WheelPickerProps<T>>
+): React.FC<P> {
   const { t } = useTranslation()
+
   return (props: Props<T>) => {
     const { onClose, onConfirm, title, value, visible, dataSource = [] } = props
+    let pos: number | undefined
+    const componentProps = {
+      dataSource,
+      selected: value,
+      onChange: (position: number) => {
+        pos = position
+      },
+    } as unknown as WheelPickerProps<T>
     return (
       <AntModal popup visible={visible} animationType="slide-up" onClose={onClose}>
         <SafeAreaView>
@@ -28,24 +41,24 @@ export function ModalWrap<T extends Dict>(Component: ReactElement) {
             <Text styles={styles.title}>{title}</Text>
             <Pressable
               onPress={() => {
-                let _value: Partial<T>
-                const first = dataSource[0]
+                let _value: string
                 if (value) {
-                  _value = { code: value } as Partial<T>
+                  _value = value // 初始值
                 } else {
+                  const first = dataSource[0].code
                   if (!first) {
                     return
                   }
                   _value = first
                 }
-                onConfirm(_value)
+                onConfirm(pos ? dataSource[pos].code : _value)
                 onClose()
               }}>
               <Text styles={styles.right}>{t('confirm')}</Text>
             </Pressable>
           </View>
           <View>
-            <Component dataSource={dataSource} selected={value} onChange={onConfirm} />
+            <Component {...componentProps} />
           </View>
         </SafeAreaView>
       </AntModal>

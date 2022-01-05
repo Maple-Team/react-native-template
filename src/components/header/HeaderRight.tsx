@@ -1,11 +1,10 @@
-import React, { useReducer } from 'react'
-import { Text, View } from 'react-native'
-import { initiateState, reducer } from '@/state'
-import { useTranslation } from 'react-i18next'
+import React from 'react'
+import { Pressable, Image } from 'react-native'
 
-export default function HeaderRight() {
-  const [state] = useReducer(reducer, initiateState)
-  const { t } = useTranslation()
-
-  return !state.user ? <Text onPress={() => {}}>{t('signin')}</Text> : <View />
+export function HeaderRight({ onPress }: { onPress: () => void }) {
+  return (
+    <Pressable onPress={onPress}>
+      <Image source={require('@/assets/images/common/normal/help.webp')} resizeMode="cover" />
+    </Pressable>
+  )
 }

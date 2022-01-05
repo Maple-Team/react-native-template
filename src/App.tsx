@@ -8,32 +8,34 @@ import {
   Platform,
   ActivityIndicator,
   View,
-  Dimensions,
+  // Dimensions,
 } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import StyleSheet from 'react-native-adaptive-stylesheet'
 import { Text } from 'react-native-elements'
 import { QueryClient, QueryClientProvider } from 'react-query'
-import NetInfo from '@react-native-community/netinfo'
-import { onlineManager } from 'react-query'
+// import NetInfo from '@react-native-community/netinfo'
+// import { onlineManager } from 'react-query'
 import * as RNLocalize from 'react-native-localize'
-
-import BottomTabNavigator from '@/navigation/bottomTab'
+import { BottomApplyStack } from '@/navigation/applyStack'
 import AccountStack from '@/navigation/accountStack'
 import { initiateState, reducer } from '@/state'
-import emitter from '@/eventbus'
 import i18n, { getI18nConfig } from '@/locales/i18n'
 import { navigationRef } from '@/navigation/rootNavigation'
 import { Color } from '@/styles/color'
 import { MESSAGE_DURATION } from '@/utils/constant'
+import SplashScreen from 'react-native-splash-screen'
+import { getStorageValue } from '@/utils/storage'
+import Init from '@screens/init'
+import emitter from '@/eventbus'
 
-onlineManager.setEventListener(setOnline => {
-  return NetInfo.addEventListener(state => {
-    const isConnected = state.isConnected || false
-    emitter.emit('NETWORK_CONNECTED', isConnected)
-    setOnline(state.isConnected || false)
-  })
-})
+// onlineManager.setEventListener(setOnline => {
+//   return NetInfo.addEventListener(state => {
+//     const isConnected = state.isConnected || false
+//     emitter.emit('NETWORK_CONNECTED', isConnected)
+//     setOnline(state.isConnected || false)
+//   })
+// })
 
 const queryClient = new QueryClient()
 if (__DEV__) {
@@ -58,11 +60,13 @@ Toast.config({
   stackable: false,
 })
 const PERSISTENCE_KEY = 'NAVIGATION_STATE'
-const window = Dimensions.get('window')
 
 const App = () => {
   const [state] = useReducer(reducer, initiateState)
-
+  const [token, setToken] = useState<string>(state.header.accessToken)
+  useEffect(() => {
+    SplashScreen.hide()
+  }, [])
   // 处理实体键返回逻辑
   useEffect(() => {
     const backAction = () => {
@@ -93,15 +97,39 @@ const App = () => {
     i18n.init(getI18nConfig(lng))
   }, [])
 
+  useEffect(() => {
+    emitter.on('FIRST_INIT', first => {
+      setHasInit(!first)
+    })
+  }, [])
+  useEffect(() => {
+    emitter.on('LOGIN_SUCCESS', u => {
+      setToken(u?.accessToken || '')
+    })
+  }, [])
+  useEffect(() => {
+    async function getToken() {
+      const t = ((await getStorageValue('accessToken')) || '') as string
+      setToken(t)
+    }
+    getToken()
+  }, [])
   const [isReady, setIsReady] = useState(__DEV__ ? false : true)
   const [initialState, setInitialState] = useState()
+  const [hasInit, setHasInit] = useState<boolean>()
+  useEffect(() => {
+    const query = async () => {
+      const value = (await getStorageValue('hasInit')) as boolean
+      setHasInit(!value)
+    }
+    query()
+  }, [])
 
   // NOTE 处理用户上一次打开的页面(进件过程) https://reactnavigation.org/docs/state-persistence
   useEffect(() => {
     const restoreState = async () => {
       try {
         const initialUrl = await Linking.getInitialURL()
-
         if (Platform.OS !== 'web' && initialUrl == null) {
           // Only restore state if there's no deep link and we're not on web
           const savedStateString = await AsyncStorage.getItem(PERSISTENCE_KEY)
@@ -122,15 +150,9 @@ const App = () => {
   }, [isReady])
 
   if (!isReady) {
-    return (
-      <View style={loadingStyles.container}>
-        <ActivityIndicator size="large" color={Color.primary} />
-        <Text style={loadingStyles.loadingHint}>Loading...</Text>
-      </View>
-    )
+    return <Loading />
   }
 
-  // TODO splash display logic
   return (
     <StrictMode>
       <QueryClientProvider client={queryClient}>
@@ -138,7 +160,15 @@ const App = () => {
           ref={navigationRef}
           initialState={initialState}
           onStateChange={_ => AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(_))}>
-          {state.user ? <BottomTabNavigator /> : <AccountStack />}
+          {hasInit === undefined ? (
+            <Loading />
+          ) : hasInit === true ? (
+            <Init />
+          ) : token ? (
+            <BottomApplyStack />
+          ) : (
+            <AccountStack />
+          )}
         </NavigationContainer>
       </QueryClientProvider>
     </StrictMode>
@@ -149,14 +179,19 @@ export default App
 
 const loadingStyles = StyleSheet.create({
   container: {
-    width: window.width,
-    height: window.height,
     justiftContent: 'center',
+    alignContent: 'center',
     alignItems: 'center',
-    flexDirection: 'column',
     padding: 10,
+    flex: 1,
   },
   loadingHint: {
     marginTop: 10,
   },
 })
+const Loading = () => (
+  <View style={loadingStyles.container}>
+    <ActivityIndicator size="large" color={Color.primary} />
+    <Text style={loadingStyles.loadingHint}>Loading...</Text>
+  </View>
+)

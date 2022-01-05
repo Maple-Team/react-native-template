@@ -1,4 +1,4 @@
-import type { LoginUser, RegisterUser, ResetPwdParameter, ValidCode } from '@/typings/account'
+import type { LoginUser, RegisterResponse, ResetPwdParameter, ValidCode } from '@/typings/account'
 import type { LoginParameter, RegisterParameter, ValidateCodeParameter } from '@/typings/request'
 import type { UserInfo } from '@/typings/user'
 import { request } from '@/utils/http'
@@ -21,7 +21,7 @@ export async function getValidateCode(data: ValidateCodeParameter) {
  * @returns
  */
 export async function register(data: RegisterParameter) {
-  return request<RegisterUser>({
+  return request<RegisterResponse>({
     url: '/smart-loan/user/registeredUser',
     method: 'POST',
     data,
@@ -34,7 +34,7 @@ export async function register(data: RegisterParameter) {
  * @returns
  */
 export async function login(data: LoginParameter) {
-  return request<LoginUser>({
+  return request<RegisterResponse>({
     url: '/smart-loan/user/login',
     method: 'POST',
     data,

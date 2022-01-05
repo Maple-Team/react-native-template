@@ -1,6 +1,5 @@
 export interface RegisterParameter {
   phone: string
-  idcard: string
   password: string
   comfirmPassword: string
   validateCode: string
@@ -43,8 +42,8 @@ export interface CommonHeader {
 
 export interface LoginParameter {
   phone: string
-  code: string
-  password: string
+  code?: string
+  password?: string
   deviceId: string
   gps: string
   loginType: 'CODE_LOGIN' | 'PWD_LOGIN'

@@ -4,7 +4,7 @@ import type { KeyboardTypeOptions } from 'react-native'
 import formItemStyles from './style'
 import Text from '@components/Text'
 import { ErrorMessage } from 'formik'
-import { WheelPicker } from './wheelPicker'
+import { WheelPicker } from './wheelPicker2'
 import { ModalWrap } from './modalWrap'
 import type { Dict } from '@/typings/response'
 
@@ -26,12 +26,12 @@ export function NormalPicker<T extends Dict>({
   field,
   label,
   title,
+  error,
   placeholder,
   dataSource,
 }: PickerProps<T>) {
   const [visible, setVisible] = useState<boolean>(false)
   const Picker = ModalWrap(WheelPicker)
-
   return (
     <>
       <View style={formItemStyles.formItem}>
@@ -41,10 +41,16 @@ export function NormalPicker<T extends Dict>({
             editable={false}
             value={value}
             placeholder={placeholder}
-            style={[formItemStyles.input]}
             onPressIn={() => setVisible(true)}
+            style={[formItemStyles.input, error ? { borderBottomColor: 'red' } : {}]}
+            placeholderTextColor={'rgba(156, 171, 185, 1)'}
           />
-          <Pressable style={formItemStyles.suffixWrap} onPress={() => setVisible(true)}>
+          <Pressable
+            style={formItemStyles.suffixWrap}
+            onPress={() => {
+              console.log('pressed')
+              setVisible(true)
+            }}>
             <Image
               style={formItemStyles.suffix}
               source={require('@assets/images/common/right.webp')}
@@ -56,16 +62,14 @@ export function NormalPicker<T extends Dict>({
           {msg => <Text styles={[formItemStyles.warn, formItemStyles.error]}>{msg}</Text>}
         </ErrorMessage>
       </View>
-      {visible && (
-        <Picker
-          dataSource={dataSource}
-          visible={visible}
-          onClose={() => setVisible(false)}
-          onConfirm={v => onChange(v.code || '')}
-          title={title}
-          value={value}
-        />
-      )}
+      <Picker
+        dataSource={dataSource}
+        visible={visible}
+        onClose={() => setVisible(false)}
+        onConfirm={code => onChange(code)}
+        title={title}
+        value={value}
+      />
     </>
   )
 }

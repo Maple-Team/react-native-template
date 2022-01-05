@@ -33,18 +33,14 @@ export interface ApplyStep2 {
   currentStep: number
   totalSteps: number
   industryCode: string
-  industry: string
   jobTypeCode: string
-  jobType: string
   monthlyIncome: string
   salaryType: string
   salaryDate: string
   company: string
   companyPhone: string
   companyAddrProvinceCode: string
-  companyAddrProvince: string
   companyAddrCityCode: string
-  companyAddrCity: string
   companyAddrDetail: string
   incumbency: string
 }

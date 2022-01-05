@@ -1191,6 +1191,13 @@
     base64-js "^1.2.3"
     xmlbuilder "^14.0.0"
 
+"@gregfrench/react-native-wheel-picker@^1.2.18":
+  version "1.2.18"
+  resolved "https://registry.npmmirror.com/@gregfrench/react-native-wheel-picker/download/@gregfrench/react-native-wheel-picker-1.2.18.tgz#3204d2705794f3863e4fea8771582a646ffe1320"
+  integrity sha512-crIND0v0dz0chcXmQLMKX4fDY2b/9Y3Lmb8yg3V/We12GdlIO68IWwF1TWYknrZ5LPPDpjqwYVTjr/rFRdnToA==
+  dependencies:
+    "@react-native-picker/picker" "^1.9.4"
+
 "@hapi/hoek@^9.0.0":
   version "9.2.1"
   resolved "https://registry.npmmirror.com/@hapi/hoek/download/@hapi/hoek-9.2.1.tgz#9551142a1980503752536b5050fd99f4a7f13b17"
@@ -1420,6 +1427,11 @@
     "@types/yargs" "^16.0.0"
     chalk "^4.0.0"
 
+"@miblanchard/react-native-slider@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.npmmirror.com/@miblanchard/react-native-slider/download/@miblanchard/react-native-slider-2.1.0.tgz#6249463a9d4aa65dede586637ffe6ca167a9ebf3"
+  integrity sha512-5YRWaQjHl90Ue431RisN+5zr+380L//kWuabzYuo7mVI+CxbHaTQXDr7afkpGgNHCxkkzFlT3tWd+3/QbpgBLQ==
+
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
   resolved "https://registry.nlark.com/@nodelib/fs.scandir/download/@nodelib/fs.scandir-2.1.5.tgz#7619c2eb21b25483f6d167548b4cfd5a7488c3d5"
@@ -1626,10 +1638,10 @@
   resolved "https://registry.npmmirror.com/@react-native-community/netinfo/download/@react-native-community/netinfo-7.1.6.tgz#b1c5c7e93559eb2d3d493c9aac14cd45554a9261"
   integrity sha512-FsBpEpMaFRwWz+Z2HWcYP2wBN7wooTIuvnOvY5EBJwrJIu15UnTaSGT4ABhdMSP8I0loI75mJxuXVQ+BwR5UTg==
 
-"@react-native-community/slider@^4.1.12":
-  version "4.1.12"
-  resolved "https://registry.npmmirror.com/@react-native-community/slider/download/@react-native-community/slider-4.1.12.tgz#279ff7bbe487af92ad95ec758a029a54569e2a62"
-  integrity sha512-CiuLZ2orueBiWHYxfaJF57jQY6HY2Q3z5pdAE4MKH8EqIImr/jgDJrJ/UxOVZHK1Ng9P+XlGIKfVIcuWZ6guuA==
+"@react-native-picker/picker@^1.9.4":
+  version "1.16.8"
+  resolved "https://registry.npmmirror.com/@react-native-picker/picker/download/@react-native-picker/picker-1.16.8.tgz#2126ca54d4a5a3e9ea5e3f39ad1e6643f8e4b3d4"
+  integrity sha1-ISbKVNSlo+nqXj85rR5mQ/jks9Q=
 
 "@react-native-picker/picker@^2.2.1":
   version "2.2.1"
@@ -6066,6 +6078,11 @@ mockjs@^1.1.0:
   dependencies:
     commander "*"
 
+moment@^2.22.0:
+  version "2.29.1"
+  resolved "https://registry.npmmirror.com/moment/download/moment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
+  integrity sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==
+
 ms@2.0.0:
   version "2.0.0"
   resolved "https://registry.npmmirror.com/ms/download/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
@@ -6639,6 +6656,15 @@ prompts@^2.0.1, prompts@^2.4.0:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
+prop-types@^15.5.10:
+  version "15.8.0"
+  resolved "https://registry.npmmirror.com/prop-types/download/prop-types-15.8.0.tgz#d237e624c45a9846e469f5f31117f970017ff588"
+  integrity sha512-fDGekdaHh65eI3lMi5OnErU6a8Ighg2KjcjQxO7m8VHyWjcPyj5kiOgV1LQDOOOgVy3+5FgjXvdSSX7B8/5/4g==
+  dependencies:
+    loose-envify "^1.4.0"
+    object-assign "^4.1.1"
+    react-is "^16.13.1"
+
 prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.npm.taobao.org/prop-types/download/prop-types-15.7.2.tgz?cache=0&sync_timestamp=1599054283476&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fprop-types%2Fdownload%2Fprop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
@@ -6728,7 +6754,7 @@ react-i18next@^11.15.1:
     html-escaper "^2.0.2"
     html-parse-stringify "^3.0.1"
 
-react-is@^16.13.0, react-is@^16.7.0, react-is@^16.8.1:
+react-is@^16.13.0, react-is@^16.13.1, react-is@^16.7.0, react-is@^16.8.1:
   version "16.13.1"
   resolved "https://registry.npmmirror.com/react-is/download/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha1-eJcppNw23imZ3BVt1sHZwYzqVqQ=
@@ -6752,6 +6778,11 @@ react-native-adaptive-stylesheet@^0.3.2:
   version "0.3.2"
   resolved "https://registry.npmmirror.com/react-native-adaptive-stylesheet/download/react-native-adaptive-stylesheet-0.3.2.tgz#3f0779d86a09ebdebc6387d5f9034248824f531a"
   integrity sha1-Pwd52GoJ6968Y4fV+QNCSIJPUxo=
+
+react-native-advertising-id@^1.0.11:
+  version "1.0.11"
+  resolved "https://registry.npmmirror.com/react-native-advertising-id/download/react-native-advertising-id-1.0.11.tgz#205bc6f788295866fcfeea70344e8d304971de5e"
+  integrity sha1-IFvG94gpWGb8/upwNE6NMElx3l4=
 
 react-native-app-intro-slider@^4.0.4:
   version "4.0.4"
@@ -6926,6 +6957,13 @@ react-native-startup-time@^2.0.0:
   resolved "https://registry.npmmirror.com/react-native-startup-time/download/react-native-startup-time-2.0.0.tgz#37e2713f37b1ea99cc5680b76f77ab7ac5ceb196"
   integrity sha1-N+JxPzex6pnMVoC3b3eresXOsZY=
 
+react-native-swiper@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.npm.taobao.org/react-native-swiper/download/react-native-swiper-1.6.0.tgz#59fdbdf95addee49630312f27077622c27776819"
+  integrity sha1-Wf29+Vrd7kljAxLycHdiLCd3aBk=
+  dependencies:
+    prop-types "^15.5.10"
+
 react-native-vector-icons@^9.0.0:
   version "9.0.0"
   resolved "https://registry.npmmirror.com/react-native-vector-icons/download/react-native-vector-icons-9.0.0.tgz#ab38ec6941f3f340d39846f1e8300e59863e2fb1"
@@ -6947,6 +6985,13 @@ react-native-webview@^11.15.0:
   dependencies:
     escape-string-regexp "2.0.0"
     invariant "2.2.4"
+
+react-native-wheel-picker-android@^2.0.6:
+  version "2.0.6"
+  resolved "https://registry.npmmirror.com/react-native-wheel-picker-android/download/react-native-wheel-picker-android-2.0.6.tgz#e6698cc67e9ba3882b1138c0b1626daf7a512646"
+  integrity sha1-5mmMxn6bo4grETjAsWJtr3pRJkY=
+  dependencies:
+    moment "^2.22.0"
 
 react-native@0.66.4:
   version "0.66.4"
@@ -8193,6 +8238,11 @@ use@^3.1.0:
   version "3.1.1"
   resolved "https://registry.npm.taobao.org/use/download/use-3.1.1.tgz#d50c8cac79a19fbc20f2911f56eb973f4e10070f"
   integrity sha1-1QyMrHmhn7wg8pEfVuuXP04QBw8=
+
+usehooks-ts@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.npmmirror.com/usehooks-ts/download/usehooks-ts-2.1.1.tgz#0415d0e9e55e5f675b6f7161d0c5b105084ed2c0"
+  integrity sha512-tyG2D2tUVb8V3eJ4b34dyiAdUHFjXg/Sphqu4jtm2B46fbZbsKCvLgZIfIm0X8GtXJituuXxcRIvU4Bk8QI52g==
 
 util-deprecate@~1.0.1:
   version "1.0.2"

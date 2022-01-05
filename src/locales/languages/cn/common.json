@@ -3,5 +3,16 @@
   "cancel": "取消",
   "back": "返回",
   "signin": "登录",
-  "signup": "注册"
+  "signup": "注册",
+  "close": "Close",
+  "confirm": "Confirm",
+  "Home": "Home",
+  "Order": "Order",
+  "done": "Done",
+  "account": "Account",
+  "resetpwd": "忘记密码",
+  "login": {
+    "success": "登录成功"
+  },
+  "forget-password": "忘记密码"
 }

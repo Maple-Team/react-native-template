@@ -1,17 +1,10 @@
-import { useNavigation } from '@react-navigation/native'
 import React from 'react'
-import EvilIcons from 'react-native-vector-icons/EvilIcons'
+import { Pressable, Image } from 'react-native'
 
-export default function HeaderLeft() {
-  const { navigate } = useNavigation()
+export function HeaderLeft({ onPress }: { onPress: () => void }) {
   return (
-    <EvilIcons
-      name="chevron-left"
-      size={40}
-      color="#00A24D"
-      onPress={() => {
-        navigate('home' as unknown as never)
-      }}
-    />
+    <Pressable onPress={onPress}>
+      <Image source={require('@/assets/images/common/left.webp')} resizeMode="cover" />
+    </Pressable>
   )
 }
