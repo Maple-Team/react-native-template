@@ -1,8 +1,8 @@
 import type { DispatchMapType } from '@/eventbus/type'
 import { DictTypeArray, NormalTypeArray } from '@/eventbus/type'
 import type { UserInfo } from '@/typings/user'
-import { setStorageItem } from '@/utils/storage'
-import type { CommonHeader } from '../typings/request'
+import { MMKV } from '@/utils/storage'
+import type { APPLY_SOURCE, CommonHeader } from '../typings/request'
 
 interface State {
   header: CommonHeader
@@ -30,14 +30,14 @@ interface State {
  */
 export const initiateState: State = {
   header: {
-    versionId: 'debug',
-    merchantId: 'xx',
-    inputChannel: 'Moneyya',
-    source: 'APP',
-    channel: 'mk',
-    gps: '0,0',
-    deviceId: 'sd',
-    accessToken: '',
+    versionId: MMKV.getString('versionId') || '',
+    merchantId: MMKV.getString('merchantId') || '',
+    inputChannel: MMKV.getString('inputChannel') || 'Moneyya',
+    source: (MMKV.getString('source') as APPLY_SOURCE) || 'APP',
+    channel: MMKV.getString('channel') || 'mk',
+    gps: MMKV.getString('gps') || '0,0',
+    deviceId: MMKV.getString('deviceId') || '',
+    accessToken: MMKV.getString('accessToken') || '',
   },
   loading: {
     effects: {},
@@ -84,7 +84,7 @@ type Action =
 export function reducer(state: State, action: Action): State {
   switch (action.type) {
     case UPDATE_TOKEN:
-      setStorageItem('accessToken', action.token)
+      MMKV.setString('accessToken', action.token)
       return {
         ...state,
         header: {
@@ -93,7 +93,7 @@ export function reducer(state: State, action: Action): State {
         },
       }
     case UPDATE_GPS:
-      setStorageItem('gps', action.gps)
+      MMKV.setString('gps', action.gps)
       return {
         ...state,
         header: {
@@ -102,7 +102,7 @@ export function reducer(state: State, action: Action): State {
         },
       }
     case UPDATE_DEVICEID:
-      setStorageItem('deviceId', action.deviceId)
+      MMKV.setString('deviceId', action.deviceId)
       return {
         ...state,
         header: {

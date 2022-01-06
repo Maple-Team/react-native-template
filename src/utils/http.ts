@@ -1,9 +1,9 @@
 import axios from 'axios'
 import type { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import { MMKV } from '@/utils/storage'
 
 import AppModule from '@/modules/AppModule'
-import type { CommonHeader } from '@/typings/request'
+import type { APPLY_SOURCE, CommonHeader } from '@/typings/request'
 import type { Status } from '@/typings/response'
 import { API_CODE, APPLY_STATE } from '@/state/enum'
 import emitter from '@/eventbus'
@@ -30,17 +30,17 @@ api.interceptors.request.use(
   async function (config: AxiosRequestConfig) {
     const headers = config.headers as unknown as CommonHeader // FIXME
     if (headers) {
-      headers.inputChannel = (await AsyncStorage.getItem('inputChannel')) || 'moneyya'
-      headers.deviceId = (await AsyncStorage.getItem('deviceId')) || '22'
-      headers.gps = (await AsyncStorage.getItem('gps')) || '0,0'
-      headers.merchantId = (await AsyncStorage.getItem('merchantId')) || 'xx'
-      headers.source = 'APP'
+      headers.inputChannel = MMKV.getString('inputChannel') || ''
+      headers.deviceId = MMKV.getString('deviceId') || ''
+      headers.gps = MMKV.getString('gps') || '0,0'
+      headers.merchantId = MMKV.getString('merchantId') || ''
+      headers.source = (MMKV.getString('source') as APPLY_SOURCE) || ''
       headers.versionId = AppModule.getVersionID()
-      const channel = await AsyncStorage.getItem('channel')
+      const channel = MMKV.getString('channel')
       if (channel) {
         headers.channel = channel
       }
-      const accessToken = await AsyncStorage.getItem('accessToken')
+      const accessToken = MMKV.getString('accessToken')
       if (accessToken) {
         headers.accessToken = accessToken
       }

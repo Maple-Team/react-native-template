@@ -80,7 +80,7 @@ export function Step1() {
                   fontWeight="bold"
                   color={Color.primary}
                   //@ts-ignore
-                  styles={{ top: 12, transform: { translateY: 12 } }}>
+                  styles={{ top: 12 }}>
                   $
                 </Text>
                 <Text fontSize={57} color={Color.primary} fontWeight="bold">

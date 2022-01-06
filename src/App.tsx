@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState, StrictMode } from 'react'
+import React, { useEffect, useState, StrictMode, useReducer } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { Provider, Toast } from '@ant-design/react-native'
 import {
@@ -16,18 +16,15 @@ import { Text } from 'react-native-elements'
 import * as RNLocalize from 'react-native-localize'
 import { MainStack } from '@/navigation/mainStack'
 import { AccountStack } from '@/navigation/accountStack'
-import { initiateState, reducer } from '@/state'
 import i18n, { getI18nConfig } from '@/locales/i18n'
 import { navigationRef } from '@/navigation/rootNavigation'
 import { Color } from '@/styles/color'
 import { MESSAGE_DURATION } from '@/utils/constant'
 import SplashScreen from 'react-native-splash-screen'
-import { getStorageValue } from '@/utils/storage'
 import Init from '@screens/init'
-import emitter from '@/eventbus'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
-import { t } from 'i18next'
 import { useEventListener } from './hooks/useListener'
+import { reducer, initiateState } from './state'
 
 // FIXME 是否确保一个toast/message的显示时间符合其设置的时间，
 // 即后续的toast/message是否会顶掉前一个toast/message
@@ -47,9 +44,8 @@ Toast.config({
 const PERSISTENCE_KEY = 'NAVIGATION_STATE'
 
 const App = () => {
-  useEventListener()
   const [state] = useReducer(reducer, initiateState)
-  const [token, setToken] = useState<string>(state.header.accessToken)
+  useEventListener()
   useEffect(() => {
     SplashScreen.hide()
   }, [])
@@ -82,36 +78,10 @@ const App = () => {
     i18n.init(getI18nConfig(lng))
   }, [])
 
-  useEffect(() => {
-    emitter.on('FIRST_INIT', first => {
-      setHasInit(!first)
-    })
-  }, [])
-  useEffect(() => {
-    emitter.on('LOGIN_SUCCESS', u => {
-      setToken(u?.accessToken || '')
-      emitter.emit('SHOW_MESSAGE', { type: 'success', message: t('login.success') })
-    })
-  }, [])
   // TODO 处理token超时
-  // TODO 处理登出
-  useEffect(() => {
-    async function getToken() {
-      const accesstoken = ((await getStorageValue('accessToken')) || '') as string
-      setToken(accesstoken)
-    }
-    getToken()
-  }, [])
+
   const [isReady, setIsReady] = useState(__DEV__ ? false : true)
   const [initialState, setInitialState] = useState()
-  const [hasInit, setHasInit] = useState<boolean>()
-  useEffect(() => {
-    const query = async () => {
-      const value = (await getStorageValue('hasInit')) as boolean
-      setHasInit(!value)
-    }
-    query()
-  }, [])
 
   // NOTE 处理用户上一次打开的页面(进件过程) https://reactnavigation.org/docs/state-persistence
   useEffect(() => {
@@ -150,11 +120,11 @@ const App = () => {
             ref={navigationRef}
             initialState={initialState}
             onStateChange={_ => AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(_))}>
-            {hasInit === undefined ? (
+            {state.hasInit === undefined ? (
               <Loading />
-            ) : hasInit === true ? (
+            ) : state.hasInit === true ? (
               <Init />
-            ) : token ? (
+            ) : state.header.accessToken ? (
               <MainStack />
             ) : (
               <AccountStack />
@@ -181,6 +151,7 @@ const loadingStyles = StyleSheet.create({
     marginTop: 10,
   },
 })
+// TODO change to SplashScreen
 const Loading = () => (
   <View style={loadingStyles.container}>
     <ActivityIndicator size="large" color={Color.primary} />
