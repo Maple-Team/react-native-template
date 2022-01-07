@@ -8,6 +8,7 @@ import {
   Platform,
   ActivityIndicator,
   View,
+  ViewStyle,
   // Dimensions,
 } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -23,8 +24,10 @@ import { MESSAGE_DURATION } from '@/utils/constant'
 import SplashScreen from 'react-native-splash-screen'
 import Init from '@screens/init'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
-import { useEventListener } from './hooks/useListener'
-import { reducer, initiateState } from './state'
+import { useEventListener } from '@/hooks/useListener'
+import { reducer, initiateState } from '@/state'
+import { useFlipper } from '@react-navigation/devtools'
+import emitter from './eventbus'
 
 // FIXME 是否确保一个toast/message的显示时间符合其设置的时间，
 // 即后续的toast/message是否会顶掉前一个toast/message
@@ -44,7 +47,16 @@ Toast.config({
 const PERSISTENCE_KEY = 'NAVIGATION_STATE'
 
 const App = () => {
-  const [state] = useReducer(reducer, initiateState)
+  const [
+    {
+      hasInit,
+      header: { accessToken },
+    },
+  ] = useReducer(reducer, initiateState)
+
+  const [token, setToken] = useState<string>(accessToken)
+  const [isFirstInit, setFirstInit] = useState<boolean | undefined>(!hasInit)
+
   useEventListener()
   useEffect(() => {
     SplashScreen.hide()
@@ -79,10 +91,9 @@ const App = () => {
   }, [])
 
   // TODO 处理token超时
-
   const [isReady, setIsReady] = useState(__DEV__ ? false : true)
   const [initialState, setInitialState] = useState()
-
+  useFlipper(navigationRef)
   // NOTE 处理用户上一次打开的页面(进件过程) https://reactnavigation.org/docs/state-persistence
   useEffect(() => {
     const restoreState = async () => {
@@ -107,42 +118,43 @@ const App = () => {
     }
   }, [isReady])
 
+  useEffect(() => {
+    emitter.on('FIRST_INIT', v => {
+      setFirstInit(v)
+    })
+    emitter.on('LOGIN_SUCCESS', r => {
+      setToken(r?.accessToken || '')
+    })
+  }, [])
+
   if (!isReady) {
     return <Loading />
   }
 
   return (
     <StrictMode>
-      {/* <QueryClientProvider client={queryClient}> */}
       <SafeAreaProvider>
         <Provider>
           <NavigationContainer
             ref={navigationRef}
             initialState={initialState}
             onStateChange={_ => AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(_))}>
-            {state.hasInit === undefined ? (
-              <Loading />
-            ) : state.hasInit === true ? (
-              <Init />
-            ) : state.header.accessToken ? (
-              <MainStack />
-            ) : (
-              <AccountStack />
-            )}
+            {isFirstInit ? <Init /> : token ? <MainStack /> : <AccountStack />}
           </NavigationContainer>
         </Provider>
       </SafeAreaProvider>
-      {/* </QueryClientProvider> */}
     </StrictMode>
   )
 }
 
 export default App
 
-const loadingStyles = StyleSheet.create({
+const loadingStyles = StyleSheet.create<{
+  container: ViewStyle
+  loadingHint: ViewStyle
+}>({
   container: {
-    justiftContent: 'center',
-    alignContent: 'center',
+    justifyContent: 'center',
     alignItems: 'center',
     padding: 10,
     flex: 1,
