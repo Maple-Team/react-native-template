@@ -49,3 +49,39 @@ export interface Dict {
   code: string
   nameCn?: string
 }
+
+export type DictField =
+  | 'INDUSTRY'
+  | 'PROFESSION'
+  | 'MONTHLY_INCOME'
+  | 'SALARY_TYPE'
+  | 'WEEKLY'
+  | 'MONTHLY'
+  | 'DISTRICT'
+  | 'INCUMBENCY'
+  | 'INDUSTRY'
+  | 'RELATIONSHIP'
+  | 'OTHER_RELATIONSHIP'
+  | 'MARITAL_STATUS'
+  | 'PRIMAARYID'
+  | 'EDUCATION'
+  | 'LOAN_PURPOSE'
+  | 'CARD_NO_TYPE'
+
+export type PickerField =
+  | 'industryCode'
+  | 'jobTypeCode'
+  | 'monthlyIncome'
+  | 'salaryType'
+  | 'salaryDate'
+  | 'companyAddrProvinceCode'
+  | 'homeAddrProvinceCode'
+  | 'homeAddrCityCode'
+  | 'companyAddrCityCode'
+  | 'incumbency'
+  | 'contactRelationCode'
+  | 'maritalStatus'
+  | 'docType'
+  | 'educationCode'
+  | 'loanPurpose'
+  | 'cardNoType'

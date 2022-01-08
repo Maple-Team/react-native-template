@@ -14,5 +14,7 @@
   "login": {
     "success": "登录成功"
   },
-  "forget-password": "忘记密码"
+  "forget-password": "忘记密码",
+  "password-login": "密码登录",
+  "validation-code-login": "验证码登录"
 }

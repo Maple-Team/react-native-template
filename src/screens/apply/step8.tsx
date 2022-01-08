@@ -11,10 +11,10 @@ import { PageStyles, Text, Hint } from '@/components'
 import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT } from '@/utils/constant'
 import { ApplyButton } from '@components/form/FormItem'
 import { Color } from '@/styles/color'
-import type { ApplyStep2 } from '@/typings/apply'
+import type { ApplyStep2Parameter } from '@/typings/apply'
 import { useLoction } from '@/hooks/useLocation'
 
-type FormModel = Omit<ApplyStep2, 'applyId' | 'currentStep' | 'totalSteps'>
+type FormModel = Omit<ApplyStep2Parameter, 'applyId' | 'currentStep' | 'totalSteps'>
 export const Step8 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
   const onSubmit = debounce(

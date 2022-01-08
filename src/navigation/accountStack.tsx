@@ -5,13 +5,13 @@ import { useTranslation } from 'react-i18next'
 import { HeaderLeft } from '@components/header'
 import emitter from '@/eventbus'
 
-export type AccountStackParamList = {
+export type AccountStackParams = {
   Entry: undefined
   SignIn: undefined
   SignUp: undefined
   Reset: undefined
 }
-const Stack = createNativeStackNavigator<AccountStackParamList>()
+const Stack = createNativeStackNavigator<AccountStackParams>()
 
 export function AccountStack() {
   const { t } = useTranslation()
@@ -21,15 +21,20 @@ export function AccountStack() {
     })
   }, [t])
   return (
-    <>
+    <Stack.Navigator
+      initialRouteName="Entry"
+      screenOptions={{
+        headerShown: false,
+      }}>
       <Stack.Screen
         key="Entry"
         name="Entry"
         component={EntryScreen}
         options={{
+          // presentation: 'fullScreenModal',
           headerShown: false,
           statusBarHidden: true,
-          animationTypeForReplace: 'pop',
+          // animationTypeForReplace: 'pop',
         }}
       />
       <Stack.Screen
@@ -68,6 +73,6 @@ export function AccountStack() {
           ),
         })}
       />
-    </>
+    </Stack.Navigator>
   )
 }

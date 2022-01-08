@@ -13,10 +13,10 @@ import { REGEX_PHONE } from '@/utils/reg'
 import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT } from '@/utils/constant'
 import { ApplyButton, IdcardPhotoPicker } from '@components/form/FormItem'
 import { Color } from '@/styles/color'
-import { ApplyStep4 } from '@/typings/apply'
+import { ApplyStep4Parameter } from '@/typings/apply'
 import { useLoction } from '@/hooks/useLocation'
 
-type FormModel = Omit<ApplyStep4, 'applyId' | 'currentStep' | 'totalSteps'>
+type FormModel = Omit<ApplyStep4Parameter, 'applyId' | 'currentStep' | 'totalSteps'>
 export const Step4 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
   const schema = Yup.object().shape({

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useReducer, useState } from 'react'
+import React, { useContext, useMemo, useState } from 'react'
 import { View, StatusBar, Image, Pressable } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
@@ -16,11 +16,11 @@ import { Color } from '@/styles/color'
 import type { RegisterParameter } from '@/typings/request'
 import { register } from '@/services/user'
 import { useLoction } from '@/hooks/useLocation'
-import { initiateState, reducer, UPDATE_GPS } from '@/state'
+import { MoneyyaContext } from '@/state'
 import emitter from '@/eventbus'
 
 export const SignupScreen = () => {
-  const [state, dispatch] = useReducer(reducer, initiateState)
+  const context = useContext(MoneyyaContext)
   const { t } = useTranslation()
   const schema = Yup.object().shape({
     phone: Yup.string()
@@ -55,11 +55,7 @@ export const SignupScreen = () => {
   const onSubmit = debounce(
     (values: RegisterParameter) => {
       register(values).then(res => {
-        dispatch({
-          type: 'UPDATE_TOKEN',
-          token: res.accessToken,
-        })
-        emitter.emit('LOGIN_SUCCESS')
+        emitter.emit('LOGIN_SUCCESS', res)
       })
     },
     DEBOUNCE_WAIT,
@@ -67,14 +63,9 @@ export const SignupScreen = () => {
   )
   const [showPwd, setShowPwd] = useState<boolean>(false)
   const [showConfirmPwd, setShowConfirmPwd] = useState<boolean>(false)
-  const location = useLoction()
 
-  useEffect(() => {
-    dispatch({
-      type: UPDATE_GPS,
-      gps: `${location.latitude},${location.longitude}`,
-    })
-  }, [location])
+  useLoction()
+
   const [check, setCheck] = useState<boolean>(false)
   return (
     <SafeAreaView style={PageStyles.sav}>
@@ -152,7 +143,7 @@ export const SignupScreen = () => {
                   <ApplyButton
                     type={isValid ? 'primary' : 'ghost'}
                     handleSubmit={handleSubmit}
-                    loading={state.loading.effects.REGISTER}>
+                    loading={context.loading.effects.REGISTER}>
                     <Text color={isValid ? '#fff' : '#aaa'}>{t('submit')}</Text>
                   </ApplyButton>
                 </View>

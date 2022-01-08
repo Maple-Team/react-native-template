@@ -1,11 +1,9 @@
 import emitter from '@/eventbus'
-import { reducer, initiateState } from '@/state'
 import { MESSAGE_DURATION } from '@/utils/constant'
 import { Toast } from '@ant-design/react-native'
-import { useEffect, useReducer } from 'react'
+import { useEffect } from 'react'
 
 export const useEventListener = () => {
-  const [, dispatch] = useReducer(reducer, initiateState)
   // 处理事件监听
   useEffect(() => {
     emitter.on('SHOW_LOADING', () => {
@@ -23,12 +21,6 @@ export const useEventListener = () => {
       console.log(message, MESSAGE_DURATION)
     })
     // 监听请求状态
-    emitter.on('REQUEST_LOADING', ({ dispatchType, loading }) => {
-      dispatch({
-        type: dispatchType,
-        loading,
-      })
-    })
     emitter.on('NETWORK_CONNECTED', isConnected => {
       console.log('network is connected', isConnected)
       if (!isConnected) {

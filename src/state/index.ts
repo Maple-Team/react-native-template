@@ -1,10 +1,18 @@
 import type { DispatchMapType } from '@/eventbus/type'
 import { DictTypeArray, NormalTypeArray } from '@/eventbus/type'
+import type { CommonHeader } from '@/typings/request'
 import type { UserInfo } from '@/typings/user'
 import { MMKV } from '@/utils/storage'
-import type { APPLY_SOURCE, CommonHeader } from '../typings/request'
+export { default as MoneyyaContext } from './context'
 
-interface State {
+export const UPDATE_TOKEN = 'UPDATE_TOKEN'
+export const UPDATE_GPS = 'UPDATE_GPS'
+export const UPDATE_DEVICEID = 'UPDATE_DEVICEID'
+export const UPDATE_VESIONID = 'UPDATE_VESIONID'
+export const UPDATE_USERINFO = 'UPDATE_USERINFO'
+export const UPDATE_HAS_INIT = 'UPDATE_HAS_INIT'
+
+export interface State {
   header: CommonHeader
   user?: UserInfo
   /**
@@ -23,35 +31,10 @@ interface State {
       [key: string]: boolean
     }
   }
-  hasInit: boolean
+  hasInit?: boolean
 }
-/**
- * App全局状态设定
- */
-export const initiateState: State = {
-  header: {
-    versionId: MMKV.getString('versionId') || '',
-    merchantId: MMKV.getString('merchantId') || '',
-    inputChannel: MMKV.getString('inputChannel') || 'Moneyya',
-    source: (MMKV.getString('source') as APPLY_SOURCE) || 'APP',
-    channel: MMKV.getString('channel') || 'mk',
-    gps: MMKV.getString('gps') || '0,0',
-    deviceId: MMKV.getString('deviceId') || '',
-    accessToken: MMKV.getString('accessToken') || '',
-  },
-  loading: {
-    effects: {},
-  },
-  hasInit: false,
-}
-export const UPDATE_TOKEN = 'UPDATE_TOKEN'
-export const UPDATE_GPS = 'UPDATE_GPS'
-export const UPDATE_DEVICEID = 'UPDATE_DEVICEID'
-export const UPDATE_VESIONID = 'UPDATE_VESIONID'
-export const UPDATE_USERINFO = 'UPDATE_USERINFO'
-export const UPDATE_HAS_INIT = 'UPDATE_HAS_INIT'
 
-type Action =
+export type Action =
   | {
       type: typeof UPDATE_TOKEN
       token: string
@@ -84,7 +67,7 @@ type Action =
 export function reducer(state: State, action: Action): State {
   switch (action.type) {
     case UPDATE_TOKEN:
-      MMKV.setString('accessToken', action.token)
+      MMKV.setStringAsync('accessToken', action.token)
       return {
         ...state,
         header: {
@@ -93,7 +76,7 @@ export function reducer(state: State, action: Action): State {
         },
       }
     case UPDATE_GPS:
-      MMKV.setString('gps', action.gps)
+      MMKV.setStringAsync('gps', action.gps)
       return {
         ...state,
         header: {
@@ -102,7 +85,7 @@ export function reducer(state: State, action: Action): State {
         },
       }
     case UPDATE_DEVICEID:
-      MMKV.setString('deviceId', action.deviceId)
+      MMKV.setStringAsync('deviceId', action.deviceId)
       return {
         ...state,
         header: {
@@ -124,6 +107,7 @@ export function reducer(state: State, action: Action): State {
         user: action.user,
       }
     case UPDATE_HAS_INIT:
+      MMKV.setBoolAsync('hasInit', action.hasInit)
       return {
         ...state,
         hasInit: action.hasInit,

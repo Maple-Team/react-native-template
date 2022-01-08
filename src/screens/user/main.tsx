@@ -2,6 +2,7 @@ import React from 'react'
 import { View, ImageBackground, Image, Pressable } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { TabHeader, Text } from '@/components'
+import emitter from '@/eventbus'
 
 export function UserCenter() {
   return (
@@ -58,13 +59,24 @@ export function UserCenter() {
             borderBottomColor: 'rgba(230, 241, 248, 1)',
           }}>
           {[
-            { img: require('@/assets/images/user-center/Contact-Us.webp'), title: 'Contact Us' },
+            {
+              img: require('@/assets/images/user-center/Contact-Us.webp'),
+              title: 'Contact Us',
+              onPress: () => {},
+            },
             {
               img: require('@/assets/images/user-center/About-Moneyya.webp'),
               title: 'About Moneyya',
+              onPress: () => {},
             },
-            { img: require('@/assets/images/user-center/Logout.webp'), title: 'Logout' },
-          ].map(({ img, title }, i) => {
+            {
+              img: require('@/assets/images/user-center/Logout.webp'),
+              title: 'Logout',
+              onPress: () => {
+                emitter.emit('LOGOUT_SUCCESS')
+              },
+            },
+          ].map(({ img, title, onPress }, i) => {
             const boderWidth: number = i === 2 ? 0 : 1
             return (
               <View key={title} style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -81,7 +93,8 @@ export function UserCenter() {
                     borderBottomWidth: boderWidth,
                     borderStyle: 'dashed',
                     borderBottomColor: 'rgba(230, 241, 248, 1)',
-                  }}>
+                  }}
+                  onPress={onPress}>
                   <Text fontSize={15} color="rgba(51, 50, 48, 1)">
                     {title}
                   </Text>

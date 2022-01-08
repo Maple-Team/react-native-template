@@ -1,3 +1,4 @@
+import emitter from '@/eventbus'
 import { onRequestPermission } from '@/utils/permission'
 import { useEffect, useState } from 'react'
 import Geolocation from 'react-native-geolocation-service'
@@ -43,5 +44,10 @@ export const useLoction = () => {
       }).catch(console.error),
     ])
   }, [])
+  useEffect(() => {
+    const { latitude, longitude } = location
+    emitter.emit('UPDATE_GPS', `${latitude},${longitude}`)
+  }, [location])
+
   return location
 }

@@ -30,7 +30,7 @@ export function ApplyStack() {
     <Provider>
       <Stack.Navigator
         initialRouteName="Home"
-        screenOptions={() => ({
+        screenOptions={({ navigation }) => ({
           headerStyle: {
             backgroundColor: Color.primary,
           },
@@ -47,6 +47,8 @@ export function ApplyStack() {
               }}
             />
           ),
+          headerLeft: () => <HeaderLeft onPress={() => navigation.goBack()} />,
+          gestureEnabled: true,
         })}>
         <Stack.Group>
           <Stack.Screen
@@ -61,63 +63,56 @@ export function ApplyStack() {
             key="Step2"
             name="Step2"
             component={Step2}
-            options={({ navigation }) => ({
+            options={() => ({
               title: 'step2',
-              headerLeft: () => <HeaderLeft onPress={() => navigation.goBack()} />,
             })}
           />
           <Stack.Screen
             key="Step3"
             name="Step3"
             component={Step3}
-            options={({ navigation }) => ({
+            options={() => ({
               title: 'step3',
-              headerLeft: () => <HeaderLeft onPress={() => navigation.goBack()} />,
             })}
           />
           <Stack.Screen
             key="Step4"
             name="Step4"
             component={Step4}
-            options={({ navigation }) => ({
+            options={() => ({
               title: 'step3',
-              headerLeft: () => <HeaderLeft onPress={() => navigation.goBack()} />,
             })}
           />
           <Stack.Screen
             key="Step5"
             name="Step5"
             component={Step5}
-            options={({ navigation }) => ({
+            options={() => ({
               title: 'Step5',
-              headerLeft: () => <HeaderLeft onPress={() => navigation.goBack()} />,
             })}
           />
           <Stack.Screen
             key="Step6"
             name="Step6"
             component={Step6}
-            options={({ navigation }) => ({
+            options={() => ({
               title: 'Step6',
-              headerLeft: () => <HeaderLeft onPress={() => navigation.goBack()} />,
             })}
           />
           <Stack.Screen
             key="Step7"
             name="Step7"
             component={Step7}
-            options={({ navigation }) => ({
+            options={() => ({
               title: 'Step7',
-              headerLeft: () => <HeaderLeft onPress={() => navigation.goBack()} />,
             })}
           />
           <Stack.Screen
             key="Step8"
             name="Step8"
             component={Step8}
-            options={({ navigation }) => ({
+            options={() => ({
               title: 'step8',
-              headerLeft: () => <HeaderLeft onPress={() => navigation.goBack()} />,
             })}
           />
         </Stack.Group>

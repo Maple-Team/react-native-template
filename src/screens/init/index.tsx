@@ -1,9 +1,7 @@
-import React, { useReducer } from 'react'
+import React from 'react'
 import { View, Text, StatusBar, ImageBackground } from 'react-native'
 import AppIntroSlider from 'react-native-app-intro-slider'
 import styles from './style'
-import { setStorageItem } from '@/utils/storage'
-import { initiateState, reducer, UPDATE_HAS_INIT } from '@/state'
 import { Color } from '@/styles/color'
 import { useTranslation } from 'react-i18next'
 import emitter from '@/eventbus'
@@ -31,8 +29,6 @@ const slides = [
 type Item = typeof slides[0]
 
 export default function Init() {
-  const [state, dispatch] = useReducer(reducer, initiateState)
-  console.log(state)
   const { t } = useTranslation()
   const renderItem = ({ item: { key, image, text, title } }: { item: Item }) => {
     return (
@@ -60,11 +56,7 @@ export default function Init() {
         showDoneButton
         showNextButton={false}
         doneLabel={t('done')}
-        onDone={() => {
-          setStorageItem('hasInit', true)
-          dispatch({ type: UPDATE_HAS_INIT, hasInit: true })
-          emitter.emit('FIRST_INIT', true)
-        }}
+        onDone={() => emitter.emit('FIRST_INIT', true)}
       />
     </View>
   )

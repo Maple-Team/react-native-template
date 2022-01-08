@@ -29,7 +29,6 @@ export const Input = ({
   placeholder,
   keyboardType,
 }: InputProps) => {
-  console.log({ error })
   return (
     <View style={styles.formItem}>
       <Text styles={styles.label}>{label}</Text>

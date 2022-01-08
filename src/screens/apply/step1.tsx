@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { View, Image, StatusBar, ImageBackground } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -11,11 +11,12 @@ import Styles from './style'
 // import { useSensor } from '@/hooks/useSensors'
 import { pv, queryBrand, queryVersion } from '@/services/apply'
 import { queryUserinfo } from '@/services/user'
-import { initiateState, reducer } from '@/state'
+import { MoneyyaContext } from '@/state'
+import emitter from '@/eventbus'
 
 export function Step1() {
   const navigation = useNavigation()
-  const [state, dispatch] = useReducer(reducer, initiateState)
+  const context = useContext(MoneyyaContext)
   // const sensor = useSensor()
   useEffect(() => {
     queryBrand().then(res => {
@@ -27,13 +28,10 @@ export function Step1() {
     pv()
     queryUserinfo().then(res => {
       console.log(res)
-      dispatch({
-        type: 'UPDATE_USERINFO',
-        user: res,
-      })
+      emitter.emit('USER_INFO', res)
     })
   }, [])
-  console.log(state.user)
+  console.log(context.user)
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar translucent={false} backgroundColor="#fff" barStyle="dark-content" />

@@ -2,21 +2,21 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import type {
   ApplyResponse,
-  ApplyStep1,
-  ApplyStep2,
-  ApplyStep3,
-  ApplyStep4,
-  ApplyStep5,
-  ApplyStep6,
-  ApplyStep7,
-  ApplyStep8,
+  ApplyStep1Parameter,
+  ApplyStep2Parameter,
+  ApplyStep3Parameter,
+  ApplyStep4Parameter,
+  ApplyStep5Parameter,
+  ApplyStep6Parameter,
+  ApplyStep7Parameter,
+  ApplyStep8Parameter,
   Calculate,
   CalculateParameter,
   Product,
   ProductParemeter,
 } from '@/typings/apply'
 import type { Device } from '@/typings/device'
-import type { Brand, Dict, Version } from '@/typings/response'
+import type { Brand, Dict, DictField, Version } from '@/typings/response'
 import type { BaseResponse } from '@/utils/http'
 import type { BehaviorModel, PAGE_ID } from '@/typings/behavior'
 
@@ -29,7 +29,7 @@ const TIMEOUT = 2000
  * @param field
  * @returns
  */
-export async function dict(field: string): Promise<Dict[]> {
+export async function dict(field: DictField, params?: any): Promise<Dict[]> {
   const res: Dict[] | void = await Promise.race([
     new Promise<void>(resolve => {
       setTimeout(() => {
@@ -38,6 +38,7 @@ export async function dict(field: string): Promise<Dict[]> {
     }),
     request<Dict[]>({
       url: `/smart-loan/dictionary/${field}`,
+      params,
     })
       .then(__ => __ as unknown as Dict[])
       .catch(() => {}),
@@ -73,14 +74,14 @@ export async function queryVersion() {
  * 每步的申请参数
  */
 export type ApplyStep =
-  | ApplyStep1
-  | ApplyStep2
-  | ApplyStep3
-  | ApplyStep4
-  | ApplyStep5
-  | ApplyStep6
-  | ApplyStep7
-  | ApplyStep8
+  | ApplyStep1Parameter
+  | ApplyStep2Parameter
+  | ApplyStep3Parameter
+  | ApplyStep4Parameter
+  | ApplyStep5Parameter
+  | ApplyStep6Parameter
+  | ApplyStep7Parameter
+  | ApplyStep8Parameter
 /**
  * 每一步提交信息
  * @param params

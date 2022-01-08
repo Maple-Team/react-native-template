@@ -6,21 +6,21 @@ import Text from '@components/Text'
 import { ErrorMessage } from 'formik'
 import { WheelPicker } from './wheelPicker2'
 import { ModalWrap } from './modalWrap'
-import type { Dict } from '@/typings/response'
+import type { Dict, PickerField } from '@/typings/response'
 
-interface PickerProps<T extends Dict> {
+interface PickerProps<T extends Dict, U extends PickerField> {
   onChange: (text: string) => void
   value?: string
   error?: string
   title: string
-  field: string
+  field: U
   label: string
   placeholder: string
   keyboardType?: KeyboardTypeOptions
   dataSource: T[]
 }
 
-export function NormalPicker<T extends Dict>({
+export function NormalPicker<T extends Dict, U extends PickerField>({
   onChange,
   value,
   field,
@@ -29,7 +29,7 @@ export function NormalPicker<T extends Dict>({
   error,
   placeholder,
   dataSource,
-}: PickerProps<T>) {
+}: PickerProps<T, U>) {
   const [visible, setVisible] = useState<boolean>(false)
   const Picker = ModalWrap(WheelPicker)
   return (

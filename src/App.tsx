@@ -25,9 +25,10 @@ import SplashScreen from 'react-native-splash-screen'
 import Init from '@screens/init'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { useEventListener } from '@/hooks/useListener'
-import { reducer, initiateState } from '@/state'
+import { reducer, MoneyyaContext } from '@/state'
 import { useFlipper } from '@react-navigation/devtools'
-import emitter from './eventbus'
+import emitter from '@/eventbus'
+import { moneyyaState } from './state/context'
 
 // FIXME 是否确保一个toast/message的显示时间符合其设置的时间，
 // 即后续的toast/message是否会顶掉前一个toast/message
@@ -52,10 +53,8 @@ const App = () => {
       hasInit,
       header: { accessToken },
     },
-  ] = useReducer(reducer, initiateState)
-
-  const [token, setToken] = useState<string>(accessToken)
-  const [isFirstInit, setFirstInit] = useState<boolean | undefined>(!hasInit)
+    dispatch,
+  ] = useReducer(reducer, moneyyaState)
 
   useEventListener()
   useEffect(() => {
@@ -119,31 +118,52 @@ const App = () => {
   }, [isReady])
 
   useEffect(() => {
-    emitter.on('FIRST_INIT', v => {
-      setFirstInit(v)
+    emitter.on('FIRST_INIT', init => {
+      dispatch({
+        type: 'UPDATE_HAS_INIT',
+        hasInit: init,
+      })
     })
-    emitter.on('LOGIN_SUCCESS', r => {
-      setToken(r?.accessToken || '')
+    emitter.on('LOGIN_SUCCESS', user => {
+      dispatch({
+        type: 'UPDATE_TOKEN',
+        token: user?.accessToken || '',
+      })
+    })
+    emitter.on('LOGOUT_SUCCESS', () => {
+      console.log('logout')
+      dispatch({
+        type: 'UPDATE_TOKEN',
+        token: '',
+      })
+    })
+    emitter.on('REQUEST_LOADING', ({ dispatchType, loading }) => {
+      dispatch({
+        type: dispatchType,
+        loading,
+      })
     })
   }, [])
 
   if (!isReady) {
     return <Loading />
   }
-
+  console.log({ hasInit }, { accessToken })
   return (
-    <StrictMode>
-      <SafeAreaProvider>
-        <Provider>
-          <NavigationContainer
-            ref={navigationRef}
-            initialState={initialState}
-            onStateChange={_ => AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(_))}>
-            {isFirstInit ? <Init /> : token ? <MainStack /> : <AccountStack />}
-          </NavigationContainer>
-        </Provider>
-      </SafeAreaProvider>
-    </StrictMode>
+    <SafeAreaProvider style={{ backgroundColor: '#00f', flex: 1 }}>
+      <Provider>
+        <MoneyyaContext.Provider value={moneyyaState}>
+          <StrictMode>
+            <NavigationContainer
+              ref={navigationRef}
+              initialState={initialState}
+              onStateChange={_ => AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(_))}>
+              {!hasInit ? <Init /> : accessToken ? <MainStack /> : <AccountStack />}
+            </NavigationContainer>
+          </StrictMode>
+        </MoneyyaContext.Provider>
+      </Provider>
+    </SafeAreaProvider>
   )
 }
 

@@ -20,34 +20,35 @@ export interface OcrResult {
   mothersurname: string
   userName: string
 }
-export interface ApplyStep1 {
+export interface ApplyStep1Parameter extends ApplyParameter {
   deviceId: string
   phone: string
   idcard: string
   gps: string
+}
+export interface ApplyParameter {
+  applyId?: number
   currentStep: number
   totalSteps: number
 }
-export interface ApplyStep2 {
-  applyId: number
-  currentStep: number
-  totalSteps: number
+export interface ApplyStep2Parameter extends ApplyParameter {
   industryCode: string
+  industry: string
   jobTypeCode: string
+  jobType: string
   monthlyIncome: string
   salaryType: string
   salaryDate: string
   company: string
   companyPhone: string
+  companyAddrProvince: string
   companyAddrProvinceCode: string
   companyAddrCityCode: string
+  companyAddrCity: string
   companyAddrDetail: string
   incumbency: string
 }
-export interface ApplyStep3 {
-  applyId: number
-  currentStep: number
-  totalSteps: number
+export interface ApplyStep3Parameter extends ApplyParameter {
   contacts: Contact[]
 }
 type ContactRelationCode = 'CHILDREN' | 'FRIEND'
@@ -59,10 +60,7 @@ export interface Contact {
   contactPhone: string
 }
 
-export interface ApplyStep4 {
-  applyId: number
-  currentStep: number
-  totalSteps: number
+export interface ApplyStep4Parameter extends ApplyParameter {
   images: Image[]
 }
 
@@ -70,10 +68,7 @@ export interface Image {
   imageId: number
 }
 
-export interface ApplyStep5 {
-  applyId: number
-  currentStep: number
-  totalSteps: number
+export interface ApplyStep5Parameter extends ApplyParameter {
   firstName: string
   middleName: string
   lastName: string
@@ -96,29 +91,20 @@ export interface ApplyStep5 {
   name: string
 }
 
-export interface ApplyStep6 {
-  applyId: number
-  currentStep: number
-  totalSteps: number
+export interface ApplyStep6Parameter extends ApplyParameter {
   images: Image[]
   livenessId: string
   livenessAuthFlag: BOOL
 }
 export type BankCardType = 'CARD' | 'CLABE'
-export interface ApplyStep7 {
-  applyId: number
-  currentStep: number
-  totalSteps: number
+export interface ApplyStep7Parameter extends ApplyParameter {
   bankCode: string
   cardNoType: BankCardType
   bankCardNo: string
 }
 
-export interface ApplyStep8 {
-  applyId: number
+export interface ApplyStep8Parameter extends ApplyParameter {
   gps: string
-  currentStep: number
-  totalSteps: number
   maxApplyAmount: number
   applyAmount: number
   loanTerms: number

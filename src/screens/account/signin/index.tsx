@@ -1,4 +1,4 @@
-import React, { useMemo, useReducer, useState } from 'react'
+import React, { useContext, useMemo, useState } from 'react'
 import { View, Image, Pressable, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { ScrollView } from 'react-native-gesture-handler'
@@ -9,22 +9,22 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
 
 import { Logo } from '@/components/logo'
 import Text from '@/components/Text'
-import { initiateState, reducer, UPDATE_TOKEN } from '@/state'
 import styles from './style'
 import { REGEX_PHONE, REGEX_VALIDATE_CODE } from '@/utils/reg'
 import { DEBOUNCE_WAIT, DEBOUNCE_OPTIONS } from '@/utils/constant'
 import { useNavigation } from '@react-navigation/native'
-import type { AccountStackParamList } from '@navigation/accountStack'
+import type { AccountStackParams } from '@navigation/accountStack'
 import { Input, PasswordInput, ValidateCode, ApplyButton } from '@components/form/FormItem'
 import { useTranslation } from 'react-i18next'
 import { Color } from '@/styles/color'
 import { login } from '@/services/user'
 import emitter from '@/eventbus'
-import { LoginParameter } from '@/typings/request'
+import type { LoginParameter } from '@/typings/request'
+import { MoneyyaContext } from '@/state'
 
 export const SigninScreen = () => {
   const { t } = useTranslation()
-  const tabs = [{ title: t('Password.login') }, { title: t('Verification.code.login') }]
+  const tabs = [{ title: t('password-login') }, { title: t('validation-code-login') }]
   const tabPanels = [<PasswdTab />, <ValidTab />]
   const [index, setIndex] = useState<number>(0)
   const navigation = useNavigation<SignInScreenProp>()
@@ -72,10 +72,10 @@ export const SigninScreen = () => {
     </SafeAreaView>
   )
 }
-type SignInScreenProp = NativeStackNavigationProp<AccountStackParamList, 'SignIn'>
+type SignInScreenProp = NativeStackNavigationProp<AccountStackParams, 'SignIn'>
 
 const PasswdTab = () => {
-  const [state, dispatch] = useReducer(reducer, initiateState)
+  const context = useContext(MoneyyaContext)
   const navigation = useNavigation<SignInScreenProp>()
   const { t } = useTranslation()
   const schema = Yup.object().shape({
@@ -94,14 +94,10 @@ const PasswdTab = () => {
     (values: Pick<LoginParameter, 'password' | 'phone'>) => {
       login({
         ...values,
-        gps: state.header.gps,
-        deviceId: state.header.deviceId,
+        gps: context.header.gps,
+        deviceId: context.header.deviceId,
         loginType: 'PWD_LOGIN',
       }).then(res => {
-        dispatch({
-          type: UPDATE_TOKEN,
-          token: res.accessToken,
-        })
         emitter.emit('LOGIN_SUCCESS', res)
       })
     },
@@ -152,7 +148,7 @@ const PasswdTab = () => {
             type={isValid ? 'primary' : 'ghost'}
             handleSubmit={handleSubmit}
             // loading={state}
-            disabled={state.loading.effects.LOGIN}>
+            disabled={context.loading.effects.LOGIN}>
             <Text color={isValid ? '#fff' : '#aaa'}>{t('submit')}</Text>
           </ApplyButton>
         </View>
@@ -162,7 +158,7 @@ const PasswdTab = () => {
 }
 
 const ValidTab = () => {
-  const [state] = useReducer(reducer, initiateState)
+  const context = useContext(MoneyyaContext)
   const navigation = useNavigation<SignInScreenProp>()
   const { t } = useTranslation()
   const schema = Yup.object().shape({
@@ -185,8 +181,8 @@ const ValidTab = () => {
     (values: Pick<LoginParameter, 'code' | 'phone'>) => {
       login({
         ...values,
-        gps: state.header.gps,
-        deviceId: state.header.deviceId,
+        gps: context.header.gps,
+        deviceId: context.header.deviceId,
         loginType: 'CODE_LOGIN',
       }).then(res => {
         console.log(res, navigation)
@@ -230,7 +226,7 @@ const ValidTab = () => {
             type={isValid ? 'primary' : undefined}
             handleSubmit={handleSubmit}
             // loading={state}
-            disabled={state.loading.effects.LOGIN}>
+            disabled={context.loading.effects.LOGIN}>
             <Text color={isValid ? '#fff' : '#aaa'}>{t('signin')}</Text>
           </ApplyButton>
         </View>

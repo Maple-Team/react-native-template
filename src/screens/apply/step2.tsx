@@ -1,5 +1,5 @@
 import { NativeStackHeaderProps } from '@react-navigation/native-stack'
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { View, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
@@ -10,14 +10,16 @@ import debounce from 'lodash.debounce'
 
 import { PageStyles, Text } from '@/components'
 import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT } from '@/utils/constant'
-import { Input, DatePicker, RadioInput, PhonePicker } from '@components/form/FormItem'
+import { Input, DatePicker, RadioInput, NormalPicker } from '@components/form/FormItem'
 import { ApplyButton } from '@components/form/FormItem/applyButton'
 import { Color } from '@/styles/color'
-import { ApplyStep2 } from '@/typings/apply'
+import type { ApplyParameter, ApplyStep2Parameter } from '@/typings/apply'
 import { useLoction } from '@/hooks/useLocation'
 import type { Shape } from '@/typings/common'
+import { dict } from '@/services/apply'
+import { Dict, DictField } from '@/typings/response'
 
-type FormModel = Omit<ApplyStep2, 'applyId' | 'currentStep' | 'totalSteps'>
+type FormModel = Omit<ApplyStep2Parameter, keyof ApplyParameter>
 export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
   const schema = Yup.object<Shape<FormModel>>({
@@ -34,12 +36,14 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
     monthlyIncome: Yup.string().required(t('incumbency.required')),
   })
 
+  const [city, setCity] = useState<string>('')
+
   const initialValue = useMemo<FormModel>(
     () => ({
       industryCode: '',
       incumbency: '',
       company: '',
-      companyAddrCityCode: '',
+      companyAddrCityCode: city,
       companyAddrDetail: '',
       companyAddrProvinceCode: '',
       companyPhone: '',
@@ -47,8 +51,12 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
       salaryDate: '',
       salaryType: '',
       monthlyIncome: '',
+      industry: '',
+      jobType: '',
+      companyAddrCity: '',
+      companyAddrProvince: '',
     }),
-    []
+    [city]
   )
   const onSubmit = debounce(
     (values: FormModel) => {
@@ -61,6 +69,33 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
 
   const location = useLoction()
   console.log(location)
+
+  const [provinces, setProvinces] = useState<Dict[]>()
+  const [incumbencys, setIncumbencys] = useState<Dict[]>()
+  const [monthlyIncomes, setMonthlyIncomes] = useState<Dict[]>()
+
+  useEffect(() => {
+    ;(async () => {
+      const dicts: DictField[] = ['INCUMBENCY', 'MONTHLY_INCOME', 'DISTRICT']
+      const [d1, d2, d3] = await Promise.all(dicts.map(dict))
+      setProvinces(d3)
+      setIncumbencys(d1)
+      setMonthlyIncomes(d2)
+    })()
+  }, [])
+
+  const [province, setProvince] = useState<string>()
+
+  useEffect(() => {
+    const queryCity = () => {
+      // response to province change
+      setCity('')
+      return dict('DISTRICT', {
+        priviceID: province,
+      })
+    }
+    queryCity()
+  }, [province])
 
   return (
     <SafeAreaView style={PageStyles.sav}>
@@ -97,6 +132,28 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     onChange={handleChange('phone')}
                     field={'11'}
                     label={'11'}
+                  />
+                  <NormalPicker
+                    onChange={text => {
+                      setProvince(text)
+                      setFieldValue('companyAddrProvinceCode', text)
+                    }}
+                    title={t('companyAddrProvinceCode.title')}
+                    field={'companyAddrProvinceCode'}
+                    label={t('companyAddrProvinceCode.label')}
+                    placeholder={t('companyAddrProvinceCode.placeholder')}
+                    dataSource={[]}
+                  />
+                  <NormalPicker
+                    onChange={text => {
+                      setCity(text)
+                      setFieldValue('companyAddrCityCode', text)
+                    }}
+                    title={t('companyAddrProvinceCode.title')}
+                    field={'companyAddrCityCode'}
+                    label={t('companyAddrProvinceCode.label')}
+                    placeholder={t('companyAddrProvinceCode.placeholder')}
+                    dataSource={[]}
                   />
                 </View>
                 <View style={PageStyles.btnWrap}>

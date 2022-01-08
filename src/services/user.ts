@@ -1,4 +1,4 @@
-import type { LoginUser, RegisterResponse, ResetPwdParameter, ValidCode } from '@/typings/account'
+import type { RegisterResponse, ResetPwdParameter, ValidCode } from '@/typings/account'
 import type { LoginParameter, RegisterParameter, ValidateCodeParameter } from '@/typings/request'
 import type { UserInfo } from '@/typings/user'
 import { request } from '@/utils/http'

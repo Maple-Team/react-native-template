@@ -1,4 +1,5 @@
-import { RegisterResponse } from '@/typings/account'
+import type { RegisterResponse } from '@/typings/account'
+import type { UserInfo } from '@/typings/user'
 import mitt, { Emitter } from 'mitt'
 import type { DispatchMapType } from './type'
 
@@ -21,6 +22,10 @@ export type Events = {
   REQUEST_LOADING: { dispatchType: DispatchMapType; loading: boolean }
   NETWORK_CONNECTED: boolean
   FIRST_INIT: boolean
+  UPDATE_DEVICEID: string
+  UPDATE_VERSIONID: string
+  UPDATE_GPS: string
+  USER_INFO: UserInfo
 }
 
 /**

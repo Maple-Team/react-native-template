@@ -1,5 +1,5 @@
 import { NativeStackHeaderProps } from '@react-navigation/native-stack'
-import React, { useEffect, useMemo, useReducer } from 'react'
+import React, { useContext, useEffect, useMemo } from 'react'
 import { View, StatusBar, ImageBackground } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Button } from '@ant-design/react-native'
@@ -11,7 +11,7 @@ import debounce from 'lodash.debounce'
 
 import { Logo } from '@/components/logo'
 import Text from '@/components/Text'
-import { initiateState, reducer, UPDATE_DEVICEID, UPDATE_GPS, UPDATE_VESIONID } from '@/state'
+import { MoneyyaContext } from '@/state'
 import styles from './style'
 import { REGEX_PHONE } from '@/utils/reg'
 import { DEBOUNCE_WAIT, DEBOUNCE_OPTIONS } from '@/utils/constant'
@@ -22,6 +22,7 @@ import RNAdvertisingId from 'react-native-advertising-id'
 import DeviceInfo from 'react-native-device-info'
 import { usePersmission } from '@/utils/permission'
 import { useLoction } from '@/hooks/useLocation'
+import emitter from '@/eventbus'
 
 interface FormModel {
   phone: string
@@ -29,7 +30,6 @@ interface FormModel {
 
 export const EntryScreen = ({ navigation }: NativeStackHeaderProps) => {
   usePersmission()
-  const [state, dispatch] = useReducer(reducer, initiateState)
   const { t } = useTranslation()
   const schema = Yup.object().shape({
     phone: Yup.string()
@@ -49,42 +49,32 @@ export const EntryScreen = ({ navigation }: NativeStackHeaderProps) => {
   )
   useEffect(() => {
     const versionID = AppModule.getVersionID()
-    dispatch({
-      type: UPDATE_VESIONID,
-      versionID,
-    })
-    //FIXME
+    emitter.emit('UPDATE_VERSIONID', versionID)
     async function query() {
       RNAdvertisingId.getAdvertisingId()
         .then(({ advertisingId }: { advertisingId: string }) => {
-          dispatch({
-            type: UPDATE_DEVICEID,
-            deviceId: advertisingId,
-          })
+          emitter.emit('UPDATE_DEVICEID', advertisingId)
         })
         .catch((e: any) => {
           console.error('googleID', e)
           DeviceInfo.getAndroidId().then(id => {
-            dispatch({
-              type: UPDATE_DEVICEID,
-              deviceId: id,
-            })
+            emitter.emit('UPDATE_DEVICEID', id)
           })
         })
     }
     query()
   }, [])
-  const location = useLoction()
-  useEffect(() => {
-    dispatch({
-      type: UPDATE_GPS,
-      gps: `${location.latitude},${location.longitude}`,
-    })
-  }, [location])
+
+  useLoction()
+
+  const context = useContext(MoneyyaContext)
 
   return (
     <SafeAreaView style={styles.flex1}>
-      <StatusBar translucent backgroundColor="transparent" />
+      {/* <StatusBar
+        // translucent
+        backgroundColor="#f00"
+      /> */}
       <ImageBackground
         source={require('@/assets/images/account/bg.webp')}
         resizeMode="cover"
@@ -114,7 +104,7 @@ export const EntryScreen = ({ navigation }: NativeStackHeaderProps) => {
                       <Button
                         style={[styles.signin, styles.btn]}
                         type="primary"
-                        loading={state.loading.effects.LOGIN}
+                        loading={context.loading.effects.LOGIN}
                         // @ts-ignore
                         onPress={handleSubmit}>
                         <Text>{t('signin')}</Text>
@@ -124,7 +114,7 @@ export const EntryScreen = ({ navigation }: NativeStackHeaderProps) => {
                 </Formik>
                 <Button
                   style={[styles.signup, styles.btn]}
-                  loading={state.loading.effects.LOGIN}
+                  loading={context.loading.effects.LOGIN}
                   onPress={async () => {
                     navigation.navigate('SignUp')
                   }}>
