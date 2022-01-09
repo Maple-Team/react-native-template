@@ -1,6 +1,6 @@
 import { NativeStackHeaderProps } from '@react-navigation/native-stack'
-import React, { useContext, useEffect, useMemo } from 'react'
-import { View, StatusBar, ImageBackground } from 'react-native'
+import React, { useContext, useMemo } from 'react'
+import { View, ImageBackground } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Button } from '@ant-design/react-native'
 import { useTranslation } from 'react-i18next'
@@ -17,19 +17,12 @@ import { REGEX_PHONE } from '@/utils/reg'
 import { DEBOUNCE_WAIT, DEBOUNCE_OPTIONS } from '@/utils/constant'
 import { Input } from '@components/form/FormItem'
 import { Color } from '@/styles/color'
-import AppModule from '@/modules/AppModule'
-import RNAdvertisingId from 'react-native-advertising-id'
-import DeviceInfo from 'react-native-device-info'
-import { usePersmission } from '@/utils/permission'
-import { useLoction } from '@/hooks/useLocation'
-import emitter from '@/eventbus'
 
 interface FormModel {
   phone: string
 }
 
 export const EntryScreen = ({ navigation }: NativeStackHeaderProps) => {
-  usePersmission()
   const { t } = useTranslation()
   const schema = Yup.object().shape({
     phone: Yup.string()
@@ -47,34 +40,11 @@ export const EntryScreen = ({ navigation }: NativeStackHeaderProps) => {
     DEBOUNCE_WAIT,
     DEBOUNCE_OPTIONS
   )
-  useEffect(() => {
-    const versionID = AppModule.getVersionID()
-    emitter.emit('UPDATE_VERSIONID', versionID)
-    async function query() {
-      RNAdvertisingId.getAdvertisingId()
-        .then(({ advertisingId }: { advertisingId: string }) => {
-          emitter.emit('UPDATE_DEVICEID', advertisingId)
-        })
-        .catch((e: any) => {
-          console.error('googleID', e)
-          DeviceInfo.getAndroidId().then(id => {
-            emitter.emit('UPDATE_DEVICEID', id)
-          })
-        })
-    }
-    query()
-  }, [])
-
-  useLoction()
 
   const context = useContext(MoneyyaContext)
 
   return (
     <SafeAreaView style={styles.flex1}>
-      {/* <StatusBar
-        // translucent
-        backgroundColor="#f00"
-      /> */}
       <ImageBackground
         source={require('@/assets/images/account/bg.webp')}
         resizeMode="cover"
@@ -99,6 +69,7 @@ export const EntryScreen = ({ navigation }: NativeStackHeaderProps) => {
                           onClear={() => setFieldValue('phone', '')}
                           placeholder={t('phone.placeholder')}
                           error={errors.phone}
+                          keyboardType="phone-pad"
                         />
                       </View>
                       <Button

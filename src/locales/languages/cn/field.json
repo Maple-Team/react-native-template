@@ -6,13 +6,68 @@
     "required": "confirmPassword required",
     "notSame": "confirmPassword not same with password"
   },
+  "company": {
+    "label": "company name",
+    "placeholder": "",
+    "invalid": "",
+    "required": ""
+  },
+  "companyAddrCityCode": {
+    "label": "城市",
+    "placeholder": "城市",
+    "required": "城市必须"
+  },
+  "companyAddrDetail": {
+    "label": "company Address Detail",
+    "placeholder": "",
+    "invalid": "",
+    "required": ""
+  },
+  "companyAddrProvinceCode": {
+    "label": "省份",
+    "placeholder": "请输入省份",
+    "required": "省份必须"
+  },
+  "companyPhone": {
+    "label": "company Phone",
+    "placeholder": "",
+    "invalid": "",
+    "required": ""
+  },
   "firstName": {
     "label": "",
     "placeholder": "",
     "invalid": "",
     "required": ""
   },
+  "hasAgree": {
+    "required": "please agree agreement"
+  },
+  "incumbency": {
+    "label": "在职时间",
+    "placeholder": "请选择在职时间",
+    "invalid": "",
+    "required": "在职时间必须"
+  },
+  "industryCode": {
+    "label": "",
+    "placeholder": "",
+    "invalid": "",
+    "required": ""
+  },
+  "jobTypeCode": {
+    "label": "",
+    "placeholder": "",
+    "invalid": "",
+    "required": ""
+  },
   "lastname": {
+    "label": "",
+    "placeholder": "",
+    "invalid": "",
+    "required": ""
+  },
+  "monthlyIncome": {
     "label": "",
     "placeholder": "",
     "invalid": "",
@@ -29,6 +84,18 @@
     "invalid": "Phone invalid",
     "required": "Phone Required"
   },
+  "salaryDate": {
+    "label": "salaryDate",
+    "placeholder": "salaryDate",
+    "invalid": "",
+    "required": ""
+  },
+  "salaryType": {
+    "label": "salaryType",
+    "placeholder": "",
+    "invalid": "",
+    "required": ""
+  },
   "validateCode": {
     "label": "Validate Code",
     "placeholder": "Validate Code",
@@ -37,8 +104,5 @@
     "get": "Get Code",
     "wait": "Please wait {{num}} to get code",
     "maxTime": "最大次数，请稍候再试"
-  },
-  "hasAgree":{
-    "required":"please agree agreement"
   }
 }

@@ -14,7 +14,7 @@ export const onRequestPermission = async ({
   onGranted: () => void
 }) => {
   const state = await check(permission)
-  console.log(permission, state)
+  console.log('permission: ', permission, state)
   switch (state) {
     // case RESULTS.DENIED:
     //   emitter.emit('SHOW_MESSAGE', { type: 'fail', message: blockedMessage })
@@ -102,7 +102,7 @@ export const usePersmission = () => {
                   break
                 default:
                   const s1 = await request(curr) //FIXME
-                  console.log(s1)
+                  console.log({ s1 })
                   resolve()
                   break
               }

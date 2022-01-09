@@ -10,18 +10,20 @@ export interface WheelPickerProps<T extends Dict> {
   selected: string
   onChange: (value: number) => void
 }
-export function WheelPicker<T extends Dict>({
+export function WheelPickerAndroid<T extends Dict>({
   dataSource,
   selected,
   onChange,
 }: WheelPickerProps<T>) {
   const [selectedIndex, setSelectedIndex] = useState<number>(0)
+
   useEffect(() => {
     if (dataSource) {
       const index = dataSource.findIndex(item => item.code === selected)
       setSelectedIndex(index < 0 ? 0 : index)
     }
   }, [dataSource, selected])
+
   if (dataSource.length === 0) {
     return (
       <View style={wheelPickerStyles.container}>

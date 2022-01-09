@@ -65,6 +65,7 @@ export type Action =
     }
 
 export function reducer(state: State, action: Action): State {
+  console.log('action', action)
   switch (action.type) {
     case UPDATE_TOKEN:
       MMKV.setStringAsync('accessToken', action.token)

@@ -13,25 +13,28 @@ import { pv, queryBrand, queryVersion } from '@/services/apply'
 import { queryUserinfo } from '@/services/user'
 import { MoneyyaContext } from '@/state'
 import emitter from '@/eventbus'
+import { MMKV } from '@/utils/storage'
 
 export function Step1() {
   const navigation = useNavigation()
   const context = useContext(MoneyyaContext)
+  console.log(context)
   // const sensor = useSensor()
   useEffect(() => {
     queryBrand().then(res => {
-      console.log(res)
+      console.log('brand', res)
     })
     queryVersion().then(res => {
-      console.log(res)
+      console.log('vesion', res)
     })
     pv()
     queryUserinfo().then(res => {
-      console.log(res)
+      console.log('userinfo', res)
+      MMKV.setInt('applyId', res.applyId)
       emitter.emit('USER_INFO', res)
     })
   }, [])
-  console.log(context.user)
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar translucent={false} backgroundColor="#fff" barStyle="dark-content" />

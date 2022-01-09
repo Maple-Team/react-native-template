@@ -37,7 +37,13 @@ export interface ApplyStep2Parameter extends ApplyParameter {
   jobTypeCode: string
   jobType: string
   monthlyIncome: string
+  /**
+   * 	发薪周期
+   */
   salaryType: string
+  /**
+   * 	发薪日期
+   */
   salaryDate: string
   company: string
   companyPhone: string
@@ -46,6 +52,9 @@ export interface ApplyStep2Parameter extends ApplyParameter {
   companyAddrCityCode: string
   companyAddrCity: string
   companyAddrDetail: string
+  /**
+   * 在职时长
+   */
   incumbency: string
 }
 export interface ApplyStep3Parameter extends ApplyParameter {

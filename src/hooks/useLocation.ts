@@ -19,10 +19,10 @@ export const useLoction = () => {
         },
         error => {
           // See error code charts below.
-          console.log(error.code, error.message)
+          console.log('onGetLocation', error.code, error.message)
           setLocation({ latitude: 0, longitude: 0 })
         },
-        { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+        { enableHighAccuracy: true, timeout: 15000 * 4, maximumAge: 10000 }
       )
     }
     Promise.race([

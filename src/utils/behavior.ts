@@ -3,7 +3,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Dimensions } from 'react-native'
 
 import { uploadBehavior } from '@/services/apply'
-
 import type {
   BehaviorModel,
   BehaviorRecords,

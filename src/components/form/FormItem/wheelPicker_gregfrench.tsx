@@ -11,7 +11,7 @@ export interface WheelPickerProps<T extends Dict> {
   selected: string
   onChange: (value: string) => void
 }
-export function WheelPicker<T extends Dict>({
+export function GregFrenchWheelPicker<T extends Dict>({
   dataSource,
   selected,
   onChange,
@@ -45,8 +45,8 @@ export function WheelPicker<T extends Dict>({
           setSelectedIndex(index)
           onChange(dataSource[index].code)
         }}>
-        {dataSource.map(({ name, code }) => (
-          <PickerItem label={name} value={code} key={code} />
+        {dataSource.map(({ name, code }, index) => (
+          <PickerItem label={name} value={index} key={code} />
         ))}
       </Picker>
     </View>

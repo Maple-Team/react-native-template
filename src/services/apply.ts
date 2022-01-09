@@ -136,9 +136,9 @@ export async function scheduleCalc(data: CalculateParameter) {
  * @returns
  */
 export async function pv() {
-  return request<Calculate>({
+  return request<BaseResponse>({
     url: '/smart-loan/app/index',
-    method: 'DELETE',
+    method: 'POST',
   })
 }
 /**

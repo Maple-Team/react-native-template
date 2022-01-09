@@ -29,7 +29,7 @@ export function ApplyStack() {
   return (
     <Provider>
       <Stack.Navigator
-        initialRouteName="Home"
+        initialRouteName="BottomTab"
         screenOptions={({ navigation }) => ({
           headerStyle: {
             backgroundColor: Color.primary,
@@ -52,8 +52,8 @@ export function ApplyStack() {
         })}>
         <Stack.Group>
           <Stack.Screen
-            key="Home"
-            name="Home"
+            key="BottomTab"
+            name="BottomTab"
             component={BottomTab}
             options={() => ({
               headerShown: false,

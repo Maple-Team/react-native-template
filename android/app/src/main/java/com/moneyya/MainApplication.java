@@ -8,6 +8,8 @@ import com.wheelpicker.WheelPickerPackage;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
+import com.ammarahmed.mmkv.RNMMKVJSIModulePackage;
+import com.facebook.react.bridge.JSIModulePackage;
 import com.facebook.soloader.SoLoader;
 import com.moneyya.nativemodule.MoneyyaPackage;
 
@@ -24,7 +26,12 @@ public class MainApplication extends Application implements ReactApplication {
       }
 
       @Override
-      protected List<ReactPackage> getPackages() {
+      protected JSIModulePackage getJSIModulePackage() {
+            return new RNMMKVJSIModulePackage();
+        }
+
+        @Override
+        protected List<ReactPackage> getPackages() {
         @SuppressWarnings("UnnecessaryLocalVariable")
         List<ReactPackage> packages = new PackageList(this).getPackages();
         // Packages that cannot be autolinked yet can be added manually here, for example:

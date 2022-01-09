@@ -84,7 +84,7 @@ const App = () => {
     const lng = locales[0].languageTag
     // FIXME 'i18next: init: i18next is already initialized. You should call init just once!'
     RNLocalize.addEventListener('change', (e: any) => {
-      console.log(e)
+      console.error('RNLocalize', e)
     })
     i18n.init(getI18nConfig(lng))
   }, [])
@@ -143,14 +143,19 @@ const App = () => {
         loading,
       })
     })
+    emitter.on('UPDATE_DEVICEID', id => {
+      dispatch({
+        type: 'UPDATE_DEVICEID',
+        deviceId: id,
+      })
+    })
   }, [])
 
   if (!isReady) {
     return <Loading />
   }
-  console.log({ hasInit }, { accessToken })
   return (
-    <SafeAreaProvider style={{ backgroundColor: '#00f', flex: 1 }}>
+    <SafeAreaProvider>
       <Provider>
         <MoneyyaContext.Provider value={moneyyaState}>
           <StrictMode>

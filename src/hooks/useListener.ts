@@ -18,7 +18,6 @@ export const useEventListener = () => {
     })
     emitter.on('SHOW_MESSAGE', ({ message, type }) => {
       Toast[type](message, MESSAGE_DURATION)
-      console.log(message, MESSAGE_DURATION)
     })
     // 监听请求状态
     emitter.on('NETWORK_CONNECTED', isConnected => {

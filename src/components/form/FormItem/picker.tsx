@@ -4,7 +4,7 @@ import type { KeyboardTypeOptions } from 'react-native'
 import formItemStyles from './style'
 import Text from '@components/Text'
 import { ErrorMessage } from 'formik'
-import { WheelPicker } from './wheelPicker2'
+import { WheelPickerAndroid } from './wheelPicker_android'
 import { ModalWrap } from './modalWrap'
 import type { Dict, PickerField } from '@/typings/response'
 
@@ -31,7 +31,10 @@ export function NormalPicker<T extends Dict, U extends PickerField>({
   dataSource,
 }: PickerProps<T, U>) {
   const [visible, setVisible] = useState<boolean>(false)
-  const Picker = ModalWrap(WheelPicker)
+  const Picker = ModalWrap(WheelPickerAndroid)
+
+  console.error(error)
+
   return (
     <>
       <View style={formItemStyles.formItem}>
@@ -39,7 +42,7 @@ export function NormalPicker<T extends Dict, U extends PickerField>({
         <View style={formItemStyles.inputWrap}>
           <TextInput
             editable={false}
-            value={value}
+            value={dataSource.find(({ code }) => code === value)?.name}
             placeholder={placeholder}
             onPressIn={() => setVisible(true)}
             style={[formItemStyles.input, error ? { borderBottomColor: 'red' } : {}]}
@@ -47,10 +50,8 @@ export function NormalPicker<T extends Dict, U extends PickerField>({
           />
           <Pressable
             style={formItemStyles.suffixWrap}
-            onPress={() => {
-              console.log('pressed')
-              setVisible(true)
-            }}>
+            onPress={() => setVisible(true)}
+            pressRetentionOffset={{ top: 20, left: 20, right: 20, bottom: 20 }}>
             <Image
               style={formItemStyles.suffix}
               source={require('@assets/images/common/right.webp')}

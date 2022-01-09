@@ -49,13 +49,14 @@ api.interceptors.request.use(
   },
   function (error: AxiosError) {
     emitter.emit('REQUEST_ERROR', error.message)
+    console.error('axios request error', error.config.url, error.message)
     return Promise.reject(error)
   }
 )
 
 api.interceptors.response.use(
   (response: AxiosResponse) => {
-    __DEV__ && console.log('data', response.config.data)
+    __DEV__ && response.config.data && console.log('response request data', response.config.data)
     const {
       status: { code, msg, msgCn },
       body,
@@ -69,7 +70,11 @@ api.interceptors.response.use(
         case API_CODE.SESSION_EXPIRED:
           emitter.emit('SESSION_EXPIRED')
           break
+        case API_CODE.EXISTED_USER:
+          emitter.emit('EXISTED_USER')
+          break
         default:
+          console.error(response.config.url, code, message)
           emitter.emit('SHOW_MESSAGE', { message, type: 'fail' })
           break
       }
@@ -79,6 +84,7 @@ api.interceptors.response.use(
   (error: AxiosError) => {
     const message = (error || {}).message
     message && emitter.emit('RESPONSE_ERROR', message)
+    console.error('axios response error', error.config.url, message)
     return Promise.reject(error)
   }
 )

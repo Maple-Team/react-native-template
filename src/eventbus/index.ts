@@ -26,6 +26,7 @@ export type Events = {
   UPDATE_VERSIONID: string
   UPDATE_GPS: string
   USER_INFO: UserInfo
+  EXISTED_USER?: string
 }
 
 /**
