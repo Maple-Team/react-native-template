@@ -34,6 +34,24 @@
     "invalid": "",
     "required": ""
   },
+  "contactName": {
+    "label": "",
+    "placeholder": "",
+    "invalid": "",
+    "required": ""
+  },
+  "contactPhone": {
+    "label": "",
+    "placeholder": "",
+    "invalid": "",
+    "required": ""
+  },
+  "contactRelationCode": {
+    "label": "",
+    "placeholder": "",
+    "invalid": "",
+    "required": ""
+  },
   "firstName": {
     "label": "",
     "placeholder": "",

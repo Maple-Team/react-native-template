@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React from 'react'
 import { Provider } from '@ant-design/react-native'
-import { useEventListener } from '@/hooks/useListener'
+import { useEventListener } from '@/hooks'
 import { Color } from '@/styles/color'
 import { ImageStyle } from 'react-native'
 import { Step2, Step3, Step4, Step5, Step6, Step7, Step8 } from '@screens/apply'

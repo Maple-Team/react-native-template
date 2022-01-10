@@ -15,7 +15,7 @@ import { ApplyButton } from '@components/form/FormItem/applyButton'
 import { Color } from '@/styles/color'
 import type { RegisterParameter } from '@/typings/request'
 import { register } from '@/services/user'
-import { useLoction } from '@/hooks/useLocation'
+import { useLoction } from '@/hooks'
 import { MoneyyaContext } from '@/state'
 import emitter from '@/eventbus'
 

@@ -2,6 +2,7 @@ const path = require('path')
 
 module.exports = api => {
   const isTest = api.env('test')
+  console.log(api.env)
   if (isTest) {
     return {
       presets: [
@@ -25,6 +26,7 @@ module.exports = api => {
     presets: ['module:metro-react-native-babel-preset'],
     plugins: [
       ['import', { libraryName: '@ant-design/react-native' }],
+      // ["transform-remove-console", { "exclude": ["error", "warn"] }], // FIXME
       [
         'module-resolver',
         {

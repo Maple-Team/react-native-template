@@ -1,6 +1,4 @@
 import dayjs from 'dayjs'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { Dimensions } from 'react-native'
 
 import { uploadBehavior } from '@/services/apply'
 import type {
@@ -14,12 +12,13 @@ import type {
   MatchedIDs,
   ClickTypeID,
 } from '@/typings/behavior'
+import { MMKV } from './storage'
+import { KEY_BEHAVIOR_DATA } from './constant'
 
-const window = Dimensions.get('window')
 export default class Behavior<T extends PAGE_ID> {
   private model: BehaviorModel<T> = {
-    screenWidth: `${window.width}`,
-    screenHeight: `${window.height}`,
+    screenWidth: '',
+    screenHeight: '',
     applyId: '',
     outerIp: '',
     internalIp: '',
@@ -72,7 +71,7 @@ export default class Behavior<T extends PAGE_ID> {
     return dayjs().format('YYYY-MM-DD HH:mm:ss')
   }
   private save2storage() {
-    AsyncStorage.setItem('da', JSON.stringify(this.model))
+    MMKV.setArrayAsync(KEY_BEHAVIOR_DATA, this.model.records)
   }
 
   /**
@@ -177,7 +176,6 @@ export default class Behavior<T extends PAGE_ID> {
    * @param id
    */
   async send(id: PAGE_ID) {
-    this.model.applyId = (await AsyncStorage.getItem('applyId')) || '' //FIXME applyId确保有值
     this.save2storage()
     let data = this.getSendMsg(id)
     if (data.records && data.records.length) {

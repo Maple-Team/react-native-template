@@ -11,10 +11,10 @@ import { PageStyles, Text, Hint } from '@/components'
 import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT } from '@/utils/constant'
 import { ApplyButton } from '@components/form/FormItem'
 import { Color } from '@/styles/color'
-import type { ApplyStep2Parameter } from '@/typings/apply'
-import { useLoction } from '@/hooks/useLocation'
+import type { ApplyStep8Parameter } from '@/typings/apply'
+import { useLoction } from '@/hooks'
 
-type FormModel = Omit<ApplyStep2Parameter, 'applyId' | 'currentStep' | 'totalSteps'>
+type FormModel = Omit<ApplyStep8Parameter, 'applyId' | 'currentStep' | 'totalSteps'>
 export const Step8 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
   const onSubmit = debounce(
@@ -184,7 +184,8 @@ export const Step8 = ({ navigation }: NativeStackHeaderProps) => {
           <View style={PageStyles.btnWrap}>
             <ApplyButton
               type="primary"
-              handleSubmit={() => {}}
+              //@ts-ignore
+              handleSubmit={onSubmit}
               // loading={state}
             >
               <Text color="#fff" fontSize={19} fontFamily="Arial-BoldMT" fontWeight="bold">

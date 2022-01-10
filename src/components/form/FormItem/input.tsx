@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { Pressable, TextInput, View, Image } from 'react-native'
 import type { KeyboardTypeOptions } from 'react-native'
 import styles from './style'
 import Text from '@components/Text'
 import { ErrorMessage } from 'formik'
+import { useFocusOnError } from '@/hooks'
 
 interface InputProps {
   onChangeText: (text: string) => void
@@ -29,6 +30,8 @@ export const Input = ({
   placeholder,
   keyboardType,
 }: InputProps) => {
+  const fieldRef = useRef<TextInput>(null)
+  useFocusOnError({ fieldRef, name: field })
   return (
     <View style={styles.formItem}>
       <Text styles={styles.label}>{label}</Text>
@@ -37,6 +40,7 @@ export const Input = ({
           onChangeText={onChangeText}
           maxLength={11}
           value={value}
+          ref={fieldRef}
           placeholder={placeholder}
           style={[styles.input, error ? { borderBottomColor: 'red' } : {}]}
           keyboardType={keyboardType}

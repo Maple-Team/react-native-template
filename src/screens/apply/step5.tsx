@@ -14,7 +14,7 @@ import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT } from '@/utils/constant'
 import { ApplyButton, IdcardPhotoPicker } from '@components/form/FormItem'
 import { Color } from '@/styles/color'
 import { ApplyStep5Parameter } from '@/typings/apply'
-import { useLoction } from '@/hooks/useLocation'
+import { useLoction } from '@/hooks'
 
 type FormModel = Omit<ApplyStep5Parameter, 'applyId' | 'currentStep' | 'totalSteps'>
 export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
