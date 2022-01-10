@@ -4,8 +4,6 @@ import type { KeyboardTypeOptions } from 'react-native'
 import formItemStyles from './style'
 import Text from '@components/Text'
 import { ErrorMessage } from 'formik'
-import { useTranslation } from 'react-i18next'
-import { onRequestPermission } from '@/utils/permission'
 
 interface Props {
   onChange: (text: string) => void
@@ -18,9 +16,7 @@ interface Props {
   keyboardType?: KeyboardTypeOptions
 }
 
-export function HandPhotoPicker({ onChange, value, field, label, placeholder }: Props) {
-  const { t } = useTranslation()
-
+export function HandPhotoPicker({ value, field, placeholder }: Props) {
   return (
     <>
       <View
@@ -56,7 +52,11 @@ export function HandPhotoPicker({ onChange, value, field, label, placeholder }: 
           {msg => <Text styles={[formItemStyles.warn, formItemStyles.error]}>{msg}</Text>}
         </ErrorMessage>
         <View style={{ alignItems: 'center' }}>
-          <Text styles={{ fontSize: 14 }}>
+          <Text
+            styles={{
+              //@ts-ignore
+              fontSize: 14,
+            }}>
             Must provide above mentioned images, otherwise application will be rejected.
           </Text>
         </View>
@@ -65,7 +65,6 @@ export function HandPhotoPicker({ onChange, value, field, label, placeholder }: 
   )
 }
 
-import { ImageStyle, ViewStyle } from 'react-native'
 import StyleSheet from 'react-native-adaptive-stylesheet'
 
 export default StyleSheet.create<{}>({})

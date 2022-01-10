@@ -1,5 +1,5 @@
 import React from 'react'
-import { RegisteredStyle, Text, Platform } from 'react-native'
+import { RegisteredStyle, Text, Platform, ViewStyle } from 'react-native'
 import type { TextStyle } from 'react-native'
 import StyleSheet from 'react-native-adaptive-stylesheet'
 // Note @https://juejin.im/post/5ce66c26e51d4555fd20a2a0
@@ -99,7 +99,7 @@ export default ({
   color,
 }: {
   children: any
-  styles?: RegisteredStyle<TextStyle> | RegisteredStyle<TextStyle>[]
+  styles?: RegisteredStyle<TextStyle | ViewStyle> | RegisteredStyle<TextStyle | ViewStyle>[]
   onPress?: () => void
   fontSize?: number
   fontWeight?: 'bold'

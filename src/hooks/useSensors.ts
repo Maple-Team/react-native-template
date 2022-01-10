@@ -57,6 +57,7 @@ export const useSensor = () => {
     const subscription = subscribe()
     return () => {
       // FIXME
+      // @ts-ignore
       subscription.remove()
     }
   }, [sensor, slow])

@@ -42,7 +42,9 @@ export function PhonePicker({ onChange, value, field, label, placeholder }: Prop
 
   const onRequestContactsPermission = useCallback(() => {
     onRequestPermission({
+      //@ts-ignore FIXME
       blockedMessage: t('permission blocked'),
+      // @ts-ignore FIXME
       unavailableMessage: t('permission unavailable'),
       permission: 'android.permission.READ_CONTACTS',
       onGranted: () => {

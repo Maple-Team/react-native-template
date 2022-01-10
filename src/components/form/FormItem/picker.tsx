@@ -4,7 +4,7 @@ import type { KeyboardTypeOptions } from 'react-native'
 import formItemStyles from './style'
 import Text from '@components/Text'
 import { ErrorMessage } from 'formik'
-import { WheelPickerAndroid } from './wheelPicker_android'
+import { WheelPicker } from './wheelPicker'
 import { ModalWrap } from './modalWrap'
 import type { Dict, PickerField } from '@/typings/response'
 
@@ -31,7 +31,7 @@ export function NormalPicker<T extends Dict, U extends PickerField>({
   dataSource,
 }: PickerProps<T, U>) {
   const [visible, setVisible] = useState<boolean>(false)
-  const Picker = ModalWrap(WheelPickerAndroid)
+  const Picker = ModalWrap(WheelPicker)
 
   console.error(error)
 

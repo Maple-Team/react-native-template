@@ -3,7 +3,7 @@ import { APPLY_STATE } from '../state/enum'
 
 export type UserState = 'ACTIVE' | 'UNACTIVE' | 'BLACK_LIST'
 export type Gender = 'male' | 'female'
-
+export type APPLY_BOOL = 'Y' | 'N'
 export enum UserLevel {
   NORMAL = '0',
   WHITE = '1',

@@ -10,7 +10,7 @@ export interface WheelPickerProps<T extends Dict> {
   selected: string
   onChange: (value: number) => void
 }
-export function WheelPickerAndroid<T extends Dict>({
+export function WheelPicker<T extends Dict>({
   dataSource,
   selected,
   onChange,

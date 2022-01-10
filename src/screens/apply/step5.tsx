@@ -13,10 +13,10 @@ import { REGEX_PHONE } from '@/utils/reg'
 import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT } from '@/utils/constant'
 import { ApplyButton, IdcardPhotoPicker } from '@components/form/FormItem'
 import { Color } from '@/styles/color'
-import { ApplyStep2Parameter } from '@/typings/apply'
+import { ApplyStep5Parameter } from '@/typings/apply'
 import { useLoction } from '@/hooks/useLocation'
 
-type FormModel = Omit<ApplyStep2Parameter, 'applyId' | 'currentStep' | 'totalSteps'>
+type FormModel = Omit<ApplyStep5Parameter, 'applyId' | 'currentStep' | 'totalSteps'>
 export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
   const schema = Yup.object().shape({
@@ -26,7 +26,31 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
       .matches(REGEX_PHONE, t('phone.invalid'))
       .required(t('phone.required')),
   })
-  const initialValue = useMemo<FormModel>(() => ({ salaryDate: '' }), [])
+  const initialValue = useMemo<FormModel>(
+    () => ({
+      firstName: '',
+      educationCode: '',
+      email: '',
+      homeAddrCity: '',
+      homeAddrCityCode: '',
+      homeAddrDetail: '',
+      homeAddrProvince: '',
+      homeAddrProvinceCode: '',
+      backupPhone: '',
+      birth: '',
+      docType: '',
+      idcard: '',
+      lastName: '',
+      loanPurpose: '',
+      maritalStatus: '',
+      middleName: '',
+      name: '',
+      secondCardNo: '',
+      sex: 'male',
+      thirdInfos: [],
+    }),
+    []
+  )
   const onSubmit = debounce(
     (values: FormModel) => {
       console.log(values)
@@ -49,7 +73,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
             initialValues={initialValue}
             onSubmit={onSubmit}
             validationSchema={schema}>
-            {({ handleChange, handleSubmit, values, setFieldValue, errors, isValid }) => (
+            {({ handleChange, handleSubmit, isValid }) => (
               <>
                 <View style={PageStyles.form}>
                   <IdcardPhotoPicker

@@ -58,11 +58,23 @@ export function BillsList() {
                         width: '100%',
                       }}>
                       <View style={{ alignItems: 'center' }}>
-                        <Text styles={{ marginBottom: 15 }}>借款金额</Text>
+                        <Text
+                          styles={{
+                            //@ts-ignore
+                            marginBottom: 15,
+                          }}>
+                          借款金额
+                        </Text>
                         <Text>{item.loanAmount}</Text>
                       </View>
                       <View style={{ alignItems: 'center' }}>
-                        <Text styles={{ marginBottom: 15 }}>应还日期</Text>
+                        <Text
+                          styles={{
+                            //@ts-ignore
+                            marginBottom: 15,
+                          }}>
+                          应还日期
+                        </Text>
                         <Text>{item.repayDate}</Text>
                       </View>
                     </View>

@@ -52,6 +52,7 @@ export const ResetScreen = ({ navigation }: NativeStackHeaderProps) => {
       reset(values).then(() => {
         emitter.emit('SHOW_MESSAGE', {
           type: 'success',
+          //@ts-ignore FIXME
           message: t('resetpwd.success'),
         })
         navigation.navigate('SignIn')

@@ -49,7 +49,7 @@ export const Step4 = ({ navigation }: NativeStackHeaderProps) => {
             initialValues={initialValue}
             onSubmit={onSubmit}
             validationSchema={schema}>
-            {({ handleChange, handleSubmit, values, setFieldValue, errors, isValid }) => (
+            {({ handleChange, handleSubmit, isValid }) => (
               <>
                 <View style={PageStyles.form}>
                   <IdcardPhotoPicker
@@ -57,7 +57,7 @@ export const Step4 = ({ navigation }: NativeStackHeaderProps) => {
                     field={'ss'}
                     label={'El frente de tu ID'}
                     bg={require('@assets/images/apply/id1.webp')}
-                    error={errors.images}
+                    // error={errors.images}
                   />
                   <IdcardPhotoPicker
                     onChange={handleChange('')}

@@ -86,6 +86,7 @@ const write = async (lang: string, data: string, filename: string) => {
             if (typeof cn[k] === 'object') {
               // @ts-ignore
               for (const v of cn[k]) {
+                //@ts-ignore
                 result[k][v] = cn[k][v]
               }
             } else {
