@@ -1,20 +1,18 @@
 {
-  "submit": "Submit",
-  "cancel": "Cancel",
-  "back": "Back",
-  "signin": "SignIn",
-  "signup": "SignUp",
+  "account": "Account",
+  "back": "返回",
+  "cancel": "取消",
   "close": "Close",
   "confirm": "Confirm",
-  "home": "Home",
-  "order": "Order",
   "done": "Done",
-  "account": "Account",
-  "resetpwd": "忘记密码",
+  "forget-password": "忘记密码",
   "login": {
     "success": "登录成功"
   },
-  "forget-password": "忘记密码",
   "password-login": "密码登录",
+  "resetpwd": "忘记密码",
+  "signin": "登录",
+  "signup": "注册",
+  "submit": "提交",
   "validation-code-login": "验证码登录"
 }

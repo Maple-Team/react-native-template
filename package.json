@@ -14,6 +14,7 @@
     "format": "prettier . --ext .js,.jsx,.ts,.tsx --write",
     "prepare": "husky install",
     "add-field": "ts-node scripts/add-field.ts",
+    "sync-locale": "ts-node scripts/sync-locale.ts",
     "rn": "ts-node scripts/change-name.ts"
   },
   "dependencies": {
