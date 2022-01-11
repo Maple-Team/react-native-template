@@ -185,7 +185,7 @@ export const Step8 = ({ navigation }: NativeStackHeaderProps) => {
             <ApplyButton
               type="primary"
               //@ts-ignore
-              handleSubmit={onSubmit}
+              onPress={onSubmit}
               // loading={state}
             >
               <Text color="#fff" fontSize={19} fontFamily="Arial-BoldMT" fontWeight="bold">

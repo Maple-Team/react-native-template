@@ -92,7 +92,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                 <View style={PageStyles.btnWrap}>
                   <ApplyButton
                     type={isValid ? 'primary' : undefined}
-                    handleSubmit={handleSubmit}
+                    onPress={handleSubmit}
                     // loading={state}
                   >
                     <Text fontSize={18} color="#fff">

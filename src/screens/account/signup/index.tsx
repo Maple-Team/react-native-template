@@ -142,7 +142,7 @@ export const SignupScreen = () => {
                 <View style={PageStyles.btnWrap}>
                   <ApplyButton
                     type={isValid ? 'primary' : 'ghost'}
-                    handleSubmit={handleSubmit}
+                    onPress={handleSubmit}
                     loading={context.loading.effects.REGISTER}>
                     <Text color={isValid ? '#fff' : '#aaa'}>{t('submit')}</Text>
                   </ApplyButton>

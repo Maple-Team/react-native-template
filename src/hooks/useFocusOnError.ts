@@ -15,13 +15,14 @@ export const useFocusOnError = ({
 }) => {
   const formik = useFormikContext()
   const prevSubmitCountRef = useRef(formik.submitCount)
-  const firstErrorKey = Object.keys(formik.errors)[0]
+  const errorKey = Object.keys(formik.errors)[0]
   useEffect(() => {
     if (prevSubmitCountRef.current !== formik.submitCount && !formik.isValid) {
-      if (fieldRef.current && firstErrorKey === name) {
+      if (fieldRef.current && errorKey === name) {
+        console.log('focus', name) // FIXME 没有滚动效果
         fieldRef.current.focus()
       }
     }
     prevSubmitCountRef.current = formik.submitCount
-  }, [formik.submitCount, formik.isValid, firstErrorKey, fieldRef, name])
+  }, [formik.submitCount, formik.isValid, errorKey, fieldRef, name])
 }

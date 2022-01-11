@@ -85,3 +85,6 @@ export type PickerField =
   | 'educationCode'
   | 'loanPurpose'
   | 'cardNoType'
+  | 'contactRelationCode1'
+  | 'contactRelationCode2'
+  | 'contactRelationCode3'

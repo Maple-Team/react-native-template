@@ -11,7 +11,7 @@ import { useFocusOnError } from '@/hooks'
 
 interface PickerProps<T extends Dict, U extends PickerField> {
   onChange: (text: string) => void
-  value?: string
+  value: string
   error?: string
   title: string
   field: U
@@ -33,8 +33,6 @@ export function NormalPicker<T extends Dict, U extends PickerField>({
 }: PickerProps<T, U>) {
   const [visible, setVisible] = useState<boolean>(false)
   const Picker = ModalWrap(WheelPicker)
-
-  console.error(error)
   const fieldRef = useRef<TextInput>(null)
   // const [fieldProps] = useField(field)
   useFocusOnError({ fieldRef, name: field })
@@ -48,14 +46,16 @@ export function NormalPicker<T extends Dict, U extends PickerField>({
             ref={fieldRef}
             value={dataSource.find(({ code }) => code === value)?.name}
             placeholder={placeholder}
-            onPressIn={() => setVisible(true)}
             style={[formItemStyles.input, error ? { borderBottomColor: 'red' } : {}]}
             placeholderTextColor={'rgba(156, 171, 185, 1)'}
             // {...fieldProps}
           />
           <Pressable
             style={formItemStyles.suffixWrap}
-            onPress={() => setVisible(true)}
+            onPress={() => {
+              console.log('Pressable: onpress right')
+              setVisible(true)
+            }}
             pressRetentionOffset={{ top: 20, left: 20, right: 20, bottom: 20 }}>
             <Image
               style={formItemStyles.suffix}

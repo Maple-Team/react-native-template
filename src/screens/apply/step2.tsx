@@ -5,7 +5,7 @@ import { View, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
 import { ScrollView } from 'react-native-gesture-handler'
-import { Formik } from 'formik'
+import { Formik, Form } from 'formik'
 import * as Yup from 'yup'
 import debounce from 'lodash.debounce'
 import { useFocusEffect } from '@react-navigation/native'
@@ -45,15 +45,16 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
 
   const [state, dispatch] = useReducer<Reducer<Step2State, Step2Action>>(
     (s, { type, value }) => {
+      console.log(type, Array.isArray(value) ? value[0].nameCn : value)
       switch (type) {
         case 'updateProvinces':
           return { ...s, provinceArr: value }
         case 'updateProvince':
-          return { ...s, province: value }
+          return { ...s, companyAddrProvinceCode: value }
         case 'updateCities':
           return { ...s, cityArr: value }
         case 'updateCity':
-          return { ...s, city: value }
+          return { ...s, companyAddrCityCode: value }
         case 'updateIncumbencies':
           return { ...s, incumbencyArr: value }
         case 'updateIncumbency':
@@ -63,9 +64,8 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
         case 'updateMonthlyIncome':
           return { ...s, monthlyIncome: value }
         case 'updateMonthly':
-          return { ...s, monthly: value }
         case 'updateWeekly':
-          return { ...s, weekly: value }
+          return { ...s, salaryDateArr: value }
         case 'updateSalaryType':
           return { ...s, salaryType: value }
         case 'updateProfessions':
@@ -87,8 +87,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
       monthlyIncomeArr: [],
       jobTypeArr: [],
       industryArr: [],
-      monthly: [],
-      weekly: [],
+      salaryDateArr: [],
       industryCode: '',
       incumbency: '',
       company: '',
@@ -104,13 +103,12 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
   )
   const onSubmit = debounce(
     (values: FormModel) => {
-      console.log(values)
+      console.log('values', values)
       navigation.navigate('Step3')
     },
     DEBOUNCE_WAIT,
     DEBOUNCE_OPTIONS
   )
-
   useLoction()
 
   useEffect(() => {
@@ -154,7 +152,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
   useEffect(() => {
     const queryCity = () => {
       return dict('DISTRICT', {
-        priviceID: state.companyAddrProvinceCode,
+        provinceID: state.companyAddrProvinceCode,
       })
     }
     queryCity().then(values => {
@@ -186,8 +184,10 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
 
   useFocusEffect(
     useCallback(() => {
+      console.log('focus')
       behavior.setEnterPageTime('P02_C00')
       return () => {
+        console.log('blur')
         behavior.setLeavePageTime('P02_C99')
       }
     }, [behavior])
@@ -253,7 +253,6 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     field="salaryType"
                     label={t('salaryType.label')}
                     onChange={text => {
-                      console.log(text)
                       setFieldValue('salaryType', text)
                       dispatch({ type: 'updateSalaryType', value: text })
                     }}
@@ -269,12 +268,25 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     ]}
                     title={t('salaryType.label')}
                   />
+                  <NormalPicker
+                    field="salaryDate"
+                    label={t('salaryDate.label')}
+                    onChange={text => {
+                      setFieldValue('salaryDate', text)
+                      dispatch({ type: 'updateSalaryDate', value: text })
+                    }}
+                    value={values.salaryDate}
+                    placeholder={t('salaryDate.placeholder')}
+                    error={errors.salaryDate}
+                    dataSource={state.salaryDateArr}
+                    title={t('salaryDate.label')}
+                  />
                   <Input
                     onChangeText={handleChange('company')}
                     onClear={() => {
                       setFieldValue('company', '')
                     }}
-                    value={'company'}
+                    value={values.company}
                     field={'company'}
                     label={t('company.label')}
                     placeholder={t('company.placeholder')}
@@ -291,11 +303,12 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                   />
                   <NormalPicker
                     onChange={text => {
-                      console.log(text)
                       setFieldValue('companyAddrProvinceCode', text)
                       dispatch({ type: 'updateProvince', value: text })
-                      behavior.setModify('P02_C0x_S_STATE', text, state.companyAddrCityCode)
+                      dispatch({ type: 'updateCity', value: '' })
+                      behavior.setModify('P02_C0x_S_STATE', text, state.companyAddrProvinceCode)
                     }}
+                    value={values.companyAddrProvinceCode}
                     title={t('companyAddrProvinceCode.label')}
                     field={'companyAddrProvinceCode'}
                     label={t('companyAddrProvinceCode.label')}
@@ -305,13 +318,13 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                   />
                   <NormalPicker
                     onChange={text => {
-                      console.log(text)
                       setFieldValue('companyAddrCityCode', text)
                       dispatch({ type: 'updateCity', value: text })
                       behavior.setModify('P02_C0x_S_CITY', text, state.companyAddrCityCode)
                     }}
                     title={t('companyAddrCityCode.label')}
                     field={'companyAddrCityCode'}
+                    value={values.companyAddrCityCode}
                     label={t('companyAddrCityCode.label')}
                     placeholder={t('companyAddrCityCode.placeholder')}
                     dataSource={state.cityArr}
@@ -341,7 +354,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                 <View style={PageStyles.btnWrap}>
                   <ApplyButton
                     type={isValid ? 'primary' : 'ghost'}
-                    handleSubmit={handleSubmit}
+                    onPress={handleSubmit}
                     loading={context.loading.effects.apply}>
                     <Text color={isValid ? '#fff' : '#aaa'}>{t('submit')}</Text>
                   </ApplyButton>
@@ -363,8 +376,7 @@ interface Step2State extends FormModel {
   monthlyIncomeArr: Dict[]
   industryArr: Dict[]
   jobTypeArr: Dict[]
-  monthly: Dict[]
-  weekly: Dict[]
+  salaryDateArr: Dict[]
 }
 type Step2Action =
   | {

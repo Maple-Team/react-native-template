@@ -15,7 +15,6 @@ import { ApplyButton, Input, NormalPicker } from '@components/form/FormItem'
 import { Color } from '@/styles/color'
 import { ApplyParameter, ApplyStep3Parameter, Contact } from '@/typings/apply'
 import { useLoction } from '@/hooks'
-import behavior from '@/utils/behavior'
 import { useFocusEffect } from '@react-navigation/native'
 import { BehaviorModel } from '@/typings/behavior'
 import Behavior from '@/utils/behavior'
@@ -142,48 +141,125 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
       <ScrollView style={PageStyles.scroll} keyboardShouldPersistTaps="handled">
         <View style={PageStyles.container}>
           <Formik<FormModel> initialValues={state} onSubmit={onSubmit} validationSchema={schema}>
-            {({ handleChange, handleSubmit, isValid, setFieldValue }) => (
+            {({ handleChange, handleSubmit, isValid, setFieldValue, values, errors }) => (
               <>
                 <View style={PageStyles.form}>
+                  <View>
+                    <Text>Relation Contact</Text>
+                  </View>
                   <NormalPicker
                     onChange={text => {
                       console.log(text)
-                      // setFieldValue('companyAddrCityCode', text)
-                      // dispatch({ type: 'updateCity', value: text })
-                      // behavior.setModify('P02_C0x_S_CITY', text, state.companyAddrCityCode)
+                      setFieldValue('contactRelationCode1', text)
+                      dispatch({ type: 'updateContactRelationCode1', value: text })
+                      behavior.setModify('P03_C01_S_RELATIONSHIP', text, state.contactRelationCode1)
                     }}
-                    title={t('contactName.label')}
-                    field={'companyAddrCityCode'}
-                    label={t('contactName.label')}
-                    placeholder={t('contactName.placeholder')}
-                    dataSource={state.relation}
-                    error={errors.contactName}
+                    title={t('contactRelationCode.label')}
+                    field={'contactRelationCode1'}
+                    label={t('contactRelationCode.label')}
+                    placeholder={t('contactRelationCode.placeholder')}
+                    dataSource={state.contactRelation}
+                    error={errors.contactRelationCode1}
+                    value={values.contactRelationCode1}
                   />
                   <Input
-                    onChangeText={handleChange('companyAddrDetail')}
+                    onChangeText={handleChange('contactName1')}
                     onClear={() => {
-                      setFieldValue('companyAddrDetail', '')
+                      setFieldValue('contactName1', '')
                     }}
-                    value={values.companyAddrDetail}
-                    field={'companyAddrDetail'}
-                    label={t('companyAddrDetail.label')}
-                    placeholder={t('companyAddrDetail.placeholder')}
+                    value={values.contactName1}
+                    field={'contactName1'}
+                    label={t('contactName.label')}
+                    placeholder={t('contactName.placeholder')}
                   />
+                  <Input
+                    field="contactPhone1"
+                    label={t('contactPhone.label')}
+                    onChangeText={handleChange('contactPhone1')}
+                    value={values.contactPhone1}
+                    onClear={() => setFieldValue('contactPhone1', '')}
+                    placeholder={t('contactPhone.placeholder')}
+                    error={errors.contactPhone1}
+                  />
+                  <View>
+                    <Text>Other Contact</Text>
+                  </View>
                   <NormalPicker
-                    field="incumbency"
-                    label={t('incumbency.label')}
-                    onChange={handleChange('incumbency')}
-                    value={values.incumbency}
-                    placeholder={t('incumbency.placeholder')}
-                    error={errors.incumbency}
-                    dataSource={state.incumbencyArr}
-                    title={t('incumbency.label')}
+                    onChange={text => {
+                      console.log(text)
+                      setFieldValue('contactRelationCode2', text)
+                      dispatch({ type: 'updateContactRelationCode1', value: text })
+                      behavior.setModify('P03_C01_S_RELATIONSHIP', text, state.contactRelationCode2)
+                    }}
+                    title={t('contactRelationCode.label')}
+                    field={'contactRelationCode2'}
+                    label={t('contactRelationCode.label')}
+                    placeholder={t('contactRelationCode.placeholder')}
+                    dataSource={state.otherContactRelation}
+                    error={errors.contactRelationCode2}
+                    value={values.contactRelationCode2}
+                  />
+                  <Input
+                    onChangeText={handleChange('contactName2')}
+                    onClear={() => {
+                      setFieldValue('contactName2', '')
+                    }}
+                    value={values.contactName2}
+                    field={'contactName2'}
+                    label={t('contactName.label')}
+                    placeholder={t('contactName.placeholder')}
+                  />
+                  <Input
+                    field="contactPhone2"
+                    label={t('contactPhone.label')}
+                    onChangeText={handleChange('contactPhone2')}
+                    value={values.contactPhone2}
+                    onClear={() => setFieldValue('contactPhone2', '')}
+                    placeholder={t('contactPhone.placeholder')}
+                    error={errors.contactPhone2}
+                  />
+                  <View>
+                    <Text>Other Contact</Text>
+                  </View>
+                  <NormalPicker
+                    onChange={text => {
+                      console.log(text)
+                      setFieldValue('contactRelationCode3', text)
+                      dispatch({ type: 'updateContactRelationCode3', value: text })
+                      behavior.setModify('P03_C01_S_RELATIONSHIP', text, state.contactRelationCode3)
+                    }}
+                    title={t('contactRelationCode.label')}
+                    field={'contactRelationCode3'}
+                    label={t('contactRelationCode.label')}
+                    placeholder={t('contactRelationCode.placeholder')}
+                    dataSource={state.otherContactRelation}
+                    error={errors.contactRelationCode3}
+                    value={values.contactRelationCode3}
+                  />
+                  <Input
+                    onChangeText={handleChange('contactName3')}
+                    onClear={() => {
+                      setFieldValue('contactName3', '')
+                    }}
+                    value={values.contactName3}
+                    field={'contactName3'}
+                    label={t('contactName.label')}
+                    placeholder={t('contactName.placeholder')}
+                  />
+                  <Input
+                    field="contactPhone3"
+                    label={t('contactPhone.label')}
+                    onChangeText={handleChange('contactPhone3')}
+                    value={values.contactPhone3}
+                    onClear={() => setFieldValue('contactPhone3', '')}
+                    placeholder={t('contactPhone.placeholder')}
+                    error={errors.contactPhone3}
                   />
                 </View>
                 <View style={PageStyles.btnWrap}>
                   <ApplyButton
                     type={isValid ? 'primary' : 'ghost'}
-                    handleSubmit={handleSubmit}
+                    onPress={handleSubmit}
                     loading={context.loading.effects.apply}>
                     <Text color={isValid ? '#fff' : '#aaa'}>{t('submit')}</Text>
                   </ApplyButton>

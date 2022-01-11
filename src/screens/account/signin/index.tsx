@@ -146,7 +146,7 @@ const PasswdTab = () => {
           </View>
           <ApplyButton
             type={isValid ? 'primary' : 'ghost'}
-            handleSubmit={handleSubmit}
+            onPress={handleSubmit}
             // loading={state}
             disabled={context.loading.effects.LOGIN}>
             <Text color={isValid ? '#fff' : '#aaa'}>{t('submit')}</Text>
@@ -224,7 +224,7 @@ const ValidTab = () => {
           </View>
           <ApplyButton
             type={isValid ? 'primary' : undefined}
-            handleSubmit={handleSubmit}
+            onPress={handleSubmit}
             // loading={state}
             disabled={context.loading.effects.LOGIN}>
             <Text color={isValid ? '#fff' : '#aaa'}>{t('signin')}</Text>

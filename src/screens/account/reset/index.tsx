@@ -123,7 +123,7 @@ export const ResetScreen = ({ navigation }: NativeStackHeaderProps) => {
                 <View style={PageStyles.btnWrap}>
                   <ApplyButton
                     type={isValid ? 'primary' : 'ghost'}
-                    handleSubmit={handleSubmit}
+                    onPress={handleSubmit}
                     loading={context.loading.effects.RESET}>
                     <Text color={isValid ? '#fff' : '#aaa'}>{t('submit')}</Text>
                   </ApplyButton>

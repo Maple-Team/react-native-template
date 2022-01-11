@@ -4,13 +4,13 @@ import { Button } from '@ant-design/react-native'
 import styles from './style'
 
 export const ApplyButton = ({
-  handleSubmit,
+  onPress,
   type,
   loading,
   children,
   disabled,
 }: {
-  handleSubmit: () => void
+  onPress: () => void
   type?: 'primary' | 'warning' | 'ghost'
   children: ReactNode
   loading?: boolean
@@ -23,8 +23,7 @@ export const ApplyButton = ({
         type={type}
         loading={loading}
         disabled={disabled}
-        // @ts-ignore
-        onPress={handleSubmit}>
+        onPress={onPress}>
         {children}
       </Button>
     </View>

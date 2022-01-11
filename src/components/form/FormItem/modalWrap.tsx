@@ -36,12 +36,23 @@ export function ModalWrap<T extends Dict, P extends Props<T>>(
       <AntModal popup visible={visible} animationType="slide-up" onClose={onClose}>
         <SafeAreaView>
           <View style={styles.header}>
-            <Pressable onPress={onClose}>
+            <Pressable
+              onPress={onClose}
+              style={{
+                height: '100%',
+                justifyContent: 'center',
+              }}
+              pressRetentionOffset={{ top: 20, left: 20, right: 20, bottom: 20 }}>
               <Text styles={styles.left}>{t('close')}</Text>
             </Pressable>
             <Text styles={styles.title}>{title}</Text>
             <Pressable
+              style={{
+                height: '100%',
+                justifyContent: 'center',
+              }}
               onPress={() => {
+                console.log('Pressable: onconfirm')
                 let _value: string
                 if (value) {
                   _value = value // 初始值
@@ -54,7 +65,8 @@ export function ModalWrap<T extends Dict, P extends Props<T>>(
                 }
                 onConfirm(pos ? dataSource[pos].code : _value)
                 onClose()
-              }}>
+              }}
+              pressRetentionOffset={{ top: 20, left: 20, right: 20, bottom: 20 }}>
               <Text styles={styles.right}>{t('confirm')}</Text>
             </Pressable>
           </View>
