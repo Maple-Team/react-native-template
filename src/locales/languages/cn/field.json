@@ -10,7 +10,7 @@
     "label": "company name",
     "placeholder": "",
     "invalid": "",
-    "required": ""
+    "required": "必需"
   },
   "companyAddrCityCode": {
     "label": "城市",
@@ -21,7 +21,7 @@
     "label": "company Address Detail",
     "placeholder": "",
     "invalid": "",
-    "required": ""
+    "required": "必需"
   },
   "companyAddrProvinceCode": {
     "label": "省份",
@@ -32,31 +32,31 @@
     "label": "company Phone",
     "placeholder": "",
     "invalid": "",
-    "required": ""
+    "required": "必需"
   },
   "contactName": {
-    "label": "",
+    "label": "contactName",
     "placeholder": "",
     "invalid": "",
-    "required": ""
+    "required": "必需"
   },
   "contactPhone": {
-    "label": "",
+    "label": "contactPhone",
     "placeholder": "",
     "invalid": "",
-    "required": ""
+    "required": "必需"
   },
   "contactRelationCode": {
-    "label": "",
+    "label": "contactRelation",
     "placeholder": "",
     "invalid": "",
-    "required": ""
+    "required": "必需"
   },
   "firstName": {
-    "label": "",
+    "label": "firstName",
     "placeholder": "",
     "invalid": "",
-    "required": ""
+    "required": "必需"
   },
   "hasAgree": {
     "required": "please agree agreement"
@@ -68,28 +68,28 @@
     "required": "在职时间必须"
   },
   "industryCode": {
-    "label": "",
+    "label": "industry",
     "placeholder": "",
     "invalid": "",
-    "required": ""
+    "required": "必需"
   },
   "jobTypeCode": {
-    "label": "",
+    "label": "jobType",
     "placeholder": "",
     "invalid": "",
-    "required": ""
+    "required": "必需"
   },
   "lastname": {
-    "label": "",
+    "label": "lastname",
     "placeholder": "",
     "invalid": "",
-    "required": ""
+    "required": "必需"
   },
   "monthlyIncome": {
-    "label": "",
+    "label": "monthlyIncome",
     "placeholder": "",
     "invalid": "",
-    "required": ""
+    "required": "必需"
   },
   "password": {
     "label": "password",
@@ -106,13 +106,13 @@
     "label": "salaryDate",
     "placeholder": "salaryDate",
     "invalid": "",
-    "required": ""
+    "required": "必需"
   },
   "salaryType": {
     "label": "salaryType",
     "placeholder": "",
     "invalid": "",
-    "required": ""
+    "required": "必需"
   },
   "validateCode": {
     "label": "Validate Code",

@@ -1,6 +1,7 @@
 import { WheelPicker as WheelCurvedPicker } from 'react-native-wheel-picker-android'
 import type { Dict } from '@/typings/response'
-import { ViewStyle, View, ActivityIndicator } from 'react-native'
+import { View, ActivityIndicator } from 'react-native'
+import type { ViewStyle } from 'react-native'
 import StyleSheet from 'react-native-adaptive-stylesheet'
 import React, { useEffect, useState } from 'react'
 import { Color } from '@/styles/color'

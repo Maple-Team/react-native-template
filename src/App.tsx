@@ -1,4 +1,4 @@
-import React, { useEffect, useState, StrictMode, useReducer } from 'react'
+import React, { useEffect, useState, useReducer } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { Provider, Toast } from '@ant-design/react-native'
 import {
@@ -30,6 +30,7 @@ import { useFlipper } from '@react-navigation/devtools'
 import emitter from '@/eventbus'
 import { moneyyaState } from './state/context'
 
+// JPUSH https://docs.jiguang.cn/jpush/resources/
 // FIXME 是否确保一个toast/message的显示时间符合其设置的时间，
 // 即后续的toast/message是否会顶掉前一个toast/message
 // NOTE Authentication flows: https://reactnavigation.org/docs/auth-flow/
@@ -158,14 +159,14 @@ const App = () => {
     <SafeAreaProvider>
       <Provider>
         <MoneyyaContext.Provider value={moneyyaState}>
-          <StrictMode>
-            <NavigationContainer
-              ref={navigationRef}
-              initialState={initialState}
-              onStateChange={_ => AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(_))}>
-              {!hasInit ? <Init /> : accessToken ? <MainStack /> : <AccountStack />}
-            </NavigationContainer>
-          </StrictMode>
+          {/* <StrictMode> */}
+          <NavigationContainer
+            ref={navigationRef}
+            initialState={initialState}
+            onStateChange={_ => AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(_))}>
+            {!hasInit ? <Init /> : accessToken ? <MainStack /> : <AccountStack />}
+          </NavigationContainer>
+          {/* </StrictMode> */}
         </MoneyyaContext.Provider>
       </Provider>
     </SafeAreaProvider>

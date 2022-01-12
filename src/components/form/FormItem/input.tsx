@@ -1,10 +1,11 @@
-import React, { useRef } from 'react'
+import React, { RefObject, useRef, useState } from 'react'
 import { Pressable, TextInput, View, Image } from 'react-native'
 import type { KeyboardTypeOptions } from 'react-native'
 import styles from './style'
 import Text from '@components/Text'
 import { ErrorMessage } from 'formik'
 import { useFocusOnError } from '@/hooks'
+import { ScrollView } from 'react-native-gesture-handler'
 
 interface InputProps {
   onChangeText: (text: string) => void
@@ -17,6 +18,7 @@ interface InputProps {
   label: string
   placeholder: string
   keyboardType?: KeyboardTypeOptions
+  scrollViewRef: RefObject<ScrollView>
 }
 export const Input = ({
   onChangeText,
@@ -29,9 +31,11 @@ export const Input = ({
   label,
   placeholder,
   keyboardType,
+  scrollViewRef,
 }: InputProps) => {
   const fieldRef = useRef<TextInput>(null)
-  useFocusOnError({ fieldRef, name: field })
+  const [height, setHeight] = useState<number>(0)
+  useFocusOnError({ fieldRef, name: field, scrollViewRef, canFocus: true, height })
   return (
     <View style={styles.formItem}>
       <Text styles={styles.label}>{label}</Text>
@@ -41,6 +45,11 @@ export const Input = ({
           maxLength={11}
           value={value}
           ref={fieldRef}
+          onLayout={() => {
+            fieldRef.current?.measure((_x, _y, _width, _height, _pageX, pageY) => {
+              setHeight(pageY - _height)
+            })
+          }}
           placeholder={placeholder}
           style={[styles.input, error ? { borderBottomColor: 'red' } : {}]}
           keyboardType={keyboardType}

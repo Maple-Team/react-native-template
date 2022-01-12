@@ -1,11 +1,11 @@
 import { NativeStackHeaderProps } from '@react-navigation/native-stack'
-import React, { useCallback, useContext, useEffect, useMemo, useReducer } from 'react'
+import React, { useCallback, useContext, useEffect, useMemo, useReducer, useRef } from 'react'
 import type { Reducer } from 'react'
 import { View, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
 import { ScrollView } from 'react-native-gesture-handler'
-import { Formik, Form } from 'formik'
+import { Formik } from 'formik'
 import * as Yup from 'yup'
 import debounce from 'lodash.debounce'
 import { useFocusEffect } from '@react-navigation/native'
@@ -28,18 +28,19 @@ import { MMKV } from '@/utils/storage'
 
 export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
+  // NOTE 顺序必需与下面的表单一致
   const schema = Yup.object<Shape<FormModel>>({
-    incumbency: Yup.string().required(t('incumbency.required')),
     industryCode: Yup.string().required(t('industryCode.required')),
+    jobTypeCode: Yup.string().required(t('jobTypeCode.required')),
+    monthlyIncome: Yup.string().required(t('monthlyIncome.required')),
+    salaryType: Yup.string().required(t('salaryType.required')),
+    salaryDate: Yup.string().required(t('salaryDate.required')),
     company: Yup.string().required(t('company.required')),
+    companyPhone: Yup.string().required(t('companyPhone.required')),
+    companyAddrProvinceCode: Yup.string().required(t('companyAddrProvinceCode.required')),
     companyAddrCityCode: Yup.string().required(t('companyAddrCityCode.required')),
     companyAddrDetail: Yup.string().required(t('companyAddrDetail.required')),
-    companyAddrProvinceCode: Yup.string().required(t('companyAddrProvinceCode.required')),
-    companyPhone: Yup.string().required(t('companyPhone.required')),
-    jobTypeCode: Yup.string().required(t('jobTypeCode.required')),
-    salaryDate: Yup.string().required(t('salaryDate.required')),
-    salaryType: Yup.string().required(t('salaryType.required')),
-    monthlyIncome: Yup.string().required(t('monthlyIncome.required')),
+    incumbency: Yup.string().required(t('incumbency.required')),
   })
   const context = useContext(MoneyyaContext)
 
@@ -192,11 +193,15 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
       }
     }, [behavior])
   )
-
+  const scrollviewRef = useRef<ScrollView>(null)
   return (
     <SafeAreaView style={PageStyles.sav}>
       <StatusBar translucent={false} backgroundColor={Color.primary} barStyle="default" />
-      <ScrollView style={PageStyles.scroll} keyboardShouldPersistTaps="handled">
+      <ScrollView
+        style={PageStyles.scroll}
+        // keyboardDismissMode="on-drag"
+        keyboardShouldPersistTaps="handled"
+        ref={scrollviewRef}>
         <View style={PageStyles.container}>
           <Formik<FormModel>
             initialValues={state}
@@ -211,21 +216,21 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     field="industryCode"
                     label={t('industryCode.label')}
                     onChange={text => {
-                      // handleChange('industryCode')
                       setFieldValue('industryCode', text)
                       behavior.setModify('P02_C01_S_INDUSTRYCODE', state.industryCode, text)
                     }}
                     value={values.industryCode}
                     placeholder={t('industryCode.placeholder')}
                     error={errors.industryCode}
+                    scrollViewRef={scrollviewRef}
                     dataSource={state.industryArr}
                     title={t('industryCode.label')}
                   />
                   <NormalPicker
                     field="jobTypeCode"
                     label={t('jobTypeCode.label')}
+                    scrollViewRef={scrollviewRef}
                     onChange={text => {
-                      // handleChange('jobTypeCode')
                       setFieldValue('jobTypeCode', text)
                       behavior.setModify('P02_C0x_S_jobTypeCode', state.jobTypeCode, text)
                     }}
@@ -237,9 +242,9 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                   />
                   <NormalPicker
                     field="monthlyIncome"
+                    scrollViewRef={scrollviewRef}
                     label={t('monthlyIncome.label')}
                     onChange={text => {
-                      // handleChange('monthlyIncome')
                       setFieldValue('monthlyIncome', text)
                       behavior.setModify('P02_C0x_S_MONTHLYINCOME', state.monthlyIncome, text)
                     }}
@@ -251,6 +256,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                   />
                   <NormalPicker
                     field="salaryType"
+                    scrollViewRef={scrollviewRef}
                     label={t('salaryType.label')}
                     onChange={text => {
                       setFieldValue('salaryType', text)
@@ -269,6 +275,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     title={t('salaryType.label')}
                   />
                   <NormalPicker
+                    scrollViewRef={scrollviewRef}
                     field="salaryDate"
                     label={t('salaryDate.label')}
                     onChange={text => {
@@ -282,6 +289,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     title={t('salaryDate.label')}
                   />
                   <Input
+                    scrollViewRef={scrollviewRef}
                     onChangeText={handleChange('company')}
                     onClear={() => {
                       setFieldValue('company', '')
@@ -289,19 +297,23 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     value={values.company}
                     field={'company'}
                     label={t('company.label')}
+                    error={errors.company}
                     placeholder={t('company.placeholder')}
                   />
                   <Input
+                    scrollViewRef={scrollviewRef}
                     onChangeText={handleChange('companyPhone')}
                     onClear={() => {
                       setFieldValue('companyPhone', '')
                     }}
                     value={values.companyPhone}
                     field={'companyPhone'}
+                    error={errors.companyPhone}
                     label={t('companyPhone.label')}
                     placeholder={t('companyPhone.placeholder')}
                   />
                   <NormalPicker
+                    scrollViewRef={scrollviewRef}
                     onChange={text => {
                       setFieldValue('companyAddrProvinceCode', text)
                       dispatch({ type: 'updateProvince', value: text })
@@ -317,6 +329,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     error={errors.companyAddrProvinceCode}
                   />
                   <NormalPicker
+                    scrollViewRef={scrollviewRef}
                     onChange={text => {
                       setFieldValue('companyAddrCityCode', text)
                       dispatch({ type: 'updateCity', value: text })
@@ -331,6 +344,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     error={errors.companyAddrCityCode}
                   />
                   <Input
+                    scrollViewRef={scrollviewRef}
                     onChangeText={handleChange('companyAddrDetail')}
                     onClear={() => {
                       setFieldValue('companyAddrDetail', '')
@@ -338,9 +352,11 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     value={values.companyAddrDetail}
                     field={'companyAddrDetail'}
                     label={t('companyAddrDetail.label')}
+                    error={errors.companyAddrDetail}
                     placeholder={t('companyAddrDetail.placeholder')}
                   />
                   <NormalPicker
+                    scrollViewRef={scrollviewRef}
                     field="incumbency"
                     label={t('incumbency.label')}
                     onChange={handleChange('incumbency')}

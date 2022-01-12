@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { RefObject, useRef, useState } from 'react'
 import { TextInput, View, Image, Pressable } from 'react-native'
 import type { KeyboardTypeOptions } from 'react-native'
 import formItemStyles from './style'
@@ -8,6 +8,7 @@ import { WheelPicker } from './wheelPicker'
 import { ModalWrap } from './modalWrap'
 import type { Dict, PickerField } from '@/typings/response'
 import { useFocusOnError } from '@/hooks'
+import { ScrollView } from 'react-native-gesture-handler'
 
 interface PickerProps<T extends Dict, U extends PickerField> {
   onChange: (text: string) => void
@@ -19,6 +20,7 @@ interface PickerProps<T extends Dict, U extends PickerField> {
   placeholder: string
   keyboardType?: KeyboardTypeOptions
   dataSource: T[]
+  scrollViewRef: RefObject<ScrollView>
 }
 
 export function NormalPicker<T extends Dict, U extends PickerField>({
@@ -28,14 +30,15 @@ export function NormalPicker<T extends Dict, U extends PickerField>({
   label,
   title,
   error,
+  scrollViewRef,
   placeholder,
   dataSource,
 }: PickerProps<T, U>) {
   const [visible, setVisible] = useState<boolean>(false)
   const Picker = ModalWrap(WheelPicker)
   const fieldRef = useRef<TextInput>(null)
-  // const [fieldProps] = useField(field)
-  useFocusOnError({ fieldRef, name: field })
+  const [height, setHeight] = useState<number>(0)
+  useFocusOnError({ fieldRef, name: field, scrollViewRef, height })
   return (
     <>
       <View style={formItemStyles.formItem}>
@@ -44,16 +47,19 @@ export function NormalPicker<T extends Dict, U extends PickerField>({
           <TextInput
             editable={false}
             ref={fieldRef}
+            onLayout={() => {
+              fieldRef.current?.measure((_x, _y, _width, _height, _pageX, pageY) => {
+                setHeight(pageY - _height)
+              })
+            }}
             value={dataSource.find(({ code }) => code === value)?.name}
             placeholder={placeholder}
             style={[formItemStyles.input, error ? { borderBottomColor: 'red' } : {}]}
             placeholderTextColor={'rgba(156, 171, 185, 1)'}
-            // {...fieldProps}
           />
           <Pressable
             style={formItemStyles.suffixWrap}
             onPress={() => {
-              console.log('Pressable: onpress right')
               setVisible(true)
             }}
             pressRetentionOffset={{ top: 20, left: 20, right: 20, bottom: 20 }}>

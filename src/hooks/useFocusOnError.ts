@@ -1,6 +1,7 @@
 import { useFormikContext } from 'formik'
-import { useRef, useEffect, RefObject } from 'react'
+import { useEffect, RefObject, useRef } from 'react'
 import { TextInput } from 'react-native'
+import { ScrollView } from 'react-native-gesture-handler'
 
 //参考
 // https://github.com/jaredpalmer/formik/issues/146
@@ -9,20 +10,41 @@ import { TextInput } from 'react-native'
 export const useFocusOnError = ({
   fieldRef,
   name,
+  scrollViewRef,
+  canFocus,
+  height,
 }: {
   fieldRef: RefObject<TextInput>
   name: string
+  canFocus?: boolean
+  height: number
+  scrollViewRef: RefObject<ScrollView>
 }) => {
   const formik = useFormikContext()
   const prevSubmitCountRef = useRef(formik.submitCount)
   const errorKey = Object.keys(formik.errors)[0]
   useEffect(() => {
     if (prevSubmitCountRef.current !== formik.submitCount && !formik.isValid) {
-      if (fieldRef.current && errorKey === name) {
-        console.log('focus', name) // FIXME 没有滚动效果
-        fieldRef.current.focus()
+      if (fieldRef.current && errorKey === name && scrollViewRef.current) {
+        if (canFocus) {
+          fieldRef.current.focus()
+        }
+        scrollViewRef.current?.scrollTo({
+          x: 0,
+          y: height, // NOTE 这个高度还是有点问题
+          animated: true,
+        })
       }
     }
     prevSubmitCountRef.current = formik.submitCount
-  }, [formik.submitCount, formik.isValid, errorKey, fieldRef, name])
+  }, [
+    formik.submitCount,
+    formik.isValid,
+    errorKey,
+    fieldRef,
+    name,
+    scrollViewRef,
+    canFocus,
+    height,
+  ])
 }
