@@ -1,5 +1,5 @@
-import { BOOL } from './common'
-import { API_CODE } from '../state/enum'
+import type { BOOL } from './common'
+import type { API_CODE } from '../state/enum'
 
 export interface Status {
   code: API_CODE

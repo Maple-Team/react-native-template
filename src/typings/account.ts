@@ -1,5 +1,5 @@
-import { BOOL } from './common'
-import { UserLevel, Gender, UserState } from './user'
+import type { BOOL } from './common'
+import type { UserLevel, Gender, UserState } from './user'
 
 export interface ValidCode {
   kaptcha: string

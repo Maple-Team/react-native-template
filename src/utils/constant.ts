@@ -9,3 +9,4 @@ export const DEBOUNCE_OPTIONS: DebounceSettings = { leading: true, trailing: fal
 
 // 一系列字符串key
 export const KEY_BEHAVIOR_DATA = 'moneyyaBehavior'
+export const AXIOS_TIMEOUT = 10000

@@ -1,6 +1,5 @@
 import axios from 'axios'
 import type { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
-import { MMKV } from '@/utils/storage'
 
 import AppModule from '@/modules/AppModule'
 import type { APPLY_SOURCE, CommonHeader } from '@/typings/request'
@@ -8,8 +7,8 @@ import type { Status } from '@/typings/response'
 import { API_CODE, APPLY_STATE } from '@/state/enum'
 import emitter from '@/eventbus'
 import { DispatchRVMap } from '@/eventbus/type'
-
-const AXIOS_TIMEOUT = 10000
+import { AXIOS_TIMEOUT } from '@/utils/constant'
+import { MMKV } from '@/utils/storage'
 
 export interface Response<T = any> {
   body?: T
@@ -48,8 +47,7 @@ api.interceptors.request.use(
     return config
   },
   function (error: AxiosError) {
-    emitter.emit('REQUEST_ERROR', error.message)
-    console.error('axios request error', error.config.url, error.message)
+    emitter.emit('REQUEST_ERROR', error)
     return Promise.reject(error)
   }
 )
@@ -74,7 +72,7 @@ api.interceptors.response.use(
           emitter.emit('EXISTED_USER')
           break
         default:
-          console.error(response.config.url, code, message)
+          console.error(response.config.url, message)
           emitter.emit('SHOW_MESSAGE', { message, type: 'fail' })
           break
       }
@@ -82,9 +80,7 @@ api.interceptors.response.use(
     }
   },
   (error: AxiosError) => {
-    const message = (error || {}).message
-    message && emitter.emit('RESPONSE_ERROR', message)
-    console.error('axios response error', error.config.url, message)
+    emitter.emit('RESPONSE_ERROR', error)
     return Promise.reject(error)
   }
 )

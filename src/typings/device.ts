@@ -1,4 +1,4 @@
-import { APPLY_BOOL } from './user'
+import type { APPLY_BOOL } from './user'
 
 export interface Device {
   anglex: string

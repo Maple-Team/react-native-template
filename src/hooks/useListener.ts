@@ -10,10 +10,10 @@ export const useEventListener = () => {
       Toast.loading('', 1000)
     })
     emitter.on('REQUEST_ERROR', e => {
-      console.error(`request: ${e}`)
+      console.error('axios request error', e.config.url, e.message)
     })
     emitter.on('RESPONSE_ERROR', e => {
-      console.error(`response: ${e}`)
+      console.error('axios response error', e.config.url, e.message)
       // TODO 错误上报
     })
     emitter.on('SHOW_MESSAGE', ({ message, type }) => {

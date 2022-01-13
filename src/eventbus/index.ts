@@ -1,5 +1,6 @@
 import type { RegisterResponse } from '@/typings/account'
 import type { UserInfo } from '@/typings/user'
+import type { AxiosError } from 'axios'
 import mitt, { Emitter } from 'mitt'
 import type { DispatchMapType } from './type'
 
@@ -17,8 +18,8 @@ export type Events = {
   SHOW_LOADING?: string
   LOGIN_SUCCESS?: RegisterResponse
   LOGOUT_SUCCESS?: string
-  RESPONSE_ERROR: string
-  REQUEST_ERROR: string
+  RESPONSE_ERROR: AxiosError
+  REQUEST_ERROR: AxiosError
   REQUEST_LOADING: { dispatchType: DispatchMapType; loading: boolean }
   NETWORK_CONNECTED: boolean
   FIRST_INIT: boolean

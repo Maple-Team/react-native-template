@@ -81,13 +81,13 @@ const App = () => {
   // 处理语言
   useEffect(() => {
     const locales = RNLocalize.getLocales()
-    console.log('locales:', locales)
-    const lng = locales[0].languageTag
+    const language = locales[0].languageTag
+    console.log({ language })
     // FIXME 'i18next: init: i18next is already initialized. You should call init just once!'
     RNLocalize.addEventListener('change', (e: any) => {
       console.error('RNLocalize', e)
     })
-    i18n.init(getI18nConfig(lng))
+    i18n.init(getI18nConfig(language))
   }, [])
 
   // TODO 处理token超时

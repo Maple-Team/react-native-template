@@ -1,7 +1,7 @@
-import { BOOL } from './common'
-import { APPLY_STATE } from '../state/enum'
-import { APPLY_SOURCE } from './request'
-import { Gender, ImageType, SocialInfo } from './user'
+import type { BOOL } from './common'
+import type { APPLY_STATE } from '../state/enum'
+import type { APPLY_SOURCE } from './request'
+import type { Gender, ImageType, SocialInfo } from './user'
 
 export interface ApplyResponse {
   accessToken: string
