@@ -18,7 +18,7 @@ import { Color } from '@/styles/color'
 import type { ApplyParameter, ApplyStep2Parameter } from '@/typings/apply'
 import { useLoction } from '@/hooks'
 import type { Shape } from '@/typings/common'
-import { dict } from '@/services/apply'
+import { fetchDict } from '@/services/apply'
 import type { Dict, DictField } from '@/typings/response'
 import { MoneyyaContext } from '@/state'
 import Behavior from '@/utils/behavior'
@@ -122,7 +122,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
         'PROFESSION',
       ]
       dicts.forEach(field =>
-        dict(field)
+        fetchDict(field)
           .then(value => {
             switch (field) {
               case 'INCUMBENCY':
@@ -152,7 +152,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
 
   useEffect(() => {
     const queryCity = () => {
-      return dict('DISTRICT', {
+      return fetchDict('DISTRICT', {
         provinceID: state.companyAddrProvinceCode,
       })
     }
@@ -162,7 +162,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
   }, [state.companyAddrProvinceCode])
 
   useEffect(() => {
-    const query = (filed: 'MONTHLY' | 'WEEKLY') => dict(filed)
+    const query = (filed: 'MONTHLY' | 'WEEKLY') => fetchDict(filed)
     const field = state.salaryType === 'Monthly' ? 'MONTHLY' : 'WEEKLY'
     query(field).then(values => {
       const type = state.salaryType === 'Monthly' ? 'updateMonthly' : 'updateWeekly'
@@ -215,9 +215,9 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                   <NormalPicker
                     field="industryCode"
                     label={t('industryCode.label')}
-                    onChange={text => {
-                      setFieldValue('industryCode', text)
-                      behavior.setModify('P02_C01_S_INDUSTRYCODE', state.industryCode, text)
+                    onChange={record => {
+                      setFieldValue('industryCode', record.code)
+                      behavior.setModify('P02_C01_S_INDUSTRYCODE', record.code, state.industryCode)
                     }}
                     value={values.industryCode}
                     placeholder={t('industryCode.placeholder')}
@@ -230,9 +230,9 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     field="jobTypeCode"
                     label={t('jobTypeCode.label')}
                     scrollViewRef={scrollviewRef}
-                    onChange={text => {
-                      setFieldValue('jobTypeCode', text)
-                      behavior.setModify('P02_C0x_S_jobTypeCode', state.jobTypeCode, text)
+                    onChange={record => {
+                      setFieldValue('jobTypeCode', record.code)
+                      behavior.setModify('P02_C0x_S_jobTypeCode', record.code, state.jobTypeCode)
                     }}
                     value={values.jobTypeCode}
                     placeholder={t('jobTypeCode.placeholder')}
@@ -244,9 +244,13 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     field="monthlyIncome"
                     scrollViewRef={scrollviewRef}
                     label={t('monthlyIncome.label')}
-                    onChange={text => {
-                      setFieldValue('monthlyIncome', text)
-                      behavior.setModify('P02_C0x_S_MONTHLYINCOME', state.monthlyIncome, text)
+                    onChange={record => {
+                      setFieldValue('monthlyIncome', record.code)
+                      behavior.setModify(
+                        'P02_C0x_S_MONTHLYINCOME',
+                        record.code,
+                        state.monthlyIncome
+                      )
                     }}
                     value={values.monthlyIncome}
                     placeholder={t('monthlyIncome.placeholder')}
@@ -258,9 +262,9 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     field="salaryType"
                     scrollViewRef={scrollviewRef}
                     label={t('salaryType.label')}
-                    onChange={text => {
-                      setFieldValue('salaryType', text)
-                      dispatch({ type: 'updateSalaryType', value: text })
+                    onChange={record => {
+                      setFieldValue('salaryType', record.code)
+                      dispatch({ type: 'updateSalaryType', value: record.code })
                     }}
                     value={values.salaryType}
                     placeholder={t('salaryType.placeholder')}
@@ -278,9 +282,9 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     scrollViewRef={scrollviewRef}
                     field="salaryDate"
                     label={t('salaryDate.label')}
-                    onChange={text => {
-                      setFieldValue('salaryDate', text)
-                      dispatch({ type: 'updateSalaryDate', value: text })
+                    onChange={record => {
+                      setFieldValue('salaryDate', record)
+                      dispatch({ type: 'updateSalaryDate', value: record.code })
                     }}
                     value={values.salaryDate}
                     placeholder={t('salaryDate.placeholder')}
@@ -290,7 +294,9 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                   />
                   <Input
                     scrollViewRef={scrollviewRef}
-                    onChangeText={handleChange('company')}
+                    onChangeText={text => {
+                      setFieldValue('company', text)
+                    }}
                     onClear={() => {
                       setFieldValue('company', '')
                     }}

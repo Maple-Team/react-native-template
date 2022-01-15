@@ -29,7 +29,7 @@ const TIMEOUT = 2000
  * @param field
  * @returns
  */
-export async function dict(field: DictField, params?: any): Promise<Dict[]> {
+export async function fetchDict(field: DictField, params?: any): Promise<Dict[]> {
   const res: Dict[] | void = await Promise.race([
     new Promise<void>(resolve => {
       setTimeout(() => {

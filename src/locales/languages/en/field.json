@@ -37,20 +37,20 @@
     "required": ""
   },
   "contactName": {
-    "label": "",
-    "placeholder": "",
+    "label": "contactName",
+    "placeholder": "contact phone",
     "invalid": "",
     "required": ""
   },
   "contactPhone": {
-    "label": "",
-    "placeholder": "",
+    "label": "contactPhone",
+    "placeholder": "contact phone",
     "invalid": "",
     "required": ""
   },
   "contactRelationCode": {
-    "label": "",
-    "placeholder": "",
+    "label": "contactRelation",
+    "placeholder": "contact relation",
     "invalid": "",
     "required": ""
   },
@@ -73,7 +73,7 @@
     "label": "",
     "placeholder": "",
     "invalid": "",
-    "required": ""
+    "required": "industry required"
   },
   "jobTypeCode": {
     "label": "",

@@ -11,7 +11,7 @@ import { useFocusOnError } from '@/hooks'
 import { ScrollView } from 'react-native-gesture-handler'
 
 interface PickerProps<T extends Dict, U extends PickerField> {
-  onChange: (text: string) => void
+  onChange: (text: Dict) => void
   value: string
   error?: string
   title: string
@@ -78,7 +78,7 @@ export function NormalPicker<T extends Dict, U extends PickerField>({
         dataSource={dataSource}
         visible={visible}
         onClose={() => setVisible(false)}
-        onConfirm={code => onChange(code)}
+        onConfirm={onChange}
         title={title}
         value={value}
       />

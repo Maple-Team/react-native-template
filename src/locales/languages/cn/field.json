@@ -42,13 +42,13 @@
   },
   "contactPhone": {
     "label": "contactPhone",
-    "placeholder": "",
+    "placeholder": "contact phone",
     "invalid": "",
     "required": "必需"
   },
   "contactRelationCode": {
     "label": "contactRelation",
-    "placeholder": "",
+    "placeholder": "contact relation",
     "invalid": "",
     "required": "必需"
   },

@@ -12,7 +12,7 @@ interface Props<T extends Dict> {
   dataSource: T[]
   visible: boolean
   onClose: () => void
-  onConfirm: (value: string) => void
+  onConfirm: (value: T) => void
   title: string
   value?: string
 }
@@ -52,18 +52,17 @@ export function ModalWrap<T extends Dict, P extends Props<T>>(
                 justifyContent: 'center',
               }}
               onPress={() => {
-                console.log('Pressable: onconfirm')
-                let _value: string
+                let _value: T
                 if (value) {
-                  _value = value // 初始值
+                  _value = dataSource.find(({ code }) => code === value)! // 初始值
                 } else {
-                  const first = dataSource[0].code
+                  const first = dataSource[0]
                   if (!first) {
                     return
                   }
                   _value = first
                 }
-                onConfirm(pos ? dataSource[pos].code : _value)
+                onConfirm(pos ? dataSource[pos] : _value)
                 onClose()
               }}
               pressRetentionOffset={{ top: 20, left: 20, right: 20, bottom: 20 }}>

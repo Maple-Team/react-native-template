@@ -27,7 +27,7 @@ export interface ApplyStep1Parameter extends ApplyParameter {
   gps: string
 }
 export interface ApplyParameter {
-  applyId?: number
+  applyId: number
   currentStep: number
   totalSteps: number
 }
@@ -56,12 +56,11 @@ export interface ApplyStep2Parameter extends ApplyParameter {
 export interface ApplyStep3Parameter extends ApplyParameter {
   contacts: Contact[]
 }
-type ContactRelationCode = 'CHILDREN' | 'FRIEND'
-type ContactRelation = 'Friend' | 'Hijos'
+
 export interface Contact {
   contactName: string
-  contactRelation: ContactRelation
-  contactRelationCode: ContactRelationCode
+  contactRelation: string
+  contactRelationCode: string
   contactPhone: string
 }
 

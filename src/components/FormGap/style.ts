@@ -7,6 +7,6 @@ export const styles = StyleSheet.create({
   subFormTitleContent: {
     color: '#1F2024',
     fontSize: 18,
-    fontFamily: 'ArialRoundedMTBold',
+    fontFamily: 'ArialMT',
   },
 })

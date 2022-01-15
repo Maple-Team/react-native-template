@@ -1,5 +1,13 @@
 import { NativeStackHeaderProps } from '@react-navigation/native-stack'
-import React, { Reducer, useCallback, useContext, useEffect, useMemo, useReducer } from 'react'
+import React, {
+  Reducer,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useReducer,
+  useRef,
+} from 'react'
 import { View, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
@@ -20,9 +28,10 @@ import { BehaviorModel } from '@/typings/behavior'
 import Behavior from '@/utils/behavior'
 import { MMKV } from '@/utils/storage'
 import { useWindowSize } from 'usehooks-ts'
-import { dict } from '@/services/apply'
+import { fetchDict, submit } from '@/services/apply'
 import { MoneyyaContext } from '@/state'
 import { Dict, DictField } from '@/typings/response'
+import FormGap from '@components/FormGap'
 
 export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
@@ -57,12 +66,12 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
           return { ...s, contactPhone1: value }
         case 'updateContactPhone3':
           return { ...s, contactPhone1: value }
-        case 'updateContactRelationCode1':
-          return { ...s, contactRelationCode1: value }
-        case 'updateContactRelationCode2':
-          return { ...s, contactRelationCode1: value }
-        case 'updateContactRelationCode3':
-          return { ...s, contactRelationCode1: value }
+        case 'updateContactRelation1':
+          return { ...s, contactRelationCode1: value.code, contactRelation1: value.name }
+        case 'updateContactRelation2':
+          return { ...s, contactRelationCode2: value.code, contactRelation2: value.name }
+        case 'updateContactRelation3':
+          return { ...s, contactRelationCode3: value.code, contactRelation3: value.name }
         default:
           return { ...s }
       }
@@ -70,12 +79,15 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
     {
       contactName1: '',
       contactPhone1: '',
+      contactRelation1: '',
       contactRelationCode1: '',
       contactName2: '',
       contactPhone2: '',
+      contactRelation2: '',
       contactRelationCode2: '',
       contactName3: '',
       contactPhone3: '',
+      contactRelation3: '',
       contactRelationCode3: '',
       contactRelation: [],
       otherContactRelation: [],
@@ -85,9 +97,8 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
     const queryDict = async () => {
       const dicts: DictField[] = ['RELATIONSHIP', 'OTHER_RELATIONSHIP']
       dicts.forEach(field =>
-        dict(field)
+        fetchDict(field)
           .then(value => {
-            console.log(value)
             switch (field) {
               case 'RELATIONSHIP':
                 dispatch({ type: 'updateContactRelation', value })
@@ -107,6 +118,25 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
   const onSubmit = debounce(
     (values: FormModel) => {
       console.log(values, 'Step4')
+      const contacts: Contact[] = []
+      for (let index = 1; index <= 3; index++) {
+        contacts.push({
+          //@ts-ignore
+          contactName: values[`contactName${index}`],
+          //@ts-ignore
+          contactPhone: values[`contactPhone${index}`],
+          //@ts-ignore
+          contactRelation: values[`contactRelation${index}`],
+          //@ts-ignore
+          contactRelationCode: values[`contactRelationCode${index}`],
+        })
+      }
+      submit({
+        contacts,
+        applyId: 0,
+        currentStep: 0,
+        totalSteps: 0,
+      })
       navigation.navigate('Step4')
     },
     DEBOUNCE_WAIT,
@@ -135,6 +165,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
       }
     }, [behavior])
   )
+  const scrollviewRef = useRef<ScrollView>(null)
   return (
     <SafeAreaView style={PageStyles.sav}>
       <StatusBar translucent={false} backgroundColor={Color.primary} barStyle="default" />
@@ -144,15 +175,17 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
             {({ handleChange, handleSubmit, isValid, setFieldValue, values, errors }) => (
               <>
                 <View style={PageStyles.form}>
-                  <View>
-                    <Text>Relation Contact</Text>
-                  </View>
+                  <FormGap title="Relation Contact" />
                   <NormalPicker
-                    onChange={text => {
-                      console.log(text)
-                      setFieldValue('contactRelationCode1', text)
-                      dispatch({ type: 'updateContactRelationCode1', value: text })
-                      behavior.setModify('P03_C01_S_RELATIONSHIP', text, state.contactRelationCode1)
+                    scrollViewRef={scrollviewRef}
+                    onChange={record => {
+                      setFieldValue('contactRelationCode1', record)
+                      dispatch({ type: 'updateContactRelation1', value: record })
+                      behavior.setModify(
+                        'P03_C01_S_RELATIONSHIP',
+                        record.code,
+                        state.contactRelationCode1
+                      )
                     }}
                     title={t('contactRelationCode.label')}
                     field={'contactRelationCode1'}
@@ -163,6 +196,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                     value={values.contactRelationCode1}
                   />
                   <Input
+                    scrollViewRef={scrollviewRef}
                     onChangeText={handleChange('contactName1')}
                     onClear={() => {
                       setFieldValue('contactName1', '')
@@ -173,6 +207,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                     placeholder={t('contactName.placeholder')}
                   />
                   <Input
+                    scrollViewRef={scrollviewRef}
                     field="contactPhone1"
                     label={t('contactPhone.label')}
                     onChangeText={handleChange('contactPhone1')}
@@ -181,15 +216,17 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                     placeholder={t('contactPhone.placeholder')}
                     error={errors.contactPhone1}
                   />
-                  <View>
-                    <Text>Other Contact</Text>
-                  </View>
+                  <FormGap title="Other Contact" />
                   <NormalPicker
-                    onChange={text => {
-                      console.log(text)
-                      setFieldValue('contactRelationCode2', text)
-                      dispatch({ type: 'updateContactRelationCode1', value: text })
-                      behavior.setModify('P03_C01_S_RELATIONSHIP', text, state.contactRelationCode2)
+                    scrollViewRef={scrollviewRef}
+                    onChange={record => {
+                      setFieldValue('contactRelationCode2', record)
+                      dispatch({ type: 'updateContactRelation1', value: record })
+                      behavior.setModify(
+                        'P03_C01_S_RELATIONSHIP',
+                        record.code,
+                        state.contactRelationCode2
+                      )
                     }}
                     title={t('contactRelationCode.label')}
                     field={'contactRelationCode2'}
@@ -200,6 +237,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                     value={values.contactRelationCode2}
                   />
                   <Input
+                    scrollViewRef={scrollviewRef}
                     onChangeText={handleChange('contactName2')}
                     onClear={() => {
                       setFieldValue('contactName2', '')
@@ -210,6 +248,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                     placeholder={t('contactName.placeholder')}
                   />
                   <Input
+                    scrollViewRef={scrollviewRef}
                     field="contactPhone2"
                     label={t('contactPhone.label')}
                     onChangeText={handleChange('contactPhone2')}
@@ -218,15 +257,18 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                     placeholder={t('contactPhone.placeholder')}
                     error={errors.contactPhone2}
                   />
-                  <View>
-                    <Text>Other Contact</Text>
-                  </View>
+                  <FormGap title="Other Contact" />
                   <NormalPicker
-                    onChange={text => {
-                      console.log(text)
-                      setFieldValue('contactRelationCode3', text)
-                      dispatch({ type: 'updateContactRelationCode3', value: text })
-                      behavior.setModify('P03_C01_S_RELATIONSHIP', text, state.contactRelationCode3)
+                    scrollViewRef={scrollviewRef}
+                    onChange={record => {
+                      console.log(record)
+                      setFieldValue('contactRelationCode3', record)
+                      dispatch({ type: 'updateContactRelation3', value: record })
+                      behavior.setModify(
+                        'P03_C01_S_RELATIONSHIP',
+                        record.code,
+                        state.contactRelationCode3
+                      )
                     }}
                     title={t('contactRelationCode.label')}
                     field={'contactRelationCode3'}
@@ -237,6 +279,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                     value={values.contactRelationCode3}
                   />
                   <Input
+                    scrollViewRef={scrollviewRef}
                     onChangeText={handleChange('contactName3')}
                     onClear={() => {
                       setFieldValue('contactName3', '')
@@ -247,6 +290,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                     placeholder={t('contactName.placeholder')}
                   />
                   <Input
+                    scrollViewRef={scrollviewRef}
                     field="contactPhone3"
                     label={t('contactPhone.label')}
                     onChangeText={handleChange('contactPhone3')}
@@ -273,28 +317,20 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
   )
 }
 
-type FormModel = Omit<ApplyStep3Parameter, keyof (ApplyParameter & { contacts: Contact[] })> & {
+type FormModel = Omit<ApplyStep3Parameter, keyof (ApplyParameter & { contacts: Contact[] })> &
+  Step3State
+interface Step3State {
   contactName1: string
   contactPhone1: string
+  contactRelation1: string
   contactRelationCode1: string
   contactName2: string
   contactPhone2: string
+  contactRelation2: string
   contactRelationCode2: string
   contactName3: string
   contactPhone3: string
-  contactRelationCode3: string
-  contactRelation: Dict[]
-  otherContactRelation: Dict[]
-}
-interface Step3State extends FormModel {
-  contactName1: string
-  contactPhone1: string
-  contactRelationCode1: string
-  contactName2: string
-  contactPhone2: string
-  contactRelationCode2: string
-  contactName3: string
-  contactPhone3: string
+  contactRelation3: string
   contactRelationCode3: string
   contactRelation: Dict[]
   otherContactRelation: Dict[]
@@ -317,8 +353,8 @@ type Step3Action =
       value: string
     }
   | {
-      type: 'updateContactRelationCode1'
-      value: string
+      type: 'updateContactRelation1'
+      value: Dict
     }
   | {
       type: 'updateContactName2'
@@ -329,8 +365,8 @@ type Step3Action =
       value: string
     }
   | {
-      type: 'updateContactRelationCode2'
-      value: string
+      type: 'updateContactRelation2'
+      value: Dict
     }
   | {
       type: 'updateContactName3'
@@ -341,6 +377,6 @@ type Step3Action =
       value: string
     }
   | {
-      type: 'updateContactRelationCode3'
-      value: string
+      type: 'updateContactRelation3'
+      value: Dict
     }
