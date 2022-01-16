@@ -8,7 +8,7 @@ import { WheelPicker } from './wheelPicker'
 import { ModalWrap } from './modalWrap'
 import type { Dict, PickerField } from '@/typings/response'
 import { useFocusOnError } from '@/hooks'
-import { ScrollView } from 'react-native-gesture-handler'
+import type { ScrollView } from 'react-native-gesture-handler'
 
 interface PickerProps<T extends Dict, U extends PickerField> {
   onChange: (text: Dict) => void
@@ -20,7 +20,7 @@ interface PickerProps<T extends Dict, U extends PickerField> {
   placeholder: string
   keyboardType?: KeyboardTypeOptions
   dataSource: T[]
-  scrollViewRef: RefObject<ScrollView>
+  scrollViewRef?: RefObject<ScrollView>
 }
 
 export function NormalPicker<T extends Dict, U extends PickerField>({

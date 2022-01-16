@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { Ref, useCallback } from 'react'
 import { TextInput, View, Image, Pressable } from 'react-native'
 import type { KeyboardTypeOptions } from 'react-native'
 import formItemStyles from './style'
@@ -8,15 +8,16 @@ import { useTranslation } from 'react-i18next'
 import { selectContactPhone } from 'react-native-select-contact'
 import Contacts from 'react-native-contacts'
 import { onRequestPermission } from '@/utils/permission'
+import type { ScrollView } from 'react-native-gesture-handler'
 
 interface Props {
   onChange: (text: string) => void
   value?: string
   error?: string
-  title: string
   field: string
   label: string
   placeholder: string
+  scrollViewRef?: Ref<ScrollView>
   keyboardType?: KeyboardTypeOptions
 }
 
@@ -62,16 +63,9 @@ export function PhonePicker({ onChange, value, field, label, placeholder }: Prop
             value={value}
             placeholder={placeholder}
             style={[formItemStyles.input]}
-            onPressIn={() => {
-              onRequestContactsPermission()
-            }}
+            onPressIn={onRequestContactsPermission}
           />
-          <Pressable
-            style={formItemStyles.suffixWrap}
-            onPress={() => {
-              console.log('pressed')
-              onRequestContactsPermission()
-            }}>
+          <Pressable style={formItemStyles.suffixWrap} onPress={() => onRequestContactsPermission}>
             <Image
               style={formItemStyles.suffix}
               source={require('@assets/images/apply/contacts.webp')}

@@ -122,6 +122,7 @@ const PasswdTab = ({ phone }: { phone?: string }) => {
               onClear={() => setFieldValue('phone', '')}
               placeholder={t('phone.placeholder')}
               error={errors.phone}
+              maxLength={10}
               keyboardType="phone-pad"
             />
             <PasswordInput

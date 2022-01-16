@@ -75,21 +75,20 @@ android {
     pickFirst '**/*.so'
   }
   signingConfigs {
-    staging {
-      if (project.hasProperty('STAGING_STORE_FILE')) {
-        storeFile file(STAGING_STORE_FILE)
-        storePassword STAGING_STORE_PASSWORD
-        keyAlias STAGING_KEY_ALIAS
-        keyPassword STAGING_KEY_PASSWORD
-      }
-    }
+//    staging {
+//      if (project.hasProperty('STAGING_STORE_FILE')) {
+//        storeFile file(STAGING_STORE_FILE)
+//        storePassword STAGING_STORE_PASSWORD
+//        keyAlias STAGING_KEY_ALIAS
+//        keyPassword STAGING_KEY_PASSWORD
+//      }
+//    }
     release {
-      if (project.hasProperty('STAGING_STORE_FILE')) {
-        // TODO
-        storeFile file(STAGING_STORE_FILE)
-        storePassword STAGING_STORE_PASSWORD
-        keyAlias STAGING_KEY_ALIAS
-        keyPassword STAGING_KEY_PASSWORD
+      if (project.hasProperty('RELEASE_STORE_FILE')) {
+        storeFile file(RELEASE_STORE_FILE)
+        storePassword RELEASE_STORE_PASSWORD
+        keyAlias RELEASE_KEY_ALIAS
+        keyPassword RELEASE_KEY_PASSWORD
       }
     }
   }
@@ -106,17 +105,18 @@ android {
       buildConfigField "String", "ENVIRONMENT", "\"development\""
       resValue "string", "app_name", "Moneyya debug"
     }
-    staging {
-      applicationIdSuffix ".staging"
-      versionNameSuffix '-Staging'
-      debuggable true
-      signingConfig signingConfigs.staging
-      buildConfigField "String", "ENVIRONMENT", "\"staging\""
-      resValue "string", "app_name", "Moneyya staging"
-    }
+//    staging {
+//      applicationIdSuffix ".staging"
+//      versionNameSuffix '-Staging'
+//      debuggable true
+//      signingConfig signingConfigs.staging
+//      buildConfigField "String", "ENVIRONMENT", "\"staging\""
+//      resValue "string", "app_name", "Moneyya staging"
+//    }
     release {
       // Caution! In production, you need to generate your own keystore file.
       // see https://reactnative.dev/docs/signed-apk-android.
+      resValue "string", "app_name", "Moneyya"
       debuggable false
       signingConfig signingConfigs.release
       buildConfigField "String", "ENVIRONMENT", "\"production\""

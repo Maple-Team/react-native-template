@@ -2,11 +2,9 @@ import StyleSheet from 'react-native-adaptive-stylesheet'
 
 export const styles = StyleSheet.create({
   subFormTitle: {
-    paddingVertical: 30,
+    paddingVertical: 23,
   },
   subFormTitleContent: {
-    color: '#1F2024',
-    fontSize: 18,
-    fontFamily: 'ArialMT',
+    color: 'rgba(51, 50, 48, 1)',
   },
 })

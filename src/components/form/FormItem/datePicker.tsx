@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { type RefObject, useState, useRef } from 'react'
 import { TextInput, View, Image, Pressable } from 'react-native'
 import type { KeyboardTypeOptions } from 'react-native'
 import formItemStyles from './style'
@@ -7,6 +7,8 @@ import { ErrorMessage } from 'formik'
 import DatePicker from 'react-native-date-picker'
 import dayjs from 'dayjs'
 import { useTranslation } from 'react-i18next'
+import type { ScrollView } from 'react-native-gesture-handler'
+import { useFocusOnError } from '@/hooks'
 
 interface PickerProps {
   onChange: (text: string) => void
@@ -15,6 +17,7 @@ interface PickerProps {
   title: string
   field: string
   label: string
+  scrollViewRef?: RefObject<ScrollView>
   placeholder: string
   keyboardType?: KeyboardTypeOptions
 }
@@ -25,12 +28,17 @@ export function NormalDatePicker({
   value,
   field,
   label,
+  scrollViewRef,
   error,
   title,
   placeholder,
 }: PickerProps) {
   const { t, i18n } = useTranslation()
   const [visible, setVisible] = useState<boolean>(false)
+  const fieldRef = useRef<TextInput>(null)
+  const [height, setHeight] = useState<number>(0)
+  useFocusOnError({ fieldRef, name: field, scrollViewRef, height })
+
   return (
     <>
       <View style={formItemStyles.formItem}>
@@ -39,6 +47,12 @@ export function NormalDatePicker({
           <TextInput
             editable={false}
             value={value}
+            ref={fieldRef}
+            onLayout={() => {
+              fieldRef.current?.measure((_x, _y, _width, _height, _pageX, pageY) => {
+                setHeight(pageY - _height)
+              })
+            }}
             placeholder={placeholder}
             onPressIn={() => setVisible(true)}
             style={[formItemStyles.input, error ? { borderBottomColor: 'red' } : {}]}

@@ -91,7 +91,7 @@ export function Step1() {
               <Button
                 onPress={() => {
                   // TODO
-                  navigation.getParent()?.navigate('Step2')
+                  navigation.getParent()?.navigate('Step5')
                 }}
                 type="primary"
                 style={{

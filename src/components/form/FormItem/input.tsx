@@ -5,7 +5,7 @@ import styles from './style'
 import Text from '@components/Text'
 import { ErrorMessage } from 'formik'
 import { useFocusOnError } from '@/hooks'
-import { ScrollView } from 'react-native-gesture-handler'
+import type { ScrollView } from 'react-native-gesture-handler'
 
 interface InputProps {
   onChangeText: (text: string) => void

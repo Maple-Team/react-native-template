@@ -80,7 +80,7 @@ export function ApplyStack() {
             name="Step4"
             component={Step4}
             options={() => ({
-              title: 'step3',
+              title: 'step4',
             })}
           />
           <Stack.Screen

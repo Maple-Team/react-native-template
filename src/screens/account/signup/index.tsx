@@ -19,6 +19,7 @@ import { useLoction } from '@/hooks'
 import { MoneyyaContext } from '@/state'
 import { useNavigation } from '@react-navigation/native'
 import { useNetInfo } from '@react-native-community/netinfo'
+import emitter from '@/eventbus'
 
 export const SignupScreen = () => {
   const context = useContext(MoneyyaContext)
@@ -97,6 +98,7 @@ export const SignupScreen = () => {
                   <Input
                     field="phone"
                     label={t('phone.label')}
+                    maxLength={10}
                     onChangeText={handleChange('phone')}
                     value={values.phone}
                     onClear={() => setFieldValue('phone', '')}

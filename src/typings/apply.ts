@@ -68,7 +68,7 @@ export interface ApplyStep4Parameter extends ApplyParameter {
   images: Image[]
 }
 
-export interface Image {
+interface Image {
   imageId: number
 }
 

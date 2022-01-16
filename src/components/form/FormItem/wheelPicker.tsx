@@ -8,8 +8,8 @@ import { Color } from '@/styles/color'
 
 export interface WheelPickerProps<T extends Dict> {
   dataSource: T[]
-  selected: string
-  onChange: (value: T) => void
+  selected?: string
+  onChange: (value: number) => void
 }
 export function WheelPicker<T extends Dict>({
   dataSource,
@@ -40,7 +40,7 @@ export function WheelPicker<T extends Dict>({
         data={dataSource.map(({ name }) => name)}
         onItemSelected={(index: number) => {
           setSelectedIndex(index)
-          onChange(dataSource[index])
+          onChange(index)
         }}
         selectedItemTextFontFamily="ArialMT"
         itemTextFontFamily="ArialMT"

@@ -19,9 +19,9 @@ import debounce from 'lodash.debounce'
 import { PageStyles, Text } from '@/components'
 import { REGEX_PHONE } from '@/utils/reg'
 import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT, KEY_BEHAVIOR_DATA } from '@/utils/constant'
-import { ApplyButton, Input, NormalPicker } from '@components/form/FormItem'
+import { ApplyButton, Input, NormalPicker, PhonePicker } from '@components/form/FormItem'
 import { Color } from '@/styles/color'
-import { ApplyParameter, ApplyStep3Parameter, Contact } from '@/typings/apply'
+import type { ApplyParameter, ApplyStep3Parameter, Contact } from '@/typings/apply'
 import { useLoction } from '@/hooks'
 import { useFocusEffect } from '@react-navigation/native'
 import { BehaviorModel } from '@/typings/behavior'
@@ -30,19 +30,33 @@ import { MMKV } from '@/utils/storage'
 import { useWindowSize } from 'usehooks-ts'
 import { fetchDict, submit } from '@/services/apply'
 import { MoneyyaContext } from '@/state'
-import { Dict, DictField } from '@/typings/response'
+import type { Dict, DictField } from '@/typings/response'
 import FormGap from '@components/FormGap'
 
 export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
   const schema = Yup.object().shape({
-    contactName: Yup.string().required(t('contactName.required')),
-    contactPhone: Yup.string()
+    contactName1: Yup.string().required(t('contactName.required')),
+    contactPhone1: Yup.string()
       .min(10, t('field.short', { field: 'Phone' }))
       .max(10, t('field.long', { field: 'Phone' }))
-      .matches(REGEX_PHONE, t('contactPhone.invalid'))
-      .required(t('contactPhone.required')),
-    contactRelationCode: Yup.string().required(t('contactRelationCode.required')),
+      // .required(t('contactPhone.required'))
+      .matches(REGEX_PHONE, t('contactPhone.invalid')),
+    contactRelationCode1: Yup.string().required(t('contactRelationCode.required')),
+    contactName2: Yup.string().required(t('contactName.required')),
+    contactPhone2: Yup.string()
+      .min(10, t('field.short', { field: 'Phone' }))
+      .max(10, t('field.long', { field: 'Phone' }))
+      // .required(t('contactPhone.required'))
+      .matches(REGEX_PHONE, t('contactPhone.invalid')),
+    contactRelationCode2: Yup.string().required(t('contactRelationCode.required')),
+    contactName3: Yup.string().required(t('contactName.required')),
+    contactPhone3: Yup.string()
+      .min(10, t('field.short', { field: 'Phone' }))
+      .max(10, t('field.long', { field: 'Phone' }))
+      // .required(t('contactPhone.required'))
+      .matches(REGEX_PHONE, t('contactPhone.invalid')),
+    contactRelationCode3: Yup.string().required(t('contactRelationCode.required')),
   })
 
   const context = useContext(MoneyyaContext)
@@ -117,7 +131,6 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
   }, [])
   const onSubmit = debounce(
     (values: FormModel) => {
-      console.log(values, 'Step4')
       const contacts: Contact[] = []
       for (let index = 1; index <= 3; index++) {
         contacts.push({
@@ -134,8 +147,8 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
       submit({
         contacts,
         applyId: 0,
-        currentStep: 0,
-        totalSteps: 0,
+        currentStep: 3,
+        totalSteps: 8,
       })
       navigation.navigate('Step4')
     },
@@ -166,20 +179,26 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
     }, [behavior])
   )
   const scrollviewRef = useRef<ScrollView>(null)
+
   return (
     <SafeAreaView style={PageStyles.sav}>
       <StatusBar translucent={false} backgroundColor={Color.primary} barStyle="default" />
-      <ScrollView style={PageStyles.scroll} keyboardShouldPersistTaps="handled">
+      <ScrollView ref={scrollviewRef} style={PageStyles.scroll} keyboardShouldPersistTaps="handled">
         <View style={PageStyles.container}>
-          <Formik<FormModel> initialValues={state} onSubmit={onSubmit} validationSchema={schema}>
-            {({ handleChange, handleSubmit, isValid, setFieldValue, values, errors }) => (
+          <Formik<FormModel>
+            initialValues={state}
+            onSubmit={onSubmit}
+            validationSchema={schema}
+            validateOnBlur
+            validateOnChange>
+            {({ handleSubmit, isValid, setFieldValue, errors }) => (
               <>
                 <View style={PageStyles.form}>
                   <FormGap title="Relation Contact" />
                   <NormalPicker
                     scrollViewRef={scrollviewRef}
                     onChange={record => {
-                      setFieldValue('contactRelationCode1', record)
+                      setFieldValue('contactRelationCode1', record.code)
                       dispatch({ type: 'updateContactRelation1', value: record })
                       behavior.setModify(
                         'P03_C01_S_RELATIONSHIP',
@@ -193,26 +212,37 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                     placeholder={t('contactRelationCode.placeholder')}
                     dataSource={state.contactRelation}
                     error={errors.contactRelationCode1}
-                    value={values.contactRelationCode1}
+                    value={state.contactRelationCode1}
                   />
                   <Input
                     scrollViewRef={scrollviewRef}
-                    onChangeText={handleChange('contactName1')}
+                    onChangeText={text => {
+                      setFieldValue('contactName1', text)
+                      dispatch({ type: 'updateContactName1', value: text })
+                    }}
                     onClear={() => {
                       setFieldValue('contactName1', '')
                     }}
-                    value={values.contactName1}
+                    onFocus={() => {
+                      behavior.setStartModify('P03_C01_S_RELATIONSHIP', state.contactName1)
+                    }}
+                    onBlur={() => {
+                      behavior.setEndModify('P03_C01_S_RELATIONSHIP', state.contactName1)
+                    }}
+                    value={state.contactName1}
                     field={'contactName1'}
                     label={t('contactName.label')}
                     placeholder={t('contactName.placeholder')}
                   />
-                  <Input
+                  <PhonePicker
                     scrollViewRef={scrollviewRef}
                     field="contactPhone1"
                     label={t('contactPhone.label')}
-                    onChangeText={handleChange('contactPhone1')}
-                    value={values.contactPhone1}
-                    onClear={() => setFieldValue('contactPhone1', '')}
+                    onChange={text => {
+                      setFieldValue('contactPhone1', text)
+                      dispatch({ type: 'updateContactPhone1', value: text })
+                    }}
+                    value={state.contactPhone1}
                     placeholder={t('contactPhone.placeholder')}
                     error={errors.contactPhone1}
                   />
@@ -220,8 +250,8 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                   <NormalPicker
                     scrollViewRef={scrollviewRef}
                     onChange={record => {
-                      setFieldValue('contactRelationCode2', record)
-                      dispatch({ type: 'updateContactRelation1', value: record })
+                      setFieldValue('contactRelationCode2', record.code)
+                      dispatch({ type: 'updateContactRelation2', value: record })
                       behavior.setModify(
                         'P03_C01_S_RELATIONSHIP',
                         record.code,
@@ -234,26 +264,31 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                     placeholder={t('contactRelationCode.placeholder')}
                     dataSource={state.otherContactRelation}
                     error={errors.contactRelationCode2}
-                    value={values.contactRelationCode2}
+                    value={state.contactRelationCode2}
                   />
                   <Input
                     scrollViewRef={scrollviewRef}
-                    onChangeText={handleChange('contactName2')}
+                    onChangeText={text => {
+                      setFieldValue('contactName2', text)
+                      dispatch({ type: 'updateContactName2', value: text })
+                    }}
                     onClear={() => {
                       setFieldValue('contactName2', '')
                     }}
-                    value={values.contactName2}
+                    value={state.contactName2}
                     field={'contactName2'}
                     label={t('contactName.label')}
                     placeholder={t('contactName.placeholder')}
                   />
-                  <Input
+                  <PhonePicker
                     scrollViewRef={scrollviewRef}
                     field="contactPhone2"
                     label={t('contactPhone.label')}
-                    onChangeText={handleChange('contactPhone2')}
-                    value={values.contactPhone2}
-                    onClear={() => setFieldValue('contactPhone2', '')}
+                    onChange={text => {
+                      setFieldValue('contactPhone2', text)
+                      dispatch({ type: 'updateContactPhone2', value: text })
+                    }}
+                    value={state.contactPhone2}
                     placeholder={t('contactPhone.placeholder')}
                     error={errors.contactPhone2}
                   />
@@ -262,7 +297,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                     scrollViewRef={scrollviewRef}
                     onChange={record => {
                       console.log(record)
-                      setFieldValue('contactRelationCode3', record)
+                      setFieldValue('contactRelationCode3', record.code)
                       dispatch({ type: 'updateContactRelation3', value: record })
                       behavior.setModify(
                         'P03_C01_S_RELATIONSHIP',
@@ -276,26 +311,31 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                     placeholder={t('contactRelationCode.placeholder')}
                     dataSource={state.otherContactRelation}
                     error={errors.contactRelationCode3}
-                    value={values.contactRelationCode3}
+                    value={state.contactRelationCode3}
                   />
                   <Input
                     scrollViewRef={scrollviewRef}
-                    onChangeText={handleChange('contactName3')}
+                    onChangeText={text => {
+                      setFieldValue('contactName3', text)
+                      dispatch({ type: 'updateContactName3', value: text })
+                    }}
                     onClear={() => {
                       setFieldValue('contactName3', '')
                     }}
-                    value={values.contactName3}
+                    value={state.contactName3}
                     field={'contactName3'}
                     label={t('contactName.label')}
                     placeholder={t('contactName.placeholder')}
                   />
-                  <Input
+                  <PhonePicker
                     scrollViewRef={scrollviewRef}
                     field="contactPhone3"
                     label={t('contactPhone.label')}
-                    onChangeText={handleChange('contactPhone3')}
-                    value={values.contactPhone3}
-                    onClear={() => setFieldValue('contactPhone3', '')}
+                    onChange={text => {
+                      setFieldValue('contactPhone3', text)
+                      dispatch({ type: 'updateContactPhone3', value: text })
+                    }}
+                    value={state.contactPhone3}
                     placeholder={t('contactPhone.placeholder')}
                     error={errors.contactPhone3}
                   />

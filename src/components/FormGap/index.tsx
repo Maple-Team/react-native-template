@@ -10,7 +10,9 @@ import { Text } from '@/components'
 export default ({ title }: { title: string }) => {
   return (
     <View style={styles.subFormTitle}>
-      <Text styles={styles.subFormTitleContent}>{title}</Text>
+      <Text fontSize={19} fontWeight="bold" styles={styles.subFormTitleContent}>
+        {title}
+      </Text>
     </View>
   )
 }

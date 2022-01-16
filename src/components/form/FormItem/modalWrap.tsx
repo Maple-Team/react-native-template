@@ -25,13 +25,13 @@ export function ModalWrap<T extends Dict, P extends Props<T>>(
   return (props: Props<T>) => {
     const { onClose, onConfirm, title, value, visible, dataSource = [] } = props
     let pos: number | undefined
-    const componentProps = {
+    const componentProps: WheelPickerProps<T> = {
       dataSource,
       selected: value,
       onChange: (position: number) => {
         pos = position
       },
-    } as unknown as WheelPickerProps<T>
+    }
     return (
       <AntModal popup visible={visible} animationType="slide-up" onClose={onClose}>
         <SafeAreaView>
