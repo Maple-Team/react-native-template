@@ -28,14 +28,12 @@ export const EntryScreen = ({ navigation }: NativeStackHeaderProps) => {
     phone: Yup.string()
       .min(10, t('field.short', { field: 'Phone' }))
       .max(10, t('field.long', { field: 'Phone' }))
-      .matches(REGEX_PHONE, t('phone.invalid'))
-      .required(t('phone.required')),
+      .matches(REGEX_PHONE, t('phone.invalid')),
   })
   const initialValue = useMemo<FormModel>(() => ({ phone: '' }), [])
   const onSubmit = debounce(
     (values: FormModel) => {
-      console.log(values)
-      navigation.navigate('SignIn')
+      navigation.navigate('SignIn', { phone: values.phone })
     },
     DEBOUNCE_WAIT,
     DEBOUNCE_OPTIONS
@@ -63,6 +61,7 @@ export const EntryScreen = ({ navigation }: NativeStackHeaderProps) => {
                       <View style={styles.formItem}>
                         <Input
                           field="phone"
+                          maxLength={10}
                           label={t('phone.label')}
                           onChangeText={handleChange('phone')}
                           value={values.phone}

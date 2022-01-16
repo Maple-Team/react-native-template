@@ -5,17 +5,17 @@ export interface ValidCode {
   kaptcha: string
 }
 
-export interface RegisterResponse {
+export interface AccountInfo {
   apply?: any
   ip: string
   loanCount: number
   accessToken: string
-  user: RegisterUser
+  user: AccountUser
   deviceId: string
   customer?: any
 }
 
-export interface RegisterUser {
+export interface AccountUser {
   userId: number
   org: string
   phone: string

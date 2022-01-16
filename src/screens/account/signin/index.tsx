@@ -22,10 +22,11 @@ import emitter from '@/eventbus'
 import type { LoginParameter } from '@/typings/request'
 import { MoneyyaContext } from '@/state'
 
-export const SigninScreen = () => {
+export const SigninScreen = ({ route }: { route: any }) => {
   const { t } = useTranslation()
+  const { phone } = route.params as { phone?: string }
   const tabs = [{ title: t('password-login') }, { title: t('validation-code-login') }]
-  const tabPanels = [<PasswdTab />, <ValidTab />]
+  const tabPanels = [<PasswdTab phone={phone} />, <ValidTab phone={phone} />]
   const [index, setIndex] = useState<number>(0)
   const navigation = useNavigation<SignInScreenProp>()
 
@@ -74,7 +75,7 @@ export const SigninScreen = () => {
 }
 type SignInScreenProp = NativeStackNavigationProp<AccountStackParams, 'SignIn'>
 
-const PasswdTab = () => {
+const PasswdTab = ({ phone }: { phone?: string }) => {
   const context = useContext(MoneyyaContext)
   const navigation = useNavigation<SignInScreenProp>()
   const { t } = useTranslation()
@@ -87,8 +88,8 @@ const PasswdTab = () => {
     password: Yup.string().required(t('password.required')),
   })
   const initialValue = useMemo<Pick<LoginParameter, 'password' | 'phone'>>(
-    () => ({ phone: '9868965898', password: '' }),
-    []
+    () => ({ phone: phone || '', password: '' }),
+    [phone]
   )
   const onSubmit = debounce(
     (values: Pick<LoginParameter, 'password' | 'phone'>) => {
@@ -157,7 +158,7 @@ const PasswdTab = () => {
   )
 }
 
-const ValidTab = () => {
+const ValidTab = ({ phone }: { phone?: string }) => {
   const context = useContext(MoneyyaContext)
   const navigation = useNavigation<SignInScreenProp>()
   const { t } = useTranslation()
@@ -174,8 +175,8 @@ const ValidTab = () => {
       .matches(REGEX_VALIDATE_CODE, t('validateCode.invalid')),
   })
   const initialValue = useMemo<Pick<LoginParameter, 'phone' | 'code'>>(
-    () => ({ phone: '9868965898', code: '' }),
-    []
+    () => ({ phone: phone || '', code: '' }),
+    [phone]
   )
   const onSubmit = debounce(
     (values: Pick<LoginParameter, 'code' | 'phone'>) => {
@@ -202,6 +203,7 @@ const ValidTab = () => {
             <Input
               field="phone"
               label={t('phone.label')}
+              maxLength={10}
               onChangeText={handleChange('phone')}
               value={values.phone}
               onClear={() => setFieldValue('phone', '')}

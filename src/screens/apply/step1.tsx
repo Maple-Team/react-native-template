@@ -9,11 +9,12 @@ import { Color } from '@/styles/color'
 import Swiper from 'react-native-swiper'
 import Styles from './style'
 // import { useSensor } from '@/hooks'
-import { pv, queryBrand, queryVersion } from '@/services/apply'
+import { queryBrand, queryVersion } from '@/services/apply'
 import { queryUserinfo } from '@/services/user'
 import { MoneyyaContext } from '@/state'
 import emitter from '@/eventbus'
 import { MMKV } from '@/utils/storage'
+import { KEY_APPLYID } from '@/utils/constant'
 
 export function Step1() {
   const navigation = useNavigation()
@@ -22,15 +23,14 @@ export function Step1() {
   // const sensor = useSensor()
   useEffect(() => {
     queryBrand().then(res => {
-      console.log('brand', res)
+      emitter.emit('UPDATE_BRAND', res)
     })
     queryVersion().then(res => {
       console.log('vesion', res)
     })
-    pv()
     queryUserinfo().then(res => {
       console.log('userinfo', res)
-      MMKV.setInt('applyId', res.applyId)
+      MMKV.setString(KEY_APPLYID, `${res.applyId}`)
       emitter.emit('USER_INFO', res)
     })
   }, [])

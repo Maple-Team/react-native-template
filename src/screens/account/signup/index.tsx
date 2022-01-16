@@ -17,7 +17,8 @@ import type { RegisterParameter } from '@/typings/request'
 import { register } from '@/services/user'
 import { useLoction } from '@/hooks'
 import { MoneyyaContext } from '@/state'
-import emitter from '@/eventbus'
+import { useNavigation } from '@react-navigation/native'
+import { useNetInfo } from '@react-native-community/netinfo'
 
 export const SignupScreen = () => {
   const context = useContext(MoneyyaContext)
@@ -44,19 +45,36 @@ export const SignupScreen = () => {
   }
   const initialValue = useMemo<Model>(
     () => ({
-      phone: '9868965898',
-      password: 'a123456',
-      comfirmPassword: 'a123456',
+      phone: __DEV__ ? '9868965897' : '',
+      password: __DEV__ ? 'a123456' : '',
+      comfirmPassword: __DEV__ ? 'a123456' : '',
       validateCode: '',
-      hasAgree: undefined,
     }),
     []
   )
+  const netInfo = useNetInfo()
+  if (netInfo.isConnected) {
+    //TODO 更新internalIP
+    console.log(netInfo.details?.ipAddress)
+  }
+
+  const na = useNavigation()
   const onSubmit = debounce(
     (values: RegisterParameter) => {
-      register(values).then(res => {
-        emitter.emit('LOGIN_SUCCESS', res)
-      })
+      register(values)
+        .then(res => {
+          console.log('register res', res)
+          const outerip = res.ip
+          console.log(outerip) //TODO 更新outernalIP
+          // @ts-ignore
+          na.navigate('SignIn', { phone: values.phone })
+        })
+        .catch(res => {
+          if (res) {
+            // @ts-ignore
+            na.navigate('SignIn', { phone: values.phone })
+          }
+        })
     },
     DEBOUNCE_WAIT,
     DEBOUNCE_OPTIONS

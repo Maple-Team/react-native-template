@@ -1,15 +1,14 @@
 import axios from 'axios'
 import type { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
 
-import AppModule from '@/modules/AppModule'
-import type { APPLY_SOURCE, CommonHeader } from '@/typings/request'
+import { AppModule } from '@/modules'
 import type { Status } from '@/typings/response'
 import { API_CODE, APPLY_STATE } from '@/state/enum'
 import emitter from '@/eventbus'
 import { DispatchRVMap } from '@/eventbus/type'
-import { AXIOS_TIMEOUT } from '@/utils/constant'
-import { MMKV } from '@/utils/storage'
-
+import { AXIOS_TIMEOUT, KEY_DEVICEID, KEY_GPS, KEY_TOKEN } from '@/utils/constant'
+import { moneyyaState } from '@/state/context'
+import { MMKV } from './storage'
 export interface Response<T = any> {
   body?: T
   sourceId?: string
@@ -27,21 +26,23 @@ const api = axios.create({
 
 api.interceptors.request.use(
   async function (config: AxiosRequestConfig) {
-    const headers = config.headers as unknown as CommonHeader // FIXME
-    if (headers) {
-      headers.inputChannel = MMKV.getString('inputChannel') || ''
-      headers.deviceId = MMKV.getString('deviceId') || ''
-      headers.gps = MMKV.getString('gps') || '0,0'
-      headers.merchantId = MMKV.getString('merchantId') || ''
-      headers.source = (MMKV.getString('source') as APPLY_SOURCE) || ''
-      headers.versionId = AppModule.getVersionID()
-      const channel = MMKV.getString('channel')
+    if (config.headers) {
+      //FIXME 取值问题
+      const {
+        header: { inputChannel, merchantId, source, gps, versionId, channel },
+      } = moneyyaState
+      config.headers.inputChannel = inputChannel
+      config.headers.deviceId = MMKV.getString(KEY_DEVICEID) || ''
+      config.headers.gps = MMKV.getString(KEY_GPS) || gps
+      config.headers.merchantId = merchantId
+      config.headers.source = source
+      config.headers.versionId = versionId
       if (channel) {
-        headers.channel = channel
+        config.headers.channel = channel
       }
-      const accessToken = MMKV.getString('accessToken')
+      const accessToken = MMKV.getString(KEY_TOKEN) || ''
       if (accessToken) {
-        headers.accessToken = accessToken
+        config.headers.accessToken = accessToken
       }
     }
     return config
@@ -66,11 +67,12 @@ api.interceptors.response.use(
       const message = __DEV__ ? msgCn : msg
       switch (code) {
         case API_CODE.SESSION_EXPIRED:
+        case API_CODE.ILLEGAL_USER:
           emitter.emit('SESSION_EXPIRED')
           break
         case API_CODE.EXISTED_USER:
-          emitter.emit('EXISTED_USER')
-          break
+          emitter.emit('EXISTED_USER', message)
+          return Promise.reject(true)
         default:
           console.error(response.config.url, message)
           emitter.emit('SHOW_MESSAGE', { message, type: 'fail' })

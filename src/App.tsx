@@ -20,7 +20,7 @@ import { AccountStack } from '@/navigation/accountStack'
 import i18n, { getI18nConfig } from '@/locales/i18n'
 import { navigationRef } from '@/navigation/rootNavigation'
 import { Color } from '@/styles/color'
-import { MESSAGE_DURATION } from '@/utils/constant'
+import { KEY_PHONE, MESSAGE_DURATION } from '@/utils/constant'
 import SplashScreen from 'react-native-splash-screen'
 import Init from '@screens/init'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
@@ -28,7 +28,8 @@ import { useEventListener } from '@/hooks'
 import { reducer, MoneyyaContext } from '@/state'
 import { useFlipper } from '@react-navigation/devtools'
 import emitter from '@/eventbus'
-import { moneyyaState } from './state/context'
+import { moneyyaState } from '@/state/context'
+import { MMKV } from '@/utils/storage'
 
 // JPUSH https://docs.jiguang.cn/jpush/resources/
 // FIXME 是否确保一个toast/message的显示时间符合其设置的时间，
@@ -53,6 +54,7 @@ const App = () => {
     {
       hasInit,
       header: { accessToken },
+      user,
     },
     dispatch,
   ] = useReducer(reducer, moneyyaState)
@@ -90,7 +92,6 @@ const App = () => {
     i18n.init(getI18nConfig(language))
   }, [])
 
-  // TODO 处理token超时
   const [isReady, setIsReady] = useState(__DEV__ ? false : true)
   const [initialState, setInitialState] = useState()
   useFlipper(navigationRef)
@@ -125,14 +126,14 @@ const App = () => {
         hasInit: init,
       })
     })
-    emitter.on('LOGIN_SUCCESS', user => {
+    emitter.on('LOGIN_SUCCESS', u => {
+      // FIXME 注册/登录响应
       dispatch({
         type: 'UPDATE_TOKEN',
-        token: user?.accessToken || '',
+        token: u?.accessToken || '',
       })
     })
     emitter.on('LOGOUT_SUCCESS', () => {
-      console.log('logout')
       dispatch({
         type: 'UPDATE_TOKEN',
         token: '',
@@ -150,8 +151,22 @@ const App = () => {
         deviceId: id,
       })
     })
+    emitter.on('UPDATE_BRAND', brand => {
+      dispatch({
+        type: 'UPDATE_BRAND',
+        brand,
+      })
+    })
   }, [])
-
+  useEffect(() => {
+    emitter.on('SESSION_EXPIRED', () => {
+      MMKV.setString(KEY_PHONE, user?.phone || '')
+      dispatch({
+        type: 'UPDATE_TOKEN',
+        token: '',
+      })
+    })
+  }, [user])
   if (!isReady) {
     return <Loading />
   }

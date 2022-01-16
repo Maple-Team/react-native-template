@@ -4,7 +4,6 @@ import { SigninScreen, EntryScreen, SignupScreen, ResetScreen } from '@/screens/
 import { useTranslation } from 'react-i18next'
 import { HeaderLeft } from '@components/header'
 import emitter from '@/eventbus'
-import { useNavigation } from '@react-navigation/native'
 import { useLoction } from '@/hooks'
 import AppModule from '@/modules/AppModule'
 import RNAdvertisingId from 'react-native-advertising-id'
@@ -21,7 +20,6 @@ const Stack = createNativeStackNavigator<AccountStackParams>()
 
 export function AccountStack() {
   const { t } = useTranslation()
-  const navigation = useNavigation()
   usePersmission()
   useEffect(() => {
     emitter.on('LOGIN_SUCCESS', () => {
@@ -29,11 +27,10 @@ export function AccountStack() {
     })
   }, [t])
   useEffect(() => {
-    emitter.on('EXISTED_USER', () => {
-      //@ts-ignore
-      navigation.navigate('SignIn')
+    emitter.on('EXISTED_USER', message => {
+      message && emitter.emit('SHOW_MESSAGE', { type: 'info', message })
     })
-  }, [navigation])
+  }, [])
   useEffect(() => {
     const versionID = AppModule.getVersionID()
     emitter.emit('UPDATE_VERSIONID', versionID)

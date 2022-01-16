@@ -1,7 +1,9 @@
 import type { DispatchMapType } from '@/eventbus/type'
 import { DictTypeArray, NormalTypeArray } from '@/eventbus/type'
 import type { CommonHeader } from '@/typings/request'
+import type { Brand } from '@/typings/response'
 import type { UserInfo } from '@/typings/user'
+import { KEY_TOKEN, KEY_GPS, KEY_DEVICEID, KEY_INIT } from '@/utils/constant'
 import { MMKV } from '@/utils/storage'
 export { default as MoneyyaContext } from './context'
 
@@ -11,6 +13,7 @@ export const UPDATE_DEVICEID = 'UPDATE_DEVICEID'
 export const UPDATE_VESIONID = 'UPDATE_VESIONID'
 export const UPDATE_USERINFO = 'UPDATE_USERINFO'
 export const UPDATE_HAS_INIT = 'UPDATE_HAS_INIT'
+export const UPDATE_BRAND = 'UPDATE_BRAND'
 
 export interface State {
   header: CommonHeader
@@ -31,6 +34,7 @@ export interface State {
       [key: string]: boolean
     }
   }
+  barnd?: Brand
   hasInit?: boolean
 }
 
@@ -63,12 +67,16 @@ export type Action =
       type: typeof UPDATE_VESIONID
       versionID: string
     }
+  | {
+      type: typeof UPDATE_BRAND
+      brand: Brand
+    }
 
 export function reducer(state: State, action: Action): State {
   console.log('action', action)
   switch (action.type) {
     case UPDATE_TOKEN:
-      MMKV.setStringAsync('accessToken', action.token)
+      MMKV.setString(KEY_TOKEN, action.token)
       return {
         ...state,
         header: {
@@ -77,7 +85,7 @@ export function reducer(state: State, action: Action): State {
         },
       }
     case UPDATE_GPS:
-      MMKV.setStringAsync('gps', action.gps)
+      MMKV.setString(KEY_GPS, action.gps)
       return {
         ...state,
         header: {
@@ -86,7 +94,7 @@ export function reducer(state: State, action: Action): State {
         },
       }
     case UPDATE_DEVICEID:
-      MMKV.setStringAsync('deviceId', action.deviceId)
+      MMKV.setString(KEY_DEVICEID, action.deviceId)
       return {
         ...state,
         header: {
@@ -108,10 +116,15 @@ export function reducer(state: State, action: Action): State {
         user: action.user,
       }
     case UPDATE_HAS_INIT:
-      MMKV.setBoolAsync('hasInit', action.hasInit)
+      MMKV.setBool(KEY_INIT, action.hasInit)
       return {
         ...state,
         hasInit: action.hasInit,
+      }
+    case UPDATE_BRAND:
+      return {
+        ...state,
+        barnd: action.brand,
       }
     default:
       if ([...NormalTypeArray, ...DictTypeArray].includes(action.type)) {

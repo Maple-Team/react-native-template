@@ -1,7 +1,8 @@
-import type { RegisterResponse } from '@/typings/account'
+import type { AccountInfo } from '@/typings/account'
+import type { Brand } from '@/typings/response'
 import type { UserInfo } from '@/typings/user'
 import type { AxiosError } from 'axios'
-import mitt, { Emitter } from 'mitt'
+import mitt, { type Emitter } from 'mitt'
 import type { DispatchMapType } from './type'
 
 /**
@@ -16,7 +17,7 @@ export type Events = {
   SESSION_EXPIRED?: string
   SHOW_MESSAGE: { message: string; type: MessageType }
   SHOW_LOADING?: string
-  LOGIN_SUCCESS?: RegisterResponse
+  LOGIN_SUCCESS?: AccountInfo
   LOGOUT_SUCCESS?: string
   RESPONSE_ERROR: AxiosError
   REQUEST_ERROR: AxiosError
@@ -28,6 +29,8 @@ export type Events = {
   UPDATE_GPS: string
   USER_INFO: UserInfo
   EXISTED_USER?: string
+  UPDATE_BRAND: Brand
+  REGISTER_SUCCESS: AccountInfo
 }
 
 /**

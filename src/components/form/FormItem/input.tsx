@@ -17,8 +17,9 @@ interface InputProps {
   field: string
   label: string
   placeholder: string
+  maxLength?: number
   keyboardType?: KeyboardTypeOptions
-  scrollViewRef: RefObject<ScrollView>
+  scrollViewRef?: RefObject<ScrollView>
 }
 export const Input = ({
   onChangeText,
@@ -27,6 +28,7 @@ export const Input = ({
   onClear,
   onFocus,
   onBlur,
+  maxLength,
   field,
   label,
   placeholder,
@@ -42,7 +44,7 @@ export const Input = ({
       <View style={styles.inputWrap}>
         <TextInput
           onChangeText={onChangeText}
-          maxLength={11}
+          maxLength={maxLength}
           value={value}
           ref={fieldRef}
           onLayout={() => {

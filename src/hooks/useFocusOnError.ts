@@ -18,14 +18,14 @@ export const useFocusOnError = ({
   name: string
   canFocus?: boolean
   height: number
-  scrollViewRef: RefObject<ScrollView>
+  scrollViewRef?: RefObject<ScrollView>
 }) => {
   const formik = useFormikContext()
   const prevSubmitCountRef = useRef(formik.submitCount)
   const errorKey = Object.keys(formik.errors)[0]
   useEffect(() => {
     if (prevSubmitCountRef.current !== formik.submitCount && !formik.isValid) {
-      if (fieldRef.current && errorKey === name && scrollViewRef.current) {
+      if (fieldRef.current && errorKey === name && scrollViewRef?.current) {
         if (canFocus) {
           fieldRef.current.focus()
         }

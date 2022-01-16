@@ -320,11 +320,15 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                   />
                   <NormalPicker
                     scrollViewRef={scrollviewRef}
-                    onChange={text => {
-                      setFieldValue('companyAddrProvinceCode', text)
-                      dispatch({ type: 'updateProvince', value: text })
+                    onChange={record => {
+                      setFieldValue('companyAddrProvinceCode', record)
+                      dispatch({ type: 'updateProvince', value: record.code })
                       dispatch({ type: 'updateCity', value: '' })
-                      behavior.setModify('P02_C0x_S_STATE', text, state.companyAddrProvinceCode)
+                      behavior.setModify(
+                        'P02_C0x_S_STATE',
+                        record.code,
+                        state.companyAddrProvinceCode
+                      )
                     }}
                     value={values.companyAddrProvinceCode}
                     title={t('companyAddrProvinceCode.label')}
@@ -336,10 +340,10 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                   />
                   <NormalPicker
                     scrollViewRef={scrollviewRef}
-                    onChange={text => {
-                      setFieldValue('companyAddrCityCode', text)
-                      dispatch({ type: 'updateCity', value: text })
-                      behavior.setModify('P02_C0x_S_CITY', text, state.companyAddrCityCode)
+                    onChange={record => {
+                      setFieldValue('companyAddrCityCode', record)
+                      dispatch({ type: 'updateCity', value: record.code })
+                      behavior.setModify('P02_C0x_S_CITY', record.code, state.companyAddrCityCode)
                     }}
                     title={t('companyAddrCityCode.label')}
                     field={'companyAddrCityCode'}
@@ -365,7 +369,11 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     scrollViewRef={scrollviewRef}
                     field="incumbency"
                     label={t('incumbency.label')}
-                    onChange={handleChange('incumbency')}
+                    onChange={record => {
+                      setFieldValue('incumbency', record.code)
+                      dispatch({ type: 'updateCity', value: record.code })
+                      behavior.setModify('P02_C0x_S_CITY', record.code, state.incumbency)
+                    }}
                     value={values.incumbency}
                     placeholder={t('incumbency.placeholder')}
                     error={errors.incumbency}
