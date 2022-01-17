@@ -15,11 +15,10 @@ import { ApplyButton } from '@components/form/FormItem/applyButton'
 import { Color } from '@/styles/color'
 import type { RegisterParameter } from '@/typings/request'
 import { register } from '@/services/user'
-import { useLoction } from '@/hooks'
+import { useLocation } from '@/hooks'
 import { MoneyyaContext } from '@/state'
 import { useNavigation } from '@react-navigation/native'
 import { useNetInfo } from '@react-native-community/netinfo'
-import emitter from '@/eventbus'
 
 export const SignupScreen = () => {
   const context = useContext(MoneyyaContext)
@@ -83,7 +82,7 @@ export const SignupScreen = () => {
   const [showPwd, setShowPwd] = useState<boolean>(false)
   const [showConfirmPwd, setShowConfirmPwd] = useState<boolean>(false)
 
-  useLoction()
+  useLocation()
 
   const [check, setCheck] = useState<boolean>(false)
   return (

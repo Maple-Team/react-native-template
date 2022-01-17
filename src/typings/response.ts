@@ -88,3 +88,4 @@ export type PickerField =
   | 'contactRelationCode1'
   | 'contactRelationCode2'
   | 'contactRelationCode3'
+  | 'bankCode'

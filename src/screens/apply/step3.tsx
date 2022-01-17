@@ -1,4 +1,4 @@
-import { NativeStackHeaderProps } from '@react-navigation/native-stack'
+import type { NativeStackHeaderProps } from '@react-navigation/native-stack'
 import React, {
   Reducer,
   useCallback,
@@ -15,45 +15,41 @@ import { ScrollView } from 'react-native-gesture-handler'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 import debounce from 'lodash.debounce'
-
-import { PageStyles, Text } from '@/components'
-import { REGEX_PHONE } from '@/utils/reg'
-import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT, KEY_BEHAVIOR_DATA } from '@/utils/constant'
+import { useFocusEffect } from '@react-navigation/native'
+import { useWindowSize } from 'usehooks-ts'
+import { PageStyles, Text, FormGap } from '@/components'
+import {
+  DEBOUNCE_OPTIONS,
+  DEBOUNCE_WAIT,
+  KEY_APPLYID,
+  KEY_BEHAVIOR_DATA,
+  TOTAL_STEPS,
+} from '@/utils/constant'
+import { MMKV, Behavior, REGEX_PHONE } from '@/utils'
 import { ApplyButton, Input, NormalPicker, PhonePicker } from '@components/form/FormItem'
 import { Color } from '@/styles/color'
-import type { ApplyParameter, ApplyStep3Parameter, Contact } from '@/typings/apply'
-import { useLoction } from '@/hooks'
-import { useFocusEffect } from '@react-navigation/native'
-import { BehaviorModel } from '@/typings/behavior'
-import Behavior from '@/utils/behavior'
-import { MMKV } from '@/utils/storage'
-import { useWindowSize } from 'usehooks-ts'
+import { useLocation } from '@/hooks'
 import { fetchDict, submit } from '@/services/apply'
 import { MoneyyaContext } from '@/state'
+import type { ApplyParameter, ApplyStep3Parameter, Contact } from '@/typings/apply'
+import type { BehaviorModel } from '@/typings/behavior'
 import type { Dict, DictField } from '@/typings/response'
-import FormGap from '@components/FormGap'
 
 export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
   const schema = Yup.object().shape({
     contactName1: Yup.string().required(t('contactName.required')),
     contactPhone1: Yup.string()
-      .min(10, t('field.short', { field: 'Phone' }))
-      .max(10, t('field.long', { field: 'Phone' }))
       // .required(t('contactPhone.required'))
       .matches(REGEX_PHONE, t('contactPhone.invalid')),
     contactRelationCode1: Yup.string().required(t('contactRelationCode.required')),
     contactName2: Yup.string().required(t('contactName.required')),
     contactPhone2: Yup.string()
-      .min(10, t('field.short', { field: 'Phone' }))
-      .max(10, t('field.long', { field: 'Phone' }))
       // .required(t('contactPhone.required'))
       .matches(REGEX_PHONE, t('contactPhone.invalid')),
     contactRelationCode2: Yup.string().required(t('contactRelationCode.required')),
     contactName3: Yup.string().required(t('contactName.required')),
     contactPhone3: Yup.string()
-      .min(10, t('field.short', { field: 'Phone' }))
-      .max(10, t('field.long', { field: 'Phone' }))
       // .required(t('contactPhone.required'))
       .matches(REGEX_PHONE, t('contactPhone.invalid')),
     contactRelationCode3: Yup.string().required(t('contactRelationCode.required')),
@@ -146,11 +142,12 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
       }
       submit({
         contacts,
-        applyId: 0,
+        applyId: +(MMKV.getString(KEY_APPLYID) || '0'),
         currentStep: 3,
-        totalSteps: 8,
+        totalSteps: TOTAL_STEPS,
+      }).then(() => {
+        navigation.navigate('Step4')
       })
-      navigation.navigate('Step4')
     },
     DEBOUNCE_WAIT,
     DEBOUNCE_OPTIONS
@@ -168,7 +165,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
     return new Behavior<'P03'>(initModel)
   }, [context.user?.applyId, windowSize])
 
-  useLoction()
+  useLocation()
 
   useFocusEffect(
     useCallback(() => {
@@ -224,10 +221,10 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                       setFieldValue('contactName1', '')
                     }}
                     onFocus={() => {
-                      behavior.setStartModify('P03_C01_S_RELATIONSHIP', state.contactName1)
+                      behavior.setStartModify('P03_C01_I_CONTACTNAME', state.contactName1)
                     }}
                     onBlur={() => {
-                      behavior.setEndModify('P03_C01_S_RELATIONSHIP', state.contactName1)
+                      behavior.setEndModify('P03_C01_I_CONTACTNAME', state.contactName1)
                     }}
                     value={state.contactName1}
                     field={'contactName1'}
@@ -241,6 +238,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                     onChange={text => {
                       setFieldValue('contactPhone1', text)
                       dispatch({ type: 'updateContactPhone1', value: text })
+                      behavior.setModify('P03_C02_S_CONTACTPHONE', text, state.contactPhone1)
                     }}
                     value={state.contactPhone1}
                     placeholder={t('contactPhone.placeholder')}
@@ -253,7 +251,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                       setFieldValue('contactRelationCode2', record.code)
                       dispatch({ type: 'updateContactRelation2', value: record })
                       behavior.setModify(
-                        'P03_C01_S_RELATIONSHIP',
+                        'P03_C03_S_RELATIONSHIP',
                         record.code,
                         state.contactRelationCode2
                       )
@@ -275,6 +273,12 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                     onClear={() => {
                       setFieldValue('contactName2', '')
                     }}
+                    onFocus={() => {
+                      behavior.setStartModify('P03_C02_I_CONTACTNAME', state.contactName1)
+                    }}
+                    onBlur={() => {
+                      behavior.setEndModify('P03_C02_I_CONTACTNAME', state.contactName1)
+                    }}
                     value={state.contactName2}
                     field={'contactName2'}
                     label={t('contactName.label')}
@@ -287,6 +291,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                     onChange={text => {
                       setFieldValue('contactPhone2', text)
                       dispatch({ type: 'updateContactPhone2', value: text })
+                      behavior.setModify('P03_C04_S_CONTACTPHONE', text, state.contactPhone2)
                     }}
                     value={state.contactPhone2}
                     placeholder={t('contactPhone.placeholder')}
@@ -300,7 +305,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                       setFieldValue('contactRelationCode3', record.code)
                       dispatch({ type: 'updateContactRelation3', value: record })
                       behavior.setModify(
-                        'P03_C01_S_RELATIONSHIP',
+                        'P03_C05_S_RELATIONSHIP',
                         record.code,
                         state.contactRelationCode3
                       )
@@ -322,6 +327,12 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                     onClear={() => {
                       setFieldValue('contactName3', '')
                     }}
+                    onFocus={() => {
+                      behavior.setStartModify('P03_C03_I_CONTACTNAME', state.contactName3)
+                    }}
+                    onBlur={() => {
+                      behavior.setEndModify('P03_C03_I_CONTACTNAME', state.contactName3)
+                    }}
                     value={state.contactName3}
                     field={'contactName3'}
                     label={t('contactName.label')}
@@ -334,6 +345,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                     onChange={text => {
                       setFieldValue('contactPhone3', text)
                       dispatch({ type: 'updateContactPhone3', value: text })
+                      behavior.setModify('P03_C06_S_CONTACTPHONE', text, state.contactPhone3)
                     }}
                     value={state.contactPhone3}
                     placeholder={t('contactPhone.placeholder')}

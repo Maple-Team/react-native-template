@@ -18,3 +18,5 @@ export const KEY_DEVICEID = 'moneyyaDeviceId'
 export const KEY_INIT = 'moneyyaHasInit'
 export const KEY_APPLYID = 'moneyyaApplyID'
 export const KEY_VERSIONID = 'moneyyaVersionID'
+
+export const TOTAL_STEPS = 8

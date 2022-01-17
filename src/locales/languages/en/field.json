@@ -7,91 +7,91 @@
     "notSame": "confirmPassword not same with password"
   },
   "company": {
-    "label": "",
-    "placeholder": "",
+    "label": "company",
+    "placeholder": "company name",
     "invalid": "",
-    "required": ""
+    "required": "company name required"
   },
   "companyAddrCityCode": {
-    "label": "",
-    "placeholder": "",
+    "label": "company  city",
+    "placeholder": "company city",
     "invalid": "",
-    "required": ""
+    "required": "company city required"
   },
   "companyAddrDetail": {
-    "label": "",
-    "placeholder": "",
+    "label": "company address",
+    "placeholder": "company address",
     "invalid": "",
-    "required": ""
+    "required": "cinpany detail address required"
   },
   "companyAddrProvinceCode": {
-    "label": "",
-    "placeholder": "",
+    "label": "state",
+    "placeholder": "state",
     "invalid": "",
-    "required": ""
+    "required": "company state required"
   },
   "companyPhone": {
     "label": "company Phone",
-    "placeholder": "",
+    "placeholder": "company phone",
     "invalid": "",
-    "required": ""
+    "required": "company required"
   },
   "contactName": {
     "label": "contactName",
     "placeholder": "contact phone",
     "invalid": "",
-    "required": ""
+    "required": "contact name required"
   },
   "contactPhone": {
     "label": "contactPhone",
     "placeholder": "contact phone",
-    "invalid": "",
-    "required": ""
+    "invalid": "contact phone invalid",
+    "required": "contact phone required"
   },
   "contactRelationCode": {
     "label": "contactRelation",
     "placeholder": "contact relation",
     "invalid": "",
-    "required": ""
+    "required": "contact relation required"
   },
   "firstName": {
-    "label": "",
-    "placeholder": "",
+    "label": "first name",
+    "placeholder": "first name",
     "invalid": "",
-    "required": ""
+    "required": "first name required"
   },
   "hasAgree": {
     "required": "please agree agreement"
   },
   "incumbency": {
-    "label": "",
-    "placeholder": "",
+    "label": "incumbency",
+    "placeholder": "incumbency",
     "invalid": "",
-    "required": ""
+    "required": "incumbency required"
   },
   "industryCode": {
-    "label": "",
-    "placeholder": "",
+    "label": "industry",
+    "placeholder": "industry",
     "invalid": "",
     "required": "industry required"
   },
   "jobTypeCode": {
-    "label": "",
-    "placeholder": "",
+    "label": "job type",
+    "placeholder": "job type",
     "invalid": "",
-    "required": ""
+    "required": "job type required"
   },
   "lastname": {
-    "label": "",
+    "label": "last name",
     "placeholder": "",
     "invalid": "",
-    "required": ""
+    "required": "last name required"
   },
   "monthlyIncome": {
-    "label": "",
-    "placeholder": "",
+    "label": "month income",
+    "placeholder": "month incode",
     "invalid": "",
-    "required": ""
+    "required": "monthincome required"
   },
   "password": {
     "label": "password",
@@ -104,17 +104,25 @@
     "invalid": "Phone invalid",
     "required": "Phone Required"
   },
+  "idcard1": {
+    "label": "idcard1",
+    "required": "idcard1 required"
+  },
+  "idcard2": {
+    "label": "idcard2",
+    "required": "idcard2 Required"
+  },
   "salaryDate": {
-    "label": "",
-    "placeholder": "",
+    "label": "pay date",
+    "placeholder": "pay date",
     "invalid": "",
-    "required": ""
+    "required": "salary date required"
   },
   "salaryType": {
-    "label": "",
-    "placeholder": "",
+    "label": "salary type",
+    "placeholder": "salary type",
     "invalid": "",
-    "required": ""
+    "required": "salary type required"
   },
   "validateCode": {
     "label": "Validate Code",
@@ -124,5 +132,106 @@
     "get": "Get Code",
     "wait": "Please wait {{num}} to get code",
     "maxTime": "最大次数，请稍候再试"
+  },
+  "birth": {
+    "required": "birth required",
+    "label": "birth",
+    "placeholder": "birth"
+  },
+  "gender": {
+    "required": "gender required",
+    "label": "gender"
+  },
+  "idcard": {
+    "required": "idcard required",
+    "label": "idcard",
+    "placeholder": "idcard"
+  },
+  "maritalStatus": {
+    "required": "marital status required",
+    "label": "maritalStatus",
+    "placeholder": "maritalStatus"
+  },
+  "homeAddrProvinceCode": {
+    "required": "home state required",
+    "label": "homeAddrProvinceCode",
+    "placeholder": "home Addr Province"
+  },
+  "homeAddrDetail": {
+    "required": "home detail required",
+    "label": "home Addr Detail",
+    "placeholder": "home Addr Detail"
+  },
+  "homeAddrCityCode": {
+    "required": "home city required",
+    "label": "home Addr City",
+    "placeholder": "home Addr City"
+  },
+  "docType": {
+    "required": "doctype required",
+    "label": "docType",
+    "placeholder": "docType"
+  },
+  "backupPhone": {
+    "required": "backup phone required",
+    "label": "backup phone",
+    "placeholder": "backup phone",
+    "invalid": "backup Phone invalid"
+  },
+  "educationCode": {
+    "required": "education required",
+    "label": "education",
+    "placeholder": "education"
+  },
+  "loanPurposeCode": {
+    "required": "loan purpose required"
+  },
+  "socialPhone": {
+    "required": "social phone required",
+    "label": "social Phone",
+    "placeholder": "social Phone"
+  },
+  "whatsapp": {
+    "required": "whatsAPP required",
+    "label": "whatsapp",
+    "placeholder": "whatsapp"
+  },
+  "email": {
+    "required": "email required",
+    "label": "email",
+    "placeholder": "email"
+  },
+  "secondCardNo": {
+    "required": "second phone required",
+    "label": "secondCardNo",
+    "placeholder": "secondCardNo"
+  },
+  "middleName": {
+    "label": "middle name",
+    "required": "middle name required",
+    "placeholder": "middle name"
+  },
+  "lastName": {
+    "label": "last name",
+    "placeholder": "last name"
+  },
+  "loanPurpose": {
+    "label": "loan purpose",
+    "placeholder": "loan purpose"
+  },
+  "bankcode": {
+    "label": "bank code",
+    "placeholder": "bank code"
+  },
+  "bankCardNo": {
+    "label": "bank Card No",
+    "placeholder": "bank Card No",
+    "required": "bank Card No required"
+  },
+  "bankCode": {
+    "required": "back code required"
+  },
+  "cardNoType": {
+    "required": "card No Type required"
   }
 }

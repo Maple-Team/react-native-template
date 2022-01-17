@@ -103,7 +103,7 @@
     "required": "Phone Required"
   },
   "salaryDate": {
-    "label": "salaryDate",
+    "label": "",
     "placeholder": "salaryDate",
     "invalid": "",
     "required": "必需"

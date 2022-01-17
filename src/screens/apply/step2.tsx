@@ -11,14 +11,20 @@ import debounce from 'lodash.debounce'
 import { useFocusEffect } from '@react-navigation/native'
 
 import { PageStyles, Text } from '@/components'
-import { KEY_BEHAVIOR_DATA, DEBOUNCE_OPTIONS, DEBOUNCE_WAIT } from '@/utils/constant'
+import {
+  KEY_BEHAVIOR_DATA,
+  DEBOUNCE_OPTIONS,
+  DEBOUNCE_WAIT,
+  TOTAL_STEPS,
+  KEY_APPLYID,
+} from '@/utils/constant'
 import { Input, NormalPicker } from '@components/form/FormItem'
 import { ApplyButton } from '@components/form/FormItem/applyButton'
 import { Color } from '@/styles/color'
 import type { ApplyParameter, ApplyStep2Parameter } from '@/typings/apply'
-import { useLoction } from '@/hooks'
+import { useLocation } from '@/hooks'
 import type { Shape } from '@/typings/common'
-import { fetchDict } from '@/services/apply'
+import { fetchDict, submit } from '@/services/apply'
 import type { Dict, DictField } from '@/typings/response'
 import { MoneyyaContext } from '@/state'
 import Behavior from '@/utils/behavior'
@@ -77,6 +83,12 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
           return { ...s, industryArr: value }
         case 'updateIndustry':
           return { ...s, industryCode: value }
+        case 'company':
+          return { ...s, company: value }
+        case 'companyPhone':
+          return { ...s, companyPhone: value }
+        case 'companyAddrDetail':
+          return { ...s, companyAddrDetail: value }
         default:
           return { ...s }
       }
@@ -104,13 +116,20 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
   )
   const onSubmit = debounce(
     (values: FormModel) => {
-      console.log('values', values)
-      navigation.navigate('Step3')
+      submit({
+        ...values,
+        applyId: +(MMKV.getString(KEY_APPLYID) || '0'),
+        currentStep: 2,
+        totalSteps: TOTAL_STEPS,
+      }).then(() => {
+        console.log(behavior.getCurrentModel())
+        navigation.navigate('Step3')
+      })
     },
     DEBOUNCE_WAIT,
     DEBOUNCE_OPTIONS
   )
-  useLoction()
+  useLocation()
 
   useEffect(() => {
     const queryDict = async () => {
@@ -185,10 +204,8 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
 
   useFocusEffect(
     useCallback(() => {
-      console.log('focus')
       behavior.setEnterPageTime('P02_C00')
       return () => {
-        console.log('blur')
         behavior.setLeavePageTime('P02_C99')
       }
     }, [behavior])
@@ -209,7 +226,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
             validateOnBlur
             validateOnChange
             validationSchema={schema}>
-            {({ handleChange, handleSubmit, values, setFieldValue, errors, isValid }) => (
+            {({ handleSubmit, values, setFieldValue, errors, isValid }) => (
               <>
                 <View style={PageStyles.form}>
                   <NormalPicker
@@ -232,7 +249,8 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     scrollViewRef={scrollviewRef}
                     onChange={record => {
                       setFieldValue('jobTypeCode', record.code)
-                      behavior.setModify('P02_C0x_S_jobTypeCode', record.code, state.jobTypeCode)
+                      dispatch({ type: 'updateProfession', value: record.code })
+                      behavior.setModify('P02_C02_S_JOBTYPECODE', record.code, state.jobTypeCode)
                     }}
                     value={values.jobTypeCode}
                     placeholder={t('jobTypeCode.placeholder')}
@@ -246,8 +264,9 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     label={t('monthlyIncome.label')}
                     onChange={record => {
                       setFieldValue('monthlyIncome', record.code)
+                      dispatch({ type: 'updateMonthlyIncome', value: record.code })
                       behavior.setModify(
-                        'P02_C0x_S_MONTHLYINCOME',
+                        'P02_C03_S_MONTHLYINCOME',
                         record.code,
                         state.monthlyIncome
                       )
@@ -265,6 +284,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     onChange={record => {
                       setFieldValue('salaryType', record.code)
                       dispatch({ type: 'updateSalaryType', value: record.code })
+                      behavior.setModify('P02_C04_S_SALARYTYPE', record.code, state.salaryType)
                     }}
                     value={values.salaryType}
                     placeholder={t('salaryType.placeholder')}
@@ -285,6 +305,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     onChange={record => {
                       setFieldValue('salaryDate', record)
                       dispatch({ type: 'updateSalaryDate', value: record.code })
+                      behavior.setModify('P02_C05_S_SALARYDATE', record.code, state.salaryDate)
                     }}
                     value={values.salaryDate}
                     placeholder={t('salaryDate.placeholder')}
@@ -296,9 +317,16 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     scrollViewRef={scrollviewRef}
                     onChangeText={text => {
                       setFieldValue('company', text)
+                      dispatch({ type: 'company', value: text })
                     }}
                     onClear={() => {
                       setFieldValue('company', '')
+                    }}
+                    onFocus={() => {
+                      behavior.setStartModify('P02_C01_I_COMPANY', state.company)
+                    }}
+                    onBlur={() => {
+                      behavior.setEndModify('P02_C01_I_COMPANY', state.company)
                     }}
                     value={values.company}
                     field={'company'}
@@ -308,9 +336,18 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                   />
                   <Input
                     scrollViewRef={scrollviewRef}
-                    onChangeText={handleChange('companyPhone')}
+                    onChangeText={text => {
+                      setFieldValue('companyPhone', text)
+                      dispatch({ type: 'companyPhone', value: text })
+                    }}
                     onClear={() => {
                       setFieldValue('companyPhone', '')
+                    }}
+                    onFocus={() => {
+                      behavior.setStartModify('P02_C02_I_COMPANYPHONE', state.companyPhone)
+                    }}
+                    onBlur={() => {
+                      behavior.setEndModify('P02_C02_I_COMPANYPHONE', state.companyPhone)
                     }}
                     value={values.companyPhone}
                     field={'companyPhone'}
@@ -321,16 +358,16 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                   <NormalPicker
                     scrollViewRef={scrollviewRef}
                     onChange={record => {
-                      setFieldValue('companyAddrProvinceCode', record)
+                      setFieldValue('companyAddrProvinceCode', record.code)
                       dispatch({ type: 'updateProvince', value: record.code })
                       dispatch({ type: 'updateCity', value: '' })
                       behavior.setModify(
-                        'P02_C0x_S_STATE',
+                        'P02_C06_S_STATE',
                         record.code,
                         state.companyAddrProvinceCode
                       )
                     }}
-                    value={values.companyAddrProvinceCode}
+                    value={state.companyAddrProvinceCode}
                     title={t('companyAddrProvinceCode.label')}
                     field={'companyAddrProvinceCode'}
                     label={t('companyAddrProvinceCode.label')}
@@ -341,13 +378,13 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                   <NormalPicker
                     scrollViewRef={scrollviewRef}
                     onChange={record => {
-                      setFieldValue('companyAddrCityCode', record)
+                      setFieldValue('companyAddrCityCode', record.code)
                       dispatch({ type: 'updateCity', value: record.code })
-                      behavior.setModify('P02_C0x_S_CITY', record.code, state.companyAddrCityCode)
+                      behavior.setModify('P02_C07_S_CITY', record.code, state.companyAddrCityCode)
                     }}
                     title={t('companyAddrCityCode.label')}
                     field={'companyAddrCityCode'}
-                    value={values.companyAddrCityCode}
+                    value={state.companyAddrCityCode}
                     label={t('companyAddrCityCode.label')}
                     placeholder={t('companyAddrCityCode.placeholder')}
                     dataSource={state.cityArr}
@@ -355,9 +392,21 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                   />
                   <Input
                     scrollViewRef={scrollviewRef}
-                    onChangeText={handleChange('companyAddrDetail')}
+                    onChangeText={text => {
+                      setFieldValue('companyAddrDetail', text)
+                      dispatch({ type: 'companyAddrDetail', value: text })
+                    }}
                     onClear={() => {
                       setFieldValue('companyAddrDetail', '')
+                    }}
+                    onFocus={() => {
+                      behavior.setStartModify(
+                        'P02_C03_I_COMPANYADDRDETAIL',
+                        state.companyAddrDetail
+                      )
+                    }}
+                    onBlur={() => {
+                      behavior.setEndModify('P02_C03_I_COMPANYADDRDETAIL', state.companyAddrDetail)
                     }}
                     value={values.companyAddrDetail}
                     field={'companyAddrDetail'}
@@ -371,8 +420,8 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     label={t('incumbency.label')}
                     onChange={record => {
                       setFieldValue('incumbency', record.code)
-                      dispatch({ type: 'updateCity', value: record.code })
-                      behavior.setModify('P02_C0x_S_CITY', record.code, state.incumbency)
+                      dispatch({ type: 'updateIncumbency', value: record.code })
+                      behavior.setModify('P02_C08_S_INCUMBENCY', record.code, state.incumbency)
                     }}
                     value={values.incumbency}
                     placeholder={t('incumbency.placeholder')}
@@ -471,5 +520,17 @@ type Step2Action =
     }
   | {
       type: 'updateProfession'
+      value: string
+    }
+  | {
+      type: 'company'
+      value: string
+    }
+  | {
+      type: 'companyPhone'
+      value: string
+    }
+  | {
+      type: 'companyAddrDetail'
       value: string
     }

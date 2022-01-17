@@ -38,7 +38,7 @@ export const PasswordInput = ({
       <View style={styles.inputWrap}>
         <TextInput
           onChangeText={onChangeText}
-          maxLength={11} // FIXME
+          maxLength={12}
           value={value}
           placeholder={placeholder}
           keyboardType={keyboardType}

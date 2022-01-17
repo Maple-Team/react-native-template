@@ -1,5 +1,5 @@
-import { NativeStackHeaderProps } from '@react-navigation/native-stack'
-import React, { ReactNode } from 'react'
+import type { NativeStackHeaderProps } from '@react-navigation/native-stack'
+import React, { type ReactNode } from 'react'
 import { View, StatusBar, ImageBackground, Pressable } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
@@ -8,27 +8,36 @@ import debounce from 'lodash.debounce'
 import { Slider } from '@miblanchard/react-native-slider'
 
 import { PageStyles, Text, Hint } from '@/components'
-import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT } from '@/utils/constant'
+import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT, KEY_APPLYID, TOTAL_STEPS } from '@/utils/constant'
 import { ApplyButton } from '@components/form/FormItem'
 import { Color } from '@/styles/color'
 import type { ApplyStep8Parameter } from '@/typings/apply'
-import { useLoction } from '@/hooks'
+import { useLocation, useSensor } from '@/hooks'
+import { submit } from '@/services/apply'
+import { MMKV } from '@/utils'
 
 type FormModel = Omit<ApplyStep8Parameter, 'applyId' | 'currentStep' | 'totalSteps'>
 export const Step8 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
+  const sensor = useSensor()
+
   const onSubmit = debounce(
     (values: FormModel) => {
-      console.log(values)
-      navigation.navigate('SignIn')
-      //TODO
+      console.log(sensor)
+      submit({
+        ...values,
+        applyId: +(MMKV.getString(KEY_APPLYID) || '0'),
+        currentStep: 8,
+        totalSteps: TOTAL_STEPS,
+      }).then(() => {
+        navigation.navigate('done')
+      })
     },
     DEBOUNCE_WAIT,
     DEBOUNCE_OPTIONS
   )
 
-  const location = useLoction()
-  console.log(location)
+  useLocation()
 
   return (
     <SafeAreaView style={PageStyles.sav}>

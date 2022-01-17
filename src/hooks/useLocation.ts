@@ -1,4 +1,6 @@
 import emitter from '@/eventbus'
+import { MMKV } from '@/utils'
+import { KEY_GPS } from '@/utils/constant'
 import { onRequestPermission } from '@/utils/permission'
 import { useEffect, useState } from 'react'
 import Geolocation from 'react-native-geolocation-service'
@@ -7,7 +9,7 @@ export interface GPS {
   longitude: number
   latitude: number
 }
-export const useLoction = () => {
+export const useLocation = () => {
   const [location, setLocation] = useState<GPS>({ latitude: 0, longitude: 0 })
 
   useEffect(() => {
@@ -46,7 +48,9 @@ export const useLoction = () => {
   }, [])
   useEffect(() => {
     const { latitude, longitude } = location
-    emitter.emit('UPDATE_GPS', `${latitude},${longitude}`)
+    const gps = `${latitude},${longitude}`
+    emitter.emit('UPDATE_GPS', gps)
+    MMKV.setString(KEY_GPS, gps)
   }, [location])
 
   return location

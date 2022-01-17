@@ -1,5 +1,5 @@
-import { NativeStackHeaderProps } from '@react-navigation/native-stack'
-import React, { useMemo } from 'react'
+import type { NativeStackHeaderProps } from '@react-navigation/native-stack'
+import React, { useContext, useMemo } from 'react'
 import { View, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
@@ -9,42 +9,51 @@ import * as Yup from 'yup'
 import debounce from 'lodash.debounce'
 
 import { PageStyles, Text } from '@/components'
-import { REGEX_PHONE } from '@/utils/reg'
-import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT } from '@/utils/constant'
+import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT, KEY_APPLYID, TOTAL_STEPS } from '@/utils/constant'
 import { ApplyButton, IdcardPhotoPicker } from '@components/form/FormItem'
 import { Color } from '@/styles/color'
-import { ApplyStep4Parameter } from '@/typings/apply'
-import { useLoction } from '@/hooks'
+import type { ApplyStep6Parameter } from '@/typings/apply'
+import { useLocation } from '@/hooks'
+import { submit } from '@/services/apply'
+import { MMKV } from '@/utils'
+import { MoneyyaContext } from '@/state'
 
-type FormModel = Omit<ApplyStep4Parameter, 'applyId' | 'currentStep' | 'totalSteps'>
+type FormModel = Omit<ApplyStep6Parameter, 'applyId' | 'currentStep' | 'totalSteps'>
 export const Step6 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
   const schema = Yup.object().shape({
-    phone: Yup.string()
-      .min(10, t('field.short', { field: 'Phone' }))
-      .max(10, t('field.long', { field: 'Phone' }))
-      .matches(REGEX_PHONE, t('phone.invalid'))
-      .required(t('phone.required')),
+    // phone: Yup.string()
+    //   .min(10, t('field.short', { field: 'Phone' }))
+    //   .max(10, t('field.long', { field: 'Phone' }))
+    //   .matches(REGEX_PHONE, t('phone.invalid'))
+    //   .required(t('phone.required')),
   })
   const initialValue = useMemo<FormModel>(
     () => ({
       images: [],
+      livenessAuthFlag: 'N',
+      livenessId: '',
     }),
     []
   )
   const onSubmit = debounce(
     (values: FormModel) => {
       console.log(values)
-      navigation.navigate('SignIn')
-      //TODO
+      submit({
+        ...values,
+        applyId: +(MMKV.getString(KEY_APPLYID) || '0'),
+        currentStep: 6,
+        totalSteps: TOTAL_STEPS,
+      }).then(() => {
+        navigation.navigate('Step7')
+      })
     },
     DEBOUNCE_WAIT,
     DEBOUNCE_OPTIONS
   )
 
-  const location = useLoction()
-  console.log(location)
-
+  useLocation()
+  const context = useContext(MoneyyaContext)
   return (
     <SafeAreaView style={PageStyles.sav}>
       <StatusBar translucent={false} backgroundColor={Color.primary} barStyle="default" />
@@ -74,11 +83,8 @@ export const Step6 = ({ navigation }: NativeStackHeaderProps) => {
                   <ApplyButton
                     type={isValid ? 'primary' : undefined}
                     onPress={handleSubmit}
-                    // loading={state}
-                  >
-                    <Text fontSize={18} color="#fff">
-                      {t('submit')}
-                    </Text>
+                    loading={context.loading.effects.apply}>
+                    <Text color={isValid ? '#fff' : '#aaa'}>{t('submit')}</Text>
                   </ApplyButton>
                 </View>
               </>

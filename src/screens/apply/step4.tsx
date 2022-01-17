@@ -9,36 +9,40 @@ import * as Yup from 'yup'
 import debounce from 'lodash.debounce'
 
 import { PageStyles, Text } from '@/components'
-import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT } from '@/utils/constant'
+import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT, KEY_APPLYID, TOTAL_STEPS } from '@/utils/constant'
 import { ApplyButton, IdcardPhotoPicker } from '@components/form/FormItem'
 import { Color } from '@/styles/color'
 import type { ApplyStep4Parameter } from '@/typings/apply'
-import { useLoction } from '@/hooks'
+import { useLocation } from '@/hooks'
 import { MoneyyaContext } from '@/state'
+import { submit } from '@/services/apply'
+import { MMKV } from '@/utils'
 
 type FormModel = Omit<ApplyStep4Parameter, 'applyId' | 'currentStep' | 'totalSteps'>
 export const Step4 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
   const schema = Yup.object().shape({
-    // phone: Yup.string()
-    //   .min(10, t('field.short', { field: 'Phone' }))
-    //   .max(10, t('field.long', { field: 'Phone' }))
-    //   .matches(REGEX_PHONE, t('phone.invalid'))
-    //   .required(t('phone.required')),
+    idcard1: Yup.string().required(t('idcard1.required')),
+    idcard2: Yup.string().required(t('idcard2.required')),
   })
   const context = useContext(MoneyyaContext)
   const initialValue = useMemo<FormModel>(() => ({ images: [] }), [])
   const onSubmit = debounce(
     (values: FormModel) => {
-      console.log(values)
-      navigation.navigate('Step5')
+      submit({
+        ...values,
+        applyId: +(MMKV.getString(KEY_APPLYID) || '0'),
+        currentStep: 4,
+        totalSteps: TOTAL_STEPS,
+      }).then(res => {
+        navigation.navigate('Step5', { orc: res.ocrResult })
+      })
     },
     DEBOUNCE_WAIT,
     DEBOUNCE_OPTIONS
   )
 
-  const location = useLoction()
-  console.log(location)
+  useLocation()
 
   return (
     <SafeAreaView style={PageStyles.sav}>
@@ -55,15 +59,15 @@ export const Step4 = ({ navigation }: NativeStackHeaderProps) => {
               <>
                 <View style={PageStyles.form}>
                   <IdcardPhotoPicker
-                    onChange={handleChange('')}
-                    field={'ss'}
+                    onChange={handleChange('idcard1')}
+                    field={'idcard1'}
                     label={'El frente de tu ID'}
                     bg={require('@assets/images/apply/id1.webp')}
                     // error={errors.images}
                   />
                   <IdcardPhotoPicker
-                    onChange={handleChange('')}
-                    field={'ss'}
+                    onChange={handleChange('idcard2')}
+                    field={'idcard2'}
                     label={'La parte trasera de tu ID'}
                     bg={require('@assets/images/apply/id2.webp')}
                   />

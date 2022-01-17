@@ -4,7 +4,7 @@ import { SigninScreen, EntryScreen, SignupScreen, ResetScreen } from '@/screens/
 import { useTranslation } from 'react-i18next'
 import { HeaderLeft } from '@components/header'
 import emitter from '@/eventbus'
-import { useLoction } from '@/hooks'
+import { useLocation } from '@/hooks'
 import AppModule from '@/modules/AppModule'
 import RNAdvertisingId from 'react-native-advertising-id'
 import DeviceInfo from 'react-native-device-info'
@@ -49,7 +49,7 @@ export function AccountStack() {
     query()
   }, [])
 
-  useLoction()
+  useLocation()
   return (
     <Stack.Navigator
       initialRouteName="Entry"

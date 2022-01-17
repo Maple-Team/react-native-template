@@ -16,6 +16,9 @@ import { MMKV } from './storage'
 import { KEY_BEHAVIOR_DATA } from './constant'
 
 export default class Behavior<T extends PAGE_ID> {
+  static getCurrentModel(): any {
+    throw new Error('Method not implemented.')
+  }
   private model: BehaviorModel<T> = {
     screenWidth: '',
     screenHeight: '',

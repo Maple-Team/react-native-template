@@ -1,10 +1,19 @@
 import React from 'react'
-import { TextInput, View, Image, Pressable, ImageBackground } from 'react-native'
+import {
+  TextInput,
+  View,
+  Image,
+  Pressable,
+  ImageBackground,
+  type ImageSourcePropType,
+} from 'react-native'
 import formItemStyles from './style'
 import Text from '@components/Text'
 import { ErrorMessage } from 'formik'
-import { useTranslation } from 'react-i18next'
+// import { useTranslation } from 'react-i18next'
 import { onRequestPermission } from '@/utils/permission'
+// import type { ImageStyle, ViewStyle } from 'react-native'
+// import StyleSheet from 'react-native-adaptive-stylesheet'
 
 interface Props {
   onChange: (text: string) => void
@@ -12,12 +21,12 @@ interface Props {
   error?: string
   field: string
   label: string
-  bg: any
+  bg: ImageSourcePropType
 }
 
-export function IdcardPhotoPicker({ onChange, value, field, label, bg }: Props) {
-  const { t } = useTranslation()
-
+export function IdcardPhotoPicker({ value, field, label, bg }: Props) {
+  // const { t } = useTranslation()
+  // TODO behavior
   return (
     <>
       <View
@@ -26,19 +35,21 @@ export function IdcardPhotoPicker({ onChange, value, field, label, bg }: Props) 
           paddingBottom: 47.5,
           alignItems: 'center',
         }}>
-        <TextInput
-          editable={false}
-          value={value}
-          style={{ position: 'absolute', zIndex: -1 }}
-          onPressIn={() => {}}
-        />
+        <TextInput editable={false} value={value} style={{ position: 'absolute', zIndex: -1 }} />
         <ImageBackground
           style={{ width: 282, height: 185, alignItems: 'flex-end' }}
           source={bg}
           resizeMode="cover">
           <Pressable
             onPress={() => {
-              console.log('pressed')
+              onRequestPermission({
+                blockedMessage: '',
+                unavailableMessage: '',
+                permission: 'android.permission.CAMERA',
+                onGranted: () => {
+                  // take picture
+                },
+              })
             }}>
             <Image source={require('@assets/images/apply/camera.webp')} resizeMode="cover" />
           </Pressable>
@@ -54,7 +65,4 @@ export function IdcardPhotoPicker({ onChange, value, field, label, bg }: Props) 
   )
 }
 
-import { ImageStyle, ViewStyle } from 'react-native'
-import StyleSheet from 'react-native-adaptive-stylesheet'
-
-export default StyleSheet.create<{}>({})
+// const styles = StyleSheet.create<{}>({})

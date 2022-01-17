@@ -1,4 +1,4 @@
-import { NativeStackHeaderProps } from '@react-navigation/native-stack'
+import type { NativeStackHeaderProps } from '@react-navigation/native-stack'
 import React, { Reducer, useCallback, useContext, useMemo, useReducer, useRef } from 'react'
 import { View, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -9,31 +9,45 @@ import * as Yup from 'yup'
 import debounce from 'lodash.debounce'
 
 import { PageStyles, Text } from '@/components'
-import { REGEX_PHONE, REGEX_USERNAME } from '@/utils/reg'
-import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT, KEY_BEHAVIOR_DATA } from '@/utils/constant'
+import { REGEX_PHONE } from '@/utils/reg'
+import {
+  DEBOUNCE_OPTIONS,
+  DEBOUNCE_WAIT,
+  KEY_APPLYID,
+  KEY_BEHAVIOR_DATA,
+  TOTAL_STEPS,
+} from '@/utils/constant'
 import { ApplyButton, Input, NormalPicker, DatePicker, RadioInput } from '@components/form/FormItem'
 import { Color } from '@/styles/color'
-import { ApplyParameter, ApplyStep5Parameter } from '@/typings/apply'
-import { useLoction } from '@/hooks'
-import behavior from '@/utils/behavior'
+import type { ApplyParameter, ApplyStep5Parameter, OcrResult } from '@/typings/apply'
+import { useLocation } from '@/hooks'
 import { MoneyyaContext } from '@/state'
-import { Dict } from '@/typings/response'
-import { BehaviorModel } from '@/typings/behavior'
-import Behavior from '@/utils/behavior'
+import type { Dict } from '@/typings/response'
+import type { BehaviorModel } from '@/typings/behavior'
 import { MMKV } from '@/utils/storage'
-import { useFocusEffect } from '@react-navigation/native'
+import { useFocusEffect, useRoute } from '@react-navigation/native'
 import { useWindowSize } from 'usehooks-ts'
+import { Gender } from '@/typings/user'
+import Behavior from '@/utils/behavior'
+import { submit } from '@/services/apply'
 
 export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
+  const route = useRoute()
+  const { orcResult } = route.params as { orcResult?: OcrResult }
   const schema = Yup.object().shape({
     firstName: Yup.string()
-      // .min(10, t('field.short', { field: 'Phone' }))
-      // .max(10, t('field.long', { field: 'Phone' }))
-      // .matches(REGEX_USERNAME, t('phone.invalid'))
-      .required(t('phone.required')),
-    middleName: Yup.string().required(t('phone.required')),
-    lastName: Yup.string().required(t('phone.required')),
+      .min(1, t('field.short', { field: t('firstName.label') }))
+      .max(50, t('field.long', { field: t('firstName.label') }))
+      .required(t('firstName.required')),
+    middleName: Yup.string()
+      .min(1, t('field.short', { field: t('middleName.label') }))
+      .max(100, t('field.long', { field: t('middleName.label') }))
+      .required(t('middleName.required')),
+    lastName: Yup.string()
+      .min(1, t('field.short', { field: t('lastname.label') }))
+      .max(50, t('field.long', { field: t('lastname.label') }))
+      .required(t('lastname.required')),
     birth: Yup.string().required(t('birth.required')),
     sex: Yup.string().required(t('gender.required')),
     idcard: Yup.string().required(t('idcard.required')),
@@ -42,7 +56,9 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
     homeAddrCityCode: Yup.string().required(t('homeAddrCityCode.required')),
     homeAddrDetail: Yup.string().required(t('homeAddrDetail.required')),
     docType: Yup.string().required(t('docType.required')),
-    backupPhone: Yup.string().required(t('backupPhone.required')),
+    backupPhone: Yup.string()
+      .matches(REGEX_PHONE, t('backupPhone.invalid'))
+      .required(t('backupPhone.required')),
     educationCode: Yup.string().required(t('educationCode.required')),
     loanPurposeCode: Yup.string().required(t('loanPurposeCode.required')),
     socialPhone: Yup.string().required(t('socialPhone.required')),
@@ -55,30 +71,78 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
   const [state, dispatch] = useReducer<Reducer<Step5State, Step5Action>>(
     (s, { type, value }) => {
       switch (type) {
+        case 'backupPhone':
+          return { ...s, backupPhone: value }
+        case 'homeAddrCity':
+          return { ...s, homeAddrCity: value?.name || '', homeAddrCityCode: value?.code || '' }
+        case 'homeAddrCityArray':
+          return { ...s, homeAddrCityArray: value }
+        case 'homeAddrProvince':
+          return { ...s, homeAddrProvince: value.name, homeAddrProvinceCode: value.code }
+        case 'homeAddrProvinceArray':
+          return { ...s, homeAddrProvinceArray: value }
+        case 'homeAddrDetail':
+          return { ...s, homeAddrDetail: value }
+        case 'docTypeArray':
+          return { ...s, docTypeArray: value }
+        case 'educationArray':
+          return { ...s, educationArray: value }
+        case 'loanPurposeArray':
+          return { ...s, loanPurposeArray: value }
+        case 'maritalStatusArray':
+          return { ...s, maritalStatusArray: value }
+        case 'birth':
+          return { ...s, birth: value }
+        case 'secondCardNo':
+          return { ...s, secondCardNo: value }
+        case 'educationCode':
+          return { ...s, educationCode: value }
+        case 'email':
+          return { ...s, email: value }
+        case 'firstName':
+          return { ...s, firstName: value }
+        case 'gender':
+          return { ...s, sex: value }
+        case 'idcard':
+          return { ...s, idcard: value }
+        case 'lastName':
+          return { ...s, lastName: value }
+        case 'loanPurpose':
+          return { ...s, loanPurpose: value }
+        case 'maritalStatus':
+          return { ...s, maritalStatus: value }
+        case 'middleName':
+          return { ...s, middleName: value }
+        case 'socialPhone':
+          return { ...s, socialPhone: value }
+        case 'docType':
+          return { ...s, docType: value }
+        case 'whatsapp':
+          return { ...s, whatsapp: value }
         default:
           return { ...s }
       }
     },
     {
-      firstName: '',
-      middleName: '',
-      lastName: '',
+      firstName: orcResult?.userName || '',
+      middleName: orcResult?.mothersurname || '',
+      lastName: orcResult?.fathersurname || '',
       educationCode: '',
       email: '',
       homeAddrCity: '',
       homeAddrCityCode: '',
-      homeAddrDetail: '',
+      homeAddrDetail: orcResult?.addressAll || '',
       homeAddrProvince: '',
       homeAddrProvinceCode: '',
       backupPhone: '',
-      birth: '',
+      birth: orcResult?.birthday || '',
       docType: '',
-      idcard: '',
+      idcard: orcResult?.idCard || '',
       loanPurpose: '',
       maritalStatus: '',
       name: '',
       secondCardNo: '',
-      sex: 'male',
+      sex: (orcResult?.gender as Gender) || '',
       maritalStatusArray: [],
       homeAddrProvinceArray: [],
       homeAddrCityArray: [],
@@ -92,9 +156,16 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
 
   const onSubmit = debounce(
     (values: FormModel) => {
-      console.log(values)
-      navigation.navigate('Step6')
-      //TODO
+      submit({
+        ...values,
+        applyId: +(MMKV.getString(KEY_APPLYID) || '0'),
+        currentStep: 5,
+        totalSteps: TOTAL_STEPS,
+        thirdInfos: [], // FIXME
+      }).then(() => {
+        console.log(behavior.getCurrentModel())
+        navigation.navigate('Step6')
+      })
     },
     DEBOUNCE_WAIT,
     DEBOUNCE_OPTIONS
@@ -120,8 +191,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
       }
     }, [behavior])
   )
-  const location = useLoction()
-  console.log(location)
+  useLocation()
   const scrollviewRef = useRef<ScrollView>(null)
 
   return (
@@ -143,10 +213,10 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       setFieldValue('firstName', '')
                     }}
                     onFocus={() => {
-                      // behavior.setStartModify('P03_C01_S_RELATIONSHIP', state.contactName1)
+                      behavior.setStartModify('P05_C01_I_FIRSTNAME', state.firstName)
                     }}
                     onBlur={() => {
-                      // behavior.setEndModify('P03_C01_S_RELATIONSHIP', state.contactName1)
+                      behavior.setEndModify('P05_C01_I_FIRSTNAME', state.firstName)
                     }}
                     value={state.firstName}
                     field={'firstName'}
@@ -163,10 +233,10 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       setFieldValue('middleName', '')
                     }}
                     onFocus={() => {
-                      // behavior.setStartModify('P03_C01_S_RELATIONSHIP', state.contactName1)
+                      behavior.setStartModify('P05_C02_I_MIDDLENAME', state.middleName)
                     }}
                     onBlur={() => {
-                      // behavior.setEndModify('P03_C01_S_RELATIONSHIP', state.contactName1)
+                      behavior.setEndModify('P05_C02_I_MIDDLENAME', state.middleName)
                     }}
                     value={state.middleName}
                     field={'middleName'}
@@ -183,10 +253,10 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       setFieldValue('lastName', '')
                     }}
                     onFocus={() => {
-                      // behavior.setStartModify('P03_C01_S_RELATIONSHIP', state.contactName1)
+                      behavior.setStartModify('P05_C03_I_LASTNAME', state.lastName)
                     }}
                     onBlur={() => {
-                      // behavior.setEndModify('P03_C01_S_RELATIONSHIP', state.contactName1)
+                      behavior.setEndModify('P05_C03_I_LASTNAME', state.lastName)
                     }}
                     value={state.lastName}
                     field={'lastName'}
@@ -196,185 +266,264 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                   <DatePicker
                     scrollViewRef={scrollviewRef}
                     onChange={text => {
-                      console.log(text)
+                      setFieldValue('birth', text)
+                      dispatch({ type: 'birth', value: text })
+                      behavior.setModify('P05_C01_S_BIRTH', text, state.birth)
                     }}
-                    title={'birth'}
+                    title={t('birth.label')}
                     field={'birth'}
-                    label={'birth'}
-                    value=""
-                    placeholder={'birth'}
+                    label={t('birth.label')}
+                    value={state.birth}
+                    placeholder={t('birth.placeholder')}
                   />
                   <RadioInput
                     onChange={text => {
-                      console.log(text)
+                      setFieldValue('sex', text)
+                      dispatch({ type: 'gender', value: text as Gender })
+                      behavior.setModify('P05_C02_S_GENDER', text, state.sex)
                     }}
                     field={'sex'}
-                    label={'gender'}
+                    label={t('gender.label')}
                   />
                   <Input
-                    onChangeText={function (text): void {
-                      throw new Error('Function not implemented.')
+                    onChangeText={text => {
+                      setFieldValue('idcard', text)
+                      dispatch({ type: 'idcard', value: text })
                     }}
-                    onClear={function (): void {
-                      throw new Error('Function not implemented.')
+                    onFocus={() => {
+                      behavior.setStartModify('P05_C04_I_IDCARD', state.idcard)
                     }}
-                    value={'idcard'}
+                    onBlur={() => {
+                      behavior.setEndModify('P05_C04_I_IDCARD', state.idcard)
+                    }}
+                    onClear={() => {
+                      setFieldValue('idcard', '')
+                    }}
+                    value={state.idcard}
                     field={'idcard'}
-                    label={'idcard'}
+                    label={t('idcard.label')}
                     scrollViewRef={scrollviewRef}
-                    placeholder={'idcard'}
+                    placeholder={t('idcard.placeholder')}
                   />
                   <NormalPicker
-                    onChange={function (text: Dict): void {
-                      throw new Error('Function not implemented.')
+                    onChange={(record: Dict) => {
+                      setFieldValue('maritalStatus', record.code)
+                      dispatch({ type: 'maritalStatus', value: record.code })
+                      behavior.setModify(
+                        'P05_C03_S_MARITALSTATUS',
+                        record.code,
+                        state.maritalStatus
+                      )
                     }}
-                    value={'maritalStatus'}
-                    title={'maritalStatus'}
+                    value={state.maritalStatus}
+                    title={t('maritalStatus.label')}
                     field={'maritalStatus'}
-                    label={'maritalStatus'}
-                    placeholder={'maritalStatus'}
+                    label={t('maritalStatus.label')}
+                    placeholder={t('maritalStatus.placeholder')}
                     dataSource={state.maritalStatusArray}
                     scrollViewRef={scrollviewRef}
                   />
                   <NormalPicker
-                    onChange={function (text: Dict): void {
-                      throw new Error('Function not implemented.')
+                    onChange={(record: Dict) => {
+                      setFieldValue('homeAddrProvinceCode', record.code)
+                      dispatch({ type: 'homeAddrProvince', value: record })
+                      dispatch({ type: 'homeAddrCity', value: null })
+                      behavior.setModify(
+                        'P05_C04_S_HOMEADDRPROVINCECODE',
+                        record.code,
+                        state.homeAddrProvinceCode
+                      )
                     }}
-                    value={'homeAddrProvinceCode'}
-                    title={'homeAddrProvinceCode'}
+                    value={state.homeAddrProvinceCode}
+                    title={t('homeAddrProvinceCode.label')}
                     field={'homeAddrProvinceCode'}
-                    label={'homeAddrProvinceCode'}
-                    placeholder={'homeAddrProvinceCode'}
+                    label={t('homeAddrProvinceCode.label')}
+                    placeholder={t('homeAddrProvinceCode.placeholder')}
                     dataSource={state.homeAddrProvinceArray}
                     scrollViewRef={scrollviewRef}
                   />
                   <NormalPicker
-                    onChange={function (text: Dict): void {
-                      throw new Error('Function not implemented.')
+                    onChange={(record: Dict) => {
+                      setFieldValue('homeAddrCityCode', record.code)
+                      dispatch({ type: 'homeAddrCity', value: record })
+                      behavior.setModify(
+                        'P05_C05_S_HOMEADDRCITYCODE',
+                        record.code,
+                        state.homeAddrCityCode
+                      )
                     }}
-                    value={'homeAddrCityCode'}
-                    title={'homeAddrCityCode'}
+                    value={state.homeAddrCityCode}
+                    title={t('homeAddrCityCode.label')}
                     field={'homeAddrCityCode'}
-                    label={'homeAddrCityCode'}
-                    placeholder={'homeAddrCityCode'}
+                    label={t('homeAddrCityCode.label')}
+                    placeholder={t('homeAddrCityCode.placeholder')}
                     dataSource={state.homeAddrCityArray}
                     scrollViewRef={scrollviewRef}
                   />
                   <Input
-                    onChangeText={function (text: string): void {
-                      throw new Error('Function not implemented.')
+                    onChangeText={(text: string) => {
+                      setFieldValue('homeAddrDetail', text)
+                      dispatch({ type: 'homeAddrDetail', value: text })
                     }}
                     onClear={function (): void {
-                      throw new Error('Function not implemented.')
+                      setFieldValue('homeAddrDetail', '')
                     }}
-                    value={'homeAddrDetail'}
+                    onFocus={() => {
+                      behavior.setStartModify('P05_C05_I_IHOMEADDRDETAIL', state.homeAddrDetail)
+                    }}
+                    onBlur={() => {
+                      behavior.setEndModify('P05_C05_I_IHOMEADDRDETAIL', state.homeAddrDetail)
+                    }}
+                    value={state.homeAddrDetail}
                     field={'homeAddrDetail'}
-                    label={'homeAddrDetail'}
-                    placeholder={'homeAddrDetail'}
+                    label={t('homeAddrDetail.label')}
+                    placeholder={t('homeAddrDetail.placeholder')}
                   />
                   <NormalPicker
-                    onChange={function (text: Dict): void {
-                      throw new Error('Function not implemented.')
+                    onChange={function (record: Dict): void {
+                      setFieldValue('docType', record.code)
+                      dispatch({ type: 'docType', value: record.code })
+                      behavior.setModify('P05_C06_S_DOCTYPE', record.code, state.docType)
                     }}
-                    value={'docType'}
-                    title={'docType'}
+                    value={state.docType}
+                    title={t('docType.label')}
                     field={'docType'}
-                    label={'docType'}
-                    placeholder={'docType'}
+                    label={t('docType.label')}
+                    placeholder={t('docType.placeholder')}
                     dataSource={state.docTypeArray}
                   />
                   <Input
                     onChangeText={function (text: string): void {
-                      throw new Error('Function not implemented.')
+                      setFieldValue('backupPhone', text)
+                      dispatch({ type: 'backupPhone', value: text })
                     }}
                     onClear={function (): void {
-                      throw new Error('Function not implemented.')
+                      setFieldValue('backupPhone', '')
                     }}
-                    value={'backupPhone'}
+                    onFocus={() => {
+                      behavior.setStartModify('P05_C06_I_BACKUPPHONE', state.backupPhone)
+                    }}
+                    onBlur={() => {
+                      behavior.setEndModify('P05_C06_I_BACKUPPHONE', state.backupPhone)
+                    }}
+                    value={state.backupPhone}
                     field={'backupPhone'}
-                    label={'backupPhone'}
-                    placeholder={'backupPhone'}
+                    label={t('backupPhone.label')}
+                    placeholder={t('backupPhone.placeholder')}
                   />
                   <NormalPicker
-                    onChange={function (text: Dict): void {
-                      throw new Error('Function not implemented.')
+                    onChange={function (record: Dict): void {
+                      setFieldValue('educationCode', record.code)
+                      dispatch({ type: 'educationCode', value: record.code })
+                      behavior.setModify(
+                        'P05_C07_S_EDUCATIONCODE',
+                        record.code,
+                        state.educationCode
+                      )
                     }}
-                    value={'educationCode'}
-                    title={'educationCode'}
+                    value={state.educationCode}
+                    title={t('educationCode.label')}
                     field={'educationCode'}
-                    label={'educationCode'}
-                    placeholder={'educationCode'}
+                    label={t('educationCode.label')}
+                    placeholder={t('educationCode.placeholder')}
                     dataSource={state.educationArray}
                   />
                   <NormalPicker
-                    onChange={function (text: Dict): void {
-                      throw new Error('Function not implemented.')
+                    onChange={function (record: Dict): void {
+                      setFieldValue('loanPurpose', record.code)
+                      dispatch({ type: 'loanPurpose', value: record.code })
+                      behavior.setModify('P05_C08_S_LOANPURPOSE', record.code, state.loanPurpose)
                     }}
-                    value={'loanPurpose'}
-                    title={'loanPurpose'}
+                    value={state.loanPurpose}
+                    title={t('loanPurpose.label')}
                     field={'loanPurpose'}
-                    label={'loanPurpose'}
-                    placeholder={'loanPurpose'}
+                    label={t('loanPurpose.label')}
+                    placeholder={t('loanPurpose.placeholder')}
                     dataSource={state.loanPurposeArray}
                   />
                   <Input
                     onChangeText={function (text: string): void {
-                      throw new Error('Function not implemented.')
+                      setFieldValue('socialPhone', text)
+                      dispatch({ type: 'socialPhone', value: text })
                     }}
                     onClear={function (): void {
-                      throw new Error('Function not implemented.')
+                      setFieldValue('socialPhone', '')
                     }}
-                    value={'socialPhone'}
+                    onFocus={() => {
+                      behavior.setStartModify('P05_C07_I_SOCIALPHONE', state.socialPhone)
+                    }}
+                    onBlur={() => {
+                      behavior.setEndModify('P05_C07_I_SOCIALPHONE', state.socialPhone)
+                    }}
+                    value={state.socialPhone}
                     field={'socialPhone'}
-                    label={'socialPhone'}
-                    placeholder={'socialPhone'}
+                    label={t('socialPhone.label')}
+                    placeholder={t('socialPhone.placeholder')}
                   />
                   <Input
                     onChangeText={function (text: string): void {
-                      throw new Error('Function not implemented.')
+                      setFieldValue('whatsapp', text)
+                      dispatch({ type: 'whatsapp', value: text })
                     }}
                     onClear={function (): void {
-                      throw new Error('Function not implemented.')
+                      setFieldValue('whatsapp', '')
                     }}
-                    value={'whatsapp'}
+                    onFocus={() => {
+                      behavior.setStartModify('P05_C08_I_WHATSAPP', state.whatsapp)
+                    }}
+                    onBlur={() => {
+                      behavior.setEndModify('P05_C08_I_WHATSAPP', state.whatsapp)
+                    }}
+                    value={state.whatsapp}
                     field={'whatsapp'}
-                    label={'whatsapp'}
-                    placeholder={'whatsapp'}
+                    label={t('whatsapp.label')}
+                    placeholder={t('whatsapp.placeholder')}
                   />
                   <Input
                     onChangeText={function (text: string): void {
-                      throw new Error('Function not implemented.')
+                      setFieldValue('email', text)
+                      dispatch({ type: 'email', value: text })
                     }}
                     onClear={function (): void {
-                      throw new Error('Function not implemented.')
+                      setFieldValue('email', '')
                     }}
-                    value={'email'}
+                    onFocus={() => {
+                      behavior.setStartModify('P05_C09_I_EMAIL', state.email)
+                    }}
+                    onBlur={() => {
+                      behavior.setEndModify('P05_C09_I_EMAIL', state.email)
+                    }}
+                    value={state.email}
                     field={'email'}
-                    label={'email'}
-                    placeholder={'email'}
+                    label={t('email.label')}
+                    placeholder={t('email.placeholder')}
                   />
                   <Input
                     onChangeText={function (text: string): void {
-                      throw new Error('Function not implemented.')
+                      setFieldValue('secondCardNo', text)
+                      dispatch({ type: 'secondCardNo', value: text })
                     }}
                     onClear={function (): void {
-                      throw new Error('Function not implemented.')
+                      setFieldValue('secondCardNo', '')
                     }}
-                    value={'secondCardNo'}
+                    onFocus={() => {
+                      behavior.setStartModify('P05_C10_I_SECONDCARDNO', state.secondCardNo)
+                    }}
+                    onBlur={() => {
+                      behavior.setEndModify('P05_C10_I_SECONDCARDNO', state.secondCardNo)
+                    }}
+                    value={state.secondCardNo}
                     field={'secondCardNo'}
-                    label={'secondCardNo'}
-                    placeholder={'secondCardNo'}
+                    label={t('secondCardNo.label')}
+                    placeholder={t('secondCardNo.placeholder')}
                   />
                 </View>
                 <View style={PageStyles.btnWrap}>
                   <ApplyButton
                     type={isValid ? 'primary' : undefined}
                     onPress={handleSubmit}
-                    // loading={state}
-                  >
-                    <Text fontSize={18} color="#fff">
-                      {t('submit')}
-                    </Text>
+                    loading={context.loading.effects.apply}>
+                    <Text color={isValid ? '#fff' : '#aaa'}>{t('submit')}</Text>
                   </ApplyButton>
                 </View>
               </>
@@ -445,7 +594,7 @@ type Step5Action =
     }
   | {
       type: 'gender'
-      value: string
+      value: Gender
     }
   | {
       type: 'idcard'
@@ -453,7 +602,7 @@ type Step5Action =
     }
   | {
       type: 'maritalStatus'
-      value: Dict
+      value: string
     }
   | {
       type: 'homeAddrProvince'
@@ -461,7 +610,7 @@ type Step5Action =
     }
   | {
       type: 'homeAddrCity'
-      value: Dict
+      value: Dict | null
     }
   | {
       type: 'homeAddrDetail'
@@ -477,11 +626,11 @@ type Step5Action =
     }
   | {
       type: 'educationCode'
-      value: Dict
+      value: string
     }
   | {
       type: 'loanPurpose'
-      value: Dict
+      value: string
     }
   | {
       type: 'socialPhone'

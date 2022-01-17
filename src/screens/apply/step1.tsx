@@ -8,25 +8,31 @@ import { Button } from '@ant-design/react-native'
 import { Color } from '@/styles/color'
 import Swiper from 'react-native-swiper'
 import Styles from './style'
-// import { useSensor } from '@/hooks'
-import { queryBrand, queryVersion } from '@/services/apply'
+import { queryBrand, queryVersion, submit } from '@/services/apply'
 import { queryUserinfo } from '@/services/user'
 import { MoneyyaContext } from '@/state'
 import emitter from '@/eventbus'
 import { MMKV } from '@/utils/storage'
-import { KEY_APPLYID } from '@/utils/constant'
+import {
+  DEBOUNCE_OPTIONS,
+  DEBOUNCE_WAIT,
+  KEY_APPLYID,
+  KEY_DEVICEID,
+  TOTAL_STEPS,
+} from '@/utils/constant'
+import { debounce } from 'lodash'
+import { useLocation } from '@/hooks'
 
 export function Step1() {
   const navigation = useNavigation()
   const context = useContext(MoneyyaContext)
-  console.log(context)
-  // const sensor = useSensor()
+
   useEffect(() => {
     queryBrand().then(res => {
       emitter.emit('UPDATE_BRAND', res)
     })
     queryVersion().then(res => {
-      console.log('vesion', res)
+      console.log('version', res)
     })
     queryUserinfo().then(res => {
       console.log('userinfo', res)
@@ -34,7 +40,24 @@ export function Step1() {
       emitter.emit('USER_INFO', res)
     })
   }, [])
-
+  const location = useLocation()
+  const onSubmit = debounce(
+    () => {
+      submit({
+        deviceId: MMKV.getString(KEY_DEVICEID) || '',
+        phone: context.user?.phone || '',
+        gps: `${location.latitude},${location.longitude}`,
+        idcard: context.user?.idcard || '',
+        applyId: +(MMKV.getString(KEY_APPLYID) || '0'),
+        currentStep: 1,
+        totalSteps: TOTAL_STEPS,
+      }).then(() => {
+        navigation.getParent()?.navigate('Step5')
+      })
+    },
+    DEBOUNCE_WAIT,
+    DEBOUNCE_OPTIONS
+  )
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar translucent={false} backgroundColor="#fff" barStyle="dark-content" />
@@ -89,10 +112,8 @@ export function Step1() {
                 </Text>
               </View>
               <Button
-                onPress={() => {
-                  // TODO
-                  navigation.getParent()?.navigate('Step5')
-                }}
+                //@ts-ignore
+                onPress={onSubmit}
                 type="primary"
                 style={{
                   marginTop: 17,
