@@ -2,42 +2,38 @@ import React, { RefObject, useRef, useState } from 'react'
 import { Pressable, TextInput, View, Image } from 'react-native'
 import type { KeyboardTypeOptions } from 'react-native'
 import styles from './style'
-import Text from '@components/Text'
+import { Text } from '@/components'
 import { ErrorMessage } from 'formik'
 import { useFocusOnError } from '@/hooks'
 import type { ScrollView } from 'react-native-gesture-handler'
+import TextInputMask from 'react-native-text-input-mask'
 
 interface InputProps {
-  onChangeText: (text: string) => void
+  onChangeText: (formatted: string, extracted?: string) => void
   onClear: () => void
   onFocus?: () => void
   onBlur?: () => void
   value: string
   error?: string
   field: string
-  /**
-   * 文字大小(可能摆不下，FIXME 换行？)
-   */
-  textSize?: number
   label: string
   placeholder: string
-  maxLength?: number
   keyboardType?: KeyboardTypeOptions
   scrollViewRef?: RefObject<ScrollView>
+  mask: string
 }
-export const Input = ({
+export const MaskInput = ({
   onChangeText,
   value,
   error,
   onClear,
   onFocus,
   onBlur,
-  maxLength,
   field,
-  textSize,
   label,
   placeholder,
   keyboardType,
+  mask,
   scrollViewRef,
 }: InputProps) => {
   const fieldRef = useRef<TextInput>(null)
@@ -47,9 +43,8 @@ export const Input = ({
     <View style={styles.formItem}>
       <Text styles={styles.label}>{label}</Text>
       <View style={styles.inputWrap}>
-        <TextInput
+        <TextInputMask
           onChangeText={onChangeText}
-          maxLength={maxLength}
           value={value}
           ref={fieldRef}
           onLayout={() => {
@@ -57,12 +52,9 @@ export const Input = ({
               setHeight(pageY - _height)
             })
           }}
+          mask={mask}
           placeholder={placeholder}
-          style={[
-            styles.input,
-            { fontSize: textSize || 15 },
-            error ? { borderBottomColor: 'red' } : {},
-          ]}
+          style={[styles.input, error ? { borderBottomColor: 'red' } : {}]}
           keyboardType={keyboardType}
           onFocus={onFocus}
           placeholderTextColor={'rgba(156, 171, 185, 1)'}

@@ -13,7 +13,7 @@ import {
 } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import StyleSheet from 'react-native-adaptive-stylesheet'
-import { Text } from 'react-native-elements'
+import { Text } from '@/components'
 import * as RNLocalize from 'react-native-localize'
 import { MainStack } from '@/navigation/mainStack'
 import { AccountStack } from '@/navigation/accountStack'
@@ -208,6 +208,6 @@ const loadingStyles = StyleSheet.create<{
 const Loading = () => (
   <View style={loadingStyles.container}>
     <ActivityIndicator size="large" color={Color.primary} />
-    <Text style={loadingStyles.loadingHint}>Loading...</Text>
+    <Text styles={loadingStyles.loadingHint}>Loading...</Text>
   </View>
 )

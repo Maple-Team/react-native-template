@@ -10,11 +10,16 @@ export interface WheelPickerProps<T extends Dict> {
   dataSource: T[]
   selected?: string
   onChange: (value: number) => void
+  /**
+   * 文字大小(可能展示不小)
+   */
+  textSize?: number
 }
 export function WheelPicker<T extends Dict>({
   dataSource,
   selected,
   onChange,
+  textSize,
 }: WheelPickerProps<T>) {
   const [selectedIndex, setSelectedIndex] = useState<number>(0)
 
@@ -37,6 +42,8 @@ export function WheelPicker<T extends Dict>({
     <View style={wheelPickerStyles.container}>
       <WheelCurvedPicker
         selectedItem={selectedIndex}
+        itemTextSize={textSize}
+        selectedItemTextSize={textSize}
         data={dataSource.map(({ name }) => name)}
         onItemSelected={(index: number) => {
           setSelectedIndex(index)

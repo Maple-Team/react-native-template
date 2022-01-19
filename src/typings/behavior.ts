@@ -55,8 +55,8 @@ export type InputTypeID =
   | 'P05_C07_I_SOCIALPHONE'
   | 'P05_C08_I_WHATSAPP'
   | 'P05_C09_I_EMAIL'
-  | 'P05_C10_I_SECONDCARDNO'
-  | 'P07_C01_I_BANKCARDNO'
+  | 'P05_C10_I_SECONDCARDNO' // P05
+  | 'P07_C01_I_BANKCARDNO' // P07
 
 /**
  * 非输入类型，如下拉选择、checkbox等
@@ -85,8 +85,8 @@ export type SelectTypeID =
   | 'P05_C05_S_HOMEADDRCITYCODE'
   | 'P05_C06_S_DOCTYPE'
   | 'P05_C07_S_EDUCATIONCODE'
-  | 'P05_C08_S_LOANPURPOSE'
-  | 'P07_C01_S_BANKCODE'
+  | 'P05_C08_S_LOANPURPOSE' // P05
+  | 'P07_C01_S_BANKCODE' // P07
 
 /**
  * 点击提交类型

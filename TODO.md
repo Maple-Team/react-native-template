@@ -10,11 +10,12 @@
 - [x] assets image: 1x 2x 3x
 - [x] loading/toast
 - [x] request
-- [ ] permission
+- [x] permission
 - [x] i18n
 - [ ] device
-- [ ] gps
+- [x] gps
 - [x] 行为埋点
+- [ ] button rippleColor
 - [ ] 第三方埋点
 - [ ] 第三方 sdk
   - [ ] 极光
@@ -31,6 +32,7 @@
   - [x] 资源图片重命名
 - [ ] background tasks
   - [ ] fetch 站内信: [headless-js-android](https://reactnative.dev/docs/headless-js-android) || or 全局的页面做请求?
+- [ ] [React Native Gesture Handler](https://docs.swmansion.com/react-native-gesture-handler/docs/1.10.3/about-handlers/#using-native-components) 组件尝试
 
 ## 1.1
 

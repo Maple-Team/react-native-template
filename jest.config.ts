@@ -20,9 +20,6 @@ export default {
     '^.+\\.js$': '<rootDir>/node_modules/react-native/jest/preprocessor.js',
     '^.+\\.tsx?$': 'babel-jest',
   },
-  transformIgnorePatterns: [
-    '/node_modules/(?!(@react-native|react-native)/).*/',
-    'node_modules/(!react-native-elements/).*/',
-  ],
+  transformIgnorePatterns: ['/node_modules/(?!(@react-native|react-native)/).*/'],
   setupFiles: ['./jest.setup.js'],
 }

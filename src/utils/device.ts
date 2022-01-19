@@ -1,6 +1,5 @@
 import DeviceInfo from 'react-native-device-info'
 // import AsyncStorage from '@react-native-async-storage/async-storage'
-// import IMEI from 'react-native-imei'
 // import RNAdvertisingId from 'react-native-advertising-id'
 // import NetInfo from '@react-native-community/netinfo'
 // import { getTimeSinceStartup } from 'react-native-startup-time'

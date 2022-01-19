@@ -1,11 +1,11 @@
 import React from 'react'
-import { View, Image, TextStyle, RegisteredStyle } from 'react-native'
+import { View, Image } from 'react-native'
 import { Text } from '@/components'
-import { ViewStyle } from 'react-native'
+import type { ViewStyle, TextStyle, RegisteredStyle, ImageSourcePropType } from 'react-native'
 import StyleSheet from 'react-native-adaptive-stylesheet'
 
 interface Props {
-  img: any
+  img: ImageSourcePropType
   hint: string
   hintColor: string
 }
