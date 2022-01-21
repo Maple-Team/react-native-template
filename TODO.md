@@ -36,6 +36,9 @@
 
 ## 1.1
 
+- [ ] apk size
+  - https://my.oschina.net/droidwolf/blog/791552
+
 ## 1.2
 
 - [ ] component test
