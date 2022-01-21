@@ -15,6 +15,7 @@ interface Props<T extends Dict> {
   onConfirm: (value: T) => void
   title: string
   value?: string
+  textSize?: number
 }
 
 export function ModalWrap<T extends Dict, P extends Props<T>>(
@@ -23,7 +24,7 @@ export function ModalWrap<T extends Dict, P extends Props<T>>(
   const { t } = useTranslation()
 
   return (props: Props<T>) => {
-    const { onClose, onConfirm, title, value, visible, dataSource = [] } = props
+    const { onClose, onConfirm, title, value, visible, textSize, dataSource = [] } = props
     let pos: number | undefined
     const componentProps: WheelPickerProps<T> = {
       dataSource,
@@ -31,6 +32,7 @@ export function ModalWrap<T extends Dict, P extends Props<T>>(
       onChange: (position: number) => {
         pos = position
       },
+      textSize,
     }
     return (
       <AntModal popup visible={visible} animationType="slide-up" onClose={onClose}>

@@ -45,14 +45,14 @@ export function Step1() {
     () => {
       submit({
         deviceId: MMKV.getString(KEY_DEVICEID) || '',
-        phone: context.user?.phone || '',
+        phone: context.user?.phone || '', // FIXME
         gps: `${location.latitude},${location.longitude}`,
         idcard: context.user?.idcard || '',
         applyId: +(MMKV.getString(KEY_APPLYID) || '0'),
         currentStep: 1,
         totalSteps: TOTAL_STEPS,
       }).then(() => {
-        navigation.getParent()?.navigate('Step5')
+        navigation.getParent()?.navigate('Step2')
       })
     },
     DEBOUNCE_WAIT,

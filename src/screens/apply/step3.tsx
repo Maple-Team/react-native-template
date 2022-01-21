@@ -135,9 +135,9 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
           //@ts-ignore
           contactPhone: values[`contactPhone${index}`],
           //@ts-ignore
-          contactRelation: values[`contactRelation${index}`],
+          contactRelation: values[`contactRelationCode${index}`].name,
           //@ts-ignore
-          contactRelationCode: values[`contactRelationCode${index}`],
+          contactRelationCode: values[`contactRelationCode${index}`].code,
         })
       }
       submit({
@@ -195,7 +195,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                   <NormalPicker
                     scrollViewRef={scrollviewRef}
                     onChange={record => {
-                      setFieldValue('contactRelationCode1', record.code)
+                      setFieldValue('contactRelationCode1', record)
                       dispatch({ type: 'updateContactRelation1', value: record })
                       behavior.setModify(
                         'P03_C01_S_RELATIONSHIP',
@@ -248,7 +248,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                   <NormalPicker
                     scrollViewRef={scrollviewRef}
                     onChange={record => {
-                      setFieldValue('contactRelationCode2', record.code)
+                      setFieldValue('contactRelationCode2', record)
                       dispatch({ type: 'updateContactRelation2', value: record })
                       behavior.setModify(
                         'P03_C03_S_RELATIONSHIP',
@@ -302,7 +302,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                     scrollViewRef={scrollviewRef}
                     onChange={record => {
                       console.log(record)
-                      setFieldValue('contactRelationCode3', record.code)
+                      setFieldValue('contactRelationCode3', record)
                       dispatch({ type: 'updateContactRelation3', value: record })
                       behavior.setModify(
                         'P03_C05_S_RELATIONSHIP',

@@ -41,6 +41,7 @@ export default StyleSheet.create<{
     paddingVertical: 10, //FIXME 与UI确认
     paddingLeft: 6.5,
     flexWrap: 'wrap',
+    paddingRight: 34,
   },
   suffixWrap: {
     flexDirection: 'row',

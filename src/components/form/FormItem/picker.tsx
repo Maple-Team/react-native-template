@@ -21,6 +21,7 @@ interface PickerProps<T extends Dict, U extends PickerField> {
   keyboardType?: KeyboardTypeOptions
   dataSource: T[]
   scrollViewRef?: RefObject<ScrollView>
+  textSize?: number
 }
 
 export function NormalPicker<T extends Dict, U extends PickerField>({
@@ -33,6 +34,7 @@ export function NormalPicker<T extends Dict, U extends PickerField>({
   scrollViewRef,
   placeholder,
   dataSource,
+  textSize,
 }: PickerProps<T, U>) {
   const [visible, setVisible] = useState<boolean>(false)
   const Picker = ModalWrap(WheelPicker)
@@ -81,6 +83,7 @@ export function NormalPicker<T extends Dict, U extends PickerField>({
         onConfirm={onChange}
         title={title}
         value={value}
+        textSize={textSize}
       />
     </>
   )

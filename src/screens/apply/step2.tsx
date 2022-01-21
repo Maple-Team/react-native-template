@@ -242,6 +242,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     scrollViewRef={scrollviewRef}
                     dataSource={state.industryArr}
                     title={t('industryCode.label')}
+                    textSize={14}
                   />
                   <NormalPicker
                     field="jobTypeCode"
@@ -303,7 +304,8 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     field="salaryDate"
                     label={t('salaryDate.label')}
                     onChange={record => {
-                      setFieldValue('salaryDate', record)
+                      console.log(record)
+                      setFieldValue('salaryDate', record.code)
                       dispatch({ type: 'updateSalaryDate', value: record.code })
                       behavior.setModify('P02_C05_S_SALARYDATE', record.code, state.salaryDate)
                     }}

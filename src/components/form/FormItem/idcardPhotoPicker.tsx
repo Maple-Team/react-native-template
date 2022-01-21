@@ -20,12 +20,11 @@ import RNFetchBlob from 'rn-fetch-blob-v2'
 import { isEmulator } from 'react-native-device-info'
 import emitter from '@/eventbus'
 import type { BOOL } from '@/typings/common'
-// import upload from '@/services/upload'
 import { errorCaptured } from '@/utils/util'
 import { t } from 'i18next'
+import upload from '@/services/upload'
 
 interface Props {
-  onChange: (text: string) => void
   value?: string
   error?: string
   field: string
@@ -34,7 +33,7 @@ interface Props {
   isSupplement?: BOOL
   imageType: any
   cameraType: CameraType
-  onUploadSuccess: () => void
+  onUploadSuccess: (id: string) => void
   reportExif: any
 }
 
@@ -63,7 +62,6 @@ Props) {
         includeExtra: true,
       })
       const { errorMessage, assets } = response
-      console.log(response)
       if (errorMessage) {
         console.log(errorMessage)
         return
@@ -71,16 +69,28 @@ Props) {
       if (!assets) {
         return
       }
-      const { uri } = assets[0]
+      const { uri, base64, type, fileName } = assets[0]
       if (!uri) {
         return
       }
       setSource({ uri })
-      // upload({ response, type: imageType })
-      //   .then(imageId => onUploadSuccess(imageId))
-      //   .catch(e => {
-      //     console.error(e)
-      //   })
+      upload({
+        response: {
+          base64,
+          type,
+          fileName,
+        },
+        type: 'imageType',
+        isSupplement: 'N',
+        onUploadProgress: () => {},
+      })
+        .then(imageId => {
+          console.log({ imageId })
+          // onUploadSuccess(imageId)
+        })
+        .catch(e => {
+          console.error(e)
+        })
     } else {
       launchCamera(
         {

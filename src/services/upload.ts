@@ -1,13 +1,12 @@
-import { errorCaptured } from '../utils/util'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import RNFetchBlob from 'rn-fetch-blob'
+import { errorCaptured } from '@/utils/util'
+import RNFetchBlob from 'rn-fetch-blob-v2'
 import DeviceInfo from 'react-native-device-info'
+import { MMKV } from '@/utils'
+import { KEY_APPLYID, KEY_DEVICEID, KEY_TOKEN } from '@/utils/constant'
+import { AppModule } from '@/modules'
+import type { Asset } from 'react-native-image-picker'
 
-const getBaseUrl = () => {
-  return ''
-}
 const { getUserAgent, getBuildNumber } = DeviceInfo
-const inputChannel = ''
 
 // upload files
 export default async function uploadImages({
@@ -16,40 +15,42 @@ export default async function uploadImages({
   type,
   onUploadProgress,
 }: {
-  response: any
+  response: Partial<Asset>
   isSupplement: string
   type: string
   onUploadProgress: (sent: number, total: number) => void
 }) {
-  const accessToken = (await AsyncStorage.getItem('accessToken')) || ''
+  const accessToken = MMKV.getString(KEY_TOKEN) || ''
   const source = 'APP'
-  const deviceId = (await AsyncStorage.getItem('deviceId')) || ''
+  const deviceId = MMKV.getString(KEY_DEVICEID) || ''
   const versionId = getBuildNumber()
   const userAgent = await getUserAgent()
   const [err, res] = await errorCaptured(() =>
     RNFetchBlob.config({ timeout: 120 * 1000 })
       .fetch(
         'POST',
-        `${getBaseUrl()}/smart-loan/image/v2/oneImage`,
+        `${AppModule.getBaseUrl()}/smart-loan/image/v2/oneImage`,
         {
           accessToken,
           source,
           deviceId,
           requestId: deviceId,
           versionId,
-          inputChannel,
+          inputChannel: 'MONEYYA',
           'Content-Type': 'multipart/form-data',
           'User-Agent': userAgent,
         },
         [
           {
-            name: 'imageFront',
+            name: 'image',
             filename: response.fileName || `img_${new Date().getTime()}`,
             type: response.type,
-            data: response.data,
+            data: response.base64,
           },
           { name: 'isSupplement', data: isSupplement },
           { name: 'type', data: type },
+          { name: 'deviceId', data: deviceId },
+          { name: 'applyId', data: MMKV.getString(KEY_APPLYID) || '' },
         ]
       )
       // fixme 间隔调整
@@ -65,6 +66,7 @@ export default async function uploadImages({
       })
   )
   if (err) {
+    console.error(err)
     return Promise.reject(err)
   } else {
     const { imageId } = res

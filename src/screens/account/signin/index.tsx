@@ -11,7 +11,7 @@ import { Logo } from '@/components/logo'
 import Text from '@/components/Text'
 import styles from './style'
 import { REGEX_PHONE, REGEX_VALIDATE_CODE } from '@/utils/reg'
-import { DEBOUNCE_WAIT, DEBOUNCE_OPTIONS } from '@/utils/constant'
+import { DEBOUNCE_WAIT, DEBOUNCE_OPTIONS, KEY_DEVICEID, KEY_GPS } from '@/utils/constant'
 import { useNavigation } from '@react-navigation/native'
 import type { AccountStackParams } from '@navigation/accountStack'
 import { Input, PasswordInput, ValidateCode, ApplyButton } from '@components/form/FormItem'
@@ -21,10 +21,11 @@ import { login } from '@/services/user'
 import emitter from '@/eventbus'
 import type { LoginParameter } from '@/typings/request'
 import { MoneyyaContext } from '@/state'
+import { MMKV } from '@/utils'
 
 export const SigninScreen = ({ route }: { route: any }) => {
   const { t } = useTranslation()
-  const { phone } = route.params as { phone?: string }
+  const { phone } = route.params || ({ phone: '' } as { phone?: string })
   const tabs = [{ title: t('password-login') }, { title: t('validation-code-login') }]
   const tabPanels = [<PasswdTab phone={phone} />, <ValidTab phone={phone} />]
   const [index, setIndex] = useState<number>(0)
@@ -95,8 +96,8 @@ const PasswdTab = ({ phone }: { phone?: string }) => {
     (values: Pick<LoginParameter, 'password' | 'phone'>) => {
       login({
         ...values,
-        gps: context.header.gps,
-        deviceId: context.header.deviceId,
+        gps: MMKV.getString(KEY_GPS) || '',
+        deviceId: MMKV.getString(KEY_DEVICEID) || '', //FIXME deviceID
         loginType: 'PWD_LOGIN',
       }).then(res => {
         emitter.emit('LOGIN_SUCCESS', res)

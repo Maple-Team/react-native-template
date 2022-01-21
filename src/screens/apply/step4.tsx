@@ -55,21 +55,30 @@ export const Step4 = ({ navigation }: NativeStackHeaderProps) => {
             validateOnBlur
             validateOnChange
             validationSchema={schema}>
-            {({ handleChange, handleSubmit, isValid }) => (
+            {({ handleSubmit, isValid }) => (
               <>
                 <View style={PageStyles.form}>
                   <IdcardPhotoPicker
-                    onChange={handleChange('idcard1')}
                     field={'idcard1'}
                     label={'El frente de tu ID'}
                     bg={require('@assets/images/apply/id1.webp')}
-                    // error={errors.images}
+                    imageType={undefined}
+                    cameraType={'back'}
+                    onUploadSuccess={function (id): void {
+                      throw new Error('Function not implemented.')
+                    }}
+                    reportExif={undefined} // error={errors.images}
                   />
                   <IdcardPhotoPicker
-                    onChange={handleChange('idcard2')}
                     field={'idcard2'}
                     label={'La parte trasera de tu ID'}
                     bg={require('@assets/images/apply/id2.webp')}
+                    imageType={undefined}
+                    cameraType={'back'}
+                    onUploadSuccess={function (id): void {
+                      throw new Error('Function not implemented.')
+                    }}
+                    reportExif={undefined}
                   />
                 </View>
                 <View style={PageStyles.btnWrap}>
