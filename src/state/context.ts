@@ -20,7 +20,7 @@ export const moneyyaState: State = {
   },
   hasInit: MMKV.getBool(KEY_INIT) || false,
 }
-
+// FIXME context不能修改
 const StateContext = createContext(moneyyaState)
 
 export default StateContext

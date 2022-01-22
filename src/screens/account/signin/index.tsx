@@ -25,7 +25,7 @@ import { MMKV } from '@/utils'
 
 export const SigninScreen = ({ route }: { route: any }) => {
   const { t } = useTranslation()
-  const { phone } = route.params || ({ phone: '' } as { phone?: string })
+  const { phone } = route.params || ({ phone: __DEV__ ? '9868960898' : '' } as { phone?: string })
   const tabs = [{ title: t('password-login') }, { title: t('validation-code-login') }]
   const tabPanels = [<PasswdTab phone={phone} />, <ValidTab phone={phone} />]
   const [index, setIndex] = useState<number>(0)

@@ -34,7 +34,7 @@ interface Props {
   imageType: any
   cameraType: CameraType
   onUploadSuccess: (id: string) => void
-  reportExif: any
+  reportExif: (exif: string) => void
 }
 
 export function IdcardPhotoPicker({

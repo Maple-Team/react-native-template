@@ -1,5 +1,5 @@
 import type { NativeStackHeaderProps } from '@react-navigation/native-stack'
-import React, { Reducer, useContext, useMemo, useReducer } from 'react'
+import React, { Reducer, useReducer } from 'react'
 import { View, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
@@ -9,22 +9,13 @@ import * as Yup from 'yup'
 import debounce from 'lodash.debounce'
 
 import { PageStyles, Text } from '@/components'
-import {
-  DEBOUNCE_OPTIONS,
-  DEBOUNCE_WAIT,
-  KEY_APPLYID,
-  KEY_BEHAVIOR_DATA,
-  TOTAL_STEPS,
-} from '@/utils/constant'
+import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT, KEY_APPLYID, TOTAL_STEPS } from '@/utils/constant'
 import { ApplyButton, Input, NormalPicker } from '@components/form/FormItem'
 import { Color } from '@/styles/color'
 import type { ApplyParameter, ApplyStep7Parameter, BankCardType } from '@/typings/apply'
-import { useLocation } from '@/hooks'
+import { useBehavior, useLocation } from '@/hooks'
 import type { Dict } from '@/typings/response'
-import type { BehaviorModel } from '@/typings/behavior'
-import { MMKV, Behavior } from '@/utils'
-import { useWindowSize } from 'usehooks-ts'
-import { MoneyyaContext } from '@/state'
+import { MMKV } from '@/utils'
 import { submit } from '@/services/apply'
 
 export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
@@ -73,20 +64,8 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
     }
   )
   useLocation()
-  const context = useContext(MoneyyaContext)
 
-  const windowSize = useWindowSize()
-  const behavior = useMemo(() => {
-    const initModel: BehaviorModel<'P07'> = {
-      screenHeight: `${windowSize.height}`,
-      screenWidth: `${windowSize.width}`,
-      applyId: `${context.user?.applyId}`,
-      outerIp: '',
-      internalIp: '',
-      records: MMKV.getArray(KEY_BEHAVIOR_DATA) || [],
-    }
-    return new Behavior<'P07'>(initModel)
-  }, [context.user?.applyId, windowSize])
+  const behavior = useBehavior<'P07'>('P07', 'P07_C00', 'P07_C99')
 
   return (
     <SafeAreaView style={PageStyles.sav}>

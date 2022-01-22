@@ -9,7 +9,7 @@ import debounce from 'lodash.debounce'
 
 import { PageStyles, Text } from '@/components'
 import { REGEX_PHONE, REGEX_VALIDATE_CODE } from '@/utils/reg'
-import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT } from '@/utils/constant'
+import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT, KEY_INTERIP, KEY_OUTERIP } from '@/utils/constant'
 import { Input, PasswordInput, ValidateCode } from '@components/form/FormItem'
 import { ApplyButton } from '@components/form/FormItem/applyButton'
 import { Color } from '@/styles/color'
@@ -19,6 +19,7 @@ import { useLocation } from '@/hooks'
 import { MoneyyaContext } from '@/state'
 import { useNavigation } from '@react-navigation/native'
 import { useNetInfo } from '@react-native-community/netinfo'
+import { MMKV } from '@/utils'
 
 export const SignupScreen = () => {
   const context = useContext(MoneyyaContext)
@@ -29,7 +30,7 @@ export const SignupScreen = () => {
       .max(10, t('field.long', { field: 'Phone' }))
       .matches(REGEX_PHONE, t('phone.invalid'))
       .required(t('phone.required')),
-    password: Yup.string().required(t('password.required')),
+    password: Yup.string().required(t('password.required')), //FIXME password VS comfirmPassword
     comfirmPassword: Yup.string()
       .required(t('comfirmPassword.required'))
       .oneOf([Yup.ref('password'), null], t('comfirmPassword.notSame')),
@@ -45,17 +46,17 @@ export const SignupScreen = () => {
   }
   const initialValue = useMemo<Model>(
     () => ({
-      phone: __DEV__ ? '9868965897' : '',
-      password: __DEV__ ? 'a123456' : '',
-      comfirmPassword: __DEV__ ? 'a123456' : '',
+      phone: '',
+      password: '',
+      comfirmPassword: '',
       validateCode: '',
     }),
     []
   )
   const netInfo = useNetInfo()
   if (netInfo.isConnected) {
-    //TODO 更新internalIP
-    console.log(netInfo.details?.ipAddress)
+    //@ts-ignore
+    MMKV.setString(KEY_INTERIP, netInfo.details?.ipAddress)
   }
 
   const na = useNavigation()
@@ -63,9 +64,7 @@ export const SignupScreen = () => {
     (values: RegisterParameter) => {
       register(values)
         .then(res => {
-          console.log('register res', res)
-          const outerip = res.ip
-          console.log(outerip) //TODO 更新outernalIP
+          MMKV.setString(KEY_OUTERIP, res.ip)
           // @ts-ignore
           na.navigate('SignIn', { phone: values.phone })
         })

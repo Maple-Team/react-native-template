@@ -13,7 +13,7 @@ import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT, KEY_APPLYID, TOTAL_STEPS } from '@/uti
 import { ApplyButton, IdcardPhotoPicker } from '@components/form/FormItem'
 import { Color } from '@/styles/color'
 import type { ApplyStep4Parameter } from '@/typings/apply'
-import { useLocation } from '@/hooks'
+import { useBehavior, useLocation } from '@/hooks'
 import { MoneyyaContext } from '@/state'
 import { submit } from '@/services/apply'
 import { MMKV } from '@/utils'
@@ -41,7 +41,7 @@ export const Step4 = ({ navigation }: NativeStackHeaderProps) => {
     DEBOUNCE_WAIT,
     DEBOUNCE_OPTIONS
   )
-
+  const behavior = useBehavior<'P04'>('P04', 'P04_C00', 'P04_C99')
   useLocation()
 
   return (
@@ -55,7 +55,7 @@ export const Step4 = ({ navigation }: NativeStackHeaderProps) => {
             validateOnBlur
             validateOnChange
             validationSchema={schema}>
-            {({ handleSubmit, isValid }) => (
+            {({ handleSubmit, isValid, setFieldValue }) => (
               <>
                 <View style={PageStyles.form}>
                   <IdcardPhotoPicker
@@ -64,10 +64,11 @@ export const Step4 = ({ navigation }: NativeStackHeaderProps) => {
                     bg={require('@assets/images/apply/id1.webp')}
                     imageType={undefined}
                     cameraType={'back'}
-                    onUploadSuccess={function (id): void {
-                      throw new Error('Function not implemented.')
+                    onUploadSuccess={id => {
+                      setFieldValue('', id)
                     }}
-                    reportExif={undefined} // error={errors.images}
+                    reportExif={exif => behavior.setModify('P04_C01_S_XX1', '', exif)}
+                    // error={errors.images}
                   />
                   <IdcardPhotoPicker
                     field={'idcard2'}
@@ -75,19 +76,17 @@ export const Step4 = ({ navigation }: NativeStackHeaderProps) => {
                     bg={require('@assets/images/apply/id2.webp')}
                     imageType={undefined}
                     cameraType={'back'}
-                    onUploadSuccess={function (id): void {
-                      throw new Error('Function not implemented.')
+                    onUploadSuccess={id => {
+                      setFieldValue('', id)
                     }}
-                    reportExif={undefined}
+                    reportExif={exif => behavior.setModify('P04_C02_S_XX2', '', exif)}
                   />
                 </View>
                 <View style={PageStyles.btnWrap}>
                   <ApplyButton
                     type={isValid ? 'primary' : undefined}
                     onPress={handleSubmit}
-                    loading={context.loading.effects.apply}
-                    // loading={state}
-                  >
+                    loading={context.loading.effects.apply}>
                     <Text color={isValid ? '#fff' : '#aaa'}>{t('submit')}</Text>
                   </ApplyButton>
                 </View>

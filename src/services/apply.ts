@@ -148,7 +148,7 @@ export async function pv() {
  */
 export async function uploadBehavior<T extends PAGE_ID>(data: BehaviorModel<T>) {
   return request<BaseResponse>({
-    url: '', // TODO add url
+    url: '/smart-loan/app/behavior',
     method: 'POST',
     data,
   })

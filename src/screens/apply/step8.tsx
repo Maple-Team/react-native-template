@@ -12,7 +12,7 @@ import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT, KEY_APPLYID, TOTAL_STEPS } from '@/uti
 import { ApplyButton } from '@components/form/FormItem'
 import { Color } from '@/styles/color'
 import type { ApplyStep8Parameter } from '@/typings/apply'
-import { useLocation, useSensor } from '@/hooks'
+import { useBehavior, useLocation, useSensor } from '@/hooks'
 import { submit } from '@/services/apply'
 import { MMKV } from '@/utils'
 
@@ -36,7 +36,7 @@ export const Step8 = ({ navigation }: NativeStackHeaderProps) => {
     DEBOUNCE_WAIT,
     DEBOUNCE_OPTIONS
   )
-
+  useBehavior<'P08'>('P08', 'P08_C00', 'P08_C99')
   useLocation()
 
   return (

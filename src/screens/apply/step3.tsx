@@ -1,13 +1,5 @@
 import type { NativeStackHeaderProps } from '@react-navigation/native-stack'
-import React, {
-  Reducer,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useReducer,
-  useRef,
-} from 'react'
+import React, { Reducer, useContext, useEffect, useReducer, useRef } from 'react'
 import { View, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
@@ -15,24 +7,15 @@ import { ScrollView } from 'react-native-gesture-handler'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 import debounce from 'lodash.debounce'
-import { useFocusEffect } from '@react-navigation/native'
-import { useWindowSize } from 'usehooks-ts'
 import { PageStyles, Text, FormGap } from '@/components'
-import {
-  DEBOUNCE_OPTIONS,
-  DEBOUNCE_WAIT,
-  KEY_APPLYID,
-  KEY_BEHAVIOR_DATA,
-  TOTAL_STEPS,
-} from '@/utils/constant'
-import { MMKV, Behavior, REGEX_PHONE } from '@/utils'
+import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT, KEY_APPLYID, TOTAL_STEPS } from '@/utils/constant'
+import { MMKV, REGEX_PHONE } from '@/utils'
 import { ApplyButton, Input, NormalPicker, PhonePicker } from '@components/form/FormItem'
 import { Color } from '@/styles/color'
-import { useLocation } from '@/hooks'
+import { useBehavior, useLocation } from '@/hooks'
 import { fetchDict, submit } from '@/services/apply'
 import { MoneyyaContext } from '@/state'
 import type { ApplyParameter, ApplyStep3Parameter, Contact } from '@/typings/apply'
-import type { BehaviorModel } from '@/typings/behavior'
 import type { Dict, DictField } from '@/typings/response'
 
 export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
@@ -152,29 +135,10 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
     DEBOUNCE_WAIT,
     DEBOUNCE_OPTIONS
   )
-  const windowSize = useWindowSize()
-  const behavior = useMemo(() => {
-    const initModel: BehaviorModel<'P03'> = {
-      screenHeight: `${windowSize.height}`,
-      screenWidth: `${windowSize.width}`,
-      applyId: `${context.user?.applyId}`,
-      outerIp: '',
-      internalIp: '',
-      records: MMKV.getArray(KEY_BEHAVIOR_DATA) || [],
-    }
-    return new Behavior<'P03'>(initModel)
-  }, [context.user?.applyId, windowSize])
+  const behavior = useBehavior<'P03'>('P03', 'P03_C00', 'P03_C99')
 
   useLocation()
 
-  useFocusEffect(
-    useCallback(() => {
-      behavior.setEnterPageTime('P03_C00')
-      return () => {
-        behavior.setLeavePageTime('P03_C99')
-      }
-    }, [behavior])
-  )
   const scrollviewRef = useRef<ScrollView>(null)
 
   return (

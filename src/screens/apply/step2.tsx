@@ -1,5 +1,5 @@
 import { NativeStackHeaderProps } from '@react-navigation/native-stack'
-import React, { useCallback, useContext, useEffect, useMemo, useReducer, useRef } from 'react'
+import React, { useContext, useEffect, useReducer, useRef } from 'react'
 import type { Reducer } from 'react'
 import { View, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -8,28 +8,18 @@ import { ScrollView } from 'react-native-gesture-handler'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 import debounce from 'lodash.debounce'
-import { useFocusEffect } from '@react-navigation/native'
 
 import { PageStyles, Text } from '@/components'
-import {
-  KEY_BEHAVIOR_DATA,
-  DEBOUNCE_OPTIONS,
-  DEBOUNCE_WAIT,
-  TOTAL_STEPS,
-  KEY_APPLYID,
-} from '@/utils/constant'
+import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT, TOTAL_STEPS, KEY_APPLYID } from '@/utils/constant'
 import { Input, NormalPicker } from '@components/form/FormItem'
 import { ApplyButton } from '@components/form/FormItem/applyButton'
 import { Color } from '@/styles/color'
 import type { ApplyParameter, ApplyStep2Parameter } from '@/typings/apply'
-import { useLocation } from '@/hooks'
+import { useBehavior, useLocation } from '@/hooks'
 import type { Shape } from '@/typings/common'
 import { fetchDict, submit } from '@/services/apply'
 import type { Dict, DictField } from '@/typings/response'
 import { MoneyyaContext } from '@/state'
-import Behavior from '@/utils/behavior'
-import type { BehaviorModel } from '@/typings/behavior'
-import { useWindowSize } from 'usehooks-ts'
 import { MMKV } from '@/utils/storage'
 
 export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
@@ -40,7 +30,10 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
     jobTypeCode: Yup.string().required(t('jobTypeCode.required')),
     monthlyIncome: Yup.string().required(t('monthlyIncome.required')),
     salaryType: Yup.string().required(t('salaryType.required')),
-    salaryDate: Yup.string().required(t('salaryDate.required')),
+    salaryDate: Yup.string().when('salaryType', {
+      is: 'MONTHLY' || 'WEEKLY',
+      then: Yup.string().required(t('salaryDate.required')),
+    }),
     company: Yup.string().required(t('company.required')),
     companyPhone: Yup.string().required(t('companyPhone.required')),
     companyAddrProvinceCode: Yup.string().required(t('companyAddrProvinceCode.required')),
@@ -48,20 +41,19 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
     companyAddrDetail: Yup.string().required(t('companyAddrDetail.required')),
     incumbency: Yup.string().required(t('incumbency.required')),
   })
-  const context = useContext(MoneyyaContext)
 
+  const context = useContext(MoneyyaContext)
   const [state, dispatch] = useReducer<Reducer<Step2State, Step2Action>>(
     (s, { type, value }) => {
-      console.log(type, Array.isArray(value) ? value[0].nameCn : value)
       switch (type) {
         case 'updateProvinces':
           return { ...s, provinceArr: value }
         case 'updateProvince':
-          return { ...s, companyAddrProvinceCode: value }
+          return { ...s, companyAddrProvinceCode: value.code, companyAddrProvince: value.name }
         case 'updateCities':
           return { ...s, cityArr: value }
         case 'updateCity':
-          return { ...s, companyAddrCityCode: value }
+          return { ...s, companyAddrCityCode: value.code, companyAddrCity: value.name }
         case 'updateIncumbencies':
           return { ...s, incumbencyArr: value }
         case 'updateIncumbency':
@@ -70,25 +62,26 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
           return { ...s, monthlyIncomeArr: value }
         case 'updateMonthlyIncome':
           return { ...s, monthlyIncome: value }
-        case 'updateMonthly':
-        case 'updateWeekly':
+        case 'salaryTypeArray':
           return { ...s, salaryDateArr: value }
         case 'updateSalaryType':
           return { ...s, salaryType: value }
-        case 'updateProfessions':
-          return { ...s, jobTypeArr: value }
-        case 'updateProfession':
-          return { ...s, jobTypeCode: value }
+        case 'updateSalaryDate':
+          return { ...s, salaryDate: value }
         case 'updateIndustries':
           return { ...s, industryArr: value }
         case 'updateIndustry':
-          return { ...s, industryCode: value }
+          return { ...s, industryCode: value.code, industry: value.name }
         case 'company':
           return { ...s, company: value }
         case 'companyPhone':
           return { ...s, companyPhone: value }
         case 'companyAddrDetail':
           return { ...s, companyAddrDetail: value }
+        case 'jobType':
+          return { ...s, jobType: value.name, jobTypeCode: value.code }
+        case 'jobTypeArr':
+          return { ...s, jobTypeArr: value }
         default:
           return { ...s }
       }
@@ -102,13 +95,17 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
       industryArr: [],
       salaryDateArr: [],
       industryCode: '',
+      industry: '',
       incumbency: '',
       company: '',
+      companyAddrCity: '',
       companyAddrCityCode: '',
       companyAddrDetail: '',
+      companyAddrProvince: '',
       companyAddrProvinceCode: '',
       companyPhone: '',
       jobTypeCode: '',
+      jobType: '',
       salaryDate: '',
       salaryType: '',
       monthlyIncome: '',
@@ -118,11 +115,14 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
     (values: FormModel) => {
       submit({
         ...values,
+        companyAddrCity: state.companyAddrCity,
+        companyAddrProvince: state.companyAddrProvince,
+        industry: state.industry,
+        jobType: state.jobType,
         applyId: +(MMKV.getString(KEY_APPLYID) || '0'),
         currentStep: 2,
         totalSteps: TOTAL_STEPS,
       }).then(() => {
-        console.log(behavior.getCurrentModel())
         navigation.navigate('Step3')
       })
     },
@@ -157,7 +157,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                 dispatch({ type: 'updateIndustries', value })
                 break
               case 'PROFESSION':
-                dispatch({ type: 'updateProfessions', value })
+                dispatch({ type: 'jobTypeArr', value })
                 break
               default:
                 break
@@ -170,47 +170,25 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
   }, [])
 
   useEffect(() => {
-    const queryCity = () => {
-      return fetchDict('DISTRICT', {
-        provinceID: state.companyAddrProvinceCode,
-      })
-    }
+    const queryCity = () => fetchDict(state.companyAddrProvinceCode)
+
     queryCity().then(values => {
       dispatch({ type: 'updateCities', value: values })
     })
   }, [state.companyAddrProvinceCode])
 
   useEffect(() => {
-    const query = (filed: 'MONTHLY' | 'WEEKLY') => fetchDict(filed)
-    const field = state.salaryType === 'Monthly' ? 'MONTHLY' : 'WEEKLY'
-    query(field).then(values => {
-      const type = state.salaryType === 'Monthly' ? 'updateMonthly' : 'updateWeekly'
-      dispatch({ type, value: values })
-    })
+    if (state.salaryType !== 'DAILY') {
+      const query = (filed: 'MONTHLY' | 'WEEKLY') => fetchDict(filed)
+      query(state.salaryType as 'MONTHLY' | 'WEEKLY').then(values => {
+        dispatch({ type: 'salaryTypeArray', value: values })
+      })
+    }
   }, [state.salaryType])
 
-  const windowSize = useWindowSize()
-  const behavior = useMemo(() => {
-    const initModel: BehaviorModel<'P02'> = {
-      screenHeight: `${windowSize.height}`,
-      screenWidth: `${windowSize.width}`,
-      applyId: `${context.user?.applyId}`,
-      outerIp: '',
-      internalIp: '',
-      records: MMKV.getArray(KEY_BEHAVIOR_DATA) || [],
-    }
-    return new Behavior<'P02'>(initModel)
-  }, [context.user?.applyId, windowSize])
-
-  useFocusEffect(
-    useCallback(() => {
-      behavior.setEnterPageTime('P02_C00')
-      return () => {
-        behavior.setLeavePageTime('P02_C99')
-      }
-    }, [behavior])
-  )
+  const behavior = useBehavior<'P02'>('P02', 'P02_C00', 'P02_C99')
   const scrollviewRef = useRef<ScrollView>(null)
+
   return (
     <SafeAreaView style={PageStyles.sav}>
       <StatusBar translucent={false} backgroundColor={Color.primary} barStyle="default" />
@@ -226,7 +204,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
             validateOnBlur
             validateOnChange
             validationSchema={schema}>
-            {({ handleSubmit, values, setFieldValue, errors, isValid }) => (
+            {({ handleSubmit, setFieldValue, errors, isValid }) => (
               <>
                 <View style={PageStyles.form}>
                   <NormalPicker
@@ -234,9 +212,10 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     label={t('industryCode.label')}
                     onChange={record => {
                       setFieldValue('industryCode', record.code)
+                      dispatch({ type: 'updateIndustry', value: record })
                       behavior.setModify('P02_C01_S_INDUSTRYCODE', record.code, state.industryCode)
                     }}
-                    value={values.industryCode}
+                    value={state.industryCode}
                     placeholder={t('industryCode.placeholder')}
                     error={errors.industryCode}
                     scrollViewRef={scrollviewRef}
@@ -250,10 +229,10 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     scrollViewRef={scrollviewRef}
                     onChange={record => {
                       setFieldValue('jobTypeCode', record.code)
-                      dispatch({ type: 'updateProfession', value: record.code })
+                      dispatch({ type: 'jobType', value: record })
                       behavior.setModify('P02_C02_S_JOBTYPECODE', record.code, state.jobTypeCode)
                     }}
-                    value={values.jobTypeCode}
+                    value={state.jobTypeCode}
                     placeholder={t('jobTypeCode.placeholder')}
                     error={errors.jobTypeCode}
                     dataSource={state.jobTypeArr}
@@ -272,7 +251,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                         state.monthlyIncome
                       )
                     }}
-                    value={values.monthlyIncome}
+                    value={state.monthlyIncome}
                     placeholder={t('monthlyIncome.placeholder')}
                     error={errors.monthlyIncome}
                     dataSource={state.monthlyIncomeArr}
@@ -287,34 +266,36 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                       dispatch({ type: 'updateSalaryType', value: record.code })
                       behavior.setModify('P02_C04_S_SALARYTYPE', record.code, state.salaryType)
                     }}
-                    value={values.salaryType}
+                    value={state.salaryType}
                     placeholder={t('salaryType.placeholder')}
                     error={errors.salaryType}
                     dataSource={[
-                      { name: 'Monthy', code: 'MONTHLY' },
+                      { name: 'DAILY', code: 'DAILY' },
                       {
-                        name: 'Weekly',
+                        name: 'WEEKLY',
                         code: 'WEEKLY',
                       },
+                      { name: 'MONTHLY', code: 'MONTHLY' },
                     ]}
                     title={t('salaryType.label')}
                   />
-                  <NormalPicker
-                    scrollViewRef={scrollviewRef}
-                    field="salaryDate"
-                    label={t('salaryDate.label')}
-                    onChange={record => {
-                      console.log(record)
-                      setFieldValue('salaryDate', record.code)
-                      dispatch({ type: 'updateSalaryDate', value: record.code })
-                      behavior.setModify('P02_C05_S_SALARYDATE', record.code, state.salaryDate)
-                    }}
-                    value={values.salaryDate}
-                    placeholder={t('salaryDate.placeholder')}
-                    error={errors.salaryDate}
-                    dataSource={state.salaryDateArr}
-                    title={t('salaryDate.label')}
-                  />
+                  {state.salaryType !== 'DAILY' && (
+                    <NormalPicker
+                      scrollViewRef={scrollviewRef}
+                      field="salaryDate"
+                      label={t('salaryDate.label')}
+                      onChange={record => {
+                        setFieldValue('salaryDate', record.code)
+                        dispatch({ type: 'updateSalaryDate', value: record.code })
+                        behavior.setModify('P02_C05_S_SALARYDATE', record.code, state.salaryDate)
+                      }}
+                      value={state.salaryDate}
+                      placeholder={t('salaryDate.placeholder')}
+                      error={errors.salaryDate}
+                      dataSource={state.salaryDateArr}
+                      title={t('salaryDate.label')}
+                    />
+                  )}
                   <Input
                     scrollViewRef={scrollviewRef}
                     onChangeText={text => {
@@ -330,7 +311,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     onBlur={() => {
                       behavior.setEndModify('P02_C01_I_COMPANY', state.company)
                     }}
-                    value={values.company}
+                    value={state.company}
                     field={'company'}
                     label={t('company.label')}
                     error={errors.company}
@@ -351,7 +332,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     onBlur={() => {
                       behavior.setEndModify('P02_C02_I_COMPANYPHONE', state.companyPhone)
                     }}
-                    value={values.companyPhone}
+                    value={state.companyPhone}
                     field={'companyPhone'}
                     error={errors.companyPhone}
                     label={t('companyPhone.label')}
@@ -361,8 +342,8 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     scrollViewRef={scrollviewRef}
                     onChange={record => {
                       setFieldValue('companyAddrProvinceCode', record.code)
-                      dispatch({ type: 'updateProvince', value: record.code })
-                      dispatch({ type: 'updateCity', value: '' })
+                      dispatch({ type: 'updateProvince', value: record })
+                      dispatch({ type: 'updateCity', value: { code: '', name: '' } })
                       behavior.setModify(
                         'P02_C06_S_STATE',
                         record.code,
@@ -381,7 +362,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     scrollViewRef={scrollviewRef}
                     onChange={record => {
                       setFieldValue('companyAddrCityCode', record.code)
-                      dispatch({ type: 'updateCity', value: record.code })
+                      dispatch({ type: 'updateCity', value: record })
                       behavior.setModify('P02_C07_S_CITY', record.code, state.companyAddrCityCode)
                     }}
                     title={t('companyAddrCityCode.label')}
@@ -410,7 +391,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     onBlur={() => {
                       behavior.setEndModify('P02_C03_I_COMPANYADDRDETAIL', state.companyAddrDetail)
                     }}
-                    value={values.companyAddrDetail}
+                    value={state.companyAddrDetail}
                     field={'companyAddrDetail'}
                     label={t('companyAddrDetail.label')}
                     error={errors.companyAddrDetail}
@@ -425,7 +406,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                       dispatch({ type: 'updateIncumbency', value: record.code })
                       behavior.setModify('P02_C08_S_INCUMBENCY', record.code, state.incumbency)
                     }}
-                    value={values.incumbency}
+                    value={state.incumbency}
                     placeholder={t('incumbency.placeholder')}
                     error={errors.incumbency}
                     dataSource={state.incumbencyArr}
@@ -466,7 +447,7 @@ type Step2Action =
     }
   | {
       type: 'updateProvince'
-      value: string
+      value: Dict
     }
   | {
       type: 'updateCities'
@@ -474,7 +455,7 @@ type Step2Action =
     }
   | {
       type: 'updateCity'
-      value: string
+      value: Dict
     }
   | {
       type: 'updateSalaryType'
@@ -497,11 +478,7 @@ type Step2Action =
       value: string
     }
   | {
-      type: 'updateMonthly'
-      value: Dict[]
-    }
-  | {
-      type: 'updateWeekly'
+      type: 'salaryTypeArray'
       value: Dict[]
     }
   | {
@@ -514,15 +491,7 @@ type Step2Action =
     }
   | {
       type: 'updateIndustry'
-      value: string
-    }
-  | {
-      type: 'updateProfessions'
-      value: Dict[]
-    }
-  | {
-      type: 'updateProfession'
-      value: string
+      value: Dict
     }
   | {
       type: 'company'
@@ -535,4 +504,12 @@ type Step2Action =
   | {
       type: 'companyAddrDetail'
       value: string
+    }
+  | {
+      type: 'jobTypeArr'
+      value: Dict[]
+    }
+  | {
+      type: 'jobType'
+      value: Dict
     }
