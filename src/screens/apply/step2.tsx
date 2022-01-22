@@ -170,7 +170,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
   }, [])
 
   useEffect(() => {
-    const queryCity = () => fetchDict(state.companyAddrProvinceCode)
+    const queryCity = () => fetchDict(state.companyAddrProvinceCode as DictField)
 
     queryCity().then(values => {
       dispatch({ type: 'updateCities', value: values })

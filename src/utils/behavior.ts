@@ -122,7 +122,7 @@ export default class Behavior<T extends PAGE_ID> {
       newValue: (newValue || '').toString(),
       startTime: this.getNowTime(),
     })
-    console.log('setModify', this.tempRecord)
+    console.log('setModify', id, this.tempRecord)
     this.save2storage()
   }
   /**

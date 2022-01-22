@@ -5,10 +5,11 @@ import { MMKV } from '@/utils'
 import { KEY_APPLYID, KEY_DEVICEID, KEY_TOKEN } from '@/utils/constant'
 import { AppModule } from '@/modules'
 import type { Asset } from 'react-native-image-picker'
+import emitter from '@/eventbus'
+import { t } from 'i18next'
 
 const { getUserAgent, getBuildNumber } = DeviceInfo
 
-// upload files
 export default async function uploadImages({
   response,
   isSupplement,
@@ -25,7 +26,7 @@ export default async function uploadImages({
   const deviceId = MMKV.getString(KEY_DEVICEID) || ''
   const versionId = getBuildNumber()
   const userAgent = await getUserAgent()
-  const [err, res] = await errorCaptured(() =>
+  const [err, imageId] = await errorCaptured(() =>
     RNFetchBlob.config({ timeout: 120 * 1000 })
       .fetch(
         'POST',
@@ -53,15 +54,13 @@ export default async function uploadImages({
           { name: 'applyId', data: MMKV.getString(KEY_APPLYID) || '' },
         ]
       )
-      // fixme 间隔调整
-      .uploadProgress({ interval: 10 }, onUploadProgress)
-      .then(_ => _.json())
-      .then(__ => {
-        const status = __.status
+      .uploadProgress({ interval: 1 }, onUploadProgress)
+      .then(res => res.json())
+      .then(({ status, body }) => {
         if (status.code === '000') {
-          return __.body
+          return body
         } else {
-          return Promise.reject(status.msg)
+          emitter.emit('SHOW_MESSAGE', { type: 'fail', message: status.msg || t('upload-Failed') })
         }
       })
   )
@@ -69,7 +68,6 @@ export default async function uploadImages({
     console.error(err)
     return Promise.reject(err)
   } else {
-    const { imageId } = res
     return imageId
   }
 }

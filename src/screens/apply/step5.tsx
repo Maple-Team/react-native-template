@@ -1,5 +1,5 @@
 import type { NativeStackHeaderProps } from '@react-navigation/native-stack'
-import React, { Reducer, useContext, useReducer, useRef } from 'react'
+import React, { Reducer, useContext, useEffect, useReducer, useRef } from 'react'
 import { View, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
@@ -16,11 +16,11 @@ import { Color } from '@/styles/color'
 import type { ApplyParameter, ApplyStep5Parameter, OcrResult } from '@/typings/apply'
 import { useBehavior, useLocation } from '@/hooks'
 import { MoneyyaContext } from '@/state'
-import type { Dict } from '@/typings/response'
+import type { Dict, DictField } from '@/typings/response'
 import { MMKV } from '@/utils/storage'
 import { useRoute } from '@react-navigation/native'
 import { Gender } from '@/typings/user'
-import { submit } from '@/services/apply'
+import { fetchDict, submit } from '@/services/apply'
 
 export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
@@ -152,15 +152,69 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
         applyId: +(MMKV.getString(KEY_APPLYID) || '0'),
         currentStep: 5,
         totalSteps: TOTAL_STEPS,
-        thirdInfos: [], // FIXME
+        thirdInfos: [
+          {
+            authPhone: state.socialPhone,
+            authType: state.whatsapp,
+            isAuth: 'Y',
+            thirdCode: 'whatsApp',
+            thirdName: 'whatsApp',
+          },
+        ],
+        homeAddrCity: state.homeAddrCity,
+        homeAddrProvince: state.homeAddrProvince,
       }).then(() => {
-        console.log(behavior.getCurrentModel())
         navigation.navigate('Step6')
       })
     },
     DEBOUNCE_WAIT,
     DEBOUNCE_OPTIONS
   )
+  useEffect(() => {
+    const queryDict = async () => {
+      const dicts: DictField[] = [
+        'MARITAL_STATUS',
+        'ID_TYPE',
+        'EDUCATION',
+        'LOAN_PURPOSE',
+        'DISTRICT',
+      ]
+      dicts.forEach(field =>
+        fetchDict(field)
+          .then(value => {
+            switch (field) {
+              case 'DISTRICT':
+                dispatch({ type: 'homeAddrProvinceArray', value })
+                break
+              case 'EDUCATION':
+                dispatch({ type: 'educationArray', value })
+                break
+              case 'MARITAL_STATUS':
+                dispatch({ type: 'maritalStatusArray', value })
+                break
+              case 'ID_TYPE':
+                dispatch({ type: 'docTypeArray', value })
+                break
+              case 'LOAN_PURPOSE':
+                dispatch({ type: 'loanPurposeArray', value })
+                break
+              default:
+                break
+            }
+          })
+          .catch(console.error)
+      )
+    }
+    queryDict()
+  }, [])
+
+  useEffect(() => {
+    const queryCity = () => fetchDict(state.homeAddrProvinceCode as DictField)
+    queryCity().then(values => {
+      dispatch({ type: 'homeAddrCityArray', value: values })
+    })
+  }, [state.homeAddrProvinceCode])
+
   const behavior = useBehavior<'P05'>('P05', 'P05_C00', 'P05_C99')
   useLocation()
   const scrollviewRef = useRef<ScrollView>(null)
@@ -254,6 +308,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       behavior.setModify('P05_C02_S_GENDER', text, state.sex)
                     }}
                     field={'sex'}
+                    value={state.sex}
                     label={t('gender.label')}
                   />
                   <Input
@@ -298,7 +353,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                     onChange={(record: Dict) => {
                       setFieldValue('homeAddrProvinceCode', record.code)
                       dispatch({ type: 'homeAddrProvince', value: record })
-                      dispatch({ type: 'homeAddrCity', value: null })
+                      dispatch({ type: 'homeAddrCity', value: { name: '', code: '' } })
                       behavior.setModify(
                         'P05_C04_S_HOMEADDRPROVINCECODE',
                         record.code,
@@ -379,6 +434,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                     }}
                     value={state.backupPhone}
                     field={'backupPhone'}
+                    maxLength={10}
                     label={t('backupPhone.label')}
                     placeholder={t('backupPhone.placeholder')}
                   />
@@ -428,6 +484,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                     }}
                     value={state.socialPhone}
                     field={'socialPhone'}
+                    maxLength={10}
                     label={t('socialPhone.label')}
                     placeholder={t('socialPhone.placeholder')}
                   />

@@ -30,6 +30,9 @@ const TIMEOUT = 2000
  * @returns
  */
 export async function fetchDict(field: DictField, params?: any): Promise<Dict[]> {
+  if (!field) {
+    return []
+  }
   const res: Dict[] | void = await Promise.race([
     new Promise<void>(resolve => {
       setTimeout(() => {

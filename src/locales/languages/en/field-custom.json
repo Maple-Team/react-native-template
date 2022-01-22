@@ -7,5 +7,6 @@
     "unavailable": "camera is unavailable",
     "no-permission": "camera is not allow permission",
     "other-error": "camera unknown error"
-  }
+  },
+  "upload-Failed": "upload failed"
 }

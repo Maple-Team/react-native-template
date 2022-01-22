@@ -9,7 +9,7 @@ import type { ScrollView } from 'react-native-gesture-handler'
 
 interface InputProps {
   onChangeText: (text: string) => void
-  onClear: () => void
+  onClear?: () => void
   onFocus?: () => void
   onBlur?: () => void
   value: string

@@ -109,18 +109,18 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
     queryDict()
   }, [])
   const onSubmit = debounce(
-    (values: FormModel) => {
+    () => {
       const contacts: Contact[] = []
       for (let index = 1; index <= 3; index++) {
         contacts.push({
           //@ts-ignore
-          contactName: values[`contactName${index}`],
+          contactName: state[`contactName${index}`],
           //@ts-ignore
-          contactPhone: values[`contactPhone${index}`],
+          contactPhone: state[`contactPhone${index}`],
           //@ts-ignore
-          contactRelation: values[`contactRelationCode${index}`].name,
+          contactRelation: state[`contactRelation${index}`],
           //@ts-ignore
-          contactRelationCode: values[`contactRelationCode${index}`].code,
+          contactRelationCode: state[`contactRelationCode${index}`],
         })
       }
       submit({
@@ -152,14 +152,14 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
             validationSchema={schema}
             validateOnBlur
             validateOnChange>
-            {({ handleSubmit, isValid, setFieldValue, errors }) => (
+            {({ handleSubmit, isValid, errors, setFieldValue }) => (
               <>
                 <View style={PageStyles.form}>
                   <FormGap title="Relation Contact" />
                   <NormalPicker
                     scrollViewRef={scrollviewRef}
                     onChange={record => {
-                      setFieldValue('contactRelationCode1', record)
+                      setFieldValue('contactRelationCode1', record.code)
                       dispatch({ type: 'updateContactRelation1', value: record })
                       behavior.setModify(
                         'P03_C01_S_RELATIONSHIP',
@@ -180,9 +180,6 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                     onChangeText={text => {
                       setFieldValue('contactName1', text)
                       dispatch({ type: 'updateContactName1', value: text })
-                    }}
-                    onClear={() => {
-                      setFieldValue('contactName1', '')
                     }}
                     onFocus={() => {
                       behavior.setStartModify('P03_C01_I_CONTACTNAME', state.contactName1)
@@ -212,7 +209,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                   <NormalPicker
                     scrollViewRef={scrollviewRef}
                     onChange={record => {
-                      setFieldValue('contactRelationCode2', record)
+                      setFieldValue('contactRelationCode2', record.code)
                       dispatch({ type: 'updateContactRelation2', value: record })
                       behavior.setModify(
                         'P03_C03_S_RELATIONSHIP',
@@ -233,9 +230,6 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                     onChangeText={text => {
                       setFieldValue('contactName2', text)
                       dispatch({ type: 'updateContactName2', value: text })
-                    }}
-                    onClear={() => {
-                      setFieldValue('contactName2', '')
                     }}
                     onFocus={() => {
                       behavior.setStartModify('P03_C02_I_CONTACTNAME', state.contactName1)
@@ -265,8 +259,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                   <NormalPicker
                     scrollViewRef={scrollviewRef}
                     onChange={record => {
-                      console.log(record)
-                      setFieldValue('contactRelationCode3', record)
+                      setFieldValue('contactRelationCode3', record.code)
                       dispatch({ type: 'updateContactRelation3', value: record })
                       behavior.setModify(
                         'P03_C05_S_RELATIONSHIP',
@@ -287,9 +280,6 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                     onChangeText={text => {
                       setFieldValue('contactName3', text)
                       dispatch({ type: 'updateContactName3', value: text })
-                    }}
-                    onClear={() => {
-                      setFieldValue('contactName3', '')
                     }}
                     onFocus={() => {
                       behavior.setStartModify('P03_C03_I_CONTACTNAME', state.contactName3)

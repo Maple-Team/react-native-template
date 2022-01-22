@@ -61,7 +61,6 @@ export function NormalDatePicker({
           <Pressable
             style={formItemStyles.suffixWrap}
             onPress={() => {
-              console.log('pressed')
               setVisible(true)
             }}>
             <Image

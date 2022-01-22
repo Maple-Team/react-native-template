@@ -67,7 +67,7 @@ export type DictField =
   | 'EDUCATION'
   | 'LOAN_PURPOSE'
   | 'CARD_NO_TYPE'
-  | string
+  | 'ID_TYPE'
 
 export type PickerField =
   | 'industryCode'

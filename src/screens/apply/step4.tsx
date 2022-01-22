@@ -1,5 +1,5 @@
 import type { NativeStackHeaderProps } from '@react-navigation/native-stack'
-import React, { useContext, useMemo } from 'react'
+import React, { useContext, useMemo, useState } from 'react'
 import { View, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
@@ -18,7 +18,10 @@ import { MoneyyaContext } from '@/state'
 import { submit } from '@/services/apply'
 import { MMKV } from '@/utils'
 
-type FormModel = Omit<ApplyStep4Parameter, 'applyId' | 'currentStep' | 'totalSteps'>
+type FormModel = Omit<ApplyStep4Parameter, 'applyId' | 'currentStep' | 'totalSteps'> & {
+  idcard1?: string
+  idcard2?: string
+}
 export const Step4 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
   const schema = Yup.object().shape({
@@ -27,10 +30,12 @@ export const Step4 = ({ navigation }: NativeStackHeaderProps) => {
   })
   const context = useContext(MoneyyaContext)
   const initialValue = useMemo<FormModel>(() => ({ images: [] }), [])
+  const [id1, setId1] = useState<number>(0)
+  const [id2, setId2] = useState<number>(0)
   const onSubmit = debounce(
-    (values: FormModel) => {
+    () => {
       submit({
-        ...values,
+        images: [{ imageId: id1 }, { imageId: id2 }],
         applyId: +(MMKV.getString(KEY_APPLYID) || '0'),
         currentStep: 4,
         totalSteps: TOTAL_STEPS,
@@ -55,31 +60,36 @@ export const Step4 = ({ navigation }: NativeStackHeaderProps) => {
             validateOnBlur
             validateOnChange
             validationSchema={schema}>
-            {({ handleSubmit, isValid, setFieldValue }) => (
+            {({ handleSubmit, isValid, setFieldValue, errors }) => (
               <>
                 <View style={PageStyles.form}>
                   <IdcardPhotoPicker
-                    field={'idcard1'}
+                    field="idcard1"
                     label={'El frente de tu ID'}
                     bg={require('@assets/images/apply/id1.webp')}
-                    imageType={undefined}
-                    cameraType={'back'}
+                    imageType="INE_OR_IFE_FRONT"
+                    cameraType="front"
                     onUploadSuccess={id => {
-                      setFieldValue('', id)
+                      setFieldValue('idcard1', id)
+                      setId1(id)
                     }}
-                    reportExif={exif => behavior.setModify('P04_C01_S_XX1', '', exif)}
-                    // error={errors.images}
+                    reportExif={exif => behavior.setModify('P04_C01_S_XX1', exif, '')}
+                    isSupplement="N"
+                    error={errors.idcard1}
                   />
                   <IdcardPhotoPicker
-                    field={'idcard2'}
+                    field="idcard2"
                     label={'La parte trasera de tu ID'}
                     bg={require('@assets/images/apply/id2.webp')}
-                    imageType={undefined}
-                    cameraType={'back'}
+                    imageType="INE_OR_IFE_BACK"
+                    cameraType="back"
                     onUploadSuccess={id => {
-                      setFieldValue('', id)
+                      setFieldValue('idcard2', id)
+                      setId2(id)
                     }}
-                    reportExif={exif => behavior.setModify('P04_C02_S_XX2', '', exif)}
+                    reportExif={exif => behavior.setModify('P04_C02_S_XX2', exif, '')}
+                    isSupplement="N"
+                    error={errors.idcard2}
                   />
                 </View>
                 <View style={PageStyles.btnWrap}>

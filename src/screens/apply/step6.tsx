@@ -67,16 +67,34 @@ export const Step6 = ({ navigation }: NativeStackHeaderProps) => {
               <>
                 <View style={PageStyles.form}>
                   <IdcardPhotoPicker
-                    onChange={handleChange('')}
                     field={'ss'}
                     label={'El frente de tu ID'}
                     bg={require('@assets/images/apply/id1.webp')}
+                    isSupplement={'Y'}
+                    imageType={'AUTH_VIDEO'}
+                    cameraType={'back'}
+                    onUploadSuccess={function (id: number, cb?: () => void) {
+                      handleChange('')
+                      cb && cb()
+                    }}
+                    reportExif={function (exif: string) {
+                      console.log(exif)
+                    }}
                   />
                   <IdcardPhotoPicker
-                    onChange={handleChange('')}
                     field={'ss'}
                     label={'La parte trasera de tu ID'}
                     bg={require('@assets/images/apply/id2.webp')}
+                    isSupplement={'Y'}
+                    imageType={'AUTH_VIDEO'}
+                    cameraType={'back'}
+                    onUploadSuccess={function (id: number, cb?: () => void): void {
+                      handleChange('')
+                      cb && cb()
+                    }}
+                    reportExif={function (exif: string) {
+                      console.log(exif)
+                    }}
                   />
                 </View>
                 <View style={PageStyles.btnWrap}>
