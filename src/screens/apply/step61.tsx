@@ -60,10 +60,10 @@ export const Step61 = ({ navigation }: NativeStackHeaderProps) => {
               <>
                 <View style={PageStyles.form}>
                   <PhotoPicker
-                    onChange={function (text): void {
+                    onChange={text => {
                       console.log(text)
                     }}
-                    field={''}
+                    field={'idcard'}
                   />
                 </View>
                 <View style={PageStyles.btnWrap}>

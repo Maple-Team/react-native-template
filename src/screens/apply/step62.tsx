@@ -10,7 +10,7 @@ import debounce from 'lodash.debounce'
 
 import { PageStyles, Text } from '@/components'
 import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT, KEY_APPLYID, TOTAL_STEPS } from '@/utils/constant'
-import { ApplyButton, IdcardPhotoPicker } from '@components/form/FormItem'
+import { ApplyButton, HandPhotoPicker } from '@components/form/FormItem'
 import { Color } from '@/styles/color'
 import type { ApplyParameter, ApplyStep6Parameter } from '@/typings/apply'
 import { useLocation } from '@/hooks'
@@ -21,13 +21,7 @@ import { MoneyyaContext } from '@/state'
 type FormModel = Omit<ApplyStep6Parameter, keyof ApplyParameter>
 export const Step62 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
-  const schema = Yup.object().shape({
-    // phone: Yup.string()
-    //   .min(10, t('field.short', { field: 'Phone' }))
-    //   .max(10, t('field.long', { field: 'Phone' }))
-    //   .matches(REGEX_PHONE, t('phone.invalid'))
-    //   .required(t('phone.required')),
-  })
+  const schema = Yup.object().shape({})
   const initialValue = useMemo<FormModel>(
     () => ({
       images: [],
@@ -62,38 +56,14 @@ export const Step62 = ({ navigation }: NativeStackHeaderProps) => {
             initialValues={initialValue}
             onSubmit={onSubmit}
             validationSchema={schema}>
-            {({ handleChange, handleSubmit, isValid }) => (
+            {({ handleSubmit, isValid }) => (
               <>
                 <View style={PageStyles.form}>
-                  <IdcardPhotoPicker
-                    field={'idcard1'}
-                    label={'El frente de tu ID'}
-                    bg={require('@assets/images/apply/id1.webp')}
-                    isSupplement={'Y'}
-                    imageType={'AUTH_VIDEO'}
-                    cameraType={'back'}
-                    onUploadSuccess={function (id: number, cb?: () => void) {
-                      handleChange('')
-                      cb && cb()
+                  <HandPhotoPicker
+                    onChange={text => {
+                      console.log(text)
                     }}
-                    reportExif={function (exif: string) {
-                      console.log(exif)
-                    }}
-                  />
-                  <IdcardPhotoPicker
-                    field={'idcard1'}
-                    label={'La parte trasera de tu ID'}
-                    bg={require('@assets/images/apply/id2.webp')}
-                    isSupplement={'Y'}
-                    imageType={'AUTH_VIDEO'}
-                    cameraType={'back'}
-                    onUploadSuccess={function (id: number, cb?: () => void): void {
-                      handleChange('')
-                      cb && cb()
-                    }}
-                    reportExif={function (exif: string) {
-                      console.log(exif)
-                    }}
+                    field={'idcard'}
                   />
                 </View>
                 <View style={PageStyles.btnWrap}>

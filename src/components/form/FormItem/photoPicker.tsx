@@ -3,7 +3,7 @@ import { View, Image, Pressable } from 'react-native'
 import formItemStyles from './style'
 import { Text } from '@/components'
 import { ErrorMessage } from 'formik'
-
+import { Liveness } from '@/modules'
 interface Props {
   onChange: (text: string) => void
   value?: string
@@ -23,7 +23,14 @@ export function PhotoPicker({ field }: Props) {
         <Pressable
           // style={{ width: 282, height: 185 }}
           onPress={() => {
-            console.log('pressed')
+            Liveness.startLiveness(
+              (livenessid, base64, transitionid, isPay) => {
+                console.log(livenessid, base64, transitionid, isPay)
+              },
+              (cancel, errorMessage, errorCode) => {
+                console.log(cancel, errorMessage, errorCode)
+              }
+            )
           }}>
           <Image source={require('@assets/images/apply/liveness.webp')} resizeMode="cover" />
         </Pressable>
