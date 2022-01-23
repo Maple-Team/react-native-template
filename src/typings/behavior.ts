@@ -87,6 +87,7 @@ export type SelectTypeID =
   | 'P05_C07_S_EDUCATIONCODE'
   | 'P05_C08_S_LOANPURPOSE' // P05
   | 'P07_C01_S_BANKCODE' // P07
+  | 'P07_C01_S_CARDNOTYPE'
 
 /**
  * 点击提交类型

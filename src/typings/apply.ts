@@ -107,7 +107,7 @@ export interface ApplyStep6Parameter extends ApplyParameter {
 export type BankCardType = 'CARD' | 'CLABE'
 export interface ApplyStep7Parameter extends ApplyParameter {
   bankCode: string
-  cardNoType: BankCardType
+  cardNoType: string
   bankCardNo: string
 }
 

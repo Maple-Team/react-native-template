@@ -68,6 +68,7 @@ export type DictField =
   | 'LOAN_PURPOSE'
   | 'CARD_NO_TYPE'
   | 'PRIMAARYID'
+  | 'BANK'
 
 export type PickerField =
   | 'industryCode'

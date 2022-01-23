@@ -221,17 +221,17 @@
   },
   "bankcode": {
     "label": "bank code",
-    "placeholder": "bank code"
+    "placeholder": "bank code",
+    "required": "back code required"
   },
   "bankCardNo": {
     "label": "bank Card No",
     "placeholder": "bank Card No",
     "required": "bank Card No required"
   },
-  "bankCode": {
-    "required": "back code required"
-  },
   "cardNoType": {
-    "required": "card No Type required"
+    "required": "card No Type required",
+    "label": "bank card type",
+    "placeholder": "cardno type"
   }
 }

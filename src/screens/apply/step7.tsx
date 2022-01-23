@@ -1,5 +1,5 @@
 import type { NativeStackHeaderProps } from '@react-navigation/native-stack'
-import React, { Reducer, useReducer } from 'react'
+import React, { Reducer, useEffect, useReducer } from 'react'
 import { View, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
@@ -8,15 +8,15 @@ import { Formik } from 'formik'
 import * as Yup from 'yup'
 import debounce from 'lodash.debounce'
 
-import { PageStyles, Text } from '@/components'
+import { Hint, PageStyles, Text } from '@/components'
 import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT, KEY_APPLYID, TOTAL_STEPS } from '@/utils/constant'
 import { ApplyButton, Input, NormalPicker } from '@components/form/FormItem'
 import { Color } from '@/styles/color'
-import type { ApplyParameter, ApplyStep7Parameter, BankCardType } from '@/typings/apply'
+import type { ApplyParameter, ApplyStep7Parameter } from '@/typings/apply'
 import { useBehavior, useLocation } from '@/hooks'
-import type { Dict } from '@/typings/response'
+import type { Dict, DictField } from '@/typings/response'
 import { MMKV } from '@/utils'
-import { submit } from '@/services/apply'
+import { fetchDict, submit } from '@/services/apply'
 
 export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
@@ -34,7 +34,6 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
         currentStep: 7,
         totalSteps: TOTAL_STEPS,
       }).then(() => {
-        console.log(behavior.getCurrentModel())
         navigation.navigate('Step8')
       })
     },
@@ -50,6 +49,8 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
           return { ...s, bankCardNo: value }
         case 'bankCode':
           return { ...s, bankCode: value }
+        case 'cardNoTypeArray':
+          return { ...s, cardNoTypeArray: value }
         case 'cardNoType':
           return { ...s, cardNoType: value }
         default:
@@ -60,9 +61,32 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
       bankArray: [],
       bankCardNo: '',
       bankCode: '',
-      cardNoType: 'CARD',
+      cardNoType: '',
+      cardNoTypeArray: [],
     }
   )
+  useEffect(() => {
+    const queryDict = async () => {
+      const dicts: DictField[] = ['CARD_NO_TYPE', 'BANK']
+      dicts.forEach(field =>
+        fetchDict(field)
+          .then(value => {
+            switch (field) {
+              case 'BANK':
+                dispatch({ type: 'bankArray', value })
+                break
+              case 'CARD_NO_TYPE':
+                dispatch({ type: 'cardNoTypeArray', value })
+                break
+              default:
+                break
+            }
+          })
+          .catch(console.log)
+      )
+    }
+    queryDict()
+  }, [])
   useLocation()
 
   const behavior = useBehavior<'P07'>('P07', 'P07_C00', 'P07_C99')
@@ -70,6 +94,11 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
   return (
     <SafeAreaView style={PageStyles.sav}>
       <StatusBar translucent={false} backgroundColor={Color.primary} barStyle="default" />
+      <Hint
+        img={require('@/assets/images/apply/loan_notice.webp')}
+        hint={'Tips:ReceiptAs and repayments may be affected by bank working'}
+        hintColor={'rgba(255, 50, 50, 1)'}
+      />
       <ScrollView style={PageStyles.scroll} keyboardShouldPersistTaps="handled">
         <View style={PageStyles.container}>
           <Formik<FormModel> initialValues={state} onSubmit={onSubmit} validationSchema={schema}>
@@ -77,17 +106,32 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
               <>
                 <View style={PageStyles.form}>
                   <NormalPicker
-                    onChange={function (record: Dict): void {
+                    onChange={(record: Dict) => {
                       setFieldValue('bankCode', record)
                       dispatch({ type: 'bankCode', value: record.code })
                       behavior.setModify('P07_C01_S_BANKCODE', record.code, state.bankCode)
                     }}
+                    key="bankCode"
                     value={state.bankCode}
                     title={t('bankcode.label')}
                     field={'bankCode'}
                     label={t('bankcode.label')}
                     placeholder={t('bankcode.placeholder')}
                     dataSource={state.bankArray}
+                  />
+                  <NormalPicker
+                    onChange={(record: Dict) => {
+                      setFieldValue('cardNoType', record)
+                      dispatch({ type: 'cardNoType', value: record.code })
+                      behavior.setModify('P07_C01_S_CARDNOTYPE', record.code, state.cardNoType)
+                    }}
+                    key="bankCardType"
+                    value={state.cardNoType}
+                    title={t('cardNoType.label')}
+                    field={'cardNoType'}
+                    label={t('cardNoType.label')}
+                    placeholder={t('cardNoType.placeholder')}
+                    dataSource={state.cardNoTypeArray}
                   />
                   <Input
                     onChangeText={function (text: string): void {
@@ -107,14 +151,11 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
                     field={'bankCardNo'}
                     label={t('bankCardNo.label')}
                     placeholder={t('bankCardNo.placeholder')}
+                    key="bankCardNo"
                   />
                 </View>
                 <View style={PageStyles.btnWrap}>
-                  <ApplyButton
-                    type={isValid ? 'primary' : undefined}
-                    onPress={handleSubmit}
-                    // loading={state}
-                  >
+                  <ApplyButton type={isValid ? 'primary' : undefined} onPress={handleSubmit}>
                     <Text fontSize={18} color="#fff">
                       {t('submit')}
                     </Text>
@@ -134,7 +175,7 @@ interface Step7State extends FormModel {
   bankArray: Dict[]
   bankCardNo: string
   bankCode: string
-  cardNoType: BankCardType
+  cardNoTypeArray: Dict[]
 }
 
 type Step7Action =
@@ -147,10 +188,14 @@ type Step7Action =
       value: string
     }
   | {
-      type: 'cardNoType'
-      value: BankCardType
+      type: 'cardNoTypeArray'
+      value: Dict[]
     }
   | {
       type: 'bankCardNo'
+      value: string
+    }
+  | {
+      type: 'cardNoType'
       value: string
     }
