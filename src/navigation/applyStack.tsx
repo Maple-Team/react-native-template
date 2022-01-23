@@ -4,7 +4,7 @@ import { Provider } from '@ant-design/react-native'
 import { useEventListener } from '@/hooks'
 import { Color } from '@/styles/color'
 import { ImageStyle } from 'react-native'
-import { Step2, Step3, Step4, Step5, Step6_1, Step6_2, Step7, Step8 } from '@screens/apply'
+import { Step2, Step3, Step4, Step5, Step61, Step62, Step7, Step8 } from '@screens/apply'
 import type { ViewStyle } from 'react-native'
 import StyleSheet from 'react-native-adaptive-stylesheet'
 import { HeaderLeft, HeaderRight } from '@components/header'
@@ -16,8 +16,8 @@ export type ApplyStackList = {
   Step3: undefined
   Step4: undefined
   Step5: undefined
-  Step6_1: undefined
-  Step6_2: undefined
+  Step61: undefined
+  Step62: undefined
   Step7: undefined
   Step8: undefined
 }
@@ -94,16 +94,16 @@ export function ApplyStack() {
           />
           <Stack.Screen
             key="Step61"
-            name="Step6_1"
-            component={Step6_1}
+            name="Step61"
+            component={Step61}
             options={() => ({
               title: 'Face Recognition',
             })}
           />
           <Stack.Screen
             key="Step62"
-            name="Step6_2"
-            component={Step6_2}
+            name="Step62"
+            component={Step62}
             options={() => ({
               title: 'Hold ID Photo',
             })}

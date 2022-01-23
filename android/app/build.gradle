@@ -62,27 +62,22 @@ android {
     targetSdkVersion rootProject.ext.targetSdkVersion
     versionCode 1
     versionName "1.0"
+    ndk {
+      abiFilters "arm64-v8a"
+    }
   }
   splits {
     abi {
       enable enableSeparateBuildPerCPUArchitecture
       reset()
       universalApk false  // If true, also generate a universal APK
-      include "arm64-v8a", "armeabi-v7a" // "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
+//      include "arm64-v8a" // "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
     }
   }
   packagingOptions {
     pickFirst '**/*.so'
   }
   signingConfigs {
-//    staging {
-//      if (project.hasProperty('STAGING_STORE_FILE')) {
-//        storeFile file(STAGING_STORE_FILE)
-//        storePassword STAGING_STORE_PASSWORD
-//        keyAlias STAGING_KEY_ALIAS
-//        keyPassword STAGING_KEY_PASSWORD
-//      }
-//    }
     release {
       if (project.hasProperty('RELEASE_STORE_FILE')) {
         storeFile file(RELEASE_STORE_FILE)
@@ -105,14 +100,6 @@ android {
       buildConfigField "String", "ENVIRONMENT", "\"development\""
       resValue "string", "app_name", "Moneyya debug"
     }
-//    staging {
-//      applicationIdSuffix ".staging"
-//      versionNameSuffix '-Staging'
-//      debuggable true
-//      signingConfig signingConfigs.staging
-//      buildConfigField "String", "ENVIRONMENT", "\"staging\""
-//      resValue "string", "app_name", "Moneyya staging"
-//    }
     release {
       // Caution! In production, you need to generate your own keystore file.
       // see https://reactnative.dev/docs/signed-apk-android.
@@ -126,7 +113,7 @@ android {
     }
   }
 
-  // applicationVariants are e.g. debug, release TODO
+  // applicationVariants are e.g. debug, release
   applicationVariants.all { variant ->
     variant.outputs.each { output ->
       // For each separate APK per architecture, set a unique version code as described here:
@@ -143,6 +130,12 @@ android {
   }
 }
 
+repositories {
+  flatDir {
+    dirs project(':liveness').file('libs')
+  }
+}
+
 dependencies {
   implementation fileTree(dir: "libs", include: ["*.jar"])
   //noinspection GradleDynamicVersion
@@ -152,6 +145,8 @@ dependencies {
   implementation 'com.facebook.fresco:webpsupport:2.5.0'
   implementation project(':react-native-splash-screen')
   implementation project(':react-native-advertising-id')
+  implementation project(":liveness")
+  implementation project(":liveness_rn")
   debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
     exclude group: 'com.facebook.fbjni'
   }

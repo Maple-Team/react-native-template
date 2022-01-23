@@ -52,7 +52,7 @@ export function Step1() {
         currentStep: 1,
         totalSteps: TOTAL_STEPS,
       }).then(() => {
-        navigation.getParent()?.navigate('Step4')
+        navigation.getParent()?.navigate('Step61')
       })
     },
     DEBOUNCE_WAIT,

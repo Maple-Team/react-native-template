@@ -16,6 +16,10 @@ import com.moneyya.nativemodule.MoneyyaPackage;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
+import ai.advance.liveness.lib.GuardianLivenessDetectionSDK;
+import ai.advance.liveness.lib.Market;
+import ai.advance.liveness.sdk.rn.LivenessReactPackage;
+
 public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost =
@@ -38,6 +42,7 @@ public class MainApplication extends Application implements ReactApplication {
         // packages.add(new MyReactNativePackage());
          packages.add(new MoneyyaPackage());
          packages.add(new WheelPickerPackage());
+         packages.add((ReactPackage) new LivenessReactPackage());
         return packages;
       }
 
@@ -57,6 +62,9 @@ public class MainApplication extends Application implements ReactApplication {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+    GuardianLivenessDetectionSDK.init(this, "2c38359eb29c1784", "3c18724a10216fdc", Market.Mexico);
+    GuardianLivenessDetectionSDK.letSDKHandleCameraPermission();
+    GuardianLivenessDetectionSDK.isDetectOcclusion(true);
   }
 
   /**

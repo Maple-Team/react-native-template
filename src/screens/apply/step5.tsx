@@ -168,7 +168,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
         homeAddrProvince: state.homeAddrProvince,
         name: `${values.firstName.trim()} ${values.middleName.trim()} ${values.lastName.trim()}`,
       }).then(() => {
-        navigation.navigate('Step6_1')
+        navigation.navigate('Step61')
       })
     },
     DEBOUNCE_WAIT,

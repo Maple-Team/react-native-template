@@ -19,7 +19,7 @@ import { MMKV } from '@/utils'
 import { MoneyyaContext } from '@/state'
 
 type FormModel = Omit<ApplyStep6Parameter, keyof ApplyParameter>
-export const Step6_2 = ({ navigation }: NativeStackHeaderProps) => {
+export const Step62 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
   const schema = Yup.object().shape({
     // phone: Yup.string()
