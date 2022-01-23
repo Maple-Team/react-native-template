@@ -48,6 +48,7 @@
     "react-native-contacts": "^7.0.3",
     "react-native-date-picker": "^4.1.3",
     "react-native-device-info": "^8.4.8",
+    "react-native-exif": "https://github.com/Maple-Team/react-native-exif.git",
     "react-native-geolocation-service": "^5.3.0-beta.4",
     "react-native-gesture-handler": "^2.0.0",
     "react-native-image-picker": "^4.7.1",
@@ -57,6 +58,7 @@
     "react-native-nfc-manager": "^3.11.2",
     "react-native-pager-view": "^5.4.9",
     "react-native-permissions": "^3.2.0",
+    "react-native-progress": "^5.0.0",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.10.1",
     "react-native-select-contact": "^1.6.3",
@@ -64,12 +66,13 @@
     "react-native-size-matters": "^0.4.0",
     "react-native-splash-screen": "^3.3.0",
     "react-native-startup-time": "^2.0.0",
+    "react-native-svg": "^12.1.1",
     "react-native-swiper": "^1.6.0",
     "react-native-text-input-mask": "^3.1.4",
     "react-native-webview": "^11.15.0",
     "react-native-wheel-picker-android": "^2.0.6",
     "rn-fetch-blob-v2": "^0.14.1",
-    "usehooks-ts": "^2.1.1",
+    "usehooks-ts": "^2.2.1",
     "yup": "^0.32.11"
   },
   "devDependencies": {
@@ -105,6 +108,7 @@
     "metro-react-native-babel-preset": "^0.66.2",
     "mockjs": "^1.1.0",
     "prettier": "^2.5.1",
+    "react-native-bundle-visualizer": "^3.1.1",
     "react-native-flipper": "^0.127.0",
     "ts-node": "^10.4.0",
     "typescript": "^4.4.4"

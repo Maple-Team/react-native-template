@@ -49,6 +49,7 @@ export function WheelPicker<T extends Dict>({
           setSelectedIndex(index)
           onChange(index)
         }}
+        style={{ width: '100%', height: 150 }}
         selectedItemTextFontFamily="ArialMT"
         itemTextFontFamily="ArialMT"
       />
@@ -63,5 +64,7 @@ const wheelPickerStyles = StyleSheet.create<{
     height: 180,
     alignItems: 'center',
     justifyContent: 'center',
+    flex: 1,
+    paddingHorizontal: 10,
   },
 })

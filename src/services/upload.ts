@@ -54,7 +54,7 @@ export default async function uploadImages({
           { name: 'applyId', data: MMKV.getString(KEY_APPLYID) || '' },
         ]
       )
-      .uploadProgress({ interval: 1 }, onUploadProgress)
+      .uploadProgress({ interval: 2 }, onUploadProgress)
       .then(res => res.json())
       .then(({ status, body }) => {
         if (status.code === '000') {

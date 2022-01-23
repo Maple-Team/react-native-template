@@ -15,6 +15,9 @@ import type { BOOL, ImageType } from '@/typings/common'
 import { errorCaptured } from '@/utils/util'
 import { t } from 'i18next'
 import upload from '@/services/upload'
+import Exif from 'react-native-exif'
+import * as Progress from 'react-native-progress'
+import { Color } from '@/styles/color'
 
 interface Props {
   error?: string
@@ -27,7 +30,7 @@ interface Props {
   onUploadSuccess: (id: number, cb?: () => void) => void
   reportExif: (exif: string) => void
 }
-
+const PROGRESS_CIRCLE_RADIUS = 50
 export function IdcardPhotoPicker({
   field,
   label,
@@ -40,7 +43,6 @@ export function IdcardPhotoPicker({
 }: Props) {
   const [source, setSource] = useState<{ uri: string }>()
   const [progress, setProgress] = useState<number>(0)
-  console.log({ progress })
 
   const takePicture = useCallback(async () => {
     if (await isEmulator()) {
@@ -81,14 +83,13 @@ export function IdcardPhotoPicker({
         return
       }
       setSource({ uri })
-      console.log(reportExif)
-      // Exif.getExif(uri)
-      //   .then(msg => {
-      //     reportExif(JSON.stringify({ ...msg.exif, ImageHeight: msg.exif.ImageLength }))
-      //   })
-      //   .catch(msg => {
-      //     console.error('exif ERROR: ' + msg)
-      //   })
+      Exif.getExif(uri)
+        .then(({ exif, ImageHeight }) => {
+          reportExif(JSON.stringify({ ...exif, ImageHeight: ImageHeight }))
+        })
+        .catch(msg => {
+          console.error('exif ERROR: ' + msg)
+        })
 
       const newWidth = width
       const newHeight = height
@@ -109,14 +110,12 @@ export function IdcardPhotoPicker({
         isSupplement,
         type: imageType,
         onUploadProgress: (sent, total) => {
-          console.log(sent, total)
           setProgress(sent / total)
         },
       })
         .then(imageId => {
-          onUploadSuccess(imageId, () => {
-            setProgress(1)
-          })
+          onUploadSuccess(imageId)
+          setProgress(1)
         })
         .catch(e => {
           console.error('upload error', e)
@@ -124,12 +123,21 @@ export function IdcardPhotoPicker({
         })
     }
   }, [cameraType, imageType, isSupplement, onUploadSuccess, reportExif])
-
+  console.log('progress', progress)
   return (
     <>
       <View style={styles.container}>
         <ImageBackground style={styles.bg} source={bg} resizeMode="cover">
           {source && <Image source={source} resizeMode="cover" style={styles.preview} />}
+          {progress !== 0 && progress !== 1 && (
+            <Progress.Pie
+              size={PROGRESS_CIRCLE_RADIUS}
+              progress={progress}
+              indeterminate={true}
+              style={styles.progress}
+              color={Color.primary}
+            />
+          )}
           <Pressable
             style={{ zIndex: 999 }}
             onPress={() => {
@@ -158,6 +166,7 @@ const styles = StyleSheet.create<{
   container: ViewStyle
   bg: ViewStyle
   preview: ImageStyle
+  progress: ViewStyle
 }>({
   container: {
     paddingTop: 17,
@@ -174,6 +183,12 @@ const styles = StyleSheet.create<{
     height: '100%',
     zIndex: 900,
     position: 'absolute',
+  },
+  progress: {
+    position: 'absolute',
+    zIndex: 999,
+    left: 91 + PROGRESS_CIRCLE_RADIUS / 2,
+    top: 91 - PROGRESS_CIRCLE_RADIUS / 2,
   },
 })
 

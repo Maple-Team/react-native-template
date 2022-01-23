@@ -21,6 +21,7 @@ import { fetchDict, submit } from '@/services/apply'
 import type { Dict, DictField } from '@/typings/response'
 import { MoneyyaContext } from '@/state'
 import { MMKV } from '@/utils/storage'
+import { filterArrayKey } from '@/utils'
 
 export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
@@ -47,29 +48,29 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
     (s, { type, value }) => {
       switch (type) {
         case 'updateProvinces':
-          return { ...s, provinceArr: value }
+          return { ...s, provinceArray: value }
         case 'updateProvince':
           return { ...s, companyAddrProvinceCode: value.code, companyAddrProvince: value.name }
         case 'updateCities':
-          return { ...s, cityArr: value }
+          return { ...s, cityArray: value }
         case 'updateCity':
           return { ...s, companyAddrCityCode: value.code, companyAddrCity: value.name }
         case 'updateIncumbencies':
-          return { ...s, incumbencyArr: value }
+          return { ...s, incumbencyArray: value }
         case 'updateIncumbency':
           return { ...s, incumbency: value }
         case 'updateMonthlyIncomes':
-          return { ...s, monthlyIncomeArr: value }
+          return { ...s, monthlyIncomeArray: value }
         case 'updateMonthlyIncome':
           return { ...s, monthlyIncome: value }
         case 'salaryTypeArray':
-          return { ...s, salaryDateArr: value }
+          return { ...s, salaryDateArray: value }
         case 'updateSalaryType':
           return { ...s, salaryType: value }
         case 'updateSalaryDate':
           return { ...s, salaryDate: value }
         case 'updateIndustries':
-          return { ...s, industryArr: value }
+          return { ...s, industryArray: value }
         case 'updateIndustry':
           return { ...s, industryCode: value.code, industry: value.name }
         case 'company':
@@ -81,19 +82,19 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
         case 'jobType':
           return { ...s, jobType: value.name, jobTypeCode: value.code }
         case 'jobTypeArr':
-          return { ...s, jobTypeArr: value }
+          return { ...s, jobTypeArray: value }
         default:
           return { ...s }
       }
     },
     {
-      provinceArr: [],
-      cityArr: [],
-      incumbencyArr: [],
-      monthlyIncomeArr: [],
-      jobTypeArr: [],
-      industryArr: [],
-      salaryDateArr: [],
+      provinceArray: [],
+      cityArray: [],
+      incumbencyArray: [],
+      monthlyIncomeArray: [],
+      jobTypeArray: [],
+      industryArray: [],
+      salaryDateArray: [],
       industryCode: '',
       industry: '',
       incumbency: '',
@@ -114,7 +115,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
   const onSubmit = debounce(
     (values: FormModel) => {
       submit({
-        ...values,
+        ...(filterArrayKey(values) as FormModel),
         companyAddrCity: state.companyAddrCity,
         companyAddrProvince: state.companyAddrProvince,
         industry: state.industry,
@@ -187,7 +188,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
   }, [state.salaryType])
 
   const behavior = useBehavior<'P02'>('P02', 'P02_C00', 'P02_C99')
-  const scrollviewRef = useRef<ScrollView>(null)
+  const scrollViewRef = useRef<ScrollView>(null)
 
   return (
     <SafeAreaView style={PageStyles.sav}>
@@ -196,7 +197,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
         style={PageStyles.scroll}
         // keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="handled"
-        ref={scrollviewRef}>
+        ref={scrollViewRef}>
         <View style={PageStyles.container}>
           <Formik<FormModel>
             initialValues={state}
@@ -218,15 +219,14 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     value={state.industryCode}
                     placeholder={t('industryCode.placeholder')}
                     error={errors.industryCode}
-                    scrollViewRef={scrollviewRef}
-                    dataSource={state.industryArr}
+                    scrollViewRef={scrollViewRef}
+                    dataSource={state.industryArray}
                     title={t('industryCode.label')}
-                    textSize={14}
                   />
                   <NormalPicker
                     field="jobTypeCode"
                     label={t('jobTypeCode.label')}
-                    scrollViewRef={scrollviewRef}
+                    scrollViewRef={scrollViewRef}
                     onChange={record => {
                       setFieldValue('jobTypeCode', record.code)
                       dispatch({ type: 'jobType', value: record })
@@ -235,12 +235,12 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     value={state.jobTypeCode}
                     placeholder={t('jobTypeCode.placeholder')}
                     error={errors.jobTypeCode}
-                    dataSource={state.jobTypeArr}
+                    dataSource={state.jobTypeArray}
                     title={t('jobTypeCode.label')}
                   />
                   <NormalPicker
                     field="monthlyIncome"
-                    scrollViewRef={scrollviewRef}
+                    scrollViewRef={scrollViewRef}
                     label={t('monthlyIncome.label')}
                     onChange={record => {
                       setFieldValue('monthlyIncome', record.code)
@@ -254,12 +254,12 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     value={state.monthlyIncome}
                     placeholder={t('monthlyIncome.placeholder')}
                     error={errors.monthlyIncome}
-                    dataSource={state.monthlyIncomeArr}
+                    dataSource={state.monthlyIncomeArray}
                     title={t('monthlyIncome.label')}
                   />
                   <NormalPicker
                     field="salaryType"
-                    scrollViewRef={scrollviewRef}
+                    scrollViewRef={scrollViewRef}
                     label={t('salaryType.label')}
                     onChange={record => {
                       setFieldValue('salaryType', record.code)
@@ -281,7 +281,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                   />
                   {state.salaryType !== 'DAILY' && (
                     <NormalPicker
-                      scrollViewRef={scrollviewRef}
+                      scrollViewRef={scrollViewRef}
                       field="salaryDate"
                       label={t('salaryDate.label')}
                       onChange={record => {
@@ -292,12 +292,12 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                       value={state.salaryDate}
                       placeholder={t('salaryDate.placeholder')}
                       error={errors.salaryDate}
-                      dataSource={state.salaryDateArr}
+                      dataSource={state.salaryDateArray}
                       title={t('salaryDate.label')}
                     />
                   )}
                   <Input
-                    scrollViewRef={scrollviewRef}
+                    scrollViewRef={scrollViewRef}
                     onChangeText={text => {
                       setFieldValue('company', text)
                       dispatch({ type: 'company', value: text })
@@ -318,7 +318,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     placeholder={t('company.placeholder')}
                   />
                   <Input
-                    scrollViewRef={scrollviewRef}
+                    scrollViewRef={scrollViewRef}
                     onChangeText={text => {
                       setFieldValue('companyPhone', text)
                       dispatch({ type: 'companyPhone', value: text })
@@ -339,7 +339,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     placeholder={t('companyPhone.placeholder')}
                   />
                   <NormalPicker
-                    scrollViewRef={scrollviewRef}
+                    scrollViewRef={scrollViewRef}
                     onChange={record => {
                       setFieldValue('companyAddrProvinceCode', record.code)
                       dispatch({ type: 'updateProvince', value: record })
@@ -355,11 +355,11 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     field={'companyAddrProvinceCode'}
                     label={t('companyAddrProvinceCode.label')}
                     placeholder={t('companyAddrProvinceCode.placeholder')}
-                    dataSource={state.provinceArr}
+                    dataSource={state.provinceArray}
                     error={errors.companyAddrProvinceCode}
                   />
                   <NormalPicker
-                    scrollViewRef={scrollviewRef}
+                    scrollViewRef={scrollViewRef}
                     onChange={record => {
                       setFieldValue('companyAddrCityCode', record.code)
                       dispatch({ type: 'updateCity', value: record })
@@ -370,11 +370,11 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     value={state.companyAddrCityCode}
                     label={t('companyAddrCityCode.label')}
                     placeholder={t('companyAddrCityCode.placeholder')}
-                    dataSource={state.cityArr}
+                    dataSource={state.cityArray}
                     error={errors.companyAddrCityCode}
                   />
                   <Input
-                    scrollViewRef={scrollviewRef}
+                    scrollViewRef={scrollViewRef}
                     onChangeText={text => {
                       setFieldValue('companyAddrDetail', text)
                       dispatch({ type: 'companyAddrDetail', value: text })
@@ -398,7 +398,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     placeholder={t('companyAddrDetail.placeholder')}
                   />
                   <NormalPicker
-                    scrollViewRef={scrollviewRef}
+                    scrollViewRef={scrollViewRef}
                     field="incumbency"
                     label={t('incumbency.label')}
                     onChange={record => {
@@ -409,7 +409,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     value={state.incumbency}
                     placeholder={t('incumbency.placeholder')}
                     error={errors.incumbency}
-                    dataSource={state.incumbencyArr}
+                    dataSource={state.incumbencyArray}
                     title={t('incumbency.label')}
                   />
                 </View>
@@ -432,13 +432,13 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
 
 type FormModel = Omit<ApplyStep2Parameter, keyof ApplyParameter>
 interface Step2State extends FormModel {
-  provinceArr: Dict[]
-  cityArr: Dict[]
-  incumbencyArr: Dict[]
-  monthlyIncomeArr: Dict[]
-  industryArr: Dict[]
-  jobTypeArr: Dict[]
-  salaryDateArr: Dict[]
+  provinceArray: Dict[]
+  cityArray: Dict[]
+  incumbencyArray: Dict[]
+  monthlyIncomeArray: Dict[]
+  industryArray: Dict[]
+  jobTypeArray: Dict[]
+  salaryDateArray: Dict[]
 }
 type Step2Action =
   | {

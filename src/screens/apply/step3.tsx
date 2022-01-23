@@ -44,9 +44,9 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
     (s, { type, value }) => {
       switch (type) {
         case 'updateContactRelation':
-          return { ...s, contactRelation: value }
+          return { ...s, contactRelationArray: value }
         case 'updateOtherContactRelation':
-          return { ...s, otherContactRelation: value }
+          return { ...s, otherContactRelationArray: value }
         case 'updateContactName1':
           return { ...s, contactName1: value }
         case 'updateContactName2':
@@ -82,8 +82,8 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
       contactPhone3: '',
       contactRelation3: '',
       contactRelationCode3: '',
-      contactRelation: [],
-      otherContactRelation: [],
+      contactRelationArray: [],
+      otherContactRelationArray: [],
     }
   )
   useEffect(() => {
@@ -171,7 +171,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                     field={'contactRelationCode1'}
                     label={t('contactRelationCode.label')}
                     placeholder={t('contactRelationCode.placeholder')}
-                    dataSource={state.contactRelation}
+                    dataSource={state.contactRelationArray}
                     error={errors.contactRelationCode1}
                     value={state.contactRelationCode1}
                   />
@@ -221,7 +221,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                     field={'contactRelationCode2'}
                     label={t('contactRelationCode.label')}
                     placeholder={t('contactRelationCode.placeholder')}
-                    dataSource={state.otherContactRelation}
+                    dataSource={state.otherContactRelationArray}
                     error={errors.contactRelationCode2}
                     value={state.contactRelationCode2}
                   />
@@ -271,7 +271,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                     field={'contactRelationCode3'}
                     label={t('contactRelationCode.label')}
                     placeholder={t('contactRelationCode.placeholder')}
-                    dataSource={state.otherContactRelation}
+                    dataSource={state.otherContactRelationArray}
                     error={errors.contactRelationCode3}
                     value={state.contactRelationCode3}
                   />
@@ -338,8 +338,8 @@ interface Step3State {
   contactPhone3: string
   contactRelation3: string
   contactRelationCode3: string
-  contactRelation: Dict[]
-  otherContactRelation: Dict[]
+  contactRelationArray: Dict[]
+  otherContactRelationArray: Dict[]
 }
 type Step3Action =
   | {

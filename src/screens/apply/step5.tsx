@@ -10,6 +10,7 @@ import debounce from 'lodash.debounce'
 
 import { PageStyles, Text } from '@/components'
 import { REGEX_PHONE } from '@/utils/reg'
+import { filterArrayKey } from '@/utils'
 import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT, KEY_APPLYID, TOTAL_STEPS } from '@/utils/constant'
 import { ApplyButton, Input, NormalPicker, DatePicker, RadioInput } from '@components/form/FormItem'
 import { Color } from '@/styles/color'
@@ -51,10 +52,12 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
       .matches(REGEX_PHONE, t('backupPhone.invalid'))
       .required(t('backupPhone.required')),
     educationCode: Yup.string().required(t('educationCode.required')),
-    loanPurposeCode: Yup.string().required(t('loanPurposeCode.required')),
-    socialPhone: Yup.string().required(t('socialPhone.required')),
+    loanPurpose: Yup.string().required(t('loanPurposeCode.required')),
+    socialPhone: Yup.string()
+      .matches(REGEX_PHONE, t('backupPhone.invalid'))
+      .required(t('socialPhone.required')),
     whatsapp: Yup.string().required(t('whatsapp.required')),
-    email: Yup.string().required(t('email.required')),
+    email: Yup.string().email().required(t('email.required')),
     secondCardNo: Yup.string().required(t('secondCardNo.required')),
   })
   const context = useContext(MoneyyaContext)
@@ -148,14 +151,14 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
   const onSubmit = debounce(
     (values: FormModel) => {
       submit({
-        ...values,
+        ...(filterArrayKey(values) as FormModel),
         applyId: +(MMKV.getString(KEY_APPLYID) || '0'),
         currentStep: 5,
         totalSteps: TOTAL_STEPS,
         thirdInfos: [
           {
             authPhone: state.socialPhone,
-            authType: state.whatsapp,
+            authType: '',
             isAuth: 'Y',
             thirdCode: 'whatsApp',
             thirdName: 'whatsApp',
@@ -163,8 +166,9 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
         ],
         homeAddrCity: state.homeAddrCity,
         homeAddrProvince: state.homeAddrProvince,
+        name: `${values.firstName.trim()} ${values.middleName.trim()} ${values.lastName.trim()}`,
       }).then(() => {
-        navigation.navigate('Step6')
+        navigation.navigate('Step6_1')
       })
     },
     DEBOUNCE_WAIT,
@@ -174,7 +178,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
     const queryDict = async () => {
       const dicts: DictField[] = [
         'MARITAL_STATUS',
-        'ID_TYPE',
+        'PRIMAARYID',
         'EDUCATION',
         'LOAN_PURPOSE',
         'DISTRICT',
@@ -192,7 +196,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
               case 'MARITAL_STATUS':
                 dispatch({ type: 'maritalStatusArray', value })
                 break
-              case 'ID_TYPE':
+              case 'PRIMAARYID':
                 dispatch({ type: 'docTypeArray', value })
                 break
               case 'LOAN_PURPOSE':
@@ -225,337 +229,340 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
       <ScrollView style={PageStyles.scroll} ref={scrollviewRef} keyboardShouldPersistTaps="handled">
         <View style={PageStyles.container}>
           <Formik<FormModel> initialValues={state} onSubmit={onSubmit} validationSchema={schema}>
-            {({ handleSubmit, isValid, setFieldValue }) => (
-              <>
-                <View style={PageStyles.form}>
-                  <Input
-                    scrollViewRef={scrollviewRef}
-                    onChangeText={text => {
-                      setFieldValue('firstName', text)
-                      dispatch({ type: 'firstName', value: text })
-                    }}
-                    onClear={() => {
-                      setFieldValue('firstName', '')
-                    }}
-                    onFocus={() => {
-                      behavior.setStartModify('P05_C01_I_FIRSTNAME', state.firstName)
-                    }}
-                    onBlur={() => {
-                      behavior.setEndModify('P05_C01_I_FIRSTNAME', state.firstName)
-                    }}
-                    value={state.firstName}
-                    field={'firstName'}
-                    label={t('firstName.label')}
-                    placeholder={t('firstName.placeholder')}
-                  />
-                  <Input
-                    scrollViewRef={scrollviewRef}
-                    onChangeText={text => {
-                      setFieldValue('middleName', text)
-                      dispatch({ type: 'middleName', value: text })
-                    }}
-                    onClear={() => {
-                      setFieldValue('middleName', '')
-                    }}
-                    onFocus={() => {
-                      behavior.setStartModify('P05_C02_I_MIDDLENAME', state.middleName)
-                    }}
-                    onBlur={() => {
-                      behavior.setEndModify('P05_C02_I_MIDDLENAME', state.middleName)
-                    }}
-                    value={state.middleName}
-                    field={'middleName'}
-                    label={t('middleName.label')}
-                    placeholder={t('middleName.placeholder')}
-                  />
-                  <Input
-                    scrollViewRef={scrollviewRef}
-                    onChangeText={text => {
-                      setFieldValue('lastName', text)
-                      dispatch({ type: 'lastName', value: text })
-                    }}
-                    onClear={() => {
-                      setFieldValue('lastName', '')
-                    }}
-                    onFocus={() => {
-                      behavior.setStartModify('P05_C03_I_LASTNAME', state.lastName)
-                    }}
-                    onBlur={() => {
-                      behavior.setEndModify('P05_C03_I_LASTNAME', state.lastName)
-                    }}
-                    value={state.lastName}
-                    field={'lastName'}
-                    label={t('lastName.label')}
-                    placeholder={t('lastName.placeholder')}
-                  />
-                  <DatePicker
-                    scrollViewRef={scrollviewRef}
-                    onChange={text => {
-                      setFieldValue('birth', text)
-                      dispatch({ type: 'birth', value: text })
-                      behavior.setModify('P05_C01_S_BIRTH', text, state.birth)
-                    }}
-                    title={t('birth.label')}
-                    field={'birth'}
-                    label={t('birth.label')}
-                    value={state.birth}
-                    placeholder={t('birth.placeholder')}
-                  />
-                  <RadioInput
-                    onChange={text => {
-                      setFieldValue('sex', text)
-                      dispatch({ type: 'gender', value: text as Gender })
-                      behavior.setModify('P05_C02_S_GENDER', text, state.sex)
-                    }}
-                    field={'sex'}
-                    value={state.sex}
-                    label={t('gender.label')}
-                  />
-                  <Input
-                    onChangeText={text => {
-                      setFieldValue('idcard', text)
-                      dispatch({ type: 'idcard', value: text })
-                    }}
-                    onFocus={() => {
-                      behavior.setStartModify('P05_C04_I_IDCARD', state.idcard)
-                    }}
-                    onBlur={() => {
-                      behavior.setEndModify('P05_C04_I_IDCARD', state.idcard)
-                    }}
-                    onClear={() => {
-                      setFieldValue('idcard', '')
-                    }}
-                    value={state.idcard}
-                    field={'idcard'}
-                    label={t('idcard.label')}
-                    scrollViewRef={scrollviewRef}
-                    placeholder={t('idcard.placeholder')}
-                  />
-                  <NormalPicker
-                    onChange={(record: Dict) => {
-                      setFieldValue('maritalStatus', record.code)
-                      dispatch({ type: 'maritalStatus', value: record.code })
-                      behavior.setModify(
-                        'P05_C03_S_MARITALSTATUS',
-                        record.code,
-                        state.maritalStatus
-                      )
-                    }}
-                    value={state.maritalStatus}
-                    title={t('maritalStatus.label')}
-                    field={'maritalStatus'}
-                    label={t('maritalStatus.label')}
-                    placeholder={t('maritalStatus.placeholder')}
-                    dataSource={state.maritalStatusArray}
-                    scrollViewRef={scrollviewRef}
-                  />
-                  <NormalPicker
-                    onChange={(record: Dict) => {
-                      setFieldValue('homeAddrProvinceCode', record.code)
-                      dispatch({ type: 'homeAddrProvince', value: record })
-                      dispatch({ type: 'homeAddrCity', value: { name: '', code: '' } })
-                      behavior.setModify(
-                        'P05_C04_S_HOMEADDRPROVINCECODE',
-                        record.code,
-                        state.homeAddrProvinceCode
-                      )
-                    }}
-                    value={state.homeAddrProvinceCode}
-                    title={t('homeAddrProvinceCode.label')}
-                    field={'homeAddrProvinceCode'}
-                    label={t('homeAddrProvinceCode.label')}
-                    placeholder={t('homeAddrProvinceCode.placeholder')}
-                    dataSource={state.homeAddrProvinceArray}
-                    scrollViewRef={scrollviewRef}
-                  />
-                  <NormalPicker
-                    onChange={(record: Dict) => {
-                      setFieldValue('homeAddrCityCode', record.code)
-                      dispatch({ type: 'homeAddrCity', value: record })
-                      behavior.setModify(
-                        'P05_C05_S_HOMEADDRCITYCODE',
-                        record.code,
-                        state.homeAddrCityCode
-                      )
-                    }}
-                    value={state.homeAddrCityCode}
-                    title={t('homeAddrCityCode.label')}
-                    field={'homeAddrCityCode'}
-                    label={t('homeAddrCityCode.label')}
-                    placeholder={t('homeAddrCityCode.placeholder')}
-                    dataSource={state.homeAddrCityArray}
-                    scrollViewRef={scrollviewRef}
-                  />
-                  <Input
-                    onChangeText={(text: string) => {
-                      setFieldValue('homeAddrDetail', text)
-                      dispatch({ type: 'homeAddrDetail', value: text })
-                    }}
-                    onClear={function (): void {
-                      setFieldValue('homeAddrDetail', '')
-                    }}
-                    onFocus={() => {
-                      behavior.setStartModify('P05_C05_I_IHOMEADDRDETAIL', state.homeAddrDetail)
-                    }}
-                    onBlur={() => {
-                      behavior.setEndModify('P05_C05_I_IHOMEADDRDETAIL', state.homeAddrDetail)
-                    }}
-                    value={state.homeAddrDetail}
-                    field={'homeAddrDetail'}
-                    label={t('homeAddrDetail.label')}
-                    placeholder={t('homeAddrDetail.placeholder')}
-                  />
-                  <NormalPicker
-                    onChange={function (record: Dict): void {
-                      setFieldValue('docType', record.code)
-                      dispatch({ type: 'docType', value: record.code })
-                      behavior.setModify('P05_C06_S_DOCTYPE', record.code, state.docType)
-                    }}
-                    value={state.docType}
-                    title={t('docType.label')}
-                    field={'docType'}
-                    label={t('docType.label')}
-                    placeholder={t('docType.placeholder')}
-                    dataSource={state.docTypeArray}
-                  />
-                  <Input
-                    onChangeText={function (text: string): void {
-                      setFieldValue('backupPhone', text)
-                      dispatch({ type: 'backupPhone', value: text })
-                    }}
-                    onClear={function (): void {
-                      setFieldValue('backupPhone', '')
-                    }}
-                    onFocus={() => {
-                      behavior.setStartModify('P05_C06_I_BACKUPPHONE', state.backupPhone)
-                    }}
-                    onBlur={() => {
-                      behavior.setEndModify('P05_C06_I_BACKUPPHONE', state.backupPhone)
-                    }}
-                    value={state.backupPhone}
-                    field={'backupPhone'}
-                    maxLength={10}
-                    label={t('backupPhone.label')}
-                    placeholder={t('backupPhone.placeholder')}
-                  />
-                  <NormalPicker
-                    onChange={function (record: Dict): void {
-                      setFieldValue('educationCode', record.code)
-                      dispatch({ type: 'educationCode', value: record.code })
-                      behavior.setModify(
-                        'P05_C07_S_EDUCATIONCODE',
-                        record.code,
-                        state.educationCode
-                      )
-                    }}
-                    value={state.educationCode}
-                    title={t('educationCode.label')}
-                    field={'educationCode'}
-                    label={t('educationCode.label')}
-                    placeholder={t('educationCode.placeholder')}
-                    dataSource={state.educationArray}
-                  />
-                  <NormalPicker
-                    onChange={function (record: Dict): void {
-                      setFieldValue('loanPurpose', record.code)
-                      dispatch({ type: 'loanPurpose', value: record.code })
-                      behavior.setModify('P05_C08_S_LOANPURPOSE', record.code, state.loanPurpose)
-                    }}
-                    value={state.loanPurpose}
-                    title={t('loanPurpose.label')}
-                    field={'loanPurpose'}
-                    label={t('loanPurpose.label')}
-                    placeholder={t('loanPurpose.placeholder')}
-                    dataSource={state.loanPurposeArray}
-                  />
-                  <Input
-                    onChangeText={function (text: string): void {
-                      setFieldValue('socialPhone', text)
-                      dispatch({ type: 'socialPhone', value: text })
-                    }}
-                    onClear={function (): void {
-                      setFieldValue('socialPhone', '')
-                    }}
-                    onFocus={() => {
-                      behavior.setStartModify('P05_C07_I_SOCIALPHONE', state.socialPhone)
-                    }}
-                    onBlur={() => {
-                      behavior.setEndModify('P05_C07_I_SOCIALPHONE', state.socialPhone)
-                    }}
-                    value={state.socialPhone}
-                    field={'socialPhone'}
-                    maxLength={10}
-                    label={t('socialPhone.label')}
-                    placeholder={t('socialPhone.placeholder')}
-                  />
-                  <Input
-                    onChangeText={function (text: string): void {
-                      setFieldValue('whatsapp', text)
-                      dispatch({ type: 'whatsapp', value: text })
-                    }}
-                    onClear={function (): void {
-                      setFieldValue('whatsapp', '')
-                    }}
-                    onFocus={() => {
-                      behavior.setStartModify('P05_C08_I_WHATSAPP', state.whatsapp)
-                    }}
-                    onBlur={() => {
-                      behavior.setEndModify('P05_C08_I_WHATSAPP', state.whatsapp)
-                    }}
-                    value={state.whatsapp}
-                    field={'whatsapp'}
-                    label={t('whatsapp.label')}
-                    placeholder={t('whatsapp.placeholder')}
-                  />
-                  <Input
-                    onChangeText={function (text: string): void {
-                      setFieldValue('email', text)
-                      dispatch({ type: 'email', value: text })
-                    }}
-                    onClear={function (): void {
-                      setFieldValue('email', '')
-                    }}
-                    onFocus={() => {
-                      behavior.setStartModify('P05_C09_I_EMAIL', state.email)
-                    }}
-                    onBlur={() => {
-                      behavior.setEndModify('P05_C09_I_EMAIL', state.email)
-                    }}
-                    value={state.email}
-                    field={'email'}
-                    label={t('email.label')}
-                    placeholder={t('email.placeholder')}
-                  />
-                  <Input
-                    onChangeText={function (text: string): void {
-                      setFieldValue('secondCardNo', text)
-                      dispatch({ type: 'secondCardNo', value: text })
-                    }}
-                    onClear={function (): void {
-                      setFieldValue('secondCardNo', '')
-                    }}
-                    onFocus={() => {
-                      behavior.setStartModify('P05_C10_I_SECONDCARDNO', state.secondCardNo)
-                    }}
-                    onBlur={() => {
-                      behavior.setEndModify('P05_C10_I_SECONDCARDNO', state.secondCardNo)
-                    }}
-                    value={state.secondCardNo}
-                    field={'secondCardNo'}
-                    label={t('secondCardNo.label')}
-                    placeholder={t('secondCardNo.placeholder')}
-                  />
-                </View>
-                <View style={PageStyles.btnWrap}>
-                  <ApplyButton
-                    type={isValid ? 'primary' : undefined}
-                    onPress={handleSubmit}
-                    loading={context.loading.effects.apply}>
-                    <Text color={isValid ? '#fff' : '#aaa'}>{t('submit')}</Text>
-                  </ApplyButton>
-                </View>
-              </>
-            )}
+            {({ handleSubmit, isValid, setFieldValue, errors }) => {
+              console.log(errors)
+              return (
+                <>
+                  <View style={PageStyles.form}>
+                    <Input
+                      scrollViewRef={scrollviewRef}
+                      onChangeText={text => {
+                        setFieldValue('firstName', text)
+                        dispatch({ type: 'firstName', value: text })
+                      }}
+                      onClear={() => {
+                        setFieldValue('firstName', '')
+                      }}
+                      onFocus={() => {
+                        behavior.setStartModify('P05_C01_I_FIRSTNAME', state.firstName)
+                      }}
+                      onBlur={() => {
+                        behavior.setEndModify('P05_C01_I_FIRSTNAME', state.firstName)
+                      }}
+                      value={state.firstName}
+                      field={'firstName'}
+                      label={t('firstName.label')}
+                      placeholder={t('firstName.placeholder')}
+                    />
+                    <Input
+                      scrollViewRef={scrollviewRef}
+                      onChangeText={text => {
+                        setFieldValue('middleName', text)
+                        dispatch({ type: 'middleName', value: text })
+                      }}
+                      onClear={() => {
+                        setFieldValue('middleName', '')
+                      }}
+                      onFocus={() => {
+                        behavior.setStartModify('P05_C02_I_MIDDLENAME', state.middleName)
+                      }}
+                      onBlur={() => {
+                        behavior.setEndModify('P05_C02_I_MIDDLENAME', state.middleName)
+                      }}
+                      value={state.middleName}
+                      field={'middleName'}
+                      label={t('middleName.label')}
+                      placeholder={t('middleName.placeholder')}
+                    />
+                    <Input
+                      scrollViewRef={scrollviewRef}
+                      onChangeText={text => {
+                        setFieldValue('lastName', text)
+                        dispatch({ type: 'lastName', value: text })
+                      }}
+                      onClear={() => {
+                        setFieldValue('lastName', '')
+                      }}
+                      onFocus={() => {
+                        behavior.setStartModify('P05_C03_I_LASTNAME', state.lastName)
+                      }}
+                      onBlur={() => {
+                        behavior.setEndModify('P05_C03_I_LASTNAME', state.lastName)
+                      }}
+                      value={state.lastName}
+                      field={'lastName'}
+                      label={t('lastName.label')}
+                      placeholder={t('lastName.placeholder')}
+                    />
+                    <DatePicker
+                      scrollViewRef={scrollviewRef}
+                      onChange={text => {
+                        setFieldValue('birth', text)
+                        dispatch({ type: 'birth', value: text })
+                        behavior.setModify('P05_C01_S_BIRTH', text, state.birth)
+                      }}
+                      title={t('birth.label')}
+                      field={'birth'}
+                      label={t('birth.label')}
+                      value={state.birth}
+                      placeholder={t('birth.placeholder')}
+                    />
+                    <RadioInput
+                      onChange={text => {
+                        setFieldValue('sex', text)
+                        dispatch({ type: 'gender', value: text as Gender })
+                        behavior.setModify('P05_C02_S_GENDER', text, state.sex)
+                      }}
+                      field={'sex'}
+                      value={state.sex}
+                      label={t('gender.label')}
+                    />
+                    <Input
+                      onChangeText={text => {
+                        setFieldValue('idcard', text)
+                        dispatch({ type: 'idcard', value: text })
+                      }}
+                      onFocus={() => {
+                        behavior.setStartModify('P05_C04_I_IDCARD', state.idcard)
+                      }}
+                      onBlur={() => {
+                        behavior.setEndModify('P05_C04_I_IDCARD', state.idcard)
+                      }}
+                      onClear={() => {
+                        setFieldValue('idcard', '')
+                      }}
+                      value={state.idcard}
+                      field={'idcard'}
+                      label={t('idcard.label')}
+                      scrollViewRef={scrollviewRef}
+                      placeholder={t('idcard.placeholder')}
+                    />
+                    <NormalPicker
+                      onChange={(record: Dict) => {
+                        setFieldValue('maritalStatus', record.code)
+                        dispatch({ type: 'maritalStatus', value: record.code })
+                        behavior.setModify(
+                          'P05_C03_S_MARITALSTATUS',
+                          record.code,
+                          state.maritalStatus
+                        )
+                      }}
+                      value={state.maritalStatus}
+                      title={t('maritalStatus.label')}
+                      field={'maritalStatus'}
+                      label={t('maritalStatus.label')}
+                      placeholder={t('maritalStatus.placeholder')}
+                      dataSource={state.maritalStatusArray}
+                      scrollViewRef={scrollviewRef}
+                    />
+                    <NormalPicker
+                      onChange={(record: Dict) => {
+                        setFieldValue('homeAddrProvinceCode', record.code)
+                        dispatch({ type: 'homeAddrProvince', value: record })
+                        dispatch({ type: 'homeAddrCity', value: { name: '', code: '' } })
+                        behavior.setModify(
+                          'P05_C04_S_HOMEADDRPROVINCECODE',
+                          record.code,
+                          state.homeAddrProvinceCode
+                        )
+                      }}
+                      value={state.homeAddrProvinceCode}
+                      title={t('homeAddrProvinceCode.label')}
+                      field={'homeAddrProvinceCode'}
+                      label={t('homeAddrProvinceCode.label')}
+                      placeholder={t('homeAddrProvinceCode.placeholder')}
+                      dataSource={state.homeAddrProvinceArray}
+                      scrollViewRef={scrollviewRef}
+                    />
+                    <NormalPicker
+                      onChange={(record: Dict) => {
+                        setFieldValue('homeAddrCityCode', record.code)
+                        dispatch({ type: 'homeAddrCity', value: record })
+                        behavior.setModify(
+                          'P05_C05_S_HOMEADDRCITYCODE',
+                          record.code,
+                          state.homeAddrCityCode
+                        )
+                      }}
+                      value={state.homeAddrCityCode}
+                      title={t('homeAddrCityCode.label')}
+                      field={'homeAddrCityCode'}
+                      label={t('homeAddrCityCode.label')}
+                      placeholder={t('homeAddrCityCode.placeholder')}
+                      dataSource={state.homeAddrCityArray}
+                      scrollViewRef={scrollviewRef}
+                    />
+                    <Input
+                      onChangeText={(text: string) => {
+                        setFieldValue('homeAddrDetail', text)
+                        dispatch({ type: 'homeAddrDetail', value: text })
+                      }}
+                      onClear={function (): void {
+                        setFieldValue('homeAddrDetail', '')
+                      }}
+                      onFocus={() => {
+                        behavior.setStartModify('P05_C05_I_IHOMEADDRDETAIL', state.homeAddrDetail)
+                      }}
+                      onBlur={() => {
+                        behavior.setEndModify('P05_C05_I_IHOMEADDRDETAIL', state.homeAddrDetail)
+                      }}
+                      value={state.homeAddrDetail}
+                      field={'homeAddrDetail'}
+                      label={t('homeAddrDetail.label')}
+                      placeholder={t('homeAddrDetail.placeholder')}
+                    />
+                    <NormalPicker
+                      onChange={function (record: Dict): void {
+                        setFieldValue('docType', record.code)
+                        dispatch({ type: 'docType', value: record.code })
+                        behavior.setModify('P05_C06_S_DOCTYPE', record.code, state.docType)
+                      }}
+                      value={state.docType}
+                      title={t('docType.label')}
+                      field={'docType'}
+                      label={t('docType.label')}
+                      placeholder={t('docType.placeholder')}
+                      dataSource={state.docTypeArray}
+                    />
+                    <Input
+                      onChangeText={function (text: string): void {
+                        setFieldValue('backupPhone', text)
+                        dispatch({ type: 'backupPhone', value: text })
+                      }}
+                      onClear={function (): void {
+                        setFieldValue('backupPhone', '')
+                      }}
+                      onFocus={() => {
+                        behavior.setStartModify('P05_C06_I_BACKUPPHONE', state.backupPhone)
+                      }}
+                      onBlur={() => {
+                        behavior.setEndModify('P05_C06_I_BACKUPPHONE', state.backupPhone)
+                      }}
+                      value={state.backupPhone}
+                      field={'backupPhone'}
+                      maxLength={10}
+                      label={t('backupPhone.label')}
+                      placeholder={t('backupPhone.placeholder')}
+                    />
+                    <NormalPicker
+                      onChange={function (record: Dict): void {
+                        setFieldValue('educationCode', record.code)
+                        dispatch({ type: 'educationCode', value: record.code })
+                        behavior.setModify(
+                          'P05_C07_S_EDUCATIONCODE',
+                          record.code,
+                          state.educationCode
+                        )
+                      }}
+                      value={state.educationCode}
+                      title={t('educationCode.label')}
+                      field={'educationCode'}
+                      label={t('educationCode.label')}
+                      placeholder={t('educationCode.placeholder')}
+                      dataSource={state.educationArray}
+                    />
+                    <NormalPicker
+                      onChange={function (record: Dict): void {
+                        setFieldValue('loanPurpose', record.code)
+                        dispatch({ type: 'loanPurpose', value: record.code })
+                        behavior.setModify('P05_C08_S_LOANPURPOSE', record.code, state.loanPurpose)
+                      }}
+                      value={state.loanPurpose}
+                      title={t('loanPurpose.label')}
+                      field={'loanPurpose'}
+                      label={t('loanPurpose.label')}
+                      placeholder={t('loanPurpose.placeholder')}
+                      dataSource={state.loanPurposeArray}
+                    />
+                    <Input
+                      onChangeText={function (text: string): void {
+                        setFieldValue('socialPhone', text)
+                        dispatch({ type: 'socialPhone', value: text })
+                      }}
+                      onClear={function (): void {
+                        setFieldValue('socialPhone', '')
+                      }}
+                      onFocus={() => {
+                        behavior.setStartModify('P05_C07_I_SOCIALPHONE', state.socialPhone)
+                      }}
+                      onBlur={() => {
+                        behavior.setEndModify('P05_C07_I_SOCIALPHONE', state.socialPhone)
+                      }}
+                      value={state.socialPhone}
+                      field={'socialPhone'}
+                      maxLength={10}
+                      label={t('socialPhone.label')}
+                      placeholder={t('socialPhone.placeholder')}
+                    />
+                    <Input
+                      onChangeText={function (text: string): void {
+                        setFieldValue('whatsapp', text)
+                        dispatch({ type: 'whatsapp', value: text })
+                      }}
+                      onClear={function (): void {
+                        setFieldValue('whatsapp', '')
+                      }}
+                      onFocus={() => {
+                        behavior.setStartModify('P05_C08_I_WHATSAPP', state.whatsapp)
+                      }}
+                      onBlur={() => {
+                        behavior.setEndModify('P05_C08_I_WHATSAPP', state.whatsapp)
+                      }}
+                      value={state.whatsapp}
+                      field={'whatsapp'}
+                      label={t('whatsapp.label')}
+                      placeholder={t('whatsapp.placeholder')}
+                    />
+                    <Input
+                      onChangeText={function (text: string): void {
+                        setFieldValue('email', text)
+                        dispatch({ type: 'email', value: text })
+                      }}
+                      onClear={function (): void {
+                        setFieldValue('email', '')
+                      }}
+                      onFocus={() => {
+                        behavior.setStartModify('P05_C09_I_EMAIL', state.email)
+                      }}
+                      onBlur={() => {
+                        behavior.setEndModify('P05_C09_I_EMAIL', state.email)
+                      }}
+                      value={state.email}
+                      field={'email'}
+                      label={t('email.label')}
+                      placeholder={t('email.placeholder')}
+                    />
+                    <Input
+                      onChangeText={function (text: string): void {
+                        setFieldValue('secondCardNo', text)
+                        dispatch({ type: 'secondCardNo', value: text })
+                      }}
+                      onClear={function (): void {
+                        setFieldValue('secondCardNo', '')
+                      }}
+                      onFocus={() => {
+                        behavior.setStartModify('P05_C10_I_SECONDCARDNO', state.secondCardNo)
+                      }}
+                      onBlur={() => {
+                        behavior.setEndModify('P05_C10_I_SECONDCARDNO', state.secondCardNo)
+                      }}
+                      value={state.secondCardNo}
+                      field={'secondCardNo'}
+                      label={t('secondCardNo.label')}
+                      placeholder={t('secondCardNo.placeholder')}
+                    />
+                  </View>
+                  <View style={PageStyles.btnWrap}>
+                    <ApplyButton
+                      type={isValid ? 'primary' : undefined}
+                      onPress={handleSubmit}
+                      loading={context.loading.effects.apply}>
+                      <Text color={isValid ? '#fff' : '#aaa'}>{t('submit')}</Text>
+                    </ApplyButton>
+                  </View>
+                </>
+              )
+            }}
           </Formik>
         </View>
       </ScrollView>

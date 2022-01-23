@@ -12,14 +12,14 @@ import { PageStyles, Text } from '@/components'
 import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT, KEY_APPLYID, TOTAL_STEPS } from '@/utils/constant'
 import { ApplyButton, IdcardPhotoPicker } from '@components/form/FormItem'
 import { Color } from '@/styles/color'
-import type { ApplyStep6Parameter } from '@/typings/apply'
+import type { ApplyParameter, ApplyStep6Parameter } from '@/typings/apply'
 import { useLocation } from '@/hooks'
 import { submit } from '@/services/apply'
 import { MMKV } from '@/utils'
 import { MoneyyaContext } from '@/state'
 
-type FormModel = Omit<ApplyStep6Parameter, 'applyId' | 'currentStep' | 'totalSteps'>
-export const Step6 = ({ navigation }: NativeStackHeaderProps) => {
+type FormModel = Omit<ApplyStep6Parameter, keyof ApplyParameter>
+export const Step6_2 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
   const schema = Yup.object().shape({
     // phone: Yup.string()
@@ -38,7 +38,6 @@ export const Step6 = ({ navigation }: NativeStackHeaderProps) => {
   )
   const onSubmit = debounce(
     (values: FormModel) => {
-      console.log(values)
       submit({
         ...values,
         applyId: +(MMKV.getString(KEY_APPLYID) || '0'),
@@ -67,7 +66,7 @@ export const Step6 = ({ navigation }: NativeStackHeaderProps) => {
               <>
                 <View style={PageStyles.form}>
                   <IdcardPhotoPicker
-                    field={'ss'}
+                    field={'idcard1'}
                     label={'El frente de tu ID'}
                     bg={require('@assets/images/apply/id1.webp')}
                     isSupplement={'Y'}
@@ -82,7 +81,7 @@ export const Step6 = ({ navigation }: NativeStackHeaderProps) => {
                     }}
                   />
                   <IdcardPhotoPicker
-                    field={'ss'}
+                    field={'idcard1'}
                     label={'La parte trasera de tu ID'}
                     bg={require('@assets/images/apply/id2.webp')}
                     isSupplement={'Y'}
