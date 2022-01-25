@@ -42,7 +42,7 @@ public class MainApplication extends Application implements ReactApplication {
         // packages.add(new MyReactNativePackage());
          packages.add(new MoneyyaPackage());
          packages.add(new WheelPickerPackage());
-         packages.add((ReactPackage) new LivenessReactPackage());
+         packages.add(new LivenessReactPackage());
         return packages;
       }
 

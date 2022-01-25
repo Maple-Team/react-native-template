@@ -10,32 +10,28 @@ import debounce from 'lodash.debounce'
 
 import { PageStyles, Text } from '@/components'
 import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT, KEY_APPLYID, TOTAL_STEPS } from '@/utils/constant'
-import { ApplyButton, IdcardPhotoPicker } from '@components/form/FormItem'
+import { ApplyButton, PhotoPicker } from '@components/form/FormItem'
 import { Color } from '@/styles/color'
 import type { ApplyStep4Parameter } from '@/typings/apply'
 import { useBehavior, useLocation } from '@/hooks'
-import { MoneyyaContext } from '@/state'
+import { default as MoneyyaContext } from '@/state'
 import { submit } from '@/services/apply'
 import { MMKV } from '@/utils'
 
 type FormModel = Omit<ApplyStep4Parameter, 'applyId' | 'currentStep' | 'totalSteps'> & {
-  idcard1?: string
-  idcard2?: string
+  idcard: string
 }
 export const Step4 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
   const schema = Yup.object().shape({
-    idcard1: Yup.string().required(t('idcard1.required')),
-    idcard2: Yup.string().required(t('idcard2.required')),
+    idcard: Yup.string().required(t('idcard1.required')),
   })
   const context = useContext(MoneyyaContext)
-  const initialValue = useMemo<FormModel>(() => ({ images: [] }), [])
-  const [id1, setId1] = useState<number>(0)
-  const [id2, setId2] = useState<number>(0)
+  const initialValue = useMemo<FormModel>(() => ({ images: [], idcard: '' }), [])
   const onSubmit = debounce(
-    () => {
+    (values: FormModel) => {
       submit({
-        images: [{ imageId: id1 }, { imageId: id2 }],
+        images: [{ imageId: +values.idcard || 0 }],
         applyId: +(MMKV.getString(KEY_APPLYID) || '0'),
         currentStep: 4,
         totalSteps: TOTAL_STEPS,
@@ -48,7 +44,7 @@ export const Step4 = ({ navigation }: NativeStackHeaderProps) => {
   )
   const behavior = useBehavior<'P04'>('P04', 'P04_C00', 'P04_C99')
   useLocation()
-
+  const [oldExif, setExif] = useState<string>()
   return (
     <SafeAreaView style={PageStyles.sav}>
       <StatusBar translucent={false} backgroundColor={Color.primary} barStyle="default" />
@@ -63,35 +59,23 @@ export const Step4 = ({ navigation }: NativeStackHeaderProps) => {
             {({ handleSubmit, isValid, setFieldValue, errors }) => (
               <>
                 <View style={PageStyles.form}>
-                  <IdcardPhotoPicker
-                    field="idcard1"
-                    key="idcard1"
-                    label={'El frente de tu ID'}
+                  <PhotoPicker
+                    field="idcard"
+                    key="idcard"
+                    hint=""
+                    title={'Proporciona tu INE/IFE por favor'}
                     bg={require('@assets/images/apply/id1.webp')}
-                    imageType="INE_OR_IFE_FRONT"
+                    imageType="INE_OR_IFE_BACK"
                     cameraType="front"
                     onUploadSuccess={id => {
-                      setFieldValue('idcard1', id)
-                      setId1(id)
+                      setFieldValue('idcard', id)
                     }}
-                    reportExif={exif => behavior.setModify('P04_C01_S_XX1', exif, '')}
-                    isSupplement="N"
-                    error={errors.idcard1}
-                  />
-                  <IdcardPhotoPicker
-                    field="idcard2"
-                    key="idcard2"
-                    label={'La parte trasera de tu ID'}
-                    bg={require('@assets/images/apply/id2.webp')}
-                    imageType="INE_OR_IFE_BACK"
-                    cameraType="back"
-                    onUploadSuccess={id => {
-                      setFieldValue('idcard2', id)
-                      setId2(id)
+                    reportExif={exif => {
+                      setExif(exif)
+                      behavior.setModify('P04_C01_S_XX1', exif, oldExif || '')
                     }}
-                    reportExif={exif => behavior.setModify('P04_C02_S_XX2', exif, '')}
                     isSupplement="N"
-                    error={errors.idcard2}
+                    error={errors.idcard}
                   />
                 </View>
                 <View style={PageStyles.btnWrap}>

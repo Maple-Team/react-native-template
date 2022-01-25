@@ -11,14 +11,14 @@ import debounce from 'lodash.debounce'
 import { PageStyles, Text } from '@/components'
 import { REGEX_PHONE, REGEX_VALIDATE_CODE } from '@/utils/reg'
 import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT } from '@/utils/constant'
-import { Input, PasswordInput, ValidateCode } from '@components/form/FormItem'
+import { MaskInput, PasswordInput, ValidateCode } from '@components/form/FormItem'
 import { ApplyButton } from '@components/form/FormItem/applyButton'
 import { Color } from '@/styles/color'
 import { reset } from '@/services/user'
 import type { ResetPwdParameter } from '@/typings/account'
 
 import emitter from '@/eventbus'
-import { MoneyyaContext } from '@/state'
+import { default as MoneyyaContext } from '@/state'
 
 export const ResetScreen = ({ navigation }: NativeStackHeaderProps) => {
   const context = useContext(MoneyyaContext)
@@ -52,7 +52,6 @@ export const ResetScreen = ({ navigation }: NativeStackHeaderProps) => {
       reset(values).then(() => {
         emitter.emit('SHOW_MESSAGE', {
           type: 'success',
-          //@ts-ignore FIXME
           message: t('resetpwd.success'),
         })
         navigation.navigate('SignIn')
@@ -75,15 +74,17 @@ export const ResetScreen = ({ navigation }: NativeStackHeaderProps) => {
             {({ handleChange, handleSubmit, values, setFieldValue, errors, isValid }) => (
               <>
                 <View style={PageStyles.form}>
-                  <Input
+                  <MaskInput
                     field="phone"
                     label={t('phone.label')}
-                    onChangeText={handleChange('phone')}
+                    onChangeText={(formatted, extracted) => {
+                      setFieldValue('phone', extracted)
+                    }}
                     value={values.phone}
-                    onClear={() => setFieldValue('phone', '')}
                     placeholder={t('phone.placeholder')}
                     error={errors.phone}
                     keyboardType="phone-pad"
+                    mask={'[0000] [0000] [00]'}
                   />
                   <ValidateCode
                     field="validateCode"

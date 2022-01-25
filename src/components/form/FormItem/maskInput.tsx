@@ -1,5 +1,5 @@
 import React, { RefObject, useRef, useState } from 'react'
-import { Pressable, TextInput, View, Image } from 'react-native'
+import { Pressable, View, Image } from 'react-native'
 import type { KeyboardTypeOptions } from 'react-native'
 import styles from './style'
 import { Text } from '@/components'
@@ -10,7 +10,7 @@ import TextInputMask from 'react-native-text-input-mask'
 
 interface InputProps {
   onChangeText: (formatted: string, extracted?: string) => void
-  onClear: () => void
+  onClear?: () => void
   onFocus?: () => void
   onBlur?: () => void
   value: string
@@ -36,27 +36,32 @@ export const MaskInput = ({
   mask,
   scrollViewRef,
 }: InputProps) => {
-  const fieldRef = useRef<TextInput>(null)
+  let fieldRef = useRef<any>(null)
+  let wrapperRef = useRef<View>(null)
   const [height, setHeight] = useState<number>(0)
   useFocusOnError({ fieldRef, name: field, scrollViewRef, canFocus: true, height })
   return (
     <View style={styles.formItem}>
       <Text styles={styles.label}>{label}</Text>
-      <View style={styles.inputWrap}>
+      <View
+        style={styles.inputWrap}
+        ref={wrapperRef}
+        onLayout={() => {
+          wrapperRef.current?.measure(
+            (_x: any, _y: any, _width: any, _height: number, _pageX: any, pageY: number) => {
+              setHeight(pageY - _height)
+            }
+          )
+        }}>
         <TextInputMask
           onChangeText={onChangeText}
           value={value}
-          ref={fieldRef}
-          onLayout={() => {
-            fieldRef.current?.measure((_x, _y, _width, _height, _pageX, pageY) => {
-              setHeight(pageY - _height)
-            })
-          }}
           mask={mask}
           placeholder={placeholder}
           style={[styles.input, error ? { borderBottomColor: 'red' } : {}]}
           keyboardType={keyboardType}
           onFocus={onFocus}
+          ref={fieldRef}
           placeholderTextColor={'rgba(156, 171, 185, 1)'}
           onBlur={onBlur}
         />

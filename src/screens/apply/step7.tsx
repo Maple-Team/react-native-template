@@ -10,18 +10,28 @@ import debounce from 'lodash.debounce'
 
 import { Hint, PageStyles, Text } from '@/components'
 import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT, KEY_APPLYID, TOTAL_STEPS } from '@/utils/constant'
-import { ApplyButton, Input, NormalPicker } from '@components/form/FormItem'
+import { ApplyButton, NormalPicker, MaskInput } from '@components/form/FormItem'
 import { Color } from '@/styles/color'
 import type { ApplyParameter, ApplyStep7Parameter } from '@/typings/apply'
 import { useBehavior, useLocation } from '@/hooks'
 import type { Dict, DictField } from '@/typings/response'
 import { MMKV } from '@/utils'
 import { fetchDict, submit } from '@/services/apply'
+// import { REGEX_BANK_CARD, REGEX_BANK_CLABE } from '@/utils/reg'
 
 export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
   const schema = Yup.object().shape({
-    bankCardNo: Yup.string().required(t('bankCardNo.required')), // FIXME 关联
+    bankCardNo: Yup.string()
+      // .when('cardNoType', {
+      //   is: 'CARD',
+      //   then: Yup.string().matches(REGEX_BANK_CARD, t('bankCardNo.invalid')),
+      // })
+      // .when('cardNoType', {
+      //   is: 'ACCOUNT',
+      //   then: Yup.string().matches(REGEX_BANK_CLABE, t('bankCardNo.invalid')),
+      // })
+      .required(t('bankCardNo.required')),
     bankCode: Yup.string().required(t('bankCode.required')),
     cardNoType: Yup.string().required(t('cardNoType.required')),
   })
@@ -50,6 +60,7 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
         case 'bankCode':
           return { ...s, bankCode: value }
         case 'cardNoTypeArray':
+          console.log(value.map(({ code }) => code))
           return { ...s, cardNoTypeArray: value }
         case 'cardNoType':
           return { ...s, cardNoType: value }
@@ -61,7 +72,7 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
       bankArray: [],
       bankCardNo: '',
       bankCode: '',
-      cardNoType: '',
+      cardNoType: 'CARD',
       cardNoTypeArray: [],
     }
   )
@@ -90,7 +101,7 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
   useLocation()
 
   const behavior = useBehavior<'P07'>('P07', 'P07_C00', 'P07_C99')
-
+  console.log(state.bankCode, state.bankCardNo, state.cardNoType)
   return (
     <SafeAreaView style={PageStyles.sav}>
       <StatusBar translucent={false} backgroundColor={Color.primary} barStyle="default" />
@@ -99,7 +110,7 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
         hint={'Tips:ReceiptAs and repayments may be affected by bank working'}
         hintColor={'rgba(255, 50, 50, 1)'}
       />
-      <ScrollView style={PageStyles.scroll} keyboardShouldPersistTaps="handled">
+      <ScrollView style={PageStyles.scroll} keyboardShouldPersistTaps="always">
         <View style={PageStyles.container}>
           <Formik<FormModel> initialValues={state} onSubmit={onSubmit} validationSchema={schema}>
             {({ handleSubmit, isValid, setFieldValue }) => (
@@ -107,7 +118,7 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
                 <View style={PageStyles.form}>
                   <NormalPicker
                     onChange={(record: Dict) => {
-                      setFieldValue('bankCode', record)
+                      setFieldValue('bankCode', record.code)
                       dispatch({ type: 'bankCode', value: record.code })
                       behavior.setModify('P07_C01_S_BANKCODE', record.code, state.bankCode)
                     }}
@@ -121,7 +132,8 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
                   />
                   <NormalPicker
                     onChange={(record: Dict) => {
-                      setFieldValue('cardNoType', record)
+                      console.log(record.code, 'change')
+                      setFieldValue('cardNoType', record.code)
                       dispatch({ type: 'cardNoType', value: record.code })
                       behavior.setModify('P07_C01_S_CARDNOTYPE', record.code, state.cardNoType)
                     }}
@@ -133,26 +145,47 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
                     placeholder={t('cardNoType.placeholder')}
                     dataSource={state.cardNoTypeArray}
                   />
-                  <Input
-                    onChangeText={function (text: string): void {
-                      setFieldValue('bankCardNo', text)
-                      dispatch({ type: 'bankCardNo', value: text })
-                    }}
-                    onClear={function (): void {
-                      setFieldValue('bankCardNo', '')
-                    }}
-                    onFocus={() => {
-                      behavior.setStartModify('P07_C01_I_BANKCARDNO', state.bankCardNo)
-                    }}
-                    onBlur={() => {
-                      behavior.setEndModify('P07_C01_I_BANKCARDNO', state.bankCardNo)
-                    }}
-                    value={state.bankCardNo}
-                    field={'bankCardNo'}
-                    label={t('bankCardNo.label')}
-                    placeholder={t('bankCardNo.placeholder')}
-                    key="bankCardNo"
-                  />
+                  {state.cardNoType === 'CARD' ? (
+                    <MaskInput
+                      onFocus={() => {
+                        behavior.setStartModify('P07_C01_I_BANKCARDNO', state.bankCardNo)
+                      }}
+                      onBlur={() => {
+                        behavior.setEndModify('P07_C01_I_BANKCARDNO', state.bankCardNo)
+                      }}
+                      value={state.bankCardNo}
+                      field={'bankCardNo'}
+                      keyboardType="phone-pad"
+                      label={t('bankCardNo.label') + '_card'}
+                      placeholder={t('bankCardNo.placeholder')}
+                      key="bankCardNo_card"
+                      mask={'[0000] [0000] [0000] [0000]'}
+                      onChangeText={(text: string, extracted?: string) => {
+                        setFieldValue('bankCardNo', extracted || '')
+                        dispatch({ type: 'bankCardNo', value: extracted || '' })
+                      }}
+                    />
+                  ) : (
+                    <MaskInput
+                      onChangeText={(text: string, extracted?: string) => {
+                        setFieldValue('bankCardNo', extracted || '')
+                        dispatch({ type: 'bankCardNo', value: extracted || '' })
+                      }}
+                      onFocus={() => {
+                        behavior.setStartModify('P07_C01_I_BANKCARDNO', state.bankCardNo)
+                      }}
+                      onBlur={() => {
+                        behavior.setEndModify('P07_C01_I_BANKCARDNO', state.bankCardNo)
+                      }}
+                      value={state.bankCardNo}
+                      field={'bankCardNo'}
+                      keyboardType="phone-pad"
+                      label={t('bankCardNo.label') + '_clabe'}
+                      placeholder={t('bankCardNo.placeholder')}
+                      key="bankCardNo_clabe"
+                      mask={'[0000] [0000] [0000] [0000]'}
+                    />
+                  )}
                 </View>
                 <View style={PageStyles.btnWrap}>
                   <ApplyButton type={isValid ? 'primary' : undefined} onPress={handleSubmit}>

@@ -8,5 +8,8 @@
     "no-permission": "camera is not allow permission",
     "other-error": "camera unknown error"
   },
-  "upload-Failed": "upload failed"
+  "upload-Failed": "upload failed",
+  "resetpwd": {
+    "success": "reset pwd success"
+  }
 }

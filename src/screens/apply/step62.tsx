@@ -1,5 +1,5 @@
 import type { NativeStackHeaderProps } from '@react-navigation/native-stack'
-import React, { useContext, useMemo } from 'react'
+import React, { useContext, useMemo, useState } from 'react'
 import { View, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
@@ -10,30 +10,35 @@ import debounce from 'lodash.debounce'
 
 import { PageStyles, Text } from '@/components'
 import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT, KEY_APPLYID, TOTAL_STEPS } from '@/utils/constant'
-import { ApplyButton, HandPhotoPicker } from '@components/form/FormItem'
+import { ApplyButton, PhotoPicker } from '@components/form/FormItem'
 import { Color } from '@/styles/color'
 import type { ApplyParameter, ApplyStep6Parameter } from '@/typings/apply'
-import { useLocation } from '@/hooks'
+import { useBehavior, useLocation } from '@/hooks'
 import { submit } from '@/services/apply'
 import { MMKV } from '@/utils'
-import { MoneyyaContext } from '@/state'
+import { default as MoneyyaContext } from '@/state'
 
-type FormModel = Omit<ApplyStep6Parameter, keyof ApplyParameter>
+type FormModel = Omit<ApplyStep6Parameter, keyof ApplyParameter> & {
+  handId: string
+}
 export const Step62 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
-  const schema = Yup.object().shape({})
+  const schema = Yup.object().shape({
+    handId: Yup.string().required(t('idcard.required')),
+  })
   const initialValue = useMemo<FormModel>(
     () => ({
       images: [],
       livenessAuthFlag: 'N',
       livenessId: '',
+      handId: '',
     }),
     []
   )
   const onSubmit = debounce(
     (values: FormModel) => {
       submit({
-        ...values,
+        images: [{ imageId: values ? +values.handId : 0 }],
         applyId: +(MMKV.getString(KEY_APPLYID) || '0'),
         currentStep: 6,
         totalSteps: TOTAL_STEPS,
@@ -44,9 +49,10 @@ export const Step62 = ({ navigation }: NativeStackHeaderProps) => {
     DEBOUNCE_WAIT,
     DEBOUNCE_OPTIONS
   )
-
+  const behavior = useBehavior<'P06'>('P06', 'P06_C00', 'P06_C99')
   useLocation()
   const context = useContext(MoneyyaContext)
+  const [oldExif, setExif] = useState<string>()
   return (
     <SafeAreaView style={PageStyles.sav}>
       <StatusBar translucent={false} backgroundColor={Color.primary} barStyle="default" />
@@ -56,21 +62,34 @@ export const Step62 = ({ navigation }: NativeStackHeaderProps) => {
             initialValues={initialValue}
             onSubmit={onSubmit}
             validationSchema={schema}>
-            {({ handleSubmit, isValid }) => (
+            {({ handleSubmit, isValid, setFieldValue, errors }) => (
               <>
                 <View style={PageStyles.form}>
-                  <HandPhotoPicker
-                    onChange={text => {
-                      console.log(text)
+                  <PhotoPicker
+                    field="handId"
+                    key="handId"
+                    bg={require('@assets/images/apply/id1.webp')}
+                    imageType="INE_OR_IFE_FRONT"
+                    cameraType="back"
+                    onUploadSuccess={id => {
+                      setFieldValue('handId', id)
                     }}
-                    field={'idcard'}
+                    reportExif={exif => {
+                      setExif(exif)
+                      behavior.setModify('P06_C01_S_HANDIDCARD', exif, oldExif || '')
+                    }}
+                    isSupplement="N"
+                    error={errors.handId}
+                    hint={
+                      'Must provide above mentioned images, otherwise application will be rejected.'
+                    }
                   />
                 </View>
                 <View style={PageStyles.btnWrap}>
                   <ApplyButton
                     type={isValid ? 'primary' : undefined}
                     onPress={handleSubmit}
-                    loading={context.loading.effects.apply}>
+                    loading={context.loading.effects.APPLY}>
                     <Text color={isValid ? '#fff' : '#aaa'}>{t('submit')}</Text>
                   </ApplyButton>
                 </View>

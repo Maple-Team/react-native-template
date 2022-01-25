@@ -1,5 +1,5 @@
 import type { NativeStackHeaderProps } from '@react-navigation/native-stack'
-import React, { type ReactNode } from 'react'
+import React, { useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
 import { View, StatusBar, ImageBackground, Pressable } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
@@ -11,19 +11,20 @@ import { PageStyles, Text, Hint } from '@/components'
 import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT, KEY_APPLYID, TOTAL_STEPS } from '@/utils/constant'
 import { ApplyButton } from '@components/form/FormItem'
 import { Color } from '@/styles/color'
-import type { ApplyStep8Parameter } from '@/typings/apply'
-import { useBehavior, useLocation, useSensor } from '@/hooks'
-import { submit } from '@/services/apply'
+import { ApplyStep8Parameter, Calculate, Product } from '@/typings/apply'
+import { useBehavior, useLocation } from '@/hooks'
+import { queryProduct, scheduleCalc, submit } from '@/services/apply'
 import { MMKV } from '@/utils'
+import { default as MoneyyaContext } from '@/state'
 
 type FormModel = Omit<ApplyStep8Parameter, 'applyId' | 'currentStep' | 'totalSteps'>
 export const Step8 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
-  const sensor = useSensor()
+  // const sensor = useSensor()
 
   const onSubmit = debounce(
     (values: FormModel) => {
-      console.log(sensor)
+      // console.log(sensor)
       submit({
         ...values,
         applyId: +(MMKV.getString(KEY_APPLYID) || '0'),
@@ -38,7 +39,43 @@ export const Step8 = ({ navigation }: NativeStackHeaderProps) => {
   )
   useBehavior<'P08'>('P08', 'P08_C00', 'P08_C99')
   useLocation()
-
+  const context = useContext(MoneyyaContext)
+  const [productInfo, setProductInfo] = useState<Product>()
+  const [loanAmt, setLoanAmt] = useState<number>(6000)
+  const [loanDay, setLoanDay] = useState<number>(7)
+  useEffect(() => {
+    queryProduct({ phone: context.user?.phone || '', source: 'APP' }).then(res => {
+      console.log('productInfo', res)
+      setProductInfo(res)
+      setLoanAmt(res.maxAmount)
+    })
+  }, [context.user?.phone])
+  const [calcResult, setcalcResult] = useState<Calculate>()
+  useEffect(() => {
+    scheduleCalc({
+      displayLoanDays: productInfo?.products[0].displayLoanDays || 0,
+      loanAmt,
+      loanCode: productInfo?.loanCode!,
+      loanDay,
+    }).then(res => {
+      console.log('calc', res)
+      setcalcResult(res)
+    })
+  }, [loanAmt, loanDay, productInfo?.loanCode, productInfo?.products])
+  const loanTerms: {
+    day: number
+    activate: boolean
+  }[] = useMemo(() => {
+    const loanStep = productInfo?.loanStep!
+    const maxViewTerms = productInfo?.maxViewTerms!
+    const maxLoanTerms = productInfo?.maxLoanTerms!
+    const data = Array.from({ length: maxViewTerms / loanStep - 1 }, (_, i) => i)
+    data.push(maxViewTerms)
+    return data.map(item => ({
+      day: (item + 1) * loanStep,
+      activate: maxLoanTerms >= item,
+    }))
+  }, [productInfo])
   return (
     <SafeAreaView style={PageStyles.sav}>
       <StatusBar translucent={false} backgroundColor={Color.primary} barStyle="default" />
@@ -56,23 +93,24 @@ export const Step8 = ({ navigation }: NativeStackHeaderProps) => {
               style={{ width: '100%', height: 159 }}>
               <View style={{ alignItems: 'center', paddingTop: 23.5 }}>
                 <Text fontSize={25} fontWeight="bold" color="#fff">
-                  $6600
+                  ${loanAmt}
                 </Text>
                 <Text fontSize={13} color="#fff">
                   Loan Amount
                 </Text>
                 <Slider
                   containerStyle={{ width: 330, height: 34 }}
-                  minimumValue={3000}
-                  value={5000}
+                  minimumValue={productInfo?.minAmount || 3000}
+                  value={loanAmt}
                   onValueChange={v => {
-                    console.log('change', v)
+                    setLoanAmt(Array.isArray(v) ? v[0] : v)
                   }}
+                  step={productInfo?.amountStep || 1000}
                   trackStyle={{ height: 5 }}
                   thumbStyle={{ alignItems: 'center', height: 34 }}
                   thumbTintColor="transparent"
                   thumbImage={require('@/assets/images/apply/slider_dot.webp')}
-                  maximumValue={10000}
+                  maximumValue={productInfo?.maxViewAmount || 10000}
                   minimumTrackTintColor={Color.primary}
                   maximumTrackTintColor="rgba(179, 206, 242, 1)"
                 />
@@ -83,11 +121,11 @@ export const Step8 = ({ navigation }: NativeStackHeaderProps) => {
                   justifyContent: 'space-between',
                   paddingHorizontal: 20,
                 }}>
-                <Text fontSize={11} color="#fff">
-                  3000
+                <Text fontSize={11} color="#fff" key="left">
+                  {productInfo?.minAmount || 3000}
                 </Text>
-                <Text fontSize={11} color="#fff">
-                  10000
+                <Text fontSize={11} color="#fff" key="right">
+                  {productInfo?.maxViewAmount || 10000}
                 </Text>
               </View>
             </ImageBackground>
@@ -111,17 +149,29 @@ export const Step8 = ({ navigation }: NativeStackHeaderProps) => {
                 </Text>
               </View>
               <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                {[7, 15, 90, 150].map(item => (
+                {loanTerms.map(({ day, activate }) => (
                   <Pressable
-                    key={item}
+                    key={`${day}`}
+                    disabled={!activate}
+                    onPress={() => {
+                      setLoanDay(day)
+                    }}
                     style={{
-                      backgroundColor: Color.primary,
+                      backgroundColor: activate
+                        ? loanDay === day
+                          ? Color.primary
+                          : '#fff'
+                        : '#eeeeee',
+                      borderColor: activate ? Color.primary : '#eeeeee',
+                      borderWidth: 1,
                       borderRadius: 17.5,
                       paddingHorizontal: 33,
                       paddingVertical: 12.5,
                     }}>
-                    <Text fontSize={13} color="#fff">
-                      {`${item}`.padStart(2, '0')}
+                    <Text
+                      fontSize={13}
+                      color={activate ? (loanDay === day ? '#fff' : '#333') : '#777'}>
+                      {`${day}`.padStart(2, '0')}
                     </Text>
                   </Pressable>
                 ))}
@@ -142,10 +192,10 @@ export const Step8 = ({ navigation }: NativeStackHeaderProps) => {
               <RightBottomDot />
               <ListInfo
                 data={[
-                  { name: 'Loan amount', value: '261800', type: 'money' },
-                  { name: 'Loan days', value: '7', type: 'day' },
+                  { name: 'Loan amount', value: `${loanAmt}`, type: 'money' },
+                  { name: 'Loan days', value: `${loanDay}`, type: 'day' },
                   { name: 'Transfer amount', value: '261800', type: 'money' },
-                  { name: 'Fee', value: '200', type: 'money' },
+                  { name: 'Fee', value: `${calcResult?.svcFee}`, type: 'money' },
                   { name: 'Collection bank card', value: '261800', type: 'bank' },
                 ]}
               />
@@ -271,6 +321,7 @@ const ListInfo = ({
     <View style={{ width: '100%', paddingHorizontal: 17 }}>
       {data.map(item => (
         <View
+          key={item.name}
           style={{
             width: '100%',
             paddingHorizontal: 14,

@@ -10,13 +10,13 @@ import debounce from 'lodash.debounce'
 import { PageStyles, Text } from '@/components'
 import { REGEX_PHONE, REGEX_VALIDATE_CODE } from '@/utils/reg'
 import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT, KEY_INTERIP, KEY_OUTERIP } from '@/utils/constant'
-import { Input, PasswordInput, ValidateCode } from '@components/form/FormItem'
+import { MaskInput, PasswordInput, ValidateCode } from '@components/form/FormItem'
 import { ApplyButton } from '@components/form/FormItem/applyButton'
 import { Color } from '@/styles/color'
 import type { RegisterParameter } from '@/typings/request'
 import { register } from '@/services/user'
 import { useLocation } from '@/hooks'
-import { MoneyyaContext } from '@/state'
+import { default as MoneyyaContext } from '@/state'
 import { useNavigation } from '@react-navigation/native'
 import { useNetInfo } from '@react-native-community/netinfo'
 import { MMKV } from '@/utils'
@@ -93,16 +93,17 @@ export const SignupScreen = () => {
             {({ handleChange, handleSubmit, values, setFieldValue, errors, isValid }) => (
               <>
                 <View style={PageStyles.form}>
-                  <Input
+                  <MaskInput
                     field="phone"
                     label={t('phone.label')}
-                    maxLength={10}
-                    onChangeText={handleChange('phone')}
+                    onChangeText={(formatted, extracted) => {
+                      setFieldValue('phone', extracted)
+                    }}
                     value={values.phone}
-                    onClear={() => setFieldValue('phone', '')}
                     placeholder={t('phone.placeholder')}
                     error={errors.phone}
                     keyboardType="phone-pad"
+                    mask={'[0000] [0000] [00]'}
                   />
                   <ValidateCode
                     field="validateCode"

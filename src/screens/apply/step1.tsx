@@ -54,7 +54,13 @@ export function Step1() {
         currentStep: 1,
         totalSteps: TOTAL_STEPS,
       }).then(() => {
-        navigation.getParent()?.navigate('Step61')
+        let next
+        if (context.barnd?.livenessAuthEnable === 'Y') {
+          next = 'Step61'
+        } else {
+          next = 'Step62'
+        }
+        navigation.getParent()?.navigate(next)
       })
     },
     DEBOUNCE_WAIT,
@@ -117,6 +123,7 @@ export function Step1() {
                 //@ts-ignore
                 onPress={onSubmit}
                 type="primary"
+                loading={context.loading.effects.APPLY}
                 style={{
                   marginTop: 17,
                   backgroundColor: Color.primary,

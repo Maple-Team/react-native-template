@@ -14,13 +14,13 @@ import { REGEX_PHONE, REGEX_VALIDATE_CODE } from '@/utils/reg'
 import { DEBOUNCE_WAIT, DEBOUNCE_OPTIONS, KEY_DEVICEID, KEY_GPS } from '@/utils/constant'
 import { useNavigation } from '@react-navigation/native'
 import type { AccountStackParams } from '@navigation/accountStack'
-import { Input, PasswordInput, ValidateCode, ApplyButton } from '@components/form/FormItem'
+import { PasswordInput, ValidateCode, ApplyButton, MaskInput } from '@components/form/FormItem'
 import { useTranslation } from 'react-i18next'
 import { Color } from '@/styles/color'
 import { login } from '@/services/user'
 import emitter from '@/eventbus'
 import type { LoginParameter } from '@/typings/request'
-import { MoneyyaContext } from '@/state'
+import { default as MoneyyaContext } from '@/state'
 import { MMKV } from '@/utils'
 
 export const SigninScreen = ({ route }: { route: any }) => {
@@ -106,6 +106,7 @@ const PasswdTab = ({ phone }: { phone?: string }) => {
     DEBOUNCE_WAIT,
     DEBOUNCE_OPTIONS
   )
+  console.log('effects', context.loading.effects)
   const [showPwd, setShowPwd] = useState<boolean>(false)
   return (
     <Formik<Pick<LoginParameter, 'phone' | 'password'>>
@@ -115,16 +116,17 @@ const PasswdTab = ({ phone }: { phone?: string }) => {
       {({ handleChange, handleSubmit, values, setFieldValue, errors, isValid }) => (
         <View style={styles.formWrap}>
           <View style={styles.form}>
-            <Input
+            <MaskInput
               field="phone"
               label={t('phone.label')}
-              onChangeText={handleChange('phone')}
+              onChangeText={(formatted, extracted) => {
+                setFieldValue('phone', extracted)
+              }}
               value={values.phone}
-              onClear={() => setFieldValue('phone', '')}
               placeholder={t('phone.placeholder')}
               error={errors.phone}
-              maxLength={10}
               keyboardType="phone-pad"
+              mask={'[0000] [0000] [00]'}
             />
             <PasswordInput
               field="password"
@@ -150,7 +152,7 @@ const PasswdTab = ({ phone }: { phone?: string }) => {
           <ApplyButton
             type={isValid ? 'primary' : 'ghost'}
             onPress={handleSubmit}
-            // loading={state}
+            loading={context.loading.effects.LOGIN}
             disabled={context.loading.effects.LOGIN}>
             <Text color={isValid ? '#fff' : '#aaa'}>{t('submit')}</Text>
           </ApplyButton>
@@ -202,16 +204,17 @@ const ValidTab = ({ phone }: { phone?: string }) => {
       {({ handleChange, handleSubmit, values, setFieldValue, errors, isValid }) => (
         <View style={styles.formWrap}>
           <View style={styles.form}>
-            <Input
+            <MaskInput
               field="phone"
               label={t('phone.label')}
-              maxLength={10}
-              onChangeText={handleChange('phone')}
+              onChangeText={(formatted, extracted) => {
+                setFieldValue('phone', extracted)
+              }}
               value={values.phone}
-              onClear={() => setFieldValue('phone', '')}
               placeholder={t('phone.placeholder')}
               error={errors.phone}
               keyboardType="phone-pad"
+              mask={'[0000] [0000] [00]'}
             />
             <ValidateCode
               field="code"
@@ -229,7 +232,7 @@ const ValidTab = ({ phone }: { phone?: string }) => {
           <ApplyButton
             type={isValid ? 'primary' : undefined}
             onPress={handleSubmit}
-            // loading={state}
+            loading={context.loading.effects.LOGIN}
             disabled={context.loading.effects.LOGIN}>
             <Text color={isValid ? '#fff' : '#aaa'}>{t('signin')}</Text>
           </ApplyButton>

@@ -128,23 +128,36 @@ export interface ProductParemeter {
 
 export interface Product {
   amountStep: number
+  loanCode: string
   loanStep: number
+  loanTerms?: any
+  mandatoryItems?: any
   maxAmount: number
   maxLoanTerms: number
   maxViewAmount: number
   maxViewTerms: number
   minAmount: number
   minLoanTerms: number
+  optionalItems?: any
+  productCode: string
   products: ProductItem[]
+  specialFlag?: any
+  specialRate?: any
+  unSupportItem?: any
 }
 
 export interface ProductItem {
   amountStep: number
-  available: BOOL
+  available: string
   displayLoanDays: number
   loanCode: string
   loanTerms: number
+  maxAmount: number
   maxViewAmount: number
+  minAmount: number
+  productCode: string
+  specialFlag?: any
+  specialRate?: any
 }
 
 export interface CalculateParameter {
@@ -157,30 +170,43 @@ export interface CalculateParameter {
 export interface Calculate {
   actualAmount: number
   applyDate: string
-  dailyInterestRate: number
-  extendFeeRate: number
-  instalmentMark: BOOL
+  instalmentMark: string
   interest: number
-  interestRate: number
   loanPmtDueDate: string
-  penaltyRate: number
+  preFeeList?: any
+  schedules: Schedule[]
   surplusPrincipal: number
   svcFee: number
-  svcFeeRate: number
+  term?: any
   termAmount: number
   termSchedules: TermSchedule[]
   totalAmt: number
   txnAmt: number
 }
-
+interface Schedule {
+  actualAmount: number
+  applyDate: string
+  instalmentMark?: any
+  interest: number
+  loanPmtDueDate: string
+  preFeeList?: any
+  schedules?: any
+  surplusPrincipal: number
+  svcFee: number
+  term?: any
+  termAmount: number
+  termSchedules?: any
+  totalAmt: number
+  txnAmt: number
+}
 export interface TermSchedule {
   currTerm: number
+  freeMark?: string
   loanPmtDueDate: string
   loanTermInterest: number
   loanTermPrin: number
   loanTermSvcFee: number
   totalAmt: number
-  freeMark?: string
 }
 
 export interface ImageUploadParameter {

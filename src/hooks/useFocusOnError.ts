@@ -1,6 +1,6 @@
 import { useFormikContext } from 'formik'
 import { useEffect, RefObject, useRef } from 'react'
-import { TextInput } from 'react-native'
+import type { TextInput } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 
 //参考
@@ -23,11 +23,15 @@ export const useFocusOnError = ({
   const formik = useFormikContext()
   const prevSubmitCountRef = useRef(formik.submitCount)
   const errorKey = Object.keys(formik.errors)[0]
+  // NOTE maskinput field ref has some problem
   useEffect(() => {
     if (prevSubmitCountRef.current !== formik.submitCount && !formik.isValid) {
-      if (fieldRef.current && errorKey === name && scrollViewRef?.current) {
+      if ((fieldRef.current || fieldRef) && errorKey === name && scrollViewRef?.current) {
         if (canFocus) {
-          fieldRef.current.focus()
+          fieldRef.current
+            ? fieldRef.current.focus()
+            : //@ts-ignore
+              fieldRef?.focus()
         }
         scrollViewRef.current?.scrollTo({
           x: 0,

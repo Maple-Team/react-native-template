@@ -16,7 +16,7 @@ import { ApplyButton, Input, NormalPicker, DatePicker, RadioInput } from '@compo
 import { Color } from '@/styles/color'
 import type { ApplyParameter, ApplyStep5Parameter, OcrResult } from '@/typings/apply'
 import { useBehavior, useLocation } from '@/hooks'
-import { MoneyyaContext } from '@/state'
+import { default as MoneyyaContext } from '@/state'
 import type { Dict, DictField } from '@/typings/response'
 import { MMKV } from '@/utils/storage'
 import { useRoute } from '@react-navigation/native'

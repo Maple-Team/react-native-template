@@ -14,5 +14,6 @@
   "signin": "登录",
   "signup": "注册",
   "submit": "提交",
-  "validation-code-login": "验证码登录"
+  "validation-code-login": "验证码登录",
+  "start": "start"
 }

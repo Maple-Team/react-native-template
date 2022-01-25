@@ -15,32 +15,29 @@ export interface Version {
   versionNo: string
   versionType: string
 }
-
 export interface Brand {
   channelInfo: ChannelInfo
-  isValidateCode: BOOL
-  smsSendEnable: BOOL
-  smsWaitInterval: number
   codeValidatecount: number
-  handheldUploadFlag: BOOL
+  isValidateCode: string
+  livenessAuthCount: number
+  livenessAuthEnable: string
   serviceInfo: ServiceInfo
+  smsSendEnable: string
+  smsWaitInterval: number
 }
 
-export interface ServiceInfo {
-  email: string
-  fb: string
+interface ServiceInfo {
   ccphone: string
-  ccphones: string[]
   corpAddr: string
   corpName: string
+  email: string
+  fb: string
   svcCorp: string
   svcCorpAddr: string
 }
 
-export interface ChannelInfo {
+interface ChannelInfo {
   privacyUrl: string
-  policyUrl: string
-  serviceUrl: string
   videoAuthUrl: string
 }
 

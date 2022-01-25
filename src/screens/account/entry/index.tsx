@@ -11,11 +11,11 @@ import debounce from 'lodash.debounce'
 
 import { Logo } from '@/components/logo'
 import Text from '@/components/Text'
-import { MoneyyaContext } from '@/state'
+import { default as MoneyyaContext } from '@/state'
 import styles from './style'
 import { REGEX_PHONE } from '@/utils/reg'
 import { DEBOUNCE_WAIT, DEBOUNCE_OPTIONS } from '@/utils/constant'
-import { Input } from '@components/form/FormItem'
+import { MaskInput } from '@components/form/FormItem'
 import { Color } from '@/styles/color'
 
 interface FormModel {
@@ -56,19 +56,20 @@ export const EntryScreen = ({ navigation }: NativeStackHeaderProps) => {
                   initialValues={initialValue}
                   onSubmit={onSubmit}
                   validationSchema={schema}>
-                  {({ handleChange, handleSubmit, values, setFieldValue, errors }) => (
+                  {({ handleSubmit, values, setFieldValue, errors }) => (
                     <>
                       <View style={styles.formItem}>
-                        <Input
+                        <MaskInput
                           field="phone"
-                          maxLength={10}
                           label={t('phone.label')}
-                          onChangeText={handleChange('phone')}
+                          onChangeText={(formatted, extracted) => {
+                            setFieldValue('phone', extracted)
+                          }}
                           value={values.phone}
-                          onClear={() => setFieldValue('phone', '')}
                           placeholder={t('phone.placeholder')}
                           error={errors.phone}
                           keyboardType="phone-pad"
+                          mask={'[0000] [0000] [00]'}
                         />
                       </View>
                       <Button

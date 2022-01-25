@@ -227,11 +227,15 @@
   "bankCardNo": {
     "label": "bank Card No",
     "placeholder": "bank Card No",
-    "required": "bank Card No required"
+    "required": "bank Card No required",
+    "invalid": "bank Card No invalid"
   },
   "cardNoType": {
     "required": "card No Type required",
     "label": "bank card type",
     "placeholder": "cardno type"
+  },
+  "liveness": {
+    "required": "liveness required"
   }
 }
