@@ -251,6 +251,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       }}
                       value={state.firstName}
                       field={'firstName'}
+                      key={'firstName'}
                       label={t('firstName.label')}
                       placeholder={t('firstName.placeholder')}
                     />
@@ -271,6 +272,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       }}
                       value={state.middleName}
                       field={'middleName'}
+                      key={'middleName'}
                       label={t('middleName.label')}
                       placeholder={t('middleName.placeholder')}
                     />
@@ -291,6 +293,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       }}
                       value={state.lastName}
                       field={'lastName'}
+                      key={'lastName'}
                       label={t('lastName.label')}
                       placeholder={t('lastName.placeholder')}
                     />
@@ -303,6 +306,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       }}
                       title={t('birth.label')}
                       field={'birth'}
+                      key={'birth'}
                       label={t('birth.label')}
                       value={state.birth}
                       placeholder={t('birth.placeholder')}
@@ -314,6 +318,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                         behavior.setModify('P05_C02_S_GENDER', text, state.sex)
                       }}
                       field={'sex'}
+                      key={'sex'}
                       value={state.sex}
                       label={t('gender.label')}
                     />
@@ -333,6 +338,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       }}
                       value={state.idcard}
                       field={'idcard'}
+                      key={'idcard'}
                       label={t('idcard.label')}
                       scrollViewRef={scrollviewRef}
                       placeholder={t('idcard.placeholder')}
@@ -350,6 +356,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       value={state.maritalStatus}
                       title={t('maritalStatus.label')}
                       field={'maritalStatus'}
+                      key={'maritalStatus'}
                       label={t('maritalStatus.label')}
                       placeholder={t('maritalStatus.placeholder')}
                       dataSource={state.maritalStatusArray}
@@ -369,6 +376,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       value={state.homeAddrProvinceCode}
                       title={t('homeAddrProvinceCode.label')}
                       field={'homeAddrProvinceCode'}
+                      key={'homeAddrProvinceCode'}
                       label={t('homeAddrProvinceCode.label')}
                       placeholder={t('homeAddrProvinceCode.placeholder')}
                       dataSource={state.homeAddrProvinceArray}
@@ -387,6 +395,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       value={state.homeAddrCityCode}
                       title={t('homeAddrCityCode.label')}
                       field={'homeAddrCityCode'}
+                      key={'homeAddrCityCode'}
                       label={t('homeAddrCityCode.label')}
                       placeholder={t('homeAddrCityCode.placeholder')}
                       dataSource={state.homeAddrCityArray}
@@ -408,6 +417,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       }}
                       value={state.homeAddrDetail}
                       field={'homeAddrDetail'}
+                      key={'homeAddrDetail'}
                       label={t('homeAddrDetail.label')}
                       placeholder={t('homeAddrDetail.placeholder')}
                     />
@@ -420,6 +430,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       value={state.docType}
                       title={t('docType.label')}
                       field={'docType'}
+                      key={'docType'}
                       label={t('docType.label')}
                       placeholder={t('docType.placeholder')}
                       dataSource={state.docTypeArray}
@@ -440,6 +451,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       }}
                       value={state.backupPhone}
                       field={'backupPhone'}
+                      key={'backupPhone'}
                       maxLength={10}
                       label={t('backupPhone.label')}
                       placeholder={t('backupPhone.placeholder')}
@@ -457,6 +469,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       value={state.educationCode}
                       title={t('educationCode.label')}
                       field={'educationCode'}
+                      key={'educationCode'}
                       label={t('educationCode.label')}
                       placeholder={t('educationCode.placeholder')}
                       dataSource={state.educationArray}
@@ -470,6 +483,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       value={state.loanPurpose}
                       title={t('loanPurpose.label')}
                       field={'loanPurpose'}
+                      key={'loanPurpose'}
                       label={t('loanPurpose.label')}
                       placeholder={t('loanPurpose.placeholder')}
                       dataSource={state.loanPurposeArray}
@@ -490,16 +504,17 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       }}
                       value={state.socialPhone}
                       field={'socialPhone'}
+                      key={'socialPhone'}
                       maxLength={10}
                       label={t('socialPhone.label')}
                       placeholder={t('socialPhone.placeholder')}
                     />
                     <Input
-                      onChangeText={function (text: string): void {
+                      onChangeText={(text: string) => {
                         setFieldValue('whatsapp', text)
                         dispatch({ type: 'whatsapp', value: text })
                       }}
-                      onClear={function (): void {
+                      onClear={() => {
                         setFieldValue('whatsapp', '')
                       }}
                       onFocus={() => {
@@ -510,6 +525,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       }}
                       value={state.whatsapp}
                       field={'whatsapp'}
+                      key={'whatsapp'}
                       label={t('whatsapp.label')}
                       placeholder={t('whatsapp.placeholder')}
                     />
@@ -529,6 +545,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       }}
                       value={state.email}
                       field={'email'}
+                      key={'email'}
                       label={t('email.label')}
                       placeholder={t('email.placeholder')}
                     />
@@ -548,6 +565,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       }}
                       value={state.secondCardNo}
                       field={'secondCardNo'}
+                      key={'secondCardNo'}
                       label={t('secondCardNo.label')}
                       placeholder={t('secondCardNo.placeholder')}
                     />

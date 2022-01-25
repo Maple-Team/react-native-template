@@ -222,9 +222,11 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     scrollViewRef={scrollViewRef}
                     dataSource={state.industryArray}
                     title={t('industryCode.label')}
+                    key="industryCode"
                   />
                   <NormalPicker
                     field="jobTypeCode"
+                    key="jobTypeCode"
                     label={t('jobTypeCode.label')}
                     scrollViewRef={scrollViewRef}
                     onChange={record => {
@@ -240,6 +242,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                   />
                   <NormalPicker
                     field="monthlyIncome"
+                    key="monthlyIncome"
                     scrollViewRef={scrollViewRef}
                     label={t('monthlyIncome.label')}
                     onChange={record => {
@@ -259,6 +262,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                   />
                   <NormalPicker
                     field="salaryType"
+                    key="salaryType"
                     scrollViewRef={scrollViewRef}
                     label={t('salaryType.label')}
                     onChange={record => {
@@ -283,6 +287,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     <NormalPicker
                       scrollViewRef={scrollViewRef}
                       field="salaryDate"
+                      key="salaryDate"
                       label={t('salaryDate.label')}
                       onChange={record => {
                         setFieldValue('salaryDate', record.code)
@@ -313,6 +318,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     }}
                     value={state.company}
                     field={'company'}
+                    key={'company'}
                     label={t('company.label')}
                     error={errors.company}
                     placeholder={t('company.placeholder')}
@@ -334,6 +340,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     }}
                     value={state.companyPhone}
                     field={'companyPhone'}
+                    key={'companyPhone'}
                     error={errors.companyPhone}
                     label={t('companyPhone.label')}
                     placeholder={t('companyPhone.placeholder')}
@@ -353,6 +360,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     value={state.companyAddrProvinceCode}
                     title={t('companyAddrProvinceCode.label')}
                     field={'companyAddrProvinceCode'}
+                    key={'companyAddrProvinceCode'}
                     label={t('companyAddrProvinceCode.label')}
                     placeholder={t('companyAddrProvinceCode.placeholder')}
                     dataSource={state.provinceArray}
@@ -367,6 +375,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     }}
                     title={t('companyAddrCityCode.label')}
                     field={'companyAddrCityCode'}
+                    key={'companyAddrCityCode'}
                     value={state.companyAddrCityCode}
                     label={t('companyAddrCityCode.label')}
                     placeholder={t('companyAddrCityCode.placeholder')}
@@ -393,6 +402,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     }}
                     value={state.companyAddrDetail}
                     field={'companyAddrDetail'}
+                    key={'companyAddrDetail'}
                     label={t('companyAddrDetail.label')}
                     error={errors.companyAddrDetail}
                     placeholder={t('companyAddrDetail.placeholder')}
@@ -400,6 +410,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                   <NormalPicker
                     scrollViewRef={scrollViewRef}
                     field="incumbency"
+                    key="incumbency"
                     label={t('incumbency.label')}
                     onChange={record => {
                       setFieldValue('incumbency', record.code)

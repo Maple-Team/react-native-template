@@ -65,6 +65,7 @@ export const Step4 = ({ navigation }: NativeStackHeaderProps) => {
                 <View style={PageStyles.form}>
                   <IdcardPhotoPicker
                     field="idcard1"
+                    key="idcard1"
                     label={'El frente de tu ID'}
                     bg={require('@assets/images/apply/id1.webp')}
                     imageType="INE_OR_IFE_FRONT"
@@ -79,6 +80,7 @@ export const Step4 = ({ navigation }: NativeStackHeaderProps) => {
                   />
                   <IdcardPhotoPicker
                     field="idcard2"
+                    key="idcard2"
                     label={'La parte trasera de tu ID'}
                     bg={require('@assets/images/apply/id2.webp')}
                     imageType="INE_OR_IFE_BACK"

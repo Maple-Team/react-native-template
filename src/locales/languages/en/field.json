@@ -219,7 +219,7 @@
     "label": "loan purpose",
     "placeholder": "loan purpose"
   },
-  "bankcode": {
+  "bankCode": {
     "label": "bank code",
     "placeholder": "bank code",
     "required": "back code required"

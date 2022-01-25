@@ -169,6 +169,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                     }}
                     title={t('contactRelationCode.label')}
                     field={'contactRelationCode1'}
+                    key={'contactRelationCode1'}
                     label={t('contactRelationCode.label')}
                     placeholder={t('contactRelationCode.placeholder')}
                     dataSource={state.contactRelationArray}
@@ -189,12 +190,14 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                     }}
                     value={state.contactName1}
                     field={'contactName1'}
+                    key={'contactName1'}
                     label={t('contactName.label')}
                     placeholder={t('contactName.placeholder')}
                   />
                   <PhonePicker
                     scrollViewRef={scrollviewRef}
                     field="contactPhone1"
+                    key="contactPhone1"
                     label={t('contactPhone.label')}
                     onChange={text => {
                       setFieldValue('contactPhone1', text)
@@ -219,6 +222,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                     }}
                     title={t('contactRelationCode.label')}
                     field={'contactRelationCode2'}
+                    key={'contactRelationCode2'}
                     label={t('contactRelationCode.label')}
                     placeholder={t('contactRelationCode.placeholder')}
                     dataSource={state.otherContactRelationArray}
@@ -239,12 +243,14 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                     }}
                     value={state.contactName2}
                     field={'contactName2'}
+                    key={'contactName2'}
                     label={t('contactName.label')}
                     placeholder={t('contactName.placeholder')}
                   />
                   <PhonePicker
                     scrollViewRef={scrollviewRef}
                     field="contactPhone2"
+                    key="contactPhone2"
                     label={t('contactPhone.label')}
                     onChange={text => {
                       setFieldValue('contactPhone2', text)
@@ -269,6 +275,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                     }}
                     title={t('contactRelationCode.label')}
                     field={'contactRelationCode3'}
+                    key={'contactRelationCode3'}
                     label={t('contactRelationCode.label')}
                     placeholder={t('contactRelationCode.placeholder')}
                     dataSource={state.otherContactRelationArray}
@@ -289,12 +296,14 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                     }}
                     value={state.contactName3}
                     field={'contactName3'}
+                    key={'contactName3'}
                     label={t('contactName.label')}
                     placeholder={t('contactName.placeholder')}
                   />
                   <PhonePicker
                     scrollViewRef={scrollviewRef}
                     field="contactPhone3"
+                    key="contactPhone3"
                     label={t('contactPhone.label')}
                     onChange={text => {
                       setFieldValue('contactPhone3', text)
