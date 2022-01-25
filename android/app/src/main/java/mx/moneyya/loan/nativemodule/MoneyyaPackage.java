@@ -1,4 +1,4 @@
-package com.moneyya.nativemodule;
+package mx.moneyya.loan.nativemodule;
 
 import androidx.annotation.NonNull;
 

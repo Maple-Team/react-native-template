@@ -57,7 +57,7 @@ android {
   compileSdkVersion rootProject.ext.compileSdkVersion
 
   defaultConfig {
-    applicationId "com.moneyya"
+    applicationId "mx.moneyya.loan"
     minSdkVersion rootProject.ext.minSdkVersion
     targetSdkVersion rootProject.ext.targetSdkVersion
     versionCode 1

@@ -1,4 +1,4 @@
-package com.moneyya;
+package mx.moneyya.loan;
 
 import android.os.Bundle;
 import com.facebook.react.ReactActivity;

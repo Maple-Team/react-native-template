@@ -1,11 +1,12 @@
-package com.moneyya.nativemodule;
+package mx.moneyya.loan.nativemodule;
 
 import androidx.annotation.NonNull;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-import com.moneyya.BuildConfig;
+
+import mx.moneyya.loan.BuildConfig;
 
 public class AppModule extends ReactContextBaseJavaModule {
   AppModule(ReactApplicationContext context) {

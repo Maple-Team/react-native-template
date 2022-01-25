@@ -1,4 +1,4 @@
-package com.moneyya;
+package mx.moneyya.loan;
 
 import android.app.Application;
 import android.content.Context;
@@ -11,7 +11,6 @@ import com.facebook.react.ReactPackage;
 import com.ammarahmed.mmkv.RNMMKVJSIModulePackage;
 import com.facebook.react.bridge.JSIModulePackage;
 import com.facebook.soloader.SoLoader;
-import com.moneyya.nativemodule.MoneyyaPackage;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -19,6 +18,7 @@ import java.util.List;
 import ai.advance.liveness.lib.GuardianLivenessDetectionSDK;
 import ai.advance.liveness.lib.Market;
 import ai.advance.liveness.sdk.rn.LivenessReactPackage;
+import mx.moneyya.loan.nativemodule.MoneyyaPackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -62,7 +62,7 @@ public class MainApplication extends Application implements ReactApplication {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
-    GuardianLivenessDetectionSDK.init(this, "2c38359eb29c1784", "3c18724a10216fdc", Market.Mexico);
+    GuardianLivenessDetectionSDK.init(this, "5e6112f28a09254b", "c827b638b749e602", Market.Mexico);
     GuardianLivenessDetectionSDK.letSDKHandleCameraPermission();
     GuardianLivenessDetectionSDK.isDetectOcclusion(true);
   }
@@ -82,7 +82,7 @@ public class MainApplication extends Application implements ReactApplication {
          We use reflection here to pick up the class that initializes Flipper,
         since Flipper library is not available in release mode
         */
-        Class<?> aClass = Class.forName("com.moneyya.ReactNativeFlipper");
+        Class<?> aClass = Class.forName("com.loan.ReactNativeFlipper");
         aClass
           .getMethod("initializeFlipper", Context.class, ReactInstanceManager.class)
           .invoke(null, context, reactInstanceManager);

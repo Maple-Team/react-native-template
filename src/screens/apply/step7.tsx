@@ -113,10 +113,10 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
                     }}
                     key="bankCode"
                     value={state.bankCode}
-                    title={t('bankcode.label')}
+                    title={t('bankCode.label')}
                     field={'bankCode'}
-                    label={t('bankcode.label')}
-                    placeholder={t('bankcode.placeholder')}
+                    label={t('bankCode.label')}
+                    placeholder={t('bankCode.placeholder')}
                     dataSource={state.bankArray}
                   />
                   <NormalPicker
