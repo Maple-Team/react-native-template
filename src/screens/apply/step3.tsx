@@ -14,7 +14,7 @@ import { ApplyButton, Input, NormalPicker, PhonePicker } from '@components/form/
 import { Color } from '@/styles/color'
 import { useBehavior, useLocation } from '@/hooks'
 import { fetchDict, submit } from '@/services/apply'
-import { MoneyyaContext } from '@/state'
+import { default as MoneyyaContext } from '@/state'
 import type { ApplyParameter, ApplyStep3Parameter, Contact } from '@/typings/apply'
 import type { Dict, DictField } from '@/typings/response'
 

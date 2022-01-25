@@ -7,7 +7,7 @@ import { API_CODE, APPLY_STATE } from '@/state/enum'
 import emitter from '@/eventbus'
 import { DispatchRVMap } from '@/eventbus/type'
 import { AXIOS_TIMEOUT, KEY_DEVICEID, KEY_GPS, KEY_TOKEN } from '@/utils/constant'
-import { moneyyaState } from '@/state/context'
+import { moneyyaState } from '@/state'
 import { MMKV } from './storage'
 export interface Response<T = any> {
   body?: T

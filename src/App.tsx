@@ -25,10 +25,9 @@ import SplashScreen from 'react-native-splash-screen'
 import Init from '@screens/init'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { useEventListener } from '@/hooks'
-import { reducer, MoneyyaContext } from '@/state'
+import { reducer, default as MoneyyaContext, moneyyaState } from '@/state'
 import { useFlipper } from '@react-navigation/devtools'
 import emitter from '@/eventbus'
-import { moneyyaState } from '@/state/context'
 import { MMKV } from '@/utils/storage'
 
 // JPUSH https://docs.jiguang.cn/jpush/resources/

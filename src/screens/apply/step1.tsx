@@ -10,13 +10,14 @@ import Swiper from 'react-native-swiper'
 import Styles from './style'
 import { queryBrand, queryVersion, submit } from '@/services/apply'
 import { queryUserinfo } from '@/services/user'
-import { MoneyyaContext } from '@/state'
+import { default as MoneyyaContext } from '@/state'
 import emitter from '@/eventbus'
 import { MMKV } from '@/utils/storage'
 import {
   DEBOUNCE_OPTIONS,
   DEBOUNCE_WAIT,
   KEY_APPLYID,
+  KEY_BRAND,
   KEY_DEVICEID,
   TOTAL_STEPS,
 } from '@/utils/constant'
@@ -28,8 +29,9 @@ export function Step1() {
   const context = useContext(MoneyyaContext)
 
   useEffect(() => {
-    queryBrand().then(res => {
-      emitter.emit('UPDATE_BRAND', res)
+    queryBrand().then(brand => {
+      emitter.emit('UPDATE_BRAND', brand)
+      MMKV.setMap(KEY_BRAND, brand)
     })
     queryVersion().then(res => {
       console.log('version', res)

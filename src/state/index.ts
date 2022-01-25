@@ -3,9 +3,6 @@ import { DictTypeArray, NormalTypeArray } from '@/eventbus/type'
 import type { CommonHeader } from '@/typings/request'
 import type { Brand } from '@/typings/response'
 import type { UserInfo } from '@/typings/user'
-import { KEY_TOKEN, KEY_GPS, KEY_DEVICEID, KEY_INIT } from '@/utils/constant'
-import { MMKV } from '@/utils/storage'
-export { default as MoneyyaContext } from './context'
 
 export const UPDATE_TOKEN = 'UPDATE_TOKEN'
 export const UPDATE_GPS = 'UPDATE_GPS'
@@ -15,7 +12,33 @@ export const UPDATE_USERINFO = 'UPDATE_USERINFO'
 export const UPDATE_HAS_INIT = 'UPDATE_HAS_INIT'
 export const UPDATE_BRAND = 'UPDATE_BRAND'
 
-export interface State {
+import { AppModule } from '@/modules'
+import { KEY_DEVICEID, KEY_GPS, KEY_INIT, KEY_TOKEN, KEY_VERSIONID } from '@/utils/constant'
+import { MMKV } from '@/utils/storage'
+import { createContext } from 'react'
+
+export let moneyyaState: State = {
+  header: {
+    merchantId: 'b5a84f164746cfd448b144f543e22808',
+    inputChannel: 'MONEYYA',
+    source: 'APP',
+    channel: 'app',
+    versionId: MMKV.getString(KEY_VERSIONID) || AppModule.getVersionID(),
+    gps: MMKV.getString(KEY_GPS) || '0,0',
+    deviceId: MMKV.getString(KEY_DEVICEID) || '',
+    accessToken: MMKV.getString(KEY_TOKEN) || '',
+  },
+  loading: {
+    effects: {},
+  },
+  hasInit: MMKV.getBool(KEY_INIT) || false,
+}
+// FIXME context不能修改
+const StateContext = createContext(moneyyaState)
+
+export default StateContext
+
+interface State {
   header: CommonHeader
   user?: UserInfo
   /**
@@ -38,7 +61,7 @@ export interface State {
   hasInit?: boolean
 }
 
-export type Action =
+type Action =
   | {
       type: typeof UPDATE_TOKEN
       token: string
@@ -74,61 +97,69 @@ export type Action =
 
 export function reducer(state: State, action: Action): State {
   console.log('action', action)
+  let newState: State | null = null
   switch (action.type) {
     case UPDATE_TOKEN:
       MMKV.setString(KEY_TOKEN, action.token)
-      return {
+      newState = {
         ...state,
         header: {
           ...state.header,
           accessToken: action.token,
         },
       }
+      break
     case UPDATE_GPS:
       MMKV.setString(KEY_GPS, action.gps)
-      return {
+      newState = {
         ...state,
         header: {
           ...state.header,
           gps: action.gps,
         },
       }
+      break
     case UPDATE_DEVICEID:
       MMKV.setString(KEY_DEVICEID, action.deviceId)
-      return {
+      newState = {
         ...state,
         header: {
           ...state.header,
           deviceId: action.deviceId,
         },
       }
+      break
     case UPDATE_VESIONID:
-      return {
+      newState = {
         ...state,
         header: {
           ...state.header,
           versionId: action.versionID,
         },
       }
+      break
     case UPDATE_USERINFO:
-      return {
+      newState = {
         ...state,
         user: action.user,
       }
+      break
     case UPDATE_HAS_INIT:
       MMKV.setBool(KEY_INIT, action.hasInit)
-      return {
+      newState = {
         ...state,
         hasInit: action.hasInit,
       }
+      break
     case UPDATE_BRAND:
-      return {
+      newState = {
         ...state,
         barnd: action.brand,
       }
+      break
     default:
       if ([...NormalTypeArray, ...DictTypeArray].includes(action.type)) {
-        return {
+        newState = {
           ...state,
           loading: {
             effects: {
@@ -137,6 +168,9 @@ export function reducer(state: State, action: Action): State {
           },
         }
       }
-      return { ...state }
+      newState = { ...state }
+      break
   }
+  moneyyaState = newState
+  return newState
 }

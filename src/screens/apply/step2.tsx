@@ -19,7 +19,7 @@ import { useBehavior, useLocation } from '@/hooks'
 import type { Shape } from '@/typings/common'
 import { fetchDict, submit } from '@/services/apply'
 import type { Dict, DictField } from '@/typings/response'
-import { MoneyyaContext } from '@/state'
+import { default as MoneyyaContext } from '@/state'
 import { MMKV } from '@/utils/storage'
 import { filterArrayKey } from '@/utils'
 
@@ -43,7 +43,6 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
     incumbency: Yup.string().required(t('incumbency.required')),
   })
 
-  const context = useContext(MoneyyaContext)
   const [state, dispatch] = useReducer<Reducer<Step2State, Step2Action>>(
     (s, { type, value }) => {
       switch (type) {
@@ -189,7 +188,8 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
 
   const behavior = useBehavior<'P02'>('P02', 'P02_C00', 'P02_C99')
   const scrollViewRef = useRef<ScrollView>(null)
-
+  const context = useContext(MoneyyaContext)
+  console.log('context', context)
   return (
     <SafeAreaView style={PageStyles.sav}>
       <StatusBar translucent={false} backgroundColor={Color.primary} barStyle="default" />
