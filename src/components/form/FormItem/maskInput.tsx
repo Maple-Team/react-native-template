@@ -1,10 +1,10 @@
-import React, { RefObject, useRef, useState } from 'react'
+import React, { type RefObject, useRef, useState } from 'react'
 import { Pressable, View, Image } from 'react-native'
 import type { KeyboardTypeOptions } from 'react-native'
 import styles from './style'
 import { Text } from '@/components'
 import { ErrorMessage } from 'formik'
-import { useFocusOnError } from '@/hooks'
+import { UseFocusOnError } from '@/hooks'
 import type { ScrollView } from 'react-native-gesture-handler'
 import TextInputMask from 'react-native-text-input-mask'
 
@@ -38,66 +38,84 @@ export const MaskInput = ({
 }: InputProps) => {
   let fieldRef = useRef<any>(null)
   let wrapperRef = useRef<View>(null)
-  const [height, setHeight] = useState<number>(0)
-  useFocusOnError({ fieldRef, name: field, scrollViewRef, canFocus: true, height })
+  const [offsetY, setOffsetY] = useState<number>(0)
+  // useFocusOnError({ fieldRef, name: field, scrollViewRef, canFocus: true, offsetY })
   return (
-    <View style={styles.formItem}>
-      <Text styles={styles.label}>{label}</Text>
-      <View
-        style={styles.inputWrap}
-        ref={wrapperRef}
-        onLayout={() => {
-          wrapperRef.current?.measure(
-            (_x: any, _y: any, _width: any, _height: number, _pageX: any, pageY: number) => {
-              setHeight(pageY - _height)
-            }
-          )
-        }}>
-        <TextInputMask
-          onChangeText={onChangeText}
-          value={value}
-          mask={mask}
-          placeholder={placeholder}
-          style={[styles.input, error ? { borderBottomColor: 'red' } : {}]}
-          keyboardType={keyboardType}
-          onFocus={onFocus}
-          ref={fieldRef}
-          placeholderTextColor={'rgba(156, 171, 185, 1)'}
-          onBlur={onBlur}
-        />
-        {value ? (
-          <View style={styles.suffixWrap}>
-            {error ? (
-              <Pressable
-                onPress={onClear}
-                android_disableSound={true}
-                focusable
-                hitSlop={{ bottom: 10, left: 10, right: 10, top: 10 }}>
+    <>
+      <UseFocusOnError
+        fieldRef={fieldRef}
+        name={field}
+        scrollViewRef={scrollViewRef}
+        offsetY={offsetY}
+        canFocus={true}
+      />
+      <View style={styles.formItem}>
+        <Text styles={styles.label}>{label}</Text>
+        <View
+          style={styles.inputWrap}
+          ref={wrapperRef}
+          onLayout={() => {
+            // TextInputMask未暴露出访问其内部textInput元素的方法，故使用其父组件的维度
+            wrapperRef.current?.measure(
+              (
+                x: number,
+                _y: number,
+                width: number,
+                height: number,
+                pageX: number,
+                pageY: number
+              ) => {
+                setOffsetY(pageY + height)
+              }
+            )
+          }}>
+          <TextInputMask
+            onChangeText={onChangeText}
+            value={value}
+            mask={mask}
+            autoskip={true}
+            placeholder={placeholder}
+            style={[styles.input, error ? { borderBottomColor: 'red' } : {}]}
+            keyboardType={keyboardType}
+            onFocus={onFocus}
+            ref={fieldRef}
+            placeholderTextColor={'rgba(156, 171, 185, 1)'}
+            onBlur={onBlur}
+          />
+          {value ? (
+            <View style={styles.suffixWrap}>
+              {error ? (
+                <Pressable
+                  onPress={onClear}
+                  android_disableSound={true}
+                  focusable
+                  hitSlop={{ bottom: 10, left: 10, right: 10, top: 10 }}>
+                  <Image
+                    style={styles.suffix}
+                    source={require('@assets/images/common/clear.webp')}
+                    resizeMode="cover"
+                  />
+                </Pressable>
+              ) : (
                 <Image
                   style={styles.suffix}
-                  source={require('@assets/images/common/clear.webp')}
+                  source={require('@assets/images/common/correct.webp')}
                   resizeMode="cover"
                 />
-              </Pressable>
-            ) : (
-              <Image
-                style={styles.suffix}
-                source={require('@assets/images/common/correct.webp')}
-                resizeMode="cover"
-              />
-            )}
-          </View>
-        ) : (
-          <></>
-        )}
+              )}
+            </View>
+          ) : (
+            <></>
+          )}
+        </View>
+        <ErrorMessage name={field}>
+          {msg => (
+            <Text color="red" styles={[styles.warn, styles.error]}>
+              {msg}
+            </Text>
+          )}
+        </ErrorMessage>
       </View>
-      <ErrorMessage name={field}>
-        {msg => (
-          <Text color="red" styles={[styles.warn, styles.error]}>
-            {msg}
-          </Text>
-        )}
-      </ErrorMessage>
-    </View>
+    </>
   )
 }

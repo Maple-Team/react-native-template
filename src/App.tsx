@@ -161,7 +161,7 @@ const App = () => {
         token: '',
       })
     })
-  }, [user])
+  }, [user?.phone])
   if (!isReady) {
     return <Loading />
   }

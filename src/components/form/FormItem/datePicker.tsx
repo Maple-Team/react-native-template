@@ -8,7 +8,7 @@ import DatePicker from 'react-native-date-picker'
 import dayjs from 'dayjs'
 import { useTranslation } from 'react-i18next'
 import type { ScrollView } from 'react-native-gesture-handler'
-import { useFocusOnError } from '@/hooks'
+import { UseFocusOnError } from '@/hooks'
 
 interface PickerProps {
   onChange: (text: string) => void
@@ -37,10 +37,16 @@ export function NormalDatePicker({
   const [visible, setVisible] = useState<boolean>(false)
   const fieldRef = useRef<TextInput>(null)
   const [height, setHeight] = useState<number>(0)
-  useFocusOnError({ fieldRef, name: field, scrollViewRef, height })
+  // UseFocusOnError({ fieldRef, name: field, scrollViewRef, offsetY: height })
 
   return (
     <>
+      <UseFocusOnError
+        fieldRef={fieldRef}
+        name={field}
+        scrollViewRef={scrollViewRef}
+        offsetY={height}
+      />
       <View style={formItemStyles.formItem}>
         <Text styles={formItemStyles.label}>{label}</Text>
         <View style={formItemStyles.inputWrap}>
@@ -50,7 +56,7 @@ export function NormalDatePicker({
             ref={fieldRef}
             onLayout={() => {
               fieldRef.current?.measure((_x, _y, _width, _height, _pageX, pageY) => {
-                setHeight(pageY - _height)
+                setHeight(pageY + _height)
               })
             }}
             placeholder={placeholder}

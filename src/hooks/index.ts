@@ -1,4 +1,4 @@
-export { useFocusOnError } from './useFocusOnError'
+export { UseFocusOnError } from './useFocusOnError'
 export { useEventListener } from './useListener'
 export { useLocation } from './useLocation'
 export { useSensor } from './useSensors'

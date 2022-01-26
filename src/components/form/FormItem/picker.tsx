@@ -7,7 +7,7 @@ import { ErrorMessage } from 'formik'
 import { WheelPicker } from './wheelPicker'
 import { ModalWrap } from './modalWrap'
 import type { Dict, PickerField } from '@/typings/response'
-import { useFocusOnError } from '@/hooks'
+import { UseFocusOnError } from '@/hooks'
 import type { ScrollView } from 'react-native-gesture-handler'
 
 interface PickerProps<T extends Dict, U extends PickerField> {
@@ -40,9 +40,15 @@ export function NormalPicker<T extends Dict, U extends PickerField>({
   const Picker = ModalWrap(WheelPicker)
   const fieldRef = useRef<TextInput>(null)
   const [height, setHeight] = useState<number>(0)
-  useFocusOnError({ fieldRef, name: field, scrollViewRef, height })
+  // useFocusOnError({ fieldRef, name: field, scrollViewRef, offsetY: height })
   return (
     <>
+      <UseFocusOnError
+        fieldRef={fieldRef}
+        name={field}
+        scrollViewRef={scrollViewRef}
+        offsetY={height}
+      />
       <View style={formItemStyles.formItem}>
         <Text styles={formItemStyles.label}>{label}</Text>
         <View style={formItemStyles.inputWrap}>
@@ -51,7 +57,7 @@ export function NormalPicker<T extends Dict, U extends PickerField>({
             ref={fieldRef}
             onLayout={() => {
               fieldRef.current?.measure((_x, _y, _width, _height, _pageX, pageY) => {
-                setHeight(pageY - _height)
+                setHeight(pageY + _height)
               })
             }}
             value={dataSource.find(({ code }) => code === value)?.name}

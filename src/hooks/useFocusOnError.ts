@@ -1,54 +1,50 @@
 import { useFormikContext } from 'formik'
-import { useEffect, RefObject, useRef } from 'react'
+import { useEffect, type RefObject } from 'react'
 import type { TextInput } from 'react-native'
-import { ScrollView } from 'react-native-gesture-handler'
+import type { ScrollView } from 'react-native-gesture-handler'
 
 //参考
 // https://github.com/jaredpalmer/formik/issues/146
 // https://codesandbox.io/s/scroll-to-input-formik-failed-submission-gnehr?file=/src/App.js:2437-2455
 
-export const useFocusOnError = ({
+export const UseFocusOnError = ({
   fieldRef,
   name,
   scrollViewRef,
   canFocus,
-  height,
+  offsetY,
 }: {
   fieldRef: RefObject<TextInput>
   name: string
   canFocus?: boolean
-  height: number
+  offsetY: number
   scrollViewRef?: RefObject<ScrollView>
 }) => {
-  const formik = useFormikContext()
-  const prevSubmitCountRef = useRef(formik.submitCount)
-  const errorKey = Object.keys(formik.errors)[0]
-  // NOTE maskinput field ref has some problem
+  const { submitCount, isValid, errors } = useFormikContext()
+  // const prevSubmitCountRef = useRef(submitCount)
+  const errorKey = Object.keys(errors)[0]
   useEffect(() => {
-    if (prevSubmitCountRef.current !== formik.submitCount && !formik.isValid) {
-      if ((fieldRef.current || fieldRef) && errorKey === name && scrollViewRef?.current) {
-        if (canFocus) {
-          fieldRef.current
-            ? fieldRef.current.focus()
-            : //@ts-ignore
-              fieldRef?.focus()
-        }
-        scrollViewRef.current?.scrollTo({
-          x: 0,
-          y: height, // NOTE 这个高度还是有点问题
-          animated: true,
-        })
+    if (isValid) {
+      return
+    }
+    if (!fieldRef.current || !scrollViewRef?.current) {
+      return
+    }
+    // if (prevSubmitCountRef.current !== submitCount) {
+    if (errorKey === name && scrollViewRef.current) {
+      scrollViewRef.current.scrollTo({
+        x: 0,
+        y: offsetY,
+        animated: true,
+      })
+      if (canFocus) {
+        // 多种表单元素
+        fieldRef.current.focus()
       }
     }
-    prevSubmitCountRef.current = formik.submitCount
-  }, [
-    formik.submitCount,
-    formik.isValid,
-    errorKey,
-    fieldRef,
-    name,
-    scrollViewRef,
-    canFocus,
-    height,
-  ])
+
+    // }
+    // prevSubmitCountRef.current = submitCount
+  }, [submitCount, isValid, errorKey, fieldRef, name, scrollViewRef, canFocus, offsetY])
+  return null
 }
