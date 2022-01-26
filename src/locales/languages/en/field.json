@@ -96,7 +96,8 @@
   "password": {
     "label": "password",
     "placeholder": "password",
-    "required": "password required"
+    "required": "password required",
+    "invalid": "password invalid"
   },
   "phone": {
     "label": "Phone",
@@ -145,7 +146,8 @@
   "idcard": {
     "required": "idcard required",
     "label": "idcard",
-    "placeholder": "idcard"
+    "placeholder": "idcard",
+    "invalid": "idcard invalid"
   },
   "maritalStatus": {
     "required": "marital status required",
@@ -186,11 +188,6 @@
   "loanPurposeCode": {
     "required": "loan purpose required"
   },
-  "socialPhone": {
-    "required": "social phone required",
-    "label": "social Phone",
-    "placeholder": "social Phone"
-  },
   "whatsapp": {
     "required": "whatsAPP required",
     "label": "whatsapp",
@@ -204,7 +201,8 @@
   "secondCardNo": {
     "required": "second phone required",
     "label": "secondCardNo",
-    "placeholder": "secondCardNo"
+    "placeholder": "secondCardNo",
+    "invalid": "secondCardNo invalid"
   },
   "middleName": {
     "label": "middle name",
@@ -237,5 +235,11 @@
   },
   "liveness": {
     "required": "liveness required"
+  },
+  "authPhone": {
+    "label": "scoical account",
+    "placeholder": "social phone ",
+    "required": "social phone required",
+    "invalid": "social phone invalid"
   }
 }

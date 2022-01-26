@@ -1,4 +1,4 @@
-import { NativeStackHeaderProps } from '@react-navigation/native-stack'
+import type { NativeStackHeaderProps } from '@react-navigation/native-stack'
 import React, { useContext, useMemo, useState } from 'react'
 import { View, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -9,7 +9,7 @@ import * as Yup from 'yup'
 import debounce from 'lodash.debounce'
 
 import { PageStyles, Text } from '@/components'
-import { REGEX_PHONE, REGEX_VALIDATE_CODE } from '@/utils/reg'
+import { REGEX_PASSWORD, REGEX_PHONE, REGEX_VALIDATE_CODE } from '@/utils/reg'
 import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT } from '@/utils/constant'
 import { MaskInput, PasswordInput, ValidateCode } from '@components/form/FormItem'
 import { ApplyButton } from '@components/form/FormItem/applyButton'
@@ -29,8 +29,13 @@ export const ResetScreen = ({ navigation }: NativeStackHeaderProps) => {
       .max(10, t('field.long', { field: 'Phone' }))
       .matches(REGEX_PHONE, t('phone.invalid'))
       .required(t('phone.required')),
-    password: Yup.string().required(t('password.required')),
-    comfirmPassword: Yup.string().required(t('password.required')),
+    password: Yup.string()
+      .matches(REGEX_PASSWORD, t('password.invalid'))
+      .required(t('password.required')),
+    comfirmPassword: Yup.string()
+      .matches(REGEX_PASSWORD, t('comfirmPassword.invalid'))
+      .required(t('password.required'))
+      .oneOf([Yup.ref('password'), null], t('comfirmPassword.notSame')),
     validateCode: Yup.string()
       .min(4, t('field.short', { field: 'Validate Code' }))
       .max(4, t('field.long', { field: 'Validate Code' }))
@@ -48,7 +53,6 @@ export const ResetScreen = ({ navigation }: NativeStackHeaderProps) => {
   )
   const onSubmit = debounce(
     (values: ResetPwdParameter) => {
-      console.log(values)
       reset(values).then(() => {
         emitter.emit('SHOW_MESSAGE', {
           type: 'success',

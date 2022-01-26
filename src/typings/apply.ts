@@ -93,6 +93,9 @@ export interface ApplyStep5Parameter extends ApplyParameter {
   backupPhone: string
   educationCode: string
   loanPurpose: string
+  /**
+   * 税号
+   */
   secondCardNo: string
   thirdInfos: SocialInfo[]
   email: string

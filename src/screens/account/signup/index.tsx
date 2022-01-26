@@ -8,7 +8,7 @@ import * as Yup from 'yup'
 import debounce from 'lodash.debounce'
 
 import { PageStyles, Text } from '@/components'
-import { REGEX_PHONE, REGEX_VALIDATE_CODE } from '@/utils/reg'
+import { REGEX_PASSWORD, REGEX_PHONE, REGEX_VALIDATE_CODE } from '@/utils/reg'
 import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT, KEY_INTERIP, KEY_OUTERIP } from '@/utils/constant'
 import { MaskInput, PasswordInput, ValidateCode } from '@components/form/FormItem'
 import { ApplyButton } from '@components/form/FormItem/applyButton'
@@ -30,8 +30,11 @@ export const SignupScreen = () => {
       .max(10, t('field.long', { field: 'Phone' }))
       .matches(REGEX_PHONE, t('phone.invalid'))
       .required(t('phone.required')),
-    password: Yup.string().required(t('password.required')),
+    password: Yup.string()
+      .matches(REGEX_PASSWORD, t('password.invalid'))
+      .required(t('password.required')),
     comfirmPassword: Yup.string()
+      .matches(REGEX_PASSWORD, t('comfirmPassword.invalid'))
       .required(t('comfirmPassword.required'))
       .oneOf([Yup.ref('password'), null], t('comfirmPassword.notSame')),
     validateCode: Yup.string()

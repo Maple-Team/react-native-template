@@ -8,18 +8,3 @@ export {
   REGEX_PASSWORD,
   REGEX_VALIDATE_CODE,
 } from './reg'
-
-/**
- * 过滤model中的Array字段
- * @param model
- * @returns
- */
-export const filterArrayKey = (model: any) => {
-  const val: { [key: string]: any } = {}
-  Object.keys(model)
-    .filter(k => k!.endsWith('Array'))
-    .forEach(k => {
-      val[k] = model[k]
-    })
-  return val
-}

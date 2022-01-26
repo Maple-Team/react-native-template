@@ -21,17 +21,23 @@ import type { Dict, DictField } from '@/typings/response'
 export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
   const schema = Yup.object().shape({
-    contactName1: Yup.string().required(t('contactName.required')),
+    contactName1: Yup.string()
+      .max(100, t('contactName.invalid'))
+      .required(t('contactName.required')),
     contactPhone1: Yup.string()
       // .required(t('contactPhone.required'))
       .matches(REGEX_PHONE, t('contactPhone.invalid')),
     contactRelationCode1: Yup.string().required(t('contactRelationCode.required')),
-    contactName2: Yup.string().required(t('contactName.required')),
+    contactName2: Yup.string()
+      .max(100, t('contactName.invalid'))
+      .required(t('contactName.required')),
     contactPhone2: Yup.string()
       // .required(t('contactPhone.required'))
       .matches(REGEX_PHONE, t('contactPhone.invalid')),
     contactRelationCode2: Yup.string().required(t('contactRelationCode.required')),
-    contactName3: Yup.string().required(t('contactName.required')),
+    contactName3: Yup.string()
+      .max(100, t('contactName.invalid'))
+      .required(t('contactName.required')),
     contactPhone3: Yup.string()
       // .required(t('contactPhone.required'))
       .matches(REGEX_PHONE, t('contactPhone.invalid')),
@@ -189,6 +195,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                       behavior.setEndModify('P03_C01_I_CONTACTNAME', state.contactName1)
                     }}
                     value={state.contactName1}
+                    maxLength={100}
                     field={'contactName1'}
                     key={'contactName1'}
                     label={t('contactName.label')}
@@ -238,6 +245,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                     onFocus={() => {
                       behavior.setStartModify('P03_C02_I_CONTACTNAME', state.contactName1)
                     }}
+                    maxLength={100}
                     onBlur={() => {
                       behavior.setEndModify('P03_C02_I_CONTACTNAME', state.contactName1)
                     }}
@@ -288,6 +296,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                       setFieldValue('contactName3', text)
                       dispatch({ type: 'updateContactName3', value: text })
                     }}
+                    maxLength={100}
                     onFocus={() => {
                       behavior.setStartModify('P03_C03_I_CONTACTNAME', state.contactName3)
                     }}

@@ -1,4 +1,4 @@
-import { NativeStackHeaderProps } from '@react-navigation/native-stack'
+import type { NativeStackHeaderProps } from '@react-navigation/native-stack'
 import React, { useContext, useMemo } from 'react'
 import { View, ImageBackground } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'

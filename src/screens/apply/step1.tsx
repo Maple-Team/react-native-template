@@ -23,6 +23,7 @@ import {
 } from '@/utils/constant'
 import { debounce } from 'lodash'
 import { useLocation } from '@/hooks'
+import { toThousands } from '@/utils/util'
 
 export function Step1() {
   const navigation = useNavigation()
@@ -54,13 +55,7 @@ export function Step1() {
         currentStep: 1,
         totalSteps: TOTAL_STEPS,
       }).then(() => {
-        let next
-        if (context.barnd?.livenessAuthEnable === 'Y') {
-          next = 'Step61'
-        } else {
-          next = 'Step62'
-        }
-        navigation.getParent()?.navigate(next)
+        navigation.getParent()?.navigate('Step2')
       })
     },
     DEBOUNCE_WAIT,
@@ -116,7 +111,7 @@ export function Step1() {
                   $
                 </Text>
                 <Text fontSize={57} color={Color.primary} fontWeight="bold">
-                  6,600
+                  {toThousands(6600)}
                 </Text>
               </View>
               <Button

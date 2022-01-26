@@ -1,4 +1,4 @@
-import { NativeStackHeaderProps } from '@react-navigation/native-stack'
+import type { NativeStackHeaderProps } from '@react-navigation/native-stack'
 import React, { useContext, useEffect, useReducer, useRef } from 'react'
 import type { Reducer } from 'react'
 import { View, StatusBar } from 'react-native'
@@ -21,7 +21,7 @@ import { fetchDict, submit } from '@/services/apply'
 import type { Dict, DictField } from '@/typings/response'
 import { default as MoneyyaContext } from '@/state'
 import { MMKV } from '@/utils/storage'
-import { filterArrayKey } from '@/utils'
+import { filterArrayKey } from '@/utils/util'
 
 export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
@@ -35,11 +35,15 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
       is: 'MONTHLY' || 'WEEKLY',
       then: Yup.string().required(t('salaryDate.required')),
     }),
-    company: Yup.string().required(t('company.required')),
-    companyPhone: Yup.string().required(t('companyPhone.required')),
+    company: Yup.string().max(100, t('company.invalid')).required(t('company.required')),
+    companyPhone: Yup.string()
+      .max(20, t('companyPhone.invalid'))
+      .required(t('companyPhone.required')),
     companyAddrProvinceCode: Yup.string().required(t('companyAddrProvinceCode.required')),
     companyAddrCityCode: Yup.string().required(t('companyAddrCityCode.required')),
-    companyAddrDetail: Yup.string().required(t('companyAddrDetail.required')),
+    companyAddrDetail: Yup.string()
+      .max(200, t('companyAddrDetail.invalid'))
+      .required(t('companyAddrDetail.required')),
     incumbency: Yup.string().required(t('incumbency.required')),
   })
 
@@ -310,6 +314,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     onClear={() => {
                       setFieldValue('company', '')
                     }}
+                    maxLength={100}
                     onFocus={() => {
                       behavior.setStartModify('P02_C01_I_COMPANY', state.company)
                     }}
@@ -332,6 +337,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     onClear={() => {
                       setFieldValue('companyPhone', '')
                     }}
+                    maxLength={20}
                     onFocus={() => {
                       behavior.setStartModify('P02_C02_I_COMPANYPHONE', state.companyPhone)
                     }}
@@ -405,6 +411,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     key={'companyAddrDetail'}
                     label={t('companyAddrDetail.label')}
                     error={errors.companyAddrDetail}
+                    maxLength={200}
                     placeholder={t('companyAddrDetail.placeholder')}
                   />
                   <NormalPicker

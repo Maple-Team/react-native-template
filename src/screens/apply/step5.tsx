@@ -10,9 +10,16 @@ import debounce from 'lodash.debounce'
 
 import { PageStyles, Text } from '@/components'
 import { REGEX_PHONE } from '@/utils/reg'
-import { filterArrayKey } from '@/utils'
+import { filterArrayKey } from '@/utils/util'
 import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT, KEY_APPLYID, TOTAL_STEPS } from '@/utils/constant'
-import { ApplyButton, Input, NormalPicker, DatePicker, RadioInput } from '@components/form/FormItem'
+import {
+  ApplyButton,
+  Input,
+  NormalPicker,
+  DatePicker,
+  RadioInput,
+  MaskInput,
+} from '@components/form/FormItem'
 import { Color } from '@/styles/color'
 import type { ApplyParameter, ApplyStep5Parameter, OcrResult } from '@/typings/apply'
 import { useBehavior, useLocation } from '@/hooks'
@@ -29,20 +36,17 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
   const { orcResult } = route.params as { orcResult?: OcrResult }
   const schema = Yup.object().shape({
     firstName: Yup.string()
-      .min(1, t('field.short', { field: t('firstName.label') }))
       .max(50, t('field.long', { field: t('firstName.label') }))
       .required(t('firstName.required')),
     middleName: Yup.string()
-      .min(1, t('field.short', { field: t('middleName.label') }))
       .max(100, t('field.long', { field: t('middleName.label') }))
       .required(t('middleName.required')),
     lastName: Yup.string()
-      .min(1, t('field.short', { field: t('lastname.label') }))
       .max(50, t('field.long', { field: t('lastname.label') }))
       .required(t('lastname.required')),
     birth: Yup.string().required(t('birth.required')),
     sex: Yup.string().required(t('gender.required')),
-    idcard: Yup.string().required(t('idcard.required')),
+    idcard: Yup.string().max(18, t('idcard.invalid')).required(t('idcard.required')),
     maritalStatus: Yup.string().required(t('maritalStatus.required')),
     homeAddrProvinceCode: Yup.string().required(t('homeAddrProvinceCode.required')),
     homeAddrCityCode: Yup.string().required(t('homeAddrCityCode.required')),
@@ -53,12 +57,12 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
       .required(t('backupPhone.required')),
     educationCode: Yup.string().required(t('educationCode.required')),
     loanPurpose: Yup.string().required(t('loanPurposeCode.required')),
-    socialPhone: Yup.string()
-      .matches(REGEX_PHONE, t('backupPhone.invalid'))
-      .required(t('socialPhone.required')),
+    authPhone: Yup.string().max(20, t('authPhone.invalid')).required(t('authPhone.required')),
     whatsapp: Yup.string().required(t('whatsapp.required')),
     email: Yup.string().email().required(t('email.required')),
-    secondCardNo: Yup.string().required(t('secondCardNo.required')),
+    secondCardNo: Yup.string()
+      .max(20, t('secondCardNo.invalid'))
+      .required(t('secondCardNo.required')),
   })
   const context = useContext(MoneyyaContext)
 
@@ -107,8 +111,8 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
           return { ...s, maritalStatus: value }
         case 'middleName':
           return { ...s, middleName: value }
-        case 'socialPhone':
-          return { ...s, socialPhone: value }
+        case 'authPhone':
+          return { ...s, authPhone: value }
         case 'docType':
           return { ...s, docType: value }
         case 'whatsapp':
@@ -143,7 +147,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
       docTypeArray: [],
       educationArray: [],
       loanPurposeArray: [],
-      socialPhone: '',
+      authPhone: '',
       whatsapp: '',
     }
   )
@@ -157,7 +161,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
         totalSteps: TOTAL_STEPS,
         thirdInfos: [
           {
-            authPhone: state.socialPhone,
+            authPhone: state.authPhone,
             authType: '',
             isAuth: 'Y',
             thirdCode: 'whatsApp',
@@ -168,7 +172,11 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
         homeAddrProvince: state.homeAddrProvince,
         name: `${values.firstName.trim()} ${values.middleName.trim()} ${values.lastName.trim()}`,
       }).then(() => {
-        navigation.navigate('Step61')
+        if (context.barnd?.livenessAuthEnable === 'Y') {
+          navigation.navigate('Step61')
+        } else {
+          navigation.navigate('Step62')
+        }
       })
     },
     DEBOUNCE_WAIT,
@@ -250,6 +258,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                         behavior.setEndModify('P05_C01_I_FIRSTNAME', state.firstName)
                       }}
                       value={state.firstName}
+                      maxLength={50}
                       field={'firstName'}
                       key={'firstName'}
                       label={t('firstName.label')}
@@ -272,6 +281,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       }}
                       value={state.middleName}
                       field={'middleName'}
+                      maxLength={100}
                       key={'middleName'}
                       label={t('middleName.label')}
                       placeholder={t('middleName.placeholder')}
@@ -293,6 +303,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       }}
                       value={state.lastName}
                       field={'lastName'}
+                      maxLength={50}
                       key={'lastName'}
                       label={t('lastName.label')}
                       placeholder={t('lastName.placeholder')}
@@ -322,6 +333,17 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       value={state.sex}
                       label={t('gender.label')}
                     />
+                    <MaskInput
+                      field="idcard"
+                      label={t('idcard.label')}
+                      onChangeText={(formatted, extracted) => {
+                        setFieldValue('idcard', extracted)
+                      }}
+                      value={state.idcard}
+                      placeholder={t('idcard.placeholder')}
+                      error={errors.idcard}
+                      mask={'[A…]'}
+                    />
                     <Input
                       onChangeText={text => {
                         setFieldValue('idcard', text)
@@ -338,7 +360,9 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       }}
                       value={state.idcard}
                       field={'idcard'}
+                      keyboardType="number-pad"
                       key={'idcard'}
+                      maxLength={18}
                       label={t('idcard.label')}
                       scrollViewRef={scrollviewRef}
                       placeholder={t('idcard.placeholder')}
@@ -418,6 +442,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       value={state.homeAddrDetail}
                       field={'homeAddrDetail'}
                       key={'homeAddrDetail'}
+                      maxLength={200}
                       label={t('homeAddrDetail.label')}
                       placeholder={t('homeAddrDetail.placeholder')}
                     />
@@ -435,26 +460,25 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       placeholder={t('docType.placeholder')}
                       dataSource={state.docTypeArray}
                     />
-                    <Input
-                      onChangeText={function (text: string): void {
-                        setFieldValue('backupPhone', text)
-                        dispatch({ type: 'backupPhone', value: text })
+                    <MaskInput
+                      field="backupPhone"
+                      onChangeText={(formatted, extracted) => {
+                        setFieldValue('backupPhone', extracted)
+                        dispatch({ type: 'backupPhone', value: extracted || '' })
                       }}
-                      onClear={function (): void {
-                        setFieldValue('backupPhone', '')
-                      }}
+                      value={state.backupPhone}
+                      placeholder={t('phone.placeholder')}
+                      error={errors.backupPhone}
+                      keyboardType="phone-pad"
+                      mask={'[0000] [0000] [00]'}
+                      key={'backupPhone'}
                       onFocus={() => {
                         behavior.setStartModify('P05_C06_I_BACKUPPHONE', state.backupPhone)
                       }}
                       onBlur={() => {
                         behavior.setEndModify('P05_C06_I_BACKUPPHONE', state.backupPhone)
                       }}
-                      value={state.backupPhone}
-                      field={'backupPhone'}
-                      key={'backupPhone'}
-                      maxLength={10}
                       label={t('backupPhone.label')}
-                      placeholder={t('backupPhone.placeholder')}
                     />
                     <NormalPicker
                       onChange={function (record: Dict): void {
@@ -490,24 +514,25 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                     />
                     <Input
                       onChangeText={function (text: string): void {
-                        setFieldValue('socialPhone', text)
-                        dispatch({ type: 'socialPhone', value: text })
+                        setFieldValue('authPhone', text)
+                        dispatch({ type: 'authPhone', value: text })
                       }}
                       onClear={function (): void {
-                        setFieldValue('socialPhone', '')
+                        setFieldValue('authPhone', '')
                       }}
                       onFocus={() => {
-                        behavior.setStartModify('P05_C07_I_SOCIALPHONE', state.socialPhone)
+                        behavior.setStartModify('P05_C07_I_AUTHPHONE', state.authPhone)
                       }}
                       onBlur={() => {
-                        behavior.setEndModify('P05_C07_I_SOCIALPHONE', state.socialPhone)
+                        behavior.setEndModify('P05_C07_I_AUTHPHONE', state.authPhone)
                       }}
-                      value={state.socialPhone}
-                      field={'socialPhone'}
-                      key={'socialPhone'}
-                      maxLength={10}
-                      label={t('socialPhone.label')}
-                      placeholder={t('socialPhone.placeholder')}
+                      value={state.authPhone}
+                      keyboardType="phone-pad"
+                      field={'authPhone'}
+                      key={'authPhone'}
+                      maxLength={100}
+                      label={t('authPhone.label')}
+                      placeholder={t('authPhone.placeholder')}
                     />
                     <Input
                       onChangeText={(text: string) => {
@@ -543,6 +568,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       onBlur={() => {
                         behavior.setEndModify('P05_C09_I_EMAIL', state.email)
                       }}
+                      keyboardType="email-address"
                       value={state.email}
                       field={'email'}
                       key={'email'}
@@ -566,6 +592,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       value={state.secondCardNo}
                       field={'secondCardNo'}
                       key={'secondCardNo'}
+                      maxLength={20}
                       label={t('secondCardNo.label')}
                       placeholder={t('secondCardNo.placeholder')}
                     />
@@ -601,7 +628,7 @@ interface Step5State extends FormModel {
   docTypeArray: Dict[]
   educationArray: Dict[]
   loanPurposeArray: Dict[]
-  socialPhone: string
+  authPhone: string
   whatsapp: string
 }
 type Step5Action =
@@ -686,7 +713,7 @@ type Step5Action =
       value: string
     }
   | {
-      type: 'socialPhone'
+      type: 'authPhone'
       value: string
     }
   | {

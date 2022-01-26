@@ -1,37 +1,12 @@
-import getDevice from './device'
-import DA from './behavior'
+export { default as getDevice } from './device'
 
-const toThousands = (number: number, thousandSeparator = ',') => {
-  let num = (number || 0).toString()
-  let result = ''
-  while (num.length > 3) {
-    result = thousandSeparator + num.slice(-3) + result
-    num = num.slice(0, num.length - 3)
+export const toThousands = (number: number, thousandSeparator = ',') => {
+  if (number === 0) {
+    return number
   }
-  if (num) {
-    result = num + result
-  }
-  return result
+  return `${number}`.replace(/(?!^)(?=(\d{3})+$)/g, thousandSeparator)
 }
 
-const getKeyboardType = (type: string) => {
-  let _type = 'default'
-  switch (type) {
-    case 'email':
-      _type = 'email-address'
-      break
-    case 'tel':
-      _type = 'phone-pad'
-      break
-    case 'decimal':
-    case 'number':
-      _type = `${type}-pad`
-      break
-    default:
-      break
-  }
-  return _type
-}
 export async function errorCaptured(func: Function) {
   try {
     const res = await func()
@@ -40,5 +15,17 @@ export async function errorCaptured(func: Function) {
     return [e, null]
   }
 }
-
-export { getDevice, toThousands, DA, getKeyboardType }
+/**
+ * 过滤model中的Array字段
+ * @param model
+ * @returns
+ */
+export const filterArrayKey = (model: any) => {
+  const val: { [key: string]: any } = {}
+  Object.keys(model)
+    .filter(k => k!.endsWith('Array'))
+    .forEach(k => {
+      val[k] = model[k]
+    })
+  return val
+}

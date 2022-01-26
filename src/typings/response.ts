@@ -78,7 +78,6 @@ export type PickerField =
   | 'homeAddrCityCode'
   | 'companyAddrCityCode'
   | 'incumbency'
-  | 'contactRelationCode'
   | 'maritalStatus'
   | 'docType'
   | 'educationCode'

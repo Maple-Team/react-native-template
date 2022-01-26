@@ -87,6 +87,9 @@ interface Customer {
  * 社交软件信息
  */
 export interface SocialInfo {
+  /**
+   * 社交账号
+   */
   authPhone: string
   authType: string
   isAuth: BOOL
