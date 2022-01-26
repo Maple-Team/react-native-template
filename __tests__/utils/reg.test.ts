@@ -1,4 +1,4 @@
-import { REGEX_BANK_CARD, REGEX_BANK_CLABE, REGEX_USERNAME } from '../../src/utils/reg'
+import { REGEX_BANK_CARD, REGEX_BANK_CLABE } from '../../src/utils/reg'
 import Mock from 'mockjs'
 
 function generateArray(num: number): Array<number> {
@@ -22,9 +22,6 @@ describe('reg test suits', () => {
   })
   describe('password', () => {})
   describe('company phone', () => {})
-  describe('username', () => {
-    expect(REGEX_USERNAME.test('asdf')).toBe(true)
-  })
   describe('bank card reg test case suits', () => {
     describe('bank card type', () => {
       it("18's number should be true", () => {
