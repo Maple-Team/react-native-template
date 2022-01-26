@@ -26,7 +26,7 @@ module.exports = api => {
     presets: ['module:metro-react-native-babel-preset'],
     plugins: [
       ['import', { libraryName: '@ant-design/react-native' }],
-      // ["transform-remove-console", { "exclude": ["error", "warn"] }], // FIXME
+      // ["transform-remove-console", { "exclude": ["error", "warn"] }], // TODO apk size
       [
         'module-resolver',
         {

@@ -4,8 +4,6 @@
 
 ## Build APK scripts
 
-- TODO
-
 ## 翻译相关
 
 - `field`脚本：`script/add-field.ts`
@@ -15,11 +13,4 @@
 
 ## 生成页面的脚本
 
-- TODO
-  <<<<<<< HEAD
-  =======
-
 ## MISC
-
-- 批量改文件名
-  > > > > > > > 0f0cec518fe37dcbffdf2636dcfb3143afa42d71

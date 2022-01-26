@@ -212,7 +212,7 @@ export interface TermSchedule {
 export interface ImageUploadParameter {
   applyId: number
   type: ImageType
-  image: '' // FIXME
+  image: ''
   deviceId: string
   isSupplement: BOOL
 }

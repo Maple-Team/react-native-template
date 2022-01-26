@@ -30,7 +30,7 @@ export const SignupScreen = () => {
       .max(10, t('field.long', { field: 'Phone' }))
       .matches(REGEX_PHONE, t('phone.invalid'))
       .required(t('phone.required')),
-    password: Yup.string().required(t('password.required')), //FIXME password VS comfirmPassword
+    password: Yup.string().required(t('password.required')),
     comfirmPassword: Yup.string()
       .required(t('comfirmPassword.required'))
       .oneOf([Yup.ref('password'), null], t('comfirmPassword.notSame')),

@@ -41,13 +41,9 @@ export interface Device {
    */
   memoryUsed: string
   mnc: string
-  /**
-   * TODO
-   */
+
   mobileNetworkType: string
-  /**
-   * TODO
-   */
+
   networkOperators: string
   nfcFunction: APPLY_BOOL
   numberOfPhotos: number
@@ -73,9 +69,7 @@ export interface Device {
    */
   screenSize: string
   signalStrength: string
-  /**
-   * TODO
-   */
+
   startTime: number
   systemTime: string
   /**

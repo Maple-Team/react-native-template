@@ -33,10 +33,88 @@ export let moneyyaState: State = {
   },
   hasInit: MMKV.getBool(KEY_INIT) || false,
 }
-// FIXME context不能修改
+
 const StateContext = createContext(moneyyaState)
 
 export default StateContext
+
+export function reducer(state: State, action: Action): State {
+  console.log('action', action)
+  switch (action.type) {
+    case UPDATE_TOKEN:
+      MMKV.setString(KEY_TOKEN, action.token)
+      moneyyaState = {
+        ...state,
+        header: {
+          ...state.header,
+          accessToken: action.token,
+        },
+      }
+      break
+    case UPDATE_GPS:
+      MMKV.setString(KEY_GPS, action.gps)
+      moneyyaState = {
+        ...state,
+        header: {
+          ...state.header,
+          gps: action.gps,
+        },
+      }
+      break
+    case UPDATE_DEVICEID:
+      MMKV.setString(KEY_DEVICEID, action.deviceId)
+      moneyyaState = {
+        ...state,
+        header: {
+          ...state.header,
+          deviceId: action.deviceId,
+        },
+      }
+      break
+    case UPDATE_VESIONID:
+      moneyyaState = {
+        ...state,
+        header: {
+          ...state.header,
+          versionId: action.versionID,
+        },
+      }
+      break
+    case UPDATE_USERINFO:
+      moneyyaState = {
+        ...state,
+        user: action.user,
+      }
+      break
+    case UPDATE_HAS_INIT:
+      MMKV.setBool(KEY_INIT, action.hasInit)
+      moneyyaState = {
+        ...state,
+        hasInit: action.hasInit,
+      }
+      break
+    case UPDATE_BRAND:
+      moneyyaState = {
+        ...state,
+        barnd: action.brand,
+      }
+      break
+    default:
+      if ([...NormalTypeArray, ...DictTypeArray].includes(action.type)) {
+        moneyyaState = {
+          ...state,
+          loading: {
+            effects: {
+              [`${action.type}`]: action.loading,
+            },
+          },
+        }
+      }
+      moneyyaState = { ...state }
+      break
+  }
+  return moneyyaState
+}
 
 interface State {
   header: CommonHeader
@@ -47,7 +125,7 @@ interface State {
    */
   loading: {
     /**
-     * 是否全局显示, TODO IMPLEMENTTAION
+     * 是否全局显示,
      */
     global?: boolean
     effects: {
@@ -94,83 +172,3 @@ type Action =
       type: typeof UPDATE_BRAND
       brand: Brand
     }
-
-export function reducer(state: State, action: Action): State {
-  console.log('action', action)
-  let newState: State | null = null
-  switch (action.type) {
-    case UPDATE_TOKEN:
-      MMKV.setString(KEY_TOKEN, action.token)
-      newState = {
-        ...state,
-        header: {
-          ...state.header,
-          accessToken: action.token,
-        },
-      }
-      break
-    case UPDATE_GPS:
-      MMKV.setString(KEY_GPS, action.gps)
-      newState = {
-        ...state,
-        header: {
-          ...state.header,
-          gps: action.gps,
-        },
-      }
-      break
-    case UPDATE_DEVICEID:
-      MMKV.setString(KEY_DEVICEID, action.deviceId)
-      newState = {
-        ...state,
-        header: {
-          ...state.header,
-          deviceId: action.deviceId,
-        },
-      }
-      break
-    case UPDATE_VESIONID:
-      newState = {
-        ...state,
-        header: {
-          ...state.header,
-          versionId: action.versionID,
-        },
-      }
-      break
-    case UPDATE_USERINFO:
-      newState = {
-        ...state,
-        user: action.user,
-      }
-      break
-    case UPDATE_HAS_INIT:
-      MMKV.setBool(KEY_INIT, action.hasInit)
-      newState = {
-        ...state,
-        hasInit: action.hasInit,
-      }
-      break
-    case UPDATE_BRAND:
-      newState = {
-        ...state,
-        barnd: action.brand,
-      }
-      break
-    default:
-      if ([...NormalTypeArray, ...DictTypeArray].includes(action.type)) {
-        newState = {
-          ...state,
-          loading: {
-            effects: {
-              [`${action.type}`]: action.loading,
-            },
-          },
-        }
-      }
-      newState = { ...state }
-      break
-  }
-  moneyyaState = newState
-  return newState
-}

@@ -30,10 +30,7 @@ import { useFlipper } from '@react-navigation/devtools'
 import emitter from '@/eventbus'
 import { MMKV } from '@/utils/storage'
 
-// JPUSH https://docs.jiguang.cn/jpush/resources/
-// FIXME 是否确保一个toast/message的显示时间符合其设置的时间，
-// 即后续的toast/message是否会顶掉前一个toast/message
-// NOTE Authentication flows: https://reactnavigation.org/docs/auth-flow/
+// Authentication flows: https://reactnavigation.org/docs/auth-flow/
 Toast.config({
   /**
    * 自动关闭的延时，单位秒. 为0时，需要手动调用rmove来关闭
@@ -94,7 +91,7 @@ const App = () => {
   const [isReady, setIsReady] = useState(__DEV__ ? false : true)
   const [initialState, setInitialState] = useState()
   useFlipper(navigationRef)
-  // NOTE 处理用户上一次打开的页面(进件过程) https://reactnavigation.org/docs/state-persistence
+  // NOTE 处理用户上一次打开的页面(进件过程), 开发环境? https://reactnavigation.org/docs/state-persistence
   useEffect(() => {
     const restoreState = async () => {
       try {
@@ -126,7 +123,6 @@ const App = () => {
       })
     })
     emitter.on('LOGIN_SUCCESS', u => {
-      // FIXME 注册/登录响应
       dispatch({
         type: 'UPDATE_TOKEN',
         token: u?.accessToken || '',

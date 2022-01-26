@@ -84,7 +84,7 @@ export enum API_CODE {
    */
   UNREGISTER_USER = '993',
   /**
-   * 验证码错误	弹出异常信息 FIXME
+   * 验证码错误	弹出异常信息
    */
   VALIDATE_CODE_SEND_FAIL2 = '992',
   /**
@@ -104,6 +104,3 @@ export enum API_CODE {
    */
   LOW_APP_VERSION = '985',
 }
-
-// export type ApplyState = typeof APPLY_STATE
-// export type ApplyCode = typeof API_CODE

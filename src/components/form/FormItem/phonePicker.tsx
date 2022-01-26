@@ -37,15 +37,13 @@ export function PhonePicker({ onChange, value, field, label, placeholder }: Prop
 
     const { selectedPhone } = selection
     const contactPhone = selectedPhone.number
-    const _value = contactPhone.replace(/\s/g, '') //FIXME正则替换
+    const _value = contactPhone.replace(/\s/g, '') //TODO 正则替换
     onChange(_value)
   }, [onChange])
 
   const onRequestContactsPermission = useCallback(() => {
     onRequestPermission({
-      //@ts-ignore FIXME
       blockedMessage: t('permission blocked'),
-      // @ts-ignore FIXME
       unavailableMessage: t('permission unavailable'),
       permission: 'android.permission.READ_CONTACTS',
       onGranted: () => {

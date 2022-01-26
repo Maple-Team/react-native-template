@@ -47,7 +47,7 @@ export function Step1() {
     () => {
       submit({
         deviceId: MMKV.getString(KEY_DEVICEID) || '',
-        phone: context.user?.phone || '', // FIXME
+        phone: context.user?.phone || '',
         gps: `${location.latitude},${location.longitude}`,
         idcard: context.user?.idcard || '',
         applyId: +(MMKV.getString(KEY_APPLYID) || '0'),

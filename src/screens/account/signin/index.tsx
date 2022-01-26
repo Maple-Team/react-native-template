@@ -97,7 +97,7 @@ const PasswdTab = ({ phone }: { phone?: string }) => {
       login({
         ...values,
         gps: MMKV.getString(KEY_GPS) || '',
-        deviceId: MMKV.getString(KEY_DEVICEID) || '', //FIXME deviceID
+        deviceId: MMKV.getString(KEY_DEVICEID) || '',
         loginType: 'PWD_LOGIN',
       }).then(res => {
         emitter.emit('LOGIN_SUCCESS', res)

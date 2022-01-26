@@ -42,7 +42,6 @@ const permissions = [
   PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
   PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
 ]
-// FIXME
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const PermissionContent = {
   location: {
@@ -101,7 +100,7 @@ export const usePersmission = () => {
                   resolve()
                   break
                 default:
-                  const s1 = await request(curr) //FIXME
+                  const s1 = await request(curr) //TODO 请求权限策略
                   console.log({ s1 })
                   resolve()
                   break

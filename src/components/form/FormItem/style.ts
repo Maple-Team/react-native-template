@@ -38,7 +38,7 @@ export default StyleSheet.create<{
     color: 'rgba(51, 50, 48, 1)',
     borderBottomColor: 'rgba(180, 204, 226, 1)',
     fontSize: 15,
-    paddingVertical: 10, //FIXME 与UI确认
+    paddingVertical: 10,
     paddingLeft: 6.5,
     flexWrap: 'wrap',
     paddingRight: 34,

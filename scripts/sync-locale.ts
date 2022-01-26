@@ -4,7 +4,6 @@ import beautify from 'js-beautify'
 import { Command } from 'commander'
 import path from 'path'
 
-//FIXME
 const languages = [
   'en',
   // 'cn' 默认语言以此为准

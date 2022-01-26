@@ -5,7 +5,6 @@ import type { StandardProperties } from 'csstype'
 // type Babel = typeof babel
 /**
  * RN样式中支持的属性
- * FIXME 排除一些维度相关的属性
  */
 type CssProperty = keyof Omit<StandardProperties, ''> | 'paddingHorizontal' | 'paddingVertical'
 export interface PluginOptions {

@@ -5,6 +5,6 @@ module.exports = {
     semi: 0,
     'no-shadow': 'off',
     '@typescript-eslint/no-shadow': ['error'],
-    'react-native/no-inline-styles': 'off', // FIXME
+    'react-native/no-inline-styles': 'off', // TODO
   },
 }

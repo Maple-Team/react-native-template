@@ -70,7 +70,6 @@ export default class Behavior<T extends PAGE_ID> {
    * @returns
    */
   private getNowTime() {
-    //TODO TIMEZONE?
     return dayjs().format('YYYY-MM-DD HH:mm:ss')
   }
   private save2storage() {

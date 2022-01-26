@@ -37,7 +37,6 @@ export type LeaveID =
 
 /**
  * 输入类型的ID
- * TODO 完善
  */
 export type InputTypeID =
   | 'P02_C01_I_COMPANY'

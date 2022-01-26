@@ -8,7 +8,7 @@ import type { BaseResponse } from '@/utils/http'
  */
 export async function queryZhanLetter() {
   return request<BaseResponse>({
-    url: '', // TODO add url
+    url: '',
     method: 'get',
   })
 }
@@ -19,7 +19,7 @@ export async function queryZhanLetter() {
  */
 export async function queryZhanLetterList() {
   return request<BaseResponse>({
-    url: '', // TODO add url
+    url: '',
     method: 'get',
   })
 }
@@ -30,7 +30,7 @@ export async function queryZhanLetterList() {
  */
 export async function queryZhanLetterDetail() {
   return request<BaseResponse>({
-    url: '', // TODO add url
+    url: '',
     method: 'get',
   })
 }

@@ -41,6 +41,7 @@ export const ValidateCode = ({
   const { t } = useTranslation()
   const [count, setCount] = useState<number>(60)
   const [times, setTimtes] = useState<number>(300) //FIXME
+  // TODO 验证码次数
   const [isPlaying, setPlaying] = useState<boolean>(false)
 
   const handlePress = debounce(
@@ -53,7 +54,7 @@ export const ValidateCode = ({
     },
     DEBOUNCE_WAIT,
     DEBOUNCE_OPTIONS
-  ) // FIXME
+  )
 
   useInterval(
     () => {

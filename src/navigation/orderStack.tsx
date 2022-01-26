@@ -20,13 +20,7 @@ export function OrderStack() {
           fontFamily: 'ArialMT',
         },
         headerTitleAlign: 'center',
-        headerRight: () => (
-          <HeaderRight
-            onPress={() => {
-              // FIXME
-            }}
-          />
-        ),
+        headerRight: () => <HeaderRight onPress={() => {}} />,
       })}>
       <Stack.Group screenOptions={{ headerShown: false }}>
         <Stack.Screen

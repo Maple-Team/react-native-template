@@ -20,13 +20,7 @@ export function UserStack() {
           fontFamily: 'ArialMT',
         },
         headerTitleAlign: 'center',
-        headerRight: () => (
-          <HeaderRight
-            onPress={() => {
-              // FIXME
-            }}
-          />
-        ),
+        headerRight: () => <HeaderRight onPress={() => {}} />,
       })}>
       <Stack.Group>
         <Stack.Screen

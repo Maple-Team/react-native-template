@@ -4,5 +4,4 @@
   android:layout_height="match_parent"
   android:background="@mipmap/splash_launch"
   android:orientation="vertical">
-<!--TODO add screen-->
 </LinearLayout>

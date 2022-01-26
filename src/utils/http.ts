@@ -27,7 +27,6 @@ const api = axios.create({
 api.interceptors.request.use(
   async function (config: AxiosRequestConfig) {
     if (config.headers) {
-      //FIXME 取值问题
       const {
         header: { inputChannel, merchantId, source, gps, versionId, channel },
       } = moneyyaState
