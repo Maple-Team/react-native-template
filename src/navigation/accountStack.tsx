@@ -9,10 +9,13 @@ import AppModule from '@/modules/AppModule'
 import RNAdvertisingId from 'react-native-advertising-id'
 import DeviceInfo from 'react-native-device-info'
 import { usePersmission } from '@/utils/permission'
+import { StackActions, useNavigationState } from '@react-navigation/native'
 
 export type AccountStackParams = {
   Entry: undefined
-  SignIn: undefined
+  SignIn: {
+    phone: string
+  }
   SignUp: undefined
   Reset: undefined
 }
@@ -48,7 +51,8 @@ export function AccountStack() {
     }
     query()
   }, [])
-
+  const _ = useNavigationState(state => state)
+  console.log({ navigationState: _ }) // TODO navigation state tree
   useLocation()
   return (
     <Stack.Navigator
@@ -64,7 +68,7 @@ export function AccountStack() {
           // presentation: 'fullScreenModal',
           headerShown: false,
           statusBarHidden: true,
-          // animationTypeForReplace: 'pop',
+          animationTypeForReplace: 'push',
         }}
       />
       <Stack.Screen
@@ -77,30 +81,19 @@ export function AccountStack() {
         key="SignUp"
         name="SignUp"
         component={SignupScreen}
-        options={({ navigation: na }) => ({
+        options={({ navigation: { dispatch } }) => ({
           title: t('signup'),
-          headerLeft: () => (
-            <HeaderLeft
-              onPress={() => {
-                na.navigate('Entry')
-              }}
-            />
-          ),
+          headerLeft: () => <HeaderLeft onPress={() => dispatch(StackActions.replace('Entry'))} />,
         })}
       />
       <Stack.Screen
         key="Reset"
         name="Reset"
         component={ResetScreen}
-        options={({ navigation: na }) => ({
+        // @ts-ignore
+        options={({ navigation: { dispatch } }) => ({
           title: t('resetpwd'),
-          headerLeft: () => (
-            <HeaderLeft
-              onPress={() => {
-                na.navigate('Entry')
-              }}
-            />
-          ),
+          headerLeft: () => <HeaderLeft onPress={() => dispatch(StackActions.replace('Entry'))} />,
         })}
       />
     </Stack.Navigator>

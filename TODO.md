@@ -33,11 +33,17 @@
 - [ ] background tasks
   - [ ] fetch 站内信: [headless-js-android](https://reactnative.dev/docs/headless-js-android) || or 全局的页面做请求?
 - [ ] [React Native Gesture Handler](https://docs.swmansion.com/react-native-gesture-handler/docs/1.10.3/about-handlers/#using-native-components) 组件尝试
+- [ ] functional hooks performance
+  - https://github.com/facebook/react/issues/14099#thread-subscription-status
+- apply progress gesture
+- TODO android builtin performance analysis
 
 ## 1.1
 
 - [ ] apk size
   - https://my.oschina.net/droidwolf/blog/791552
+- [ ] [release build environment](https://stackoverflow.com/questions/33117227/setting-environment-variable-in-react-native)
+- 打包后的 bundle 文件分析是否除去了注释、console、类型注释等代码
 
 ## 1.2
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useReducer } from 'react'
+import React, { useEffect, useState, useReducer, StrictMode } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { Provider, Toast } from '@ant-design/react-native'
 import {
@@ -9,7 +9,6 @@ import {
   ActivityIndicator,
   View,
   ViewStyle,
-  // Dimensions,
 } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import StyleSheet from 'react-native-adaptive-stylesheet'
@@ -169,14 +168,14 @@ const App = () => {
     <SafeAreaProvider>
       <Provider>
         <MoneyyaContext.Provider value={moneyyaState}>
-          {/* <StrictMode> */}
-          <NavigationContainer
-            ref={navigationRef}
-            initialState={initialState}
-            onStateChange={_ => AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(_))}>
-            {!hasInit ? <Init /> : accessToken ? <MainStack /> : <AccountStack />}
-          </NavigationContainer>
-          {/* </StrictMode> */}
+          <StrictMode>
+            <NavigationContainer
+              ref={navigationRef}
+              initialState={initialState}
+              onStateChange={_ => AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(_))}>
+              {!hasInit ? <Init /> : accessToken ? <MainStack /> : <AccountStack />}
+            </NavigationContainer>
+          </StrictMode>
         </MoneyyaContext.Provider>
       </Provider>
     </SafeAreaProvider>

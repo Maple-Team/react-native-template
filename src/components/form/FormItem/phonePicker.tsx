@@ -9,6 +9,7 @@ import { selectContactPhone } from 'react-native-select-contact'
 import Contacts from 'react-native-contacts'
 import { onRequestPermission } from '@/utils/permission'
 import type { ScrollView } from 'react-native-gesture-handler'
+import dayjs from 'dayjs'
 
 interface Props {
   onChange: (text: string) => void
@@ -51,6 +52,12 @@ export function PhonePicker({ onChange, value, field, label, placeholder }: Prop
       },
     })
   }, [onSelectContacts, t])
+  console.log(
+    'field: ',
+    field,
+    ', PhonePicker rendering: ',
+    dayjs().format('YYYY-MM-DD HH::mm::ss')
+  )
   return (
     <>
       <View style={formItemStyles.formItem}>

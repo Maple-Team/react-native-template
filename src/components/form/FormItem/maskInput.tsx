@@ -7,6 +7,7 @@ import { ErrorMessage } from 'formik'
 import { UseFocusOnError } from '@/hooks'
 import type { ScrollView } from 'react-native-gesture-handler'
 import TextInputMask from 'react-native-text-input-mask'
+import dayjs from 'dayjs'
 
 interface InputProps {
   onChangeText: (formatted: string, extracted?: string) => void
@@ -39,6 +40,7 @@ export const MaskInput = ({
   let fieldRef = useRef<any>(null)
   let wrapperRef = useRef<View>(null)
   const [offsetY, setOffsetY] = useState<number>(0)
+  console.log('field: ', field, ', MaskInput rendering: ', dayjs().format('YYYY-MM-DD HH::mm::ss'))
   // useFocusOnError({ fieldRef, name: field, scrollViewRef, canFocus: true, offsetY })
   return (
     <>

@@ -20,6 +20,10 @@ import { default as MoneyyaContext } from '@/state'
 import { useNavigation } from '@react-navigation/native'
 import { useNetInfo } from '@react-native-community/netinfo'
 import { MMKV } from '@/utils'
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import type { AccountStackParams } from '@navigation/accountStack'
+
+type NaviType = NativeStackNavigationProp<AccountStackParams, 'SignUp'>
 
 export const SignupScreen = () => {
   const context = useContext(MoneyyaContext)
@@ -62,24 +66,26 @@ export const SignupScreen = () => {
     MMKV.setString(KEY_INTERIP, netInfo.details?.ipAddress)
   }
 
-  const na = useNavigation()
-  const onSubmit = debounce(
-    (values: RegisterParameter) => {
-      register(values)
-        .then(res => {
-          MMKV.setString(KEY_OUTERIP, res.ip)
-          // @ts-ignore
-          na.navigate('SignIn', { phone: values.phone })
-        })
-        .catch(res => {
-          if (res) {
-            // @ts-ignore
-            na.navigate('SignIn', { phone: values.phone })
-          }
-        })
-    },
-    DEBOUNCE_WAIT,
-    DEBOUNCE_OPTIONS
+  const na = useNavigation<NaviType>()
+  const onSubmit = useMemo(
+    () =>
+      debounce(
+        (values: RegisterParameter) => {
+          register(values)
+            .then(res => {
+              MMKV.setString(KEY_OUTERIP, res.ip)
+              na.navigate('SignIn', { phone: values.phone })
+            })
+            .catch(res => {
+              if (res) {
+                na.navigate('SignIn', { phone: values.phone })
+              }
+            })
+        },
+        DEBOUNCE_WAIT,
+        DEBOUNCE_OPTIONS
+      ),
+    [na]
   )
   const [showPwd, setShowPwd] = useState<boolean>(false)
   const [showConfirmPwd, setShowConfirmPwd] = useState<boolean>(false)

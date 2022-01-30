@@ -106,7 +106,6 @@ const PasswdTab = ({ phone }: { phone?: string }) => {
     DEBOUNCE_WAIT,
     DEBOUNCE_OPTIONS
   )
-  console.log('effects', context.loading.effects)
   const [showPwd, setShowPwd] = useState<boolean>(false)
   return (
     <Formik<Pick<LoginParameter, 'phone' | 'password'>>

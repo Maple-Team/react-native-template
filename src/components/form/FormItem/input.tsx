@@ -6,6 +6,7 @@ import Text from '@components/Text'
 import { ErrorMessage } from 'formik'
 import { UseFocusOnError } from '@/hooks'
 import type { ScrollView } from 'react-native-gesture-handler'
+import dayjs from 'dayjs'
 
 interface InputProps {
   onChangeText: (text: string) => void
@@ -39,6 +40,7 @@ export const Input = ({
 }: InputProps) => {
   const fieldRef = useRef<TextInput>(null)
   const [height, setHeight] = useState<number>(0)
+  console.log('field: ', field, ', Input rendering: ', dayjs().format('YYYY-MM-DD HH::mm::ss'))
   // useFocusOnError({ fieldRef, name: field, scrollViewRef, canFocus: true, offsetY: height })
   return (
     <>
