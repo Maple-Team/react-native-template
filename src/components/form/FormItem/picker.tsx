@@ -9,7 +9,6 @@ import { ModalWrap } from './modalWrap'
 import type { Dict, PickerField } from '@/typings/response'
 import { UseFocusOnError } from '@/hooks'
 import type { ScrollView } from 'react-native-gesture-handler'
-import dayjs from 'dayjs'
 
 interface PickerProps<T extends Dict, U extends PickerField> {
   onChange: (text: Dict) => void
@@ -41,13 +40,6 @@ export function NormalPicker<T extends Dict, U extends PickerField>({
   const Picker = ModalWrap(WheelPicker)
   const fieldRef = useRef<TextInput>(null)
   const [height, setHeight] = useState<number>(0)
-  console.log(
-    'field: ',
-    field,
-    ', PhotoPicker rendering: ',
-    dayjs().format('YYYY-MM-DD HH::mm::ss')
-  )
-  // useFocusOnError({ fieldRef, name: field, scrollViewRef, offsetY: height })
   return (
     <>
       <UseFocusOnError
@@ -64,7 +56,7 @@ export function NormalPicker<T extends Dict, U extends PickerField>({
             ref={fieldRef}
             onLayout={() => {
               fieldRef.current?.measure((_x, _y, _width, _height, _pageX, pageY) => {
-                setHeight(pageY + _height)
+                setHeight(pageY - _height)
               })
             }}
             value={dataSource.find(({ code }) => code === value)?.name}

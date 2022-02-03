@@ -3,10 +3,10 @@ import { View, Pressable } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Modal as AntModal } from '@ant-design/react-native'
 import StyleSheet from 'react-native-adaptive-stylesheet'
-import Text from '@components/Text'
+import { Text } from '@/components'
 import { useTranslation } from 'react-i18next'
 import { Dict } from '@/typings/response'
-import { WheelPickerProps } from './wheelPicker'
+import type { WheelPickerProps } from './wheelPicker'
 
 interface Props<T extends Dict> {
   dataSource: T[]
@@ -24,7 +24,7 @@ export function ModalWrap<T extends Dict, P extends Props<T>>(
   const { t } = useTranslation()
 
   return (props: Props<T>) => {
-    const { onClose, onConfirm, title, value, visible, textSize, dataSource = [] } = props
+    const { onClose, onConfirm, title, value, visible, dataSource = [] } = props
     let pos: number | undefined
     const componentProps: WheelPickerProps<T> = {
       dataSource,
@@ -32,7 +32,6 @@ export function ModalWrap<T extends Dict, P extends Props<T>>(
       onChange: (position: number) => {
         pos = position
       },
-      textSize,
     }
     return (
       <AntModal popup visible={visible} animationType="slide-up" onClose={onClose}>
@@ -64,7 +63,7 @@ export function ModalWrap<T extends Dict, P extends Props<T>>(
                   }
                   _value = first
                 }
-                onConfirm(pos ? dataSource[pos] : _value)
+                onConfirm(pos !== undefined ? dataSource[pos] : _value)
                 onClose()
               }}
               pressRetentionOffset={{ top: 20, left: 20, right: 20, bottom: 20 }}>

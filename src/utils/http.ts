@@ -54,7 +54,6 @@ api.interceptors.request.use(
 
 api.interceptors.response.use(
   (response: AxiosResponse) => {
-    __DEV__ && response.config.data && console.log('response request data', response.config.data)
     const {
       status: { code, msg, msgCn },
       body,
@@ -62,6 +61,8 @@ api.interceptors.response.use(
     if (code === API_CODE.SUCCESS) {
       return body ?? false
     } else {
+      response.config.data && console.log('response request data', response.config.data)
+      response.config.url && console.log('response request url', response.config.url)
       // 处理业务逻辑错误
       const message = __DEV__ ? msgCn : msg
       switch (code) {
@@ -72,8 +73,10 @@ api.interceptors.response.use(
         case API_CODE.EXISTED_USER:
           emitter.emit('EXISTED_USER', message)
           return Promise.reject(true)
+        case API_CODE.UNREGISTER_USER:
+          emitter.emit('UNREGISTER_USER')
+          return Promise.reject(true)
         default:
-          console.error(response.config.url, message)
           emitter.emit('SHOW_MESSAGE', { message, type: 'fail' })
           break
       }

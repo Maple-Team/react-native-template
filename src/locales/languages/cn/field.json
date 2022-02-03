@@ -103,10 +103,10 @@
     "required": "Phone Required"
   },
   "salaryDate": {
-    "label": "",
-    "placeholder": "salaryDate",
+    "label": "发薪日",
+    "placeholder": "发薪日",
     "invalid": "",
-    "required": "必需"
+    "required": "发薪日必需"
   },
   "salaryType": {
     "label": "salaryType",

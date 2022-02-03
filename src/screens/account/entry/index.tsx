@@ -1,5 +1,5 @@
 import type { NativeStackHeaderProps } from '@react-navigation/native-stack'
-import React, { useContext, useMemo } from 'react'
+import React, { useContext, useEffect, useMemo } from 'react'
 import { View, ImageBackground } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Button } from '@ant-design/react-native'
@@ -14,9 +14,12 @@ import Text from '@/components/Text'
 import { default as MoneyyaContext } from '@/state'
 import styles from './style'
 import { REGEX_PHONE } from '@/utils/reg'
-import { DEBOUNCE_WAIT, DEBOUNCE_OPTIONS } from '@/utils/constant'
+import { DEBOUNCE_WAIT, DEBOUNCE_OPTIONS, KEY_BRAND } from '@/utils/constant'
 import { MaskInput } from '@components/form/FormItem'
 import { Color } from '@/styles/color'
+import emitter from '@/eventbus'
+import { queryBrand } from '@/services/apply'
+import { MMKV } from '@/utils'
 
 interface FormModel {
   phone: string
@@ -40,7 +43,12 @@ export const EntryScreen = ({ navigation }: NativeStackHeaderProps) => {
   )
 
   const context = useContext(MoneyyaContext)
-
+  useEffect(() => {
+    queryBrand().then(brand => {
+      emitter.emit('UPDATE_BRAND', brand)
+      MMKV.setMap(KEY_BRAND, brand)
+    })
+  }, [])
   return (
     <SafeAreaView style={styles.flex1}>
       <ImageBackground
@@ -69,7 +77,7 @@ export const EntryScreen = ({ navigation }: NativeStackHeaderProps) => {
                           placeholder={t('phone.placeholder')}
                           error={errors.phone}
                           keyboardType="phone-pad"
-                          mask={'[0000] [0000] [00]'}
+                          mask={'[0000] [000] [000]'}
                         />
                       </View>
                       <Button

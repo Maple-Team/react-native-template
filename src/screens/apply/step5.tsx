@@ -333,17 +333,6 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       value={state.sex}
                       label={t('gender.label')}
                     />
-                    <MaskInput
-                      field="idcard"
-                      label={t('idcard.label')}
-                      onChangeText={(formatted, extracted) => {
-                        setFieldValue('idcard', extracted)
-                      }}
-                      value={state.idcard}
-                      placeholder={t('idcard.placeholder')}
-                      error={errors.idcard}
-                      mask={'[A…]'}
-                    />
                     <Input
                       onChangeText={text => {
                         setFieldValue('idcard', text)
@@ -470,7 +459,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       placeholder={t('phone.placeholder')}
                       error={errors.backupPhone}
                       keyboardType="phone-pad"
-                      mask={'[0000] [0000] [00]'}
+                      mask={'[0000] [000] [000]'}
                       key={'backupPhone'}
                       onFocus={() => {
                         behavior.setStartModify('P05_C06_I_BACKUPPHONE', state.backupPhone)

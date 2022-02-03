@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useMemo } from 'react'
 import { View, Image, StatusBar, ImageBackground } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -8,7 +8,7 @@ import { Button } from '@ant-design/react-native'
 import { Color } from '@/styles/color'
 import Swiper from 'react-native-swiper'
 import Styles from './style'
-import { queryBrand, queryVersion, submit } from '@/services/apply'
+import { queryVersion, submit } from '@/services/apply'
 import { queryUserinfo } from '@/services/user'
 import { default as MoneyyaContext } from '@/state'
 import emitter from '@/eventbus'
@@ -17,7 +17,6 @@ import {
   DEBOUNCE_OPTIONS,
   DEBOUNCE_WAIT,
   KEY_APPLYID,
-  KEY_BRAND,
   KEY_DEVICEID,
   TOTAL_STEPS,
 } from '@/utils/constant'
@@ -30,10 +29,6 @@ export function Step1() {
   const context = useContext(MoneyyaContext)
 
   useEffect(() => {
-    queryBrand().then(brand => {
-      emitter.emit('UPDATE_BRAND', brand)
-      MMKV.setMap(KEY_BRAND, brand)
-    })
     queryVersion().then(res => {
       console.log('version', res)
     })
@@ -44,22 +39,26 @@ export function Step1() {
     })
   }, [])
   const location = useLocation()
-  const onSubmit = debounce(
-    () => {
-      submit({
-        deviceId: MMKV.getString(KEY_DEVICEID) || '',
-        phone: context.user?.phone || '',
-        gps: `${location.latitude},${location.longitude}`,
-        idcard: context.user?.idcard || '',
-        applyId: +(MMKV.getString(KEY_APPLYID) || '0'),
-        currentStep: 1,
-        totalSteps: TOTAL_STEPS,
-      }).then(() => {
-        navigation.getParent()?.navigate('Step2')
-      })
-    },
-    DEBOUNCE_WAIT,
-    DEBOUNCE_OPTIONS
+  const onSubmit = useMemo(
+    () =>
+      debounce(
+        () => {
+          submit({
+            deviceId: MMKV.getString(KEY_DEVICEID) || '',
+            phone: context.user?.phone || '',
+            gps: `${location.latitude},${location.longitude}`,
+            idcard: context.user?.idcard || '',
+            applyId: +(MMKV.getString(KEY_APPLYID) || '0'),
+            currentStep: 1,
+            totalSteps: TOTAL_STEPS,
+          }).then(() => {
+            navigation.getParent()?.navigate('Step2')
+          })
+        },
+        DEBOUNCE_WAIT,
+        DEBOUNCE_OPTIONS
+      ),
+    [context.user?.idcard, context.user?.phone, location.latitude, location.longitude, navigation]
   )
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -148,12 +147,13 @@ const AD = () => (
 )
 const Slider = () => (
   <Swiper
-    style={{ alignItems: 'center' }}
-    autoplay={true}
+    style={{ alignItems: 'center', paddingHorizontal: 10 }}
+    autoplay
     autoplayTimeout={6}
-    loop={true}
-    showsPagination={true}
+    loop
+    showsPagination
     dot={dot}
+    bounces
     height={232}
     activeDot={activeDot}>
     {ads.map(item => (

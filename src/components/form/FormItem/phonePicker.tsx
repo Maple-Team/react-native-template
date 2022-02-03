@@ -2,14 +2,13 @@ import React, { Ref, useCallback } from 'react'
 import { TextInput, View, Image, Pressable } from 'react-native'
 import type { KeyboardTypeOptions } from 'react-native'
 import formItemStyles from './style'
-import Text from '@components/Text'
+import { Text } from '@/components'
 import { ErrorMessage } from 'formik'
 import { useTranslation } from 'react-i18next'
 import { selectContactPhone } from 'react-native-select-contact'
 import Contacts from 'react-native-contacts'
 import { onRequestPermission } from '@/utils/permission'
 import type { ScrollView } from 'react-native-gesture-handler'
-import dayjs from 'dayjs'
 
 interface Props {
   onChange: (text: string) => void
@@ -38,7 +37,7 @@ export function PhonePicker({ onChange, value, field, label, placeholder }: Prop
 
     const { selectedPhone } = selection
     const contactPhone = selectedPhone.number
-    const _value = contactPhone.replace(/\s/g, '') //TODO 正则替换
+    const _value = contactPhone.replace(/[\s-]/g, '') //TODO 正则替换
     onChange(_value)
   }, [onChange])
 
@@ -52,12 +51,6 @@ export function PhonePicker({ onChange, value, field, label, placeholder }: Prop
       },
     })
   }, [onSelectContacts, t])
-  console.log(
-    'field: ',
-    field,
-    ', PhonePicker rendering: ',
-    dayjs().format('YYYY-MM-DD HH::mm::ss')
-  )
   return (
     <>
       <View style={formItemStyles.formItem}>
@@ -68,9 +61,8 @@ export function PhonePicker({ onChange, value, field, label, placeholder }: Prop
             value={value}
             placeholder={placeholder}
             style={[formItemStyles.input]}
-            onPressIn={onRequestContactsPermission}
           />
-          <Pressable style={formItemStyles.suffixWrap} onPress={() => onRequestContactsPermission}>
+          <Pressable style={formItemStyles.suffixWrap} onPress={onRequestContactsPermission}>
             <Image
               style={formItemStyles.suffix}
               source={require('@assets/images/apply/contacts.webp')}

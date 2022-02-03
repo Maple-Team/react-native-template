@@ -17,20 +17,20 @@ import { useBehavior, useLocation } from '@/hooks'
 import type { Dict, DictField } from '@/typings/response'
 import { MMKV } from '@/utils'
 import { fetchDict, submit } from '@/services/apply'
-// import { REGEX_BANK_CARD, REGEX_BANK_CLABE } from '@/utils/reg'
+import { REGEX_BANK_CARD, REGEX_BANK_CLABE } from '@/utils/reg'
 
 export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
   const schema = Yup.object().shape({
     bankCardNo: Yup.string()
-      // .when('cardNoType', {
-      //   is: 'CARD',
-      //   then: Yup.string().matches(REGEX_BANK_CARD, t('bankCardNo.invalid')),
-      // })
-      // .when('cardNoType', {
-      //   is: 'ACCOUNT',
-      //   then: Yup.string().matches(REGEX_BANK_CLABE, t('bankCardNo.invalid')),
-      // })
+      .when('cardNoType', {
+        is: 'CARD',
+        then: Yup.string().matches(REGEX_BANK_CARD, t('bankCardNo.invalid')),
+      })
+      .when('cardNoType', {
+        is: 'ACCOUNT',
+        then: Yup.string().matches(REGEX_BANK_CLABE, t('bankCardNo.invalid')),
+      })
       .required(t('bankCardNo.required')),
     bankCode: Yup.string().required(t('bankCode.required')),
     cardNoType: Yup.string().required(t('cardNoType.required')),
@@ -60,7 +60,6 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
         case 'bankCode':
           return { ...s, bankCode: value }
         case 'cardNoTypeArray':
-          console.log(value.map(({ code }) => code))
           return { ...s, cardNoTypeArray: value }
         case 'cardNoType':
           return { ...s, cardNoType: value }
@@ -101,7 +100,6 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
   useLocation()
 
   const behavior = useBehavior<'P07'>('P07', 'P07_C00', 'P07_C99')
-  console.log(state.bankCode, state.bankCardNo, state.cardNoType)
   return (
     <SafeAreaView style={PageStyles.sav}>
       <StatusBar translucent={false} backgroundColor={Color.primary} barStyle="default" />
@@ -113,7 +111,7 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
       <ScrollView style={PageStyles.scroll} keyboardShouldPersistTaps="always">
         <View style={PageStyles.container}>
           <Formik<FormModel> initialValues={state} onSubmit={onSubmit} validationSchema={schema}>
-            {({ handleSubmit, isValid, setFieldValue }) => (
+            {({ handleSubmit, isValid, setFieldValue, values }) => (
               <>
                 <View style={PageStyles.form}>
                   <NormalPicker
@@ -138,7 +136,7 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
                       behavior.setModify('P07_C01_S_CARDNOTYPE', record.code, state.cardNoType)
                     }}
                     key="bankCardType"
-                    value={state.cardNoType}
+                    value={values.cardNoType}
                     title={t('cardNoType.label')}
                     field={'cardNoType'}
                     label={t('cardNoType.label')}
@@ -159,7 +157,7 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
                       label={t('bankCardNo.label') + '_card'}
                       placeholder={t('bankCardNo.placeholder')}
                       key="bankCardNo_card"
-                      mask={'[0000] [0000] [0000] [0000]'}
+                      mask={'[0000] [0000] [0000] [0000] [00]'}
                       onChangeText={(text: string, extracted?: string) => {
                         setFieldValue('bankCardNo', extracted || '')
                         dispatch({ type: 'bankCardNo', value: extracted || '' })

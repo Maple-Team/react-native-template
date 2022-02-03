@@ -18,7 +18,6 @@ import upload from '@/services/upload'
 import Exif from 'react-native-exif'
 import * as Progress from 'react-native-progress'
 import { Color } from '@/styles/color'
-import dayjs from 'dayjs'
 
 interface Props {
   error?: string
@@ -47,12 +46,6 @@ export function PhotoPicker({
   const [source, setSource] = useState<{ uri: string }>()
   const [progress, setProgress] = useState<number>(0)
   console.log(progress)
-  console.log(
-    'field: ',
-    field,
-    ', PhotoPicker rendering: ',
-    dayjs().format('YYYY-MM-DD HH::mm::ss')
-  )
   const takePicture = useCallback(async () => {
     if (await isEmulator()) {
       handleEmulator(setSource, imageType, isSupplement, onUploadSuccess)

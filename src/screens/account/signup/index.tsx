@@ -25,9 +25,10 @@ import type { AccountStackParams } from '@navigation/accountStack'
 
 type NaviType = NativeStackNavigationProp<AccountStackParams, 'SignUp'>
 
-export const SignupScreen = () => {
+export const SignupScreen = ({ route }: { route: any }) => {
   const context = useContext(MoneyyaContext)
   const { t } = useTranslation()
+  const { phone } = route.params || ({ phone: __DEV__ ? '9868960898' : '' } as { phone?: string })
   const schema = Yup.object().shape({
     phone: Yup.string()
       .min(10, t('field.short', { field: 'Phone' }))
@@ -53,12 +54,12 @@ export const SignupScreen = () => {
   }
   const initialValue = useMemo<Model>(
     () => ({
-      phone: '',
+      phone,
       password: '',
       comfirmPassword: '',
       validateCode: '',
     }),
-    []
+    [phone]
   )
   const netInfo = useNetInfo()
   if (netInfo.isConnected) {
@@ -112,7 +113,7 @@ export const SignupScreen = () => {
                     placeholder={t('phone.placeholder')}
                     error={errors.phone}
                     keyboardType="phone-pad"
-                    mask={'[0000] [0000] [00]'}
+                    mask={'[0000] [000] [000]'}
                   />
                   <ValidateCode
                     field="validateCode"

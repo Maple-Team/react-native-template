@@ -36,7 +36,7 @@ export default StyleSheet.create<{
     top: -40,
   },
   ad: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 0,
     paddingTop: 24.5,
     marginBottom: 50,
   },

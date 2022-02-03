@@ -37,14 +37,6 @@ export function NormalDatePicker({
   const [visible, setVisible] = useState<boolean>(false)
   const fieldRef = useRef<TextInput>(null)
   const [height, setHeight] = useState<number>(0)
-  console.log(
-    'field: ',
-    field,
-    ', NormalDatePicker rendering: ',
-    dayjs().format('YYYY-MM-DD HH::mm::ss')
-  )
-  // UseFocusOnError({ fieldRef, name: field, scrollViewRef, offsetY: height })
-
   return (
     <>
       <UseFocusOnError
@@ -62,7 +54,7 @@ export function NormalDatePicker({
             ref={fieldRef}
             onLayout={() => {
               fieldRef.current?.measure((_x, _y, _width, _height, _pageX, pageY) => {
-                setHeight(pageY + _height)
+                setHeight(pageY - _height)
               })
             }}
             placeholder={placeholder}

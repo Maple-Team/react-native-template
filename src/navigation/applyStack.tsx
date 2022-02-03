@@ -9,6 +9,7 @@ import type { ViewStyle } from 'react-native'
 import StyleSheet from 'react-native-adaptive-stylesheet'
 import { HeaderLeft, HeaderRight } from '@components/header'
 import { BottomTab } from './bottomTab'
+import { useNavigationState } from '@react-navigation/native'
 
 export type ApplyStackList = {
   BottomTab: undefined
@@ -26,7 +27,8 @@ const Stack = createNativeStackNavigator()
 
 export function ApplyStack() {
   useEventListener()
-
+  const _ = useNavigationState(state => state)
+  _ && console.log(_.routes, 'type:', _.type, 'routeNames:', _.routeNames) // TODO navigation state tree
   return (
     <Provider>
       <Stack.Navigator

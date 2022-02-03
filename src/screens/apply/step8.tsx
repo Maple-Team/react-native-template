@@ -16,6 +16,7 @@ import { useBehavior, useLocation } from '@/hooks'
 import { queryProduct, scheduleCalc, submit } from '@/services/apply'
 import { MMKV } from '@/utils'
 import { default as MoneyyaContext } from '@/state'
+import { useLinkTo } from '@react-navigation/native'
 
 type FormModel = Omit<ApplyStep8Parameter, 'applyId' | 'currentStep' | 'totalSteps'>
 export const Step8 = ({ navigation }: NativeStackHeaderProps) => {
@@ -44,23 +45,27 @@ export const Step8 = ({ navigation }: NativeStackHeaderProps) => {
   const [loanAmt, setLoanAmt] = useState<number>(6000)
   const [loanDay, setLoanDay] = useState<number>(7)
   useEffect(() => {
-    queryProduct({ phone: context.user?.phone || '', source: 'APP' }).then(res => {
-      console.log('productInfo', res)
-      setProductInfo(res)
-      setLoanAmt(res.maxAmount)
-    })
+    if (context.user?.phone) {
+      queryProduct({ phone: context.user?.phone || '', source: 'APP' }).then(res => {
+        console.log('productInfo', res)
+        setProductInfo(res)
+        setLoanAmt(res.maxAmount)
+      })
+    }
   }, [context.user?.phone])
   const [calcResult, setcalcResult] = useState<Calculate>()
   useEffect(() => {
-    scheduleCalc({
-      displayLoanDays: productInfo?.products[0].displayLoanDays || 0,
-      loanAmt,
-      loanCode: productInfo?.loanCode!,
-      loanDay,
-    }).then(res => {
-      console.log('calc', res)
-      setcalcResult(res)
-    })
+    if (productInfo?.loanCode && productInfo?.products) {
+      scheduleCalc({
+        displayLoanDays: productInfo?.products[0].displayLoanDays || 0,
+        loanAmt,
+        loanCode: productInfo?.loanCode,
+        loanDay,
+      }).then(res => {
+        console.log('calc', res)
+        setcalcResult(res)
+      })
+    }
   }, [loanAmt, loanDay, productInfo?.loanCode, productInfo?.products])
   const loanTerms: {
     day: number
@@ -76,6 +81,7 @@ export const Step8 = ({ navigation }: NativeStackHeaderProps) => {
       activate: maxLoanTerms >= item,
     }))
   }, [productInfo])
+  const linkTo = useLinkTo()
   return (
     <SafeAreaView style={PageStyles.sav}>
       <StatusBar translucent={false} backgroundColor={Color.primary} barStyle="default" />
@@ -199,10 +205,18 @@ export const Step8 = ({ navigation }: NativeStackHeaderProps) => {
                   { name: 'Collection bank card', value: '261800', type: 'bank' },
                 ]}
               />
-              <View style={{ paddingTop: 13, paddingBottom: 29.5 }}>
-                <Pressable style={{ alignItems: 'flex-start' }}>
+              <View
+                style={{
+                  width: '100%',
+                  paddingHorizontal: 20,
+                  paddingVertical: 13,
+                  flexDirection: 'row',
+                }}>
+                <Pressable onPress={() => linkTo('Step7')}>
                   <Text fontSize={10} color={Color.primary}>
-                    {'->'}Click here to modify bank card
+                    {'->'}
+                    {'    '}
+                    {t('tostep7')}
                   </Text>
                 </Pressable>
               </View>

@@ -25,21 +25,21 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
       .max(100, t('contactName.invalid'))
       .required(t('contactName.required')),
     contactPhone1: Yup.string()
-      // .required(t('contactPhone.required'))
+      .required(t('contactPhone.required'))
       .matches(REGEX_PHONE, t('contactPhone.invalid')),
     contactRelationCode1: Yup.string().required(t('contactRelationCode.required')),
     contactName2: Yup.string()
       .max(100, t('contactName.invalid'))
       .required(t('contactName.required')),
     contactPhone2: Yup.string()
-      // .required(t('contactPhone.required'))
+      .required(t('contactPhone.required'))
       .matches(REGEX_PHONE, t('contactPhone.invalid')),
     contactRelationCode2: Yup.string().required(t('contactRelationCode.required')),
     contactName3: Yup.string()
       .max(100, t('contactName.invalid'))
       .required(t('contactName.required')),
     contactPhone3: Yup.string()
-      // .required(t('contactPhone.required'))
+      .required(t('contactPhone.required'))
       .matches(REGEX_PHONE, t('contactPhone.invalid')),
     contactRelationCode3: Yup.string().required(t('contactRelationCode.required')),
   })
@@ -62,9 +62,9 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
         case 'updateContactPhone1':
           return { ...s, contactPhone1: value }
         case 'updateContactPhone2':
-          return { ...s, contactPhone1: value }
+          return { ...s, contactPhone2: value }
         case 'updateContactPhone3':
-          return { ...s, contactPhone1: value }
+          return { ...s, contactPhone3: value }
         case 'updateContactRelation1':
           return { ...s, contactRelationCode1: value.code, contactRelation1: value.name }
         case 'updateContactRelation2':
@@ -207,6 +207,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                     key="contactPhone1"
                     label={t('contactPhone.label')}
                     onChange={text => {
+                      console.log({ text })
                       setFieldValue('contactPhone1', text)
                       dispatch({ type: 'updateContactPhone1', value: text })
                       behavior.setModify('P03_C02_S_CONTACTPHONE', text, state.contactPhone1)
@@ -261,6 +262,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                     key="contactPhone2"
                     label={t('contactPhone.label')}
                     onChange={text => {
+                      console.log({ text })
                       setFieldValue('contactPhone2', text)
                       dispatch({ type: 'updateContactPhone2', value: text })
                       behavior.setModify('P03_C04_S_CONTACTPHONE', text, state.contactPhone2)
@@ -315,6 +317,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                     key="contactPhone3"
                     label={t('contactPhone.label')}
                     onChange={text => {
+                      console.log({ text })
                       setFieldValue('contactPhone3', text)
                       dispatch({ type: 'updateContactPhone3', value: text })
                       behavior.setModify('P03_C06_S_CONTACTPHONE', text, state.contactPhone3)

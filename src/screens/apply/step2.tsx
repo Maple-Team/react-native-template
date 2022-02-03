@@ -347,6 +347,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     value={state.companyPhone}
                     field={'companyPhone'}
                     key={'companyPhone'}
+                    keyboardType="phone-pad"
                     error={errors.companyPhone}
                     label={t('companyPhone.label')}
                     placeholder={t('companyPhone.placeholder')}

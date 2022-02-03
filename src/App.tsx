@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useReducer, StrictMode } from 'react'
+import React, { useEffect, useState, useReducer } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { Provider, Toast } from '@ant-design/react-native'
 import {
@@ -79,7 +79,6 @@ const App = () => {
   useEffect(() => {
     const locales = RNLocalize.getLocales()
     const language = locales[0].languageTag
-    console.log({ language })
     // FIXME 'i18next: init: i18next is already initialized. You should call init just once!'
     RNLocalize.addEventListener('change', (e: any) => {
       console.error('RNLocalize', e)
@@ -168,14 +167,12 @@ const App = () => {
     <SafeAreaProvider>
       <Provider>
         <MoneyyaContext.Provider value={moneyyaState}>
-          <StrictMode>
-            <NavigationContainer
-              ref={navigationRef}
-              initialState={initialState}
-              onStateChange={_ => AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(_))}>
-              {!hasInit ? <Init /> : accessToken ? <MainStack /> : <AccountStack />}
-            </NavigationContainer>
-          </StrictMode>
+          <NavigationContainer
+            ref={navigationRef}
+            initialState={initialState}
+            onStateChange={_ => AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(_))}>
+            {!hasInit ? <Init /> : accessToken ? <MainStack /> : <AccountStack />}
+          </NavigationContainer>
         </MoneyyaContext.Provider>
       </Provider>
     </SafeAreaProvider>

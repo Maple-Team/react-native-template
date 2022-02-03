@@ -29,6 +29,7 @@ export type Events = {
   UPDATE_GPS: string
   USER_INFO: UserInfo
   EXISTED_USER?: string
+  UNREGISTER_USER?: string
   UPDATE_BRAND: Brand
   REGISTER_SUCCESS: AccountInfo
 }

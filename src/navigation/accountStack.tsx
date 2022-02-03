@@ -52,7 +52,7 @@ export function AccountStack() {
     query()
   }, [])
   const _ = useNavigationState(state => state)
-  console.log({ navigationState: _ }) // TODO navigation state tree
+  _ && console.log(_.routes, 'type:', _.type, 'routeNames:', _.routeNames) // TODO navigation state tree
   useLocation()
   return (
     <Stack.Navigator

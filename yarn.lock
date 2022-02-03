@@ -6989,10 +6989,10 @@ react-native-device-info@^8.4.8:
   version "0.4.0"
   resolved "https://github.com/Maple-Team/react-native-exif.git#06c889f9f6d64ee7b80b4c87ac60431fcdc07885"
 
-react-native-flipper@^0.129.0:
-  version "0.129.0"
-  resolved "https://registry.npmmirror.com/react-native-flipper/download/react-native-flipper-0.129.0.tgz#b2f3626291a61de4eb662adedd290e0d0ab33fd9"
-  integrity sha512-m4chCu4Hx9FqH21ZtOD3FKusVf4BkmSiOfr1RLyuXnoRp+wVerx/QL/3sG8T5Pe1l5/xTyzuO16a/niQpU7krw==
+react-native-flipper@^0.131.1:
+  version "0.131.1"
+  resolved "https://registry.npmmirror.com/react-native-flipper/-/react-native-flipper-0.131.1.tgz#b1a43e40a442187fa78c5ed6d478471ff4a2686c"
+  integrity sha512-X65VbZgwVRVYAc3OBdHi0h8dJR/Mgxdg8WoQLGgaYyhHcaqsF06GjOzBJLwNjN3TK5Gih228IFqLqI9Rwl2dEA==
 
 react-native-geolocation-service@^5.3.0-beta.4:
   version "5.3.0-beta.4"

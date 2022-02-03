@@ -12,7 +12,7 @@ import Text from '@/components/Text'
 import styles from './style'
 import { REGEX_PHONE, REGEX_VALIDATE_CODE } from '@/utils/reg'
 import { DEBOUNCE_WAIT, DEBOUNCE_OPTIONS, KEY_DEVICEID, KEY_GPS } from '@/utils/constant'
-import { useNavigation } from '@react-navigation/native'
+import { StackActions, useNavigation } from '@react-navigation/native'
 import type { AccountStackParams } from '@navigation/accountStack'
 import { PasswordInput, ValidateCode, ApplyButton, MaskInput } from '@components/form/FormItem'
 import { useTranslation } from 'react-i18next'
@@ -27,10 +27,30 @@ export const SigninScreen = ({ route }: { route: any }) => {
   const { t } = useTranslation()
   const { phone } = route.params || ({ phone: __DEV__ ? '9868960898' : '' } as { phone?: string })
   const tabs = [{ title: t('password-login') }, { title: t('validation-code-login') }]
-  const tabPanels = [<PasswdTab phone={phone} />, <ValidTab phone={phone} />]
+  const [signInPhone, setSignInPhone] = useState<string>('')
+  const tabPanels = [
+    <PasswdTab
+      phone={phone}
+      onPhoneChange={_phone => {
+        setSignInPhone(_phone)
+      }}
+    />,
+    <ValidTab
+      phone={phone}
+      onPhoneChange={_phone => {
+        setSignInPhone(_phone)
+      }}
+    />,
+  ]
   const [index, setIndex] = useState<number>(0)
   const navigation = useNavigation<SignInScreenProp>()
-
+  emitter.on('UNREGISTER_USER', () => {
+    navigation.dispatch(
+      StackActions.replace('SignUp', {
+        phone: signInPhone,
+      })
+    )
+  })
   return (
     <SafeAreaView style={styles.flex1}>
       <StatusBar translucent={false} backgroundColor={Color.primary} barStyle="default" />
@@ -64,7 +84,13 @@ export const SigninScreen = ({ route }: { route: any }) => {
                 fontSize={19}
                 color="rgba(255, 234, 0, 1)"
                 styles={styles.jumpLink}
-                onPress={() => navigation.navigate('SignUp')}>
+                onPress={() => {
+                  navigation.dispatch(
+                    StackActions.replace('SignUp', {
+                      phone: signInPhone,
+                    })
+                  )
+                }}>
                 {t('signup')}
               </Text>
             </View>
@@ -76,7 +102,13 @@ export const SigninScreen = ({ route }: { route: any }) => {
 }
 type SignInScreenProp = NativeStackNavigationProp<AccountStackParams, 'SignIn'>
 
-const PasswdTab = ({ phone }: { phone?: string }) => {
+const PasswdTab = ({
+  phone,
+  onPhoneChange,
+}: {
+  phone?: string
+  onPhoneChange: (phone: string) => void
+}) => {
   const context = useContext(MoneyyaContext)
   const navigation = useNavigation<SignInScreenProp>()
   const { t } = useTranslation()
@@ -94,6 +126,7 @@ const PasswdTab = ({ phone }: { phone?: string }) => {
   )
   const onSubmit = debounce(
     (values: Pick<LoginParameter, 'password' | 'phone'>) => {
+      onPhoneChange(values.phone)
       login({
         ...values,
         gps: MMKV.getString(KEY_GPS) || '',
@@ -125,7 +158,7 @@ const PasswdTab = ({ phone }: { phone?: string }) => {
               placeholder={t('phone.placeholder')}
               error={errors.phone}
               keyboardType="phone-pad"
-              mask={'[0000] [0000] [00]'}
+              mask={'[0000] [000] [000]'}
             />
             <PasswordInput
               field="password"
@@ -161,7 +194,13 @@ const PasswdTab = ({ phone }: { phone?: string }) => {
   )
 }
 
-const ValidTab = ({ phone }: { phone?: string }) => {
+const ValidTab = ({
+  phone,
+  onPhoneChange,
+}: {
+  phone?: string
+  onPhoneChange: (phone: string) => void
+}) => {
   const context = useContext(MoneyyaContext)
   const navigation = useNavigation<SignInScreenProp>()
   const { t } = useTranslation()
@@ -183,6 +222,7 @@ const ValidTab = ({ phone }: { phone?: string }) => {
   )
   const onSubmit = debounce(
     (values: Pick<LoginParameter, 'code' | 'phone'>) => {
+      onPhoneChange(values.phone)
       login({
         ...values,
         gps: context.header.gps,
@@ -213,7 +253,7 @@ const ValidTab = ({ phone }: { phone?: string }) => {
               placeholder={t('phone.placeholder')}
               error={errors.phone}
               keyboardType="phone-pad"
-              mask={'[0000] [0000] [00]'}
+              mask={'[0000] [000] [000]'}
             />
             <ValidateCode
               field="code"
