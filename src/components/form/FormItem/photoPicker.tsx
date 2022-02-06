@@ -46,7 +46,6 @@ export function PhotoPicker({
   const [source, setSource] = useState<{ uri: string }>()
   const [progress, setProgress] = useState<number>(0)
   const [indeterminate, setIndeterminate] = useState<boolean>(false)
-  console.log(progress)
   console.log({ field }, 'PhotoPicker rendering')
   const takePicture = useCallback(async () => {
     if (await isEmulator()) {
@@ -138,8 +137,8 @@ export function PhotoPicker({
         {title && <Text>{title}</Text>}
         <ImageBackground style={styles.bg} source={bg} resizeMode="cover">
           {source && <Image source={source} resizeMode="cover" style={styles.preview} />}
-          {progress !== 0 && (
-            <Progress.Pie
+          {source && (
+            <Progress.Circle
               size={PROGRESS_CIRCLE_RADIUS}
               progress={progress}
               indeterminate={indeterminate}
@@ -226,7 +225,7 @@ const handleEmulator = async (
   })
   const { errorMessage, assets } = response
   if (errorMessage) {
-    console.log(errorMessage)
+    console.log({ errorMessage })
     return
   }
   if (!assets) {

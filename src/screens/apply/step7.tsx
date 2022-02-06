@@ -92,7 +92,7 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
                 break
             }
           })
-          .catch(console.log)
+          .catch(console.error)
       )
     }
     queryDict()

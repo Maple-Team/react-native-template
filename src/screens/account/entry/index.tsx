@@ -20,6 +20,7 @@ import { Color } from '@/styles/color'
 import emitter from '@/eventbus'
 import { queryBrand } from '@/services/apply'
 import { MMKV } from '@/utils'
+import { StackActions } from '@react-navigation/native'
 
 interface FormModel {
   phone: string
@@ -36,7 +37,7 @@ export const EntryScreen = ({ navigation }: NativeStackHeaderProps) => {
   const initialValue: FormModel = { phone: '' }
   const onSubmit = debounce(
     (values: FormModel) => {
-      navigation.navigate('SignIn', { phone: values.phone })
+      navigation.dispatch(StackActions.replace('SignIn', { phone: values.phone }))
     },
     DEBOUNCE_WAIT,
     DEBOUNCE_OPTIONS
@@ -95,7 +96,7 @@ export const EntryScreen = ({ navigation }: NativeStackHeaderProps) => {
                   style={[styles.signup, styles.btn]}
                   loading={context.loading.effects.LOGIN}
                   onPress={async () => {
-                    navigation.navigate('SignUp')
+                    navigation.dispatch(StackActions.replace('SignUp'))
                   }}>
                   <Text color={Color.primary}>{t('signup')}</Text>
                 </Button>

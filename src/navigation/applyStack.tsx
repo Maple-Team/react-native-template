@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Provider } from '@ant-design/react-native'
 import { useEventListener } from '@/hooks'
 import { Color } from '@/styles/color'
@@ -10,6 +10,11 @@ import StyleSheet from 'react-native-adaptive-stylesheet'
 import { HeaderLeft, HeaderRight } from '@components/header'
 import { BottomTab } from './bottomTab'
 import { useNavigationState } from '@react-navigation/native'
+import emitter from '@/eventbus'
+import { queryBrand, queryVersion } from '@/services/apply'
+import { queryUserinfo } from '@/services/user'
+import { MMKV } from '@/utils'
+import { KEY_APPLYID, KEY_BRAND } from '@/utils/constant'
 
 export type ApplyStackList = {
   BottomTab: undefined
@@ -28,7 +33,25 @@ const Stack = createNativeStackNavigator()
 export function ApplyStack() {
   useEventListener()
   const _ = useNavigationState(state => state)
-  _ && console.log(_.routes, 'type:', _.type, 'routeNames:', _.routeNames) // TODO navigation state tree
+  _ &&
+    console.log(
+      'navigation state tree',
+      _.routes,
+      '\r\ntype:',
+      _.type,
+      '\r\nrouteNames:',
+      _.routeNames
+    )
+  useEffect(() => {
+    queryUserinfo().then(res => {
+      MMKV.setString(KEY_APPLYID, `${res.applyId}`)
+      emitter.emit('USER_INFO', res)
+    })
+    queryBrand().then(brand => {
+      emitter.emit('UPDATE_BRAND', brand)
+      MMKV.setMap(KEY_BRAND, brand)
+    })
+  }, [])
   return (
     <Provider>
       <Stack.Navigator

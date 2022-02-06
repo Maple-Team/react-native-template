@@ -229,7 +229,7 @@ const ValidTab = ({
         deviceId: context.header.deviceId,
         loginType: 'CODE_LOGIN',
       }).then(res => {
-        console.log(res, navigation)
+        console.log({ res, navigation })
       })
     },
     DEBOUNCE_WAIT,

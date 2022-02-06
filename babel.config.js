@@ -3,7 +3,6 @@ const path = require('path')
 module.exports = api => {
   const isTest = api.env('test')
   const isProduction = api.env('production')
-  console.log('babel api env', api.env)
   if (isTest) {
     return {
       presets: [

@@ -11,9 +11,18 @@ export const UPDATE_VESIONID = 'UPDATE_VESIONID'
 export const UPDATE_USERINFO = 'UPDATE_USERINFO'
 export const UPDATE_HAS_INIT = 'UPDATE_HAS_INIT'
 export const UPDATE_BRAND = 'UPDATE_BRAND'
+export const UPDATE_USER_INFO = 'UPDATE_USER_INFO'
 
 import { AppModule } from '@/modules'
-import { KEY_DEVICEID, KEY_GPS, KEY_INIT, KEY_TOKEN, KEY_VERSIONID } from '@/utils/constant'
+import {
+  KEY_BRAND,
+  KEY_DEVICEID,
+  KEY_GPS,
+  KEY_INIT,
+  KEY_TOKEN,
+  KEY_USER,
+  KEY_VERSIONID,
+} from '@/utils/constant'
 import { MMKV } from '@/utils/storage'
 import { createContext } from 'react'
 
@@ -32,6 +41,8 @@ export let moneyyaState: State = {
     effects: {},
   },
   hasInit: MMKV.getBool(KEY_INIT) || false,
+  user: MMKV.getMap(KEY_USER) || undefined,
+  barnd: MMKV.getMap(KEY_BRAND) || undefined,
 }
 
 const StateContext = createContext(moneyyaState)
@@ -93,12 +104,21 @@ export function reducer(state: State, action: Action): State {
         hasInit: action.hasInit,
       }
       break
+    case UPDATE_USER_INFO:
+      MMKV.setMap(KEY_USER, action.user)
+      moneyyaState = {
+        ...state,
+        user: action.user,
+      }
+      break
     case UPDATE_BRAND:
+      MMKV.setMap(KEY_BRAND, action.brand)
       moneyyaState = {
         ...state,
         barnd: action.brand,
       }
       break
+
     default:
       if ([...NormalTypeArray, ...DictTypeArray].includes(action.type)) {
         moneyyaState = {
@@ -171,4 +191,8 @@ type Action =
   | {
       type: typeof UPDATE_BRAND
       brand: Brand
+    }
+  | {
+      type: typeof UPDATE_USER_INFO
+      user: UserInfo
     }

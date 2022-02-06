@@ -25,7 +25,7 @@ export const Step8 = ({ navigation }: NativeStackHeaderProps) => {
 
   const onSubmit = debounce(
     (values: FormModel) => {
-      console.log(sensor)
+      console.log({ sensor })
       submit({
         ...values,
         // sensor: `${sensor?.angleX},${sensor?.angleY},${sensor?.angleZ}`,
@@ -45,8 +45,10 @@ export const Step8 = ({ navigation }: NativeStackHeaderProps) => {
   const [productInfo, setProductInfo] = useState<Product>()
   const [loanAmt, setLoanAmt] = useState<number>(6000)
   const [loanDay, setLoanDay] = useState<number>(7)
+
   // 获取产品信息
   useEffect(() => {
+    console.log(context.user?.phone, 'phone')
     if (context.user?.phone) {
       queryProduct({ phone: context.user?.phone || '', source: 'APP' }).then(res => {
         console.log('productInfo', res)

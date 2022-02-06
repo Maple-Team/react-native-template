@@ -44,7 +44,7 @@ export const useSensor = () => {
           }
         },
         err => {
-          console.log(err)
+          console.error(err)
           setSensor({
             angleX: '0.0,0.0',
             angleY: '0.0,0.0',

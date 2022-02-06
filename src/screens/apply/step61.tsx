@@ -40,13 +40,13 @@ export const Step61 = ({ navigation }: NativeStackHeaderProps) => {
   const startLiveness = useCallback(() => {
     Liveness.startLiveness(
       (livenessid, base64, transitionid, isPay) => {
-        console.log(livenessid, base64, transitionid, isPay)
+        console.log({ livenessid, base64, transitionid, isPay })
         setImageId(+livenessid)
         setValid(true)
         onSubmit()
       },
       (cancel, errorMessage, errorCode) => {
-        console.log(cancel, errorMessage, errorCode)
+        console.log({ cancel, errorMessage, errorCode })
         setErrorTimes(errorTimes + 1)
       }
     )

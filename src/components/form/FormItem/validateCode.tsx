@@ -50,7 +50,7 @@ export const ValidateCode = ({
       setPlaying(true)
       getValidateCode({ sendChannel: 'SMS', phone, type: validateCodeType }).then(code => {
         setTimtes(times - 1)
-        console.log(code.kaptcha)
+        console.log({ kaptcha: code.kaptcha })
       })
     },
     DEBOUNCE_WAIT,

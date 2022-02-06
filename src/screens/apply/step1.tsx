@@ -9,9 +9,8 @@ import { Color } from '@/styles/color'
 import Swiper from 'react-native-swiper'
 import Styles from './style'
 import { queryVersion, submit } from '@/services/apply'
-import { queryUserinfo } from '@/services/user'
 import { default as MoneyyaContext } from '@/state'
-import emitter from '@/eventbus'
+
 import { MMKV } from '@/utils/storage'
 import {
   DEBOUNCE_OPTIONS,
@@ -31,11 +30,6 @@ export function Step1() {
   useEffect(() => {
     queryVersion().then(res => {
       console.log('version', res)
-    })
-    queryUserinfo().then(res => {
-      console.log('userinfo', res)
-      MMKV.setString(KEY_APPLYID, `${res.applyId}`)
-      emitter.emit('USER_INFO', res)
     })
   }, [])
   const location = useLocation()

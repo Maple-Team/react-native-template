@@ -238,7 +238,6 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
         <View style={PageStyles.container}>
           <Formik<FormModel> initialValues={state} onSubmit={onSubmit} validationSchema={schema}>
             {({ handleSubmit, isValid, setFieldValue, errors }) => {
-              console.log(errors)
               return (
                 <>
                   <View style={PageStyles.form}>

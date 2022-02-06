@@ -27,10 +27,10 @@ export function PhonePicker({ onChange, value, field, label, placeholder }: Prop
 
   const onSelectContacts = useCallback(async () => {
     Contacts.getAll().then(contacts => {
-      console.log(contacts)
+      console.log({ contacts })
     })
     const selection = await selectContactPhone()
-    console.log(selection)
+    console.log({ selection })
     if (!selection) {
       return
     }
