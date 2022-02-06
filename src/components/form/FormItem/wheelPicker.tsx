@@ -39,7 +39,6 @@ export function WheelPicker<T extends Dict>({
         selectedItem={selectedIndex}
         data={dataSource.map(({ name }) => name)}
         onItemSelected={(index: number) => {
-          console.log('selected', index)
           setSelectedIndex(index)
           onChange(index)
         }}

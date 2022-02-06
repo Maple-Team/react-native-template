@@ -39,6 +39,7 @@ export const Input = ({
 }: InputProps) => {
   const fieldRef = useRef<TextInput>(null)
   const [height, setHeight] = useState<number>(0)
+  console.log({ field }, 'Input rendering')
   return (
     <>
       <UseFocusOnError

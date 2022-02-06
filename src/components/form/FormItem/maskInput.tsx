@@ -39,6 +39,7 @@ export const MaskInput = ({
   let fieldRef = useRef<any>(null)
   let wrapperRef = useRef<View>(null)
   const [offsetY, setOffsetY] = useState<number>(0)
+  console.log({ field }, 'MaskInput rendering')
   return (
     <>
       <UseFocusOnError

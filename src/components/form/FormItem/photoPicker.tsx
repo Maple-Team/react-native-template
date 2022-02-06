@@ -45,7 +45,9 @@ export function PhotoPicker({
 }: Props) {
   const [source, setSource] = useState<{ uri: string }>()
   const [progress, setProgress] = useState<number>(0)
+  const [indeterminate, setIndeterminate] = useState<boolean>(false)
   console.log(progress)
+  console.log({ field }, 'PhotoPicker rendering')
   const takePicture = useCallback(async () => {
     if (await isEmulator()) {
       handleEmulator(setSource, imageType, isSupplement, onUploadSuccess)
@@ -59,6 +61,7 @@ export function PhotoPicker({
         includeExtra: true,
       })
       const { assets, errorMessage, errorCode } = response
+
       if (errorCode) {
         let message: string
         switch (errorCode) {
@@ -103,6 +106,7 @@ export function PhotoPicker({
       if (err) {
         console.error(err)
       }
+      setIndeterminate(true)
       upload({
         response: {
           base64: data,
@@ -112,6 +116,7 @@ export function PhotoPicker({
         isSupplement,
         type: imageType,
         onUploadProgress: (sent, total) => {
+          setIndeterminate(false)
           setProgress(sent / total)
         },
       })
@@ -121,10 +126,12 @@ export function PhotoPicker({
         })
         .catch(e => {
           console.error('upload error', e)
+          setIndeterminate(false)
           setProgress(0)
         })
     }
   }, [cameraType, imageType, isSupplement, onUploadSuccess, reportExif])
+
   return (
     <>
       <View style={styles.container}>
@@ -135,7 +142,7 @@ export function PhotoPicker({
             <Progress.Pie
               size={PROGRESS_CIRCLE_RADIUS}
               progress={progress}
-              indeterminate={true}
+              indeterminate={indeterminate}
               style={styles.progress}
               color={Color.primary}
             />

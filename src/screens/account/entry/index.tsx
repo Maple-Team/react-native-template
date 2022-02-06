@@ -1,5 +1,5 @@
 import type { NativeStackHeaderProps } from '@react-navigation/native-stack'
-import React, { useContext, useEffect, useMemo } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { View, ImageBackground } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Button } from '@ant-design/react-native'
@@ -33,7 +33,7 @@ export const EntryScreen = ({ navigation }: NativeStackHeaderProps) => {
       .max(10, t('field.long', { field: 'Phone' }))
       .matches(REGEX_PHONE, t('phone.invalid')),
   })
-  const initialValue = useMemo<FormModel>(() => ({ phone: '' }), [])
+  const initialValue: FormModel = { phone: '' }
   const onSubmit = debounce(
     (values: FormModel) => {
       navigation.navigate('SignIn', { phone: values.phone })

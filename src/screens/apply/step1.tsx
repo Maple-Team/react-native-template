@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { View, Image, StatusBar, ImageBackground } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -20,7 +20,7 @@ import {
   KEY_DEVICEID,
   TOTAL_STEPS,
 } from '@/utils/constant'
-import { debounce } from 'lodash'
+import debounce from 'lodash.debounce'
 import { useLocation } from '@/hooks'
 import { toThousands } from '@/utils/util'
 
@@ -39,26 +39,22 @@ export function Step1() {
     })
   }, [])
   const location = useLocation()
-  const onSubmit = useMemo(
-    () =>
-      debounce(
-        () => {
-          submit({
-            deviceId: MMKV.getString(KEY_DEVICEID) || '',
-            phone: context.user?.phone || '',
-            gps: `${location.latitude},${location.longitude}`,
-            idcard: context.user?.idcard || '',
-            applyId: +(MMKV.getString(KEY_APPLYID) || '0'),
-            currentStep: 1,
-            totalSteps: TOTAL_STEPS,
-          }).then(() => {
-            navigation.getParent()?.navigate('Step2')
-          })
-        },
-        DEBOUNCE_WAIT,
-        DEBOUNCE_OPTIONS
-      ),
-    [context.user?.idcard, context.user?.phone, location.latitude, location.longitude, navigation]
+  const onSubmit = debounce(
+    () => {
+      submit({
+        deviceId: MMKV.getString(KEY_DEVICEID) || '',
+        phone: context.user?.phone || '',
+        gps: `${location.latitude},${location.longitude}`,
+        idcard: context.user?.idcard || '',
+        applyId: +(MMKV.getString(KEY_APPLYID) || '0'),
+        currentStep: 1,
+        totalSteps: TOTAL_STEPS,
+      }).then(() => {
+        navigation.getParent()?.navigate('Step2')
+      })
+    },
+    DEBOUNCE_WAIT,
+    DEBOUNCE_OPTIONS
   )
   return (
     <SafeAreaView style={{ flex: 1 }}>

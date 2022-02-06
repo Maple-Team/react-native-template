@@ -9,7 +9,7 @@
   "company": {
     "label": "company",
     "placeholder": "company name",
-    "invalid": "",
+    "invalid": "company name invalid",
     "required": "company name required"
   },
   "companyAddrCityCode": {
@@ -21,8 +21,8 @@
   "companyAddrDetail": {
     "label": "company address",
     "placeholder": "company address",
-    "invalid": "",
-    "required": "cinpany detail address required"
+    "invalid": "company detail address invalid",
+    "required": "company detail address required"
   },
   "companyAddrProvinceCode": {
     "label": "state",
@@ -33,8 +33,8 @@
   "companyPhone": {
     "label": "company Phone",
     "placeholder": "company phone",
-    "invalid": "",
-    "required": "company required"
+    "invalid": "company Phone invalid",
+    "required": "company Phone required"
   },
   "contactName": {
     "label": "contactName",

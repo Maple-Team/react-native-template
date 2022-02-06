@@ -12,7 +12,7 @@ import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT, KEY_APPLYID, TOTAL_STEPS } from '@/uti
 import { ApplyButton } from '@components/form/FormItem'
 import { Color } from '@/styles/color'
 import { ApplyStep8Parameter, Calculate, Product } from '@/typings/apply'
-import { useBehavior, useLocation } from '@/hooks'
+import { useBehavior, useLocation, useSensor } from '@/hooks'
 import { queryProduct, scheduleCalc, submit } from '@/services/apply'
 import { MMKV } from '@/utils'
 import { default as MoneyyaContext } from '@/state'
@@ -21,13 +21,14 @@ import { useLinkTo } from '@react-navigation/native'
 type FormModel = Omit<ApplyStep8Parameter, 'applyId' | 'currentStep' | 'totalSteps'>
 export const Step8 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
-  // const sensor = useSensor()
+  const sensor = useSensor()
 
   const onSubmit = debounce(
     (values: FormModel) => {
-      // console.log(sensor)
+      console.log(sensor)
       submit({
         ...values,
+        // sensor: `${sensor?.angleX},${sensor?.angleY},${sensor?.angleZ}`,
         applyId: +(MMKV.getString(KEY_APPLYID) || '0'),
         currentStep: 8,
         totalSteps: TOTAL_STEPS,
@@ -44,6 +45,7 @@ export const Step8 = ({ navigation }: NativeStackHeaderProps) => {
   const [productInfo, setProductInfo] = useState<Product>()
   const [loanAmt, setLoanAmt] = useState<number>(6000)
   const [loanDay, setLoanDay] = useState<number>(7)
+  // 获取产品信息
   useEffect(() => {
     if (context.user?.phone) {
       queryProduct({ phone: context.user?.phone || '', source: 'APP' }).then(res => {
@@ -53,6 +55,7 @@ export const Step8 = ({ navigation }: NativeStackHeaderProps) => {
       })
     }
   }, [context.user?.phone])
+  // 试算信息
   const [calcResult, setcalcResult] = useState<Calculate>()
   useEffect(() => {
     if (productInfo?.loanCode && productInfo?.products) {
@@ -67,6 +70,7 @@ export const Step8 = ({ navigation }: NativeStackHeaderProps) => {
       })
     }
   }, [loanAmt, loanDay, productInfo?.loanCode, productInfo?.products])
+  // loanterm信息
   const loanTerms: {
     day: number
     activate: boolean
@@ -261,7 +265,7 @@ export const Step8 = ({ navigation }: NativeStackHeaderProps) => {
               onPress={onSubmit}
               // loading={state}
             >
-              <Text color="#fff" fontSize={19} fontFamily="Arial-BoldMT" fontWeight="bold">
+              <Text color="#fff" fontSize={19}>
                 {t('submit')}
               </Text>
             </ApplyButton>

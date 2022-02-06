@@ -51,6 +51,7 @@ export function PhonePicker({ onChange, value, field, label, placeholder }: Prop
       },
     })
   }, [onSelectContacts, t])
+  console.log({ field }, 'MaskInput rendering')
   return (
     <>
       <View style={formItemStyles.formItem}>

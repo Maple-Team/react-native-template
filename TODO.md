@@ -35,7 +35,7 @@
 - [ ] [React Native Gesture Handler](https://docs.swmansion.com/react-native-gesture-handler/docs/1.10.3/about-handlers/#using-native-components) 组件尝试
 - [ ] functional hooks performance
   - https://github.com/facebook/react/issues/14099#thread-subscription-status
-- apply progress gesture
+- [ ] apply progress gesture 进件页面手势
 - TODO android builtin performance analysis
 
 ## 1.1

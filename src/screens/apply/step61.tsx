@@ -22,7 +22,6 @@ export const Step61 = ({ navigation }: NativeStackHeaderProps) => {
   const [imageId, setImageId] = useState<number>()
   const [errorTimes, setErrorTimes] = useState<number>(0)
   const onSubmit = debounce(
-    //FIXME debounce wrapped with callback?
     () => {
       submit({
         images: [{ imageId: imageId || 0 }],

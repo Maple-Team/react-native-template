@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useContext, useMemo, useState } from 'react'
 import { Pressable, TextInput, View, Image } from 'react-native'
 import type { KeyboardTypeOptions } from 'react-native'
 import { ErrorMessage } from 'formik'
@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 import debounce from 'lodash.debounce'
 import { useInterval } from 'usehooks-ts'
 
+import { default as MoneyyaContext } from '@/state'
 import type { ValidateCodeType } from '@/typings/request'
 import styles from './style'
 import Text from '@components/Text'
@@ -39,9 +40,9 @@ export const ValidateCode = ({
   validateCodeType,
 }: InputProps) => {
   const { t } = useTranslation()
+  const context = useContext(MoneyyaContext)
   const [count, setCount] = useState<number>(60)
-  const [times, setTimtes] = useState<number>(300) //FIXME
-  // TODO 验证码次数
+  const [times, setTimtes] = useState<number>(context.barnd?.codeValidatecount || 5) // Brand info
   const [isPlaying, setPlaying] = useState<boolean>(false)
 
   const handlePress = debounce(
@@ -70,9 +71,8 @@ export const ValidateCode = ({
     isPlaying ? 1000 : null
   )
 
-  const isPhoneValid = useMemo(() => {
-    return REGEX_PHONE.test(phone)
-  }, [phone])
+  const isPhoneValid = useMemo(() => REGEX_PHONE.test(phone), [phone])
+
   return (
     <View style={styles.formItem}>
       <Text styles={styles.label}>{label}</Text>
