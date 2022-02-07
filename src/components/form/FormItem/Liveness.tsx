@@ -1,13 +1,10 @@
 import React from 'react'
-import { View, Image, Pressable } from 'react-native'
+import { View, Image, Pressable, type ViewStyle } from 'react-native'
 import formItemStyles from './style'
 import { Text } from '@/components'
-interface Props {
-  error?: string
-  onPress: () => void
-}
+import StyleSheet from 'react-native-adaptive-stylesheet'
 
-export function LivenessPicker({ onPress, error }: Props) {
+export function LivenessPicker({ onPress, error }: { error?: string; onPress: () => void }) {
   return (
     <View style={style.container}>
       <Text>Make sure you are operating by yourself</Text>
@@ -34,9 +31,6 @@ export function LivenessPicker({ onPress, error }: Props) {
     </View>
   )
 }
-
-import { ViewStyle } from 'react-native'
-import StyleSheet from 'react-native-adaptive-stylesheet'
 
 const style = StyleSheet.create<{
   container: ViewStyle

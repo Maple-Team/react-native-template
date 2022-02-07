@@ -1,5 +1,5 @@
 import type { NativeStackHeaderProps } from '@react-navigation/native-stack'
-import React, { Reducer, useEffect, useReducer } from 'react'
+import React, { type Reducer, useEffect, useReducer } from 'react'
 import { View, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
@@ -38,7 +38,7 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
 
   const onSubmit = debounce(
     (values: FormModel) => {
-      submit({
+      submit<'7'>({
         ...values,
         applyId: +(MMKV.getString(KEY_APPLYID) || '0'),
         currentStep: 7,
@@ -110,15 +110,19 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
       />
       <ScrollView style={PageStyles.scroll} keyboardShouldPersistTaps="always">
         <View style={PageStyles.container}>
-          <Formik<FormModel> initialValues={state} onSubmit={onSubmit} validationSchema={schema}>
+          <Formik<FormModel>
+            validateOnBlur
+            initialValues={state}
+            onSubmit={onSubmit}
+            validationSchema={schema}>
             {({ handleSubmit, isValid, setFieldValue, values }) => (
               <>
                 <View style={PageStyles.form}>
                   <NormalPicker
-                    onChange={(record: Dict) => {
-                      setFieldValue('bankCode', record.code)
-                      dispatch({ type: 'bankCode', value: record.code })
-                      behavior.setModify('P07_C01_S_BANKCODE', record.code, state.bankCode)
+                    onChange={({ code }) => {
+                      setFieldValue('bankCode', code)
+                      dispatch({ type: 'bankCode', value: code })
+                      behavior.setModify('P07_C01_S_BANKCODE', code, state.bankCode)
                     }}
                     key="bankCode"
                     value={state.bankCode}
@@ -129,11 +133,10 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
                     dataSource={state.bankArray}
                   />
                   <NormalPicker
-                    onChange={(record: Dict) => {
-                      console.log(record.code, 'change')
-                      setFieldValue('cardNoType', record.code)
-                      dispatch({ type: 'cardNoType', value: record.code })
-                      behavior.setModify('P07_C01_S_CARDNOTYPE', record.code, state.cardNoType)
+                    onChange={({ code }) => {
+                      setFieldValue('cardNoType', code)
+                      dispatch({ type: 'cardNoType', value: code })
+                      behavior.setModify('P07_C01_S_CARDNOTYPE', code, state.cardNoType)
                     }}
                     key="bankCardType"
                     value={values.cardNoType}
@@ -145,12 +148,10 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
                   />
                   {state.cardNoType === 'CARD' ? (
                     <MaskInput
-                      onFocus={() => {
+                      onFocus={() =>
                         behavior.setStartModify('P07_C01_I_BANKCARDNO', state.bankCardNo)
-                      }}
-                      onBlur={() => {
-                        behavior.setEndModify('P07_C01_I_BANKCARDNO', state.bankCardNo)
-                      }}
+                      }
+                      onBlur={() => behavior.setEndModify('P07_C01_I_BANKCARDNO', state.bankCardNo)}
                       value={state.bankCardNo}
                       field={'bankCardNo'}
                       keyboardType="phone-pad"
@@ -169,12 +170,10 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
                         setFieldValue('bankCardNo', extracted || '')
                         dispatch({ type: 'bankCardNo', value: extracted || '' })
                       }}
-                      onFocus={() => {
+                      onFocus={() =>
                         behavior.setStartModify('P07_C01_I_BANKCARDNO', state.bankCardNo)
-                      }}
-                      onBlur={() => {
-                        behavior.setEndModify('P07_C01_I_BANKCARDNO', state.bankCardNo)
-                      }}
+                      }
+                      onBlur={() => behavior.setEndModify('P07_C01_I_BANKCARDNO', state.bankCardNo)}
                       value={state.bankCardNo}
                       field={'bankCardNo'}
                       keyboardType="phone-pad"

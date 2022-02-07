@@ -1,5 +1,5 @@
 import type { NativeStackHeaderProps } from '@react-navigation/native-stack'
-import React, { Reducer, useContext, useEffect, useReducer, useRef } from 'react'
+import React, { type Reducer, useContext, useEffect, useReducer, useRef } from 'react'
 import { View, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
@@ -27,7 +27,7 @@ import { default as MoneyyaContext } from '@/state'
 import type { Dict, DictField } from '@/typings/response'
 import { MMKV } from '@/utils/storage'
 import { useRoute } from '@react-navigation/native'
-import { Gender } from '@/typings/user'
+import type { Gender } from '@/typings/user'
 import { fetchDict, submit } from '@/services/apply'
 
 export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
@@ -154,7 +154,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
 
   const onSubmit = debounce(
     (values: FormModel) => {
-      submit({
+      submit<'5'>({
         ...(filterArrayKey(values) as FormModel),
         applyId: +(MMKV.getString(KEY_APPLYID) || '0'),
         currentStep: 5,
@@ -236,7 +236,11 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
       <StatusBar translucent={false} backgroundColor={Color.primary} barStyle="default" />
       <ScrollView style={PageStyles.scroll} ref={scrollviewRef} keyboardShouldPersistTaps="handled">
         <View style={PageStyles.container}>
-          <Formik<FormModel> initialValues={state} onSubmit={onSubmit} validationSchema={schema}>
+          <Formik<FormModel>
+            initialValues={state}
+            validateOnBlur
+            onSubmit={onSubmit}
+            validationSchema={schema}>
             {({ handleSubmit, isValid, setFieldValue, errors }) => {
               return (
                 <>
@@ -247,15 +251,11 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                         setFieldValue('firstName', text)
                         dispatch({ type: 'firstName', value: text })
                       }}
-                      onClear={() => {
-                        setFieldValue('firstName', '')
-                      }}
-                      onFocus={() => {
+                      onClear={() => setFieldValue('firstName', '')}
+                      onFocus={() =>
                         behavior.setStartModify('P05_C01_I_FIRSTNAME', state.firstName)
-                      }}
-                      onBlur={() => {
-                        behavior.setEndModify('P05_C01_I_FIRSTNAME', state.firstName)
-                      }}
+                      }
+                      onBlur={() => behavior.setEndModify('P05_C01_I_FIRSTNAME', state.firstName)}
                       value={state.firstName}
                       maxLength={50}
                       field={'firstName'}
@@ -269,15 +269,11 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                         setFieldValue('middleName', text)
                         dispatch({ type: 'middleName', value: text })
                       }}
-                      onClear={() => {
-                        setFieldValue('middleName', '')
-                      }}
-                      onFocus={() => {
+                      onClear={() => setFieldValue('middleName', '')}
+                      onFocus={() =>
                         behavior.setStartModify('P05_C02_I_MIDDLENAME', state.middleName)
-                      }}
-                      onBlur={() => {
-                        behavior.setEndModify('P05_C02_I_MIDDLENAME', state.middleName)
-                      }}
+                      }
+                      onBlur={() => behavior.setEndModify('P05_C02_I_MIDDLENAME', state.middleName)}
                       value={state.middleName}
                       field={'middleName'}
                       maxLength={100}
@@ -291,15 +287,9 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                         setFieldValue('lastName', text)
                         dispatch({ type: 'lastName', value: text })
                       }}
-                      onClear={() => {
-                        setFieldValue('lastName', '')
-                      }}
-                      onFocus={() => {
-                        behavior.setStartModify('P05_C03_I_LASTNAME', state.lastName)
-                      }}
-                      onBlur={() => {
-                        behavior.setEndModify('P05_C03_I_LASTNAME', state.lastName)
-                      }}
+                      onClear={() => setFieldValue('lastName', '')}
+                      onFocus={() => behavior.setStartModify('P05_C03_I_LASTNAME', state.lastName)}
+                      onBlur={() => behavior.setEndModify('P05_C03_I_LASTNAME', state.lastName)}
                       value={state.lastName}
                       field={'lastName'}
                       maxLength={50}
@@ -337,15 +327,9 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                         setFieldValue('idcard', text)
                         dispatch({ type: 'idcard', value: text })
                       }}
-                      onFocus={() => {
-                        behavior.setStartModify('P05_C04_I_IDCARD', state.idcard)
-                      }}
-                      onBlur={() => {
-                        behavior.setEndModify('P05_C04_I_IDCARD', state.idcard)
-                      }}
-                      onClear={() => {
-                        setFieldValue('idcard', '')
-                      }}
+                      onFocus={() => behavior.setStartModify('P05_C04_I_IDCARD', state.idcard)}
+                      onBlur={() => behavior.setEndModify('P05_C04_I_IDCARD', state.idcard)}
+                      onClear={() => setFieldValue('idcard', '')}
                       value={state.idcard}
                       field={'idcard'}
                       keyboardType="number-pad"
@@ -356,14 +340,10 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       placeholder={t('idcard.placeholder')}
                     />
                     <NormalPicker
-                      onChange={(record: Dict) => {
-                        setFieldValue('maritalStatus', record.code)
-                        dispatch({ type: 'maritalStatus', value: record.code })
-                        behavior.setModify(
-                          'P05_C03_S_MARITALSTATUS',
-                          record.code,
-                          state.maritalStatus
-                        )
+                      onChange={({ code }) => {
+                        setFieldValue('maritalStatus', code)
+                        dispatch({ type: 'maritalStatus', value: code })
+                        behavior.setModify('P05_C03_S_MARITALSTATUS', code, state.maritalStatus)
                       }}
                       value={state.maritalStatus}
                       title={t('maritalStatus.label')}
@@ -375,13 +355,13 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       scrollViewRef={scrollviewRef}
                     />
                     <NormalPicker
-                      onChange={(record: Dict) => {
-                        setFieldValue('homeAddrProvinceCode', record.code)
-                        dispatch({ type: 'homeAddrProvince', value: record })
+                      onChange={({ code, name }) => {
+                        setFieldValue('homeAddrProvinceCode', code)
+                        dispatch({ type: 'homeAddrProvince', value: { code, name } })
                         dispatch({ type: 'homeAddrCity', value: { name: '', code: '' } })
                         behavior.setModify(
                           'P05_C04_S_HOMEADDRPROVINCECODE',
-                          record.code,
+                          code,
                           state.homeAddrProvinceCode
                         )
                       }}
@@ -395,12 +375,12 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       scrollViewRef={scrollviewRef}
                     />
                     <NormalPicker
-                      onChange={(record: Dict) => {
-                        setFieldValue('homeAddrCityCode', record.code)
-                        dispatch({ type: 'homeAddrCity', value: record })
+                      onChange={({ code, name }) => {
+                        setFieldValue('homeAddrCityCode', code)
+                        dispatch({ type: 'homeAddrCity', value: { code, name } })
                         behavior.setModify(
                           'P05_C05_S_HOMEADDRCITYCODE',
-                          record.code,
+                          code,
                           state.homeAddrCityCode
                         )
                       }}
@@ -418,15 +398,13 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                         setFieldValue('homeAddrDetail', text)
                         dispatch({ type: 'homeAddrDetail', value: text })
                       }}
-                      onClear={function (): void {
-                        setFieldValue('homeAddrDetail', '')
-                      }}
-                      onFocus={() => {
+                      onClear={() => setFieldValue('homeAddrDetail', '')}
+                      onFocus={() =>
                         behavior.setStartModify('P05_C05_I_IHOMEADDRDETAIL', state.homeAddrDetail)
-                      }}
-                      onBlur={() => {
+                      }
+                      onBlur={() =>
                         behavior.setEndModify('P05_C05_I_IHOMEADDRDETAIL', state.homeAddrDetail)
-                      }}
+                      }
                       value={state.homeAddrDetail}
                       field={'homeAddrDetail'}
                       key={'homeAddrDetail'}
@@ -435,10 +413,10 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       placeholder={t('homeAddrDetail.placeholder')}
                     />
                     <NormalPicker
-                      onChange={function (record: Dict): void {
-                        setFieldValue('docType', record.code)
-                        dispatch({ type: 'docType', value: record.code })
-                        behavior.setModify('P05_C06_S_DOCTYPE', record.code, state.docType)
+                      onChange={({ code }) => {
+                        setFieldValue('docType', code)
+                        dispatch({ type: 'docType', value: code })
+                        behavior.setModify('P05_C06_S_DOCTYPE', code, state.docType)
                       }}
                       value={state.docType}
                       title={t('docType.label')}
@@ -460,23 +438,19 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       keyboardType="phone-pad"
                       mask={'[0000] [000] [000]'}
                       key={'backupPhone'}
-                      onFocus={() => {
+                      onFocus={() =>
                         behavior.setStartModify('P05_C06_I_BACKUPPHONE', state.backupPhone)
-                      }}
-                      onBlur={() => {
+                      }
+                      onBlur={() =>
                         behavior.setEndModify('P05_C06_I_BACKUPPHONE', state.backupPhone)
-                      }}
+                      }
                       label={t('backupPhone.label')}
                     />
                     <NormalPicker
-                      onChange={function (record: Dict): void {
-                        setFieldValue('educationCode', record.code)
-                        dispatch({ type: 'educationCode', value: record.code })
-                        behavior.setModify(
-                          'P05_C07_S_EDUCATIONCODE',
-                          record.code,
-                          state.educationCode
-                        )
+                      onChange={({ code }) => {
+                        setFieldValue('educationCode', code)
+                        dispatch({ type: 'educationCode', value: code })
+                        behavior.setModify('P05_C07_S_EDUCATIONCODE', code, state.educationCode)
                       }}
                       value={state.educationCode}
                       title={t('educationCode.label')}
@@ -487,10 +461,10 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       dataSource={state.educationArray}
                     />
                     <NormalPicker
-                      onChange={function (record: Dict): void {
-                        setFieldValue('loanPurpose', record.code)
-                        dispatch({ type: 'loanPurpose', value: record.code })
-                        behavior.setModify('P05_C08_S_LOANPURPOSE', record.code, state.loanPurpose)
+                      onChange={({ code }) => {
+                        setFieldValue('loanPurpose', code)
+                        dispatch({ type: 'loanPurpose', value: code })
+                        behavior.setModify('P05_C08_S_LOANPURPOSE', code, state.loanPurpose)
                       }}
                       value={state.loanPurpose}
                       title={t('loanPurpose.label')}
@@ -501,19 +475,15 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       dataSource={state.loanPurposeArray}
                     />
                     <Input
-                      onChangeText={function (text: string): void {
+                      onChangeText={(text: string) => {
                         setFieldValue('authPhone', text)
                         dispatch({ type: 'authPhone', value: text })
                       }}
-                      onClear={function (): void {
-                        setFieldValue('authPhone', '')
-                      }}
-                      onFocus={() => {
+                      onClear={() => setFieldValue('authPhone', '')}
+                      onFocus={() =>
                         behavior.setStartModify('P05_C07_I_AUTHPHONE', state.authPhone)
-                      }}
-                      onBlur={() => {
-                        behavior.setEndModify('P05_C07_I_AUTHPHONE', state.authPhone)
-                      }}
+                      }
+                      onBlur={() => behavior.setEndModify('P05_C07_I_AUTHPHONE', state.authPhone)}
                       value={state.authPhone}
                       keyboardType="phone-pad"
                       field={'authPhone'}
@@ -527,15 +497,9 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                         setFieldValue('whatsapp', text)
                         dispatch({ type: 'whatsapp', value: text })
                       }}
-                      onClear={() => {
-                        setFieldValue('whatsapp', '')
-                      }}
-                      onFocus={() => {
-                        behavior.setStartModify('P05_C08_I_WHATSAPP', state.whatsapp)
-                      }}
-                      onBlur={() => {
-                        behavior.setEndModify('P05_C08_I_WHATSAPP', state.whatsapp)
-                      }}
+                      onClear={() => setFieldValue('whatsapp', '')}
+                      onFocus={() => behavior.setStartModify('P05_C08_I_WHATSAPP', state.whatsapp)}
+                      onBlur={() => behavior.setEndModify('P05_C08_I_WHATSAPP', state.whatsapp)}
                       value={state.whatsapp}
                       field={'whatsapp'}
                       key={'whatsapp'}
@@ -543,19 +507,13 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       placeholder={t('whatsapp.placeholder')}
                     />
                     <Input
-                      onChangeText={function (text: string): void {
+                      onChangeText={(text: string) => {
                         setFieldValue('email', text)
                         dispatch({ type: 'email', value: text })
                       }}
-                      onClear={function (): void {
-                        setFieldValue('email', '')
-                      }}
-                      onFocus={() => {
-                        behavior.setStartModify('P05_C09_I_EMAIL', state.email)
-                      }}
-                      onBlur={() => {
-                        behavior.setEndModify('P05_C09_I_EMAIL', state.email)
-                      }}
+                      onClear={() => setFieldValue('email', '')}
+                      onFocus={() => behavior.setStartModify('P05_C09_I_EMAIL', state.email)}
+                      onBlur={() => behavior.setEndModify('P05_C09_I_EMAIL', state.email)}
                       keyboardType="email-address"
                       value={state.email}
                       field={'email'}
@@ -564,19 +522,17 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       placeholder={t('email.placeholder')}
                     />
                     <Input
-                      onChangeText={function (text: string): void {
+                      onChangeText={(text: string) => {
                         setFieldValue('secondCardNo', text)
                         dispatch({ type: 'secondCardNo', value: text })
                       }}
-                      onClear={function (): void {
-                        setFieldValue('secondCardNo', '')
-                      }}
-                      onFocus={() => {
+                      onClear={() => setFieldValue('secondCardNo', '')}
+                      onFocus={() =>
                         behavior.setStartModify('P05_C10_I_SECONDCARDNO', state.secondCardNo)
-                      }}
-                      onBlur={() => {
+                      }
+                      onBlur={() =>
                         behavior.setEndModify('P05_C10_I_SECONDCARDNO', state.secondCardNo)
-                      }}
+                      }
                       value={state.secondCardNo}
                       field={'secondCardNo'}
                       key={'secondCardNo'}
@@ -674,11 +630,11 @@ type Step5Action =
     }
   | {
       type: 'homeAddrProvince'
-      value: Dict
+      value: Pick<Dict, 'code' | 'name'>
     }
   | {
       type: 'homeAddrCity'
-      value: Dict | null
+      value: Pick<Dict, 'code' | 'name'>
     }
   | {
       type: 'homeAddrDetail'

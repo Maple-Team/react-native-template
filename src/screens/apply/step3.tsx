@@ -1,5 +1,5 @@
 import type { NativeStackHeaderProps } from '@react-navigation/native-stack'
-import React, { Reducer, useContext, useEffect, useReducer, useRef } from 'react'
+import React, { type Reducer, useContext, useEffect, useReducer, useRef } from 'react'
 import { View, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
@@ -129,7 +129,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
           contactRelationCode: state[`contactRelationCode${index}`],
         })
       }
-      submit({
+      submit<'3'>({
         contacts,
         applyId: +(MMKV.getString(KEY_APPLYID) || '0'),
         currentStep: 3,
@@ -141,10 +141,9 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
     DEBOUNCE_WAIT,
     DEBOUNCE_OPTIONS
   )
+
   const behavior = useBehavior<'P03'>('P03', 'P03_C00', 'P03_C99')
-
   useLocation()
-
   const scrollviewRef = useRef<ScrollView>(null)
 
   return (
@@ -156,22 +155,17 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
             initialValues={state}
             onSubmit={onSubmit}
             validationSchema={schema}
-            validateOnBlur
-            validateOnChange>
+            validateOnBlur>
             {({ handleSubmit, isValid, errors, setFieldValue }) => (
               <>
                 <View style={PageStyles.form}>
                   <FormGap title="Relation Contact" />
                   <NormalPicker
                     scrollViewRef={scrollviewRef}
-                    onChange={record => {
-                      setFieldValue('contactRelationCode1', record.code)
-                      dispatch({ type: 'updateContactRelation1', value: record })
-                      behavior.setModify(
-                        'P03_C01_S_RELATIONSHIP',
-                        record.code,
-                        state.contactRelationCode1
-                      )
+                    onChange={({ code, name }) => {
+                      setFieldValue('contactRelationCode1', code)
+                      dispatch({ type: 'updateContactRelation1', value: { code, name } })
+                      behavior.setModify('P03_C01_S_RELATIONSHIP', code, state.contactRelationCode1)
                     }}
                     title={t('contactRelationCode.label')}
                     field={'contactRelationCode1'}
@@ -188,12 +182,12 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                       setFieldValue('contactName1', text)
                       dispatch({ type: 'updateContactName1', value: text })
                     }}
-                    onFocus={() => {
+                    onFocus={() =>
                       behavior.setStartModify('P03_C01_I_CONTACTNAME', state.contactName1)
-                    }}
-                    onBlur={() => {
+                    }
+                    onBlur={() =>
                       behavior.setEndModify('P03_C01_I_CONTACTNAME', state.contactName1)
-                    }}
+                    }
                     value={state.contactName1}
                     maxLength={100}
                     field={'contactName1'}
@@ -207,7 +201,6 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                     key="contactPhone1"
                     label={t('contactPhone.label')}
                     onChange={text => {
-                      console.log({ text })
                       setFieldValue('contactPhone1', text)
                       dispatch({ type: 'updateContactPhone1', value: text })
                       behavior.setModify('P03_C02_S_CONTACTPHONE', text, state.contactPhone1)
@@ -219,14 +212,10 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                   <FormGap title="Other Contact" />
                   <NormalPicker
                     scrollViewRef={scrollviewRef}
-                    onChange={record => {
-                      setFieldValue('contactRelationCode2', record.code)
-                      dispatch({ type: 'updateContactRelation2', value: record })
-                      behavior.setModify(
-                        'P03_C03_S_RELATIONSHIP',
-                        record.code,
-                        state.contactRelationCode2
-                      )
+                    onChange={({ code, name }) => {
+                      setFieldValue('contactRelationCode2', code)
+                      dispatch({ type: 'updateContactRelation2', value: { code, name } })
+                      behavior.setModify('P03_C03_S_RELATIONSHIP', code, state.contactRelationCode2)
                     }}
                     title={t('contactRelationCode.label')}
                     field={'contactRelationCode2'}
@@ -243,13 +232,13 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                       setFieldValue('contactName2', text)
                       dispatch({ type: 'updateContactName2', value: text })
                     }}
-                    onFocus={() => {
-                      behavior.setStartModify('P03_C02_I_CONTACTNAME', state.contactName1)
-                    }}
+                    onFocus={() =>
+                      behavior.setStartModify('P03_C02_I_CONTACTNAME', state.contactName2)
+                    }
                     maxLength={100}
-                    onBlur={() => {
-                      behavior.setEndModify('P03_C02_I_CONTACTNAME', state.contactName1)
-                    }}
+                    onBlur={() =>
+                      behavior.setEndModify('P03_C02_I_CONTACTNAME', state.contactName2)
+                    }
                     value={state.contactName2}
                     field={'contactName2'}
                     key={'contactName2'}
@@ -262,7 +251,6 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                     key="contactPhone2"
                     label={t('contactPhone.label')}
                     onChange={text => {
-                      console.log({ text })
                       setFieldValue('contactPhone2', text)
                       dispatch({ type: 'updateContactPhone2', value: text })
                       behavior.setModify('P03_C04_S_CONTACTPHONE', text, state.contactPhone2)
@@ -274,14 +262,10 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                   <FormGap title="Other Contact" />
                   <NormalPicker
                     scrollViewRef={scrollviewRef}
-                    onChange={record => {
-                      setFieldValue('contactRelationCode3', record.code)
-                      dispatch({ type: 'updateContactRelation3', value: record })
-                      behavior.setModify(
-                        'P03_C05_S_RELATIONSHIP',
-                        record.code,
-                        state.contactRelationCode3
-                      )
+                    onChange={({ code, name }) => {
+                      setFieldValue('contactRelationCode3', code)
+                      dispatch({ type: 'updateContactRelation3', value: { code, name } })
+                      behavior.setModify('P03_C05_S_RELATIONSHIP', code, state.contactRelationCode3)
                     }}
                     title={t('contactRelationCode.label')}
                     field={'contactRelationCode3'}
@@ -317,7 +301,6 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                     key="contactPhone3"
                     label={t('contactPhone.label')}
                     onChange={text => {
-                      console.log({ text })
                       setFieldValue('contactPhone3', text)
                       dispatch({ type: 'updateContactPhone3', value: text })
                       behavior.setModify('P03_C06_S_CONTACTPHONE', text, state.contactPhone3)
@@ -381,7 +364,7 @@ type Step3Action =
     }
   | {
       type: 'updateContactRelation1'
-      value: Dict
+      value: Pick<Dict, 'code' | 'name'>
     }
   | {
       type: 'updateContactName2'
@@ -393,7 +376,7 @@ type Step3Action =
     }
   | {
       type: 'updateContactRelation2'
-      value: Dict
+      value: Pick<Dict, 'code' | 'name'>
     }
   | {
       type: 'updateContactName3'
@@ -405,5 +388,5 @@ type Step3Action =
     }
   | {
       type: 'updateContactRelation3'
-      value: Dict
+      value: Pick<Dict, 'code' | 'name'>
     }

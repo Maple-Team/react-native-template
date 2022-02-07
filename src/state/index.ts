@@ -26,6 +26,9 @@ import {
 import { MMKV } from '@/utils/storage'
 import { createContext } from 'react'
 
+/**
+ * 全局状态
+ */
 export let moneyyaState: State = {
   header: {
     merchantId: 'b5a84f164746cfd448b144f543e22808',
@@ -105,14 +108,14 @@ export function reducer(state: State, action: Action): State {
       }
       break
     case UPDATE_USER_INFO:
-      MMKV.setMap(KEY_USER, action.user)
+      MMKV.setMapAsync(KEY_USER, action.user)
       moneyyaState = {
         ...state,
         user: action.user,
       }
       break
     case UPDATE_BRAND:
-      MMKV.setMap(KEY_BRAND, action.brand)
+      MMKV.setMapAsync(KEY_BRAND, action.brand)
       moneyyaState = {
         ...state,
         barnd: action.brand,

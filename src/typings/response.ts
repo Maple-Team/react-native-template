@@ -20,7 +20,7 @@ export interface Brand {
   codeValidatecount: number
   isValidateCode: string
   livenessAuthCount: number
-  livenessAuthEnable: string
+  livenessAuthEnable: BOOL
   serviceInfo: ServiceInfo
   smsSendEnable: string
   smsWaitInterval: number

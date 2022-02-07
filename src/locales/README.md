@@ -1,3 +1,5 @@
+# i18n
+
 ## i18n Translation Function
 
 ### interpolation 插值
@@ -49,3 +51,4 @@ There are a few options to load translations to your application instrumented by
 - [i18n-js](https://github.com/fnando/i18n-js) 3.5k
 - [react-i18next](https://github.com/i18next/react-i18next) 6.9k
 - [formatjs](https://github.com/formatjs/formatjs), 12.9k
+- [i18n-ally](https://github.com/lokalise/i18n-ally), 功能强大的 `vscode` 插件

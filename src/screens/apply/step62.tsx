@@ -1,5 +1,5 @@
 import type { NativeStackHeaderProps } from '@react-navigation/native-stack'
-import React, { useContext, useMemo, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { View, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
@@ -26,18 +26,12 @@ export const Step62 = ({ navigation }: NativeStackHeaderProps) => {
   const schema = Yup.object().shape({
     handId: Yup.string().required(t('idcard.required')),
   })
-  const initialValue = useMemo<FormModel>(
-    () => ({
-      images: [],
-      livenessAuthFlag: 'N',
-      livenessId: '',
-      handId: '',
-    }),
-    []
-  )
+  const initialValue: FormModel = {
+    handId: '',
+  }
   const onSubmit = debounce(
     (values: FormModel) => {
-      submit({
+      submit<'6'>({
         images: [{ imageId: values ? +values.handId : 0 }],
         applyId: +(MMKV.getString(KEY_APPLYID) || '0'),
         currentStep: 6,
@@ -70,7 +64,7 @@ export const Step62 = ({ navigation }: NativeStackHeaderProps) => {
                     key="handId"
                     bg={require('@assets/images/apply/id1.webp')}
                     imageType="INE_OR_IFE_FRONT"
-                    cameraType="back"
+                    cameraType="front"
                     onUploadSuccess={id => {
                       setFieldValue('handId', id)
                     }}

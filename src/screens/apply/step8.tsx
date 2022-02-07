@@ -11,24 +11,35 @@ import { PageStyles, Text, Hint } from '@/components'
 import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT, KEY_APPLYID, TOTAL_STEPS } from '@/utils/constant'
 import { ApplyButton } from '@components/form/FormItem'
 import { Color } from '@/styles/color'
-import { ApplyStep8Parameter, Calculate, Product } from '@/typings/apply'
+import type {
+  ApplyParameter,
+  ApplyStep8Parameter,
+  Calculate,
+  Product,
+  SensorDataType,
+} from '@/typings/apply'
 import { useBehavior, useLocation, useSensor } from '@/hooks'
 import { queryProduct, scheduleCalc, submit } from '@/services/apply'
 import { MMKV } from '@/utils'
 import { default as MoneyyaContext } from '@/state'
 import { useLinkTo } from '@react-navigation/native'
 
-type FormModel = Omit<ApplyStep8Parameter, 'applyId' | 'currentStep' | 'totalSteps'>
+type FormModel = Omit<
+  ApplyStep8Parameter,
+  keyof ApplyParameter & {
+    sensor: SensorDataType
+    gps: string
+  }
+>
 export const Step8 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
   const sensor = useSensor()
 
   const onSubmit = debounce(
     (values: FormModel) => {
-      console.log({ sensor })
-      submit({
+      submit<'8'>({
         ...values,
-        // sensor: `${sensor?.angleX},${sensor?.angleY},${sensor?.angleZ}`,
+        ...sensor,
         applyId: +(MMKV.getString(KEY_APPLYID) || '0'),
         currentStep: 8,
         totalSteps: TOTAL_STEPS,

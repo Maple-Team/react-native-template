@@ -73,24 +73,31 @@ export async function queryVersion() {
     url: '/smart-loan/app/version',
   })
 }
-/**
- * 每步的申请参数
- */
-export type ApplyStep =
-  | ApplyStep1Parameter
-  | ApplyStep2Parameter
-  | ApplyStep3Parameter
-  | ApplyStep4Parameter
-  | ApplyStep5Parameter
-  | ApplyStep6Parameter
-  | ApplyStep7Parameter
-  | ApplyStep8Parameter
+type Steps = '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8'
+
+type ApplyStep<T extends Steps> = T extends '1'
+  ? ApplyStep1Parameter
+  : T extends '2'
+  ? ApplyStep2Parameter
+  : T extends '3'
+  ? ApplyStep3Parameter
+  : T extends '4'
+  ? ApplyStep4Parameter
+  : T extends '5'
+  ? ApplyStep5Parameter
+  : T extends '6'
+  ? ApplyStep6Parameter
+  : T extends '7'
+  ? ApplyStep7Parameter
+  : T extends '8'
+  ? ApplyStep8Parameter
+  : never
 /**
  * 每一步提交信息
  * @param params
  * @returns
  */
-export async function submit(data: ApplyStep) {
+export async function submit<T extends Steps>(data: ApplyStep<T>) {
   return request<ApplyResponse>({
     url: '/smart-loan/apply/step',
     method: 'POST',

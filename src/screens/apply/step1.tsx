@@ -35,7 +35,7 @@ export function Step1() {
   const location = useLocation()
   const onSubmit = debounce(
     () => {
-      submit({
+      submit<'1'>({
         deviceId: MMKV.getString(KEY_DEVICEID) || '',
         phone: context.user?.phone || '',
         gps: `${location.latitude},${location.longitude}`,

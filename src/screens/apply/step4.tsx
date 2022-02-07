@@ -30,7 +30,7 @@ export const Step4 = ({ navigation }: NativeStackHeaderProps) => {
   const initialValue = useMemo<FormModel>(() => ({ images: [], idcard: '' }), [])
   const onSubmit = debounce(
     (values: FormModel) => {
-      submit({
+      submit<'4'>({
         images: [{ imageId: +values.idcard || 0 }],
         applyId: +(MMKV.getString(KEY_APPLYID) || '0'),
         currentStep: 4,
@@ -54,7 +54,6 @@ export const Step4 = ({ navigation }: NativeStackHeaderProps) => {
             initialValues={initialValue}
             onSubmit={onSubmit}
             validateOnBlur
-            validateOnChange
             validationSchema={schema}>
             {({ handleSubmit, isValid, setFieldValue, errors }) => (
               <>
@@ -66,7 +65,7 @@ export const Step4 = ({ navigation }: NativeStackHeaderProps) => {
                     title={'Proporciona tu INE/IFE por favor'}
                     bg={require('@assets/images/apply/id1.webp')}
                     imageType="INE_OR_IFE_BACK"
-                    cameraType="front"
+                    cameraType="back"
                     onUploadSuccess={id => {
                       setFieldValue('idcard', id)
                     }}

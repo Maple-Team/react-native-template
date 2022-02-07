@@ -5,7 +5,7 @@ import { Modal as AntModal } from '@ant-design/react-native'
 import StyleSheet from 'react-native-adaptive-stylesheet'
 import { Text } from '@/components'
 import { useTranslation } from 'react-i18next'
-import { Dict } from '@/typings/response'
+import type { Dict } from '@/typings/response'
 import type { WheelPickerProps } from './wheelPicker'
 
 interface Props<T extends Dict> {
@@ -18,7 +18,7 @@ interface Props<T extends Dict> {
   textSize?: number
 }
 
-export function ModalWrap<T extends Dict, P extends Props<T>>(
+export function ModalHOC<T extends Dict, P extends Props<T>>(
   Component: React.ComponentType<WheelPickerProps<T>>
 ): React.FC<P> {
   const { t } = useTranslation()

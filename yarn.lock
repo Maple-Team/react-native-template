@@ -7082,10 +7082,10 @@ react-native-select-contact@^1.6.3:
   optionalDependencies:
     react-native-action-sheet "^2.2.0"
 
-react-native-sensors@^7.3.3:
-  version "7.3.3"
-  resolved "https://registry.nlark.com/react-native-sensors/download/react-native-sensors-7.3.3.tgz#27725c0656670557c92e6847917d4fece0e31bba"
-  integrity sha1-J3JcBlZnBVfJLmhHkX1P7ODjG7o=
+react-native-sensors@^7.3.5:
+  version "7.3.5"
+  resolved "https://registry.npmmirror.com/react-native-sensors/-/react-native-sensors-7.3.5.tgz#19ef06ca74197a7e118a44033cd656e964cdce83"
+  integrity sha512-DMxaxSmgUOLTyi7s0tDwaX5VwtljcCj9c1IhOo3EyjTjTrtSFyEHTyI61qvOxk+DXtbVYCybeqYKFe6TiM+Cbg==
   dependencies:
     rxjs ">= 6"
 

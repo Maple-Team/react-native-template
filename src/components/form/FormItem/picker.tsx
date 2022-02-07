@@ -5,7 +5,7 @@ import formItemStyles from './style'
 import { Text } from '@/components'
 import { ErrorMessage } from 'formik'
 import { WheelPicker } from './wheelPicker'
-import { ModalWrap } from './modalWrap'
+import { ModalHOC } from './modalHOC'
 import type { Dict, PickerField } from '@/typings/response'
 import { UseFocusOnError } from '@/hooks'
 import type { ScrollView } from 'react-native-gesture-handler'
@@ -21,7 +21,6 @@ interface PickerProps<T extends Dict, U extends PickerField> {
   keyboardType?: KeyboardTypeOptions
   dataSource: T[]
   scrollViewRef?: RefObject<ScrollView>
-  textSize?: number
 }
 
 export function NormalPicker<T extends Dict, U extends PickerField>({
@@ -34,10 +33,9 @@ export function NormalPicker<T extends Dict, U extends PickerField>({
   scrollViewRef,
   placeholder,
   dataSource,
-  textSize,
 }: PickerProps<T, U>) {
   const [visible, setVisible] = useState<boolean>(false)
-  const Picker = ModalWrap(WheelPicker)
+  const Picker = ModalHOC(WheelPicker)
   const fieldRef = useRef<TextInput>(null)
   const [height, setHeight] = useState<number>(0)
   return (
@@ -88,7 +86,6 @@ export function NormalPicker<T extends Dict, U extends PickerField>({
         onConfirm={onChange}
         title={title}
         value={value}
-        textSize={textSize}
       />
     </>
   )

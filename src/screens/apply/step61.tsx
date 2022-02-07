@@ -18,16 +18,20 @@ import { default as MoneyyaContext } from '@/state'
 
 export const Step61 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
+
   const [isValid, setValid] = useState<Boolean>()
   const [imageId, setImageId] = useState<number>()
   const [errorTimes, setErrorTimes] = useState<number>(0)
+  const context = useContext(MoneyyaContext)
+
   const onSubmit = debounce(
     () => {
-      submit({
-        images: [{ imageId: imageId || 0 }],
+      submit<'6'>({
         applyId: +(MMKV.getString(KEY_APPLYID) || '0'),
         currentStep: 6,
         totalSteps: TOTAL_STEPS,
+        livenessId: `${imageId}`,
+        livenessAuthFlag: context.barnd?.livenessAuthEnable,
       }).then(() => {
         navigation.navigate('Step7')
       })
@@ -51,7 +55,7 @@ export const Step61 = ({ navigation }: NativeStackHeaderProps) => {
       }
     )
   }, [errorTimes, onSubmit])
-  const context = useContext(MoneyyaContext)
+
   useEffect(() => {
     if (errorTimes >= (context.barnd?.livenessAuthCount || 100)) {
       navigation.navigate('Step62')
@@ -65,7 +69,7 @@ export const Step61 = ({ navigation }: NativeStackHeaderProps) => {
           <View style={PageStyles.form}>
             <LivenessPicker
               onPress={startLiveness}
-              error={!isValid ? t('liveness.required') : ''}
+              error={isValid === false ? t('liveness.required') : ''}
             />
           </View>
           <View style={PageStyles.btnWrap}>

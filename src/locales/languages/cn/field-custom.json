@@ -1,0 +1,15 @@
+{
+  "field": {
+    "short": "{{field}} is too short",
+    "long": "{{field}} is too long"
+  },
+  "camera": {
+    "unavailable": "camera is unavailable",
+    "no-permission": "camera is not allow permission",
+    "other-error": "camera unknown error"
+  },
+  "upload-Failed": "upload failed",
+  "resetpwd": {
+    "success": "reset pwd success"
+  }
+}

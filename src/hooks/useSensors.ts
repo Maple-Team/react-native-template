@@ -1,5 +1,10 @@
-import { useCallback, useEffect, useState } from 'react'
-import { gyroscope, setUpdateIntervalForType, SensorTypes } from 'react-native-sensors'
+import { useEffect, useState } from 'react'
+import {
+  gyroscope,
+  setUpdateIntervalForType,
+  SensorTypes,
+  setLogLevelForType,
+} from 'react-native-sensors'
 
 const NS2S = 1.0 / 1000000000.0
 interface Sendor {
@@ -7,23 +12,36 @@ interface Sendor {
   angleY: string
   angleZ: string
 }
-// 将弧度转化为角度
-const toDegree = (radians: number) => radians * (180 / Math.PI)
-export const useSensor = () => {
+type Mode = 'slow' | 'fast'
+
+setLogLevelForType('gyroscope', 2)
+
+export const useSensor = (mode: Mode = 'slow') => {
   const [sensor, setSensor] = useState<Sendor>()
-  const slow = useCallback(() => {
-    return () => setUpdateIntervalForType(SensorTypes.gyroscope, 5 * 1000 * 2)
-  }, [])
-  // const fast = useCallback(() => {
-  //   return () => setUpdateIntervalForType(SensorTypes.gyroscope, 400)
-  // }, [])
+  setUpdateIntervalForType(SensorTypes.gyroscope, mode === 'slow' ? 10 * 1000 : 4 * 1000)
   useEffect(() => {
-    slow()
+    /**
+     * 将弧度转化为角度
+     * @param radians
+     * @returns
+     */
+    const toDegree = (radians: number) => radians * (180 / Math.PI)
+    /**
+     * 监听陀螺仪
+     * @returns
+     */
     const subscribe = () => {
       let _timestamp = 0
-
-      const subscription = gyroscope.subscribe(
-        ({ x, y, z, timestamp }) => {
+      return gyroscope.subscribe({
+        error: e => {
+          console.error(e)
+          setSensor({
+            angleX: '0.0,0.0',
+            angleY: '0.0,0.0',
+            angleZ: '0.0,0.0',
+          })
+        },
+        next: ({ x, y, z, timestamp }) => {
           if (_timestamp !== 0) {
             let x1 = 0
             let y1 = 0
@@ -43,24 +61,11 @@ export const useSensor = () => {
             _timestamp = timestamp
           }
         },
-        err => {
-          console.error(err)
-          setSensor({
-            angleX: '0.0,0.0',
-            angleY: '0.0,0.0',
-            angleZ: '0.0,0.0',
-          })
-        }
-      )
-      return subscription
+      })
     }
     const subscription = subscribe()
-    return () => {
-      // FIXME
-      // @ts-ignore
-      subscription.remove()
-    }
-  }, [sensor, slow])
+    return () => subscription.unsubscribe()
+  }, [])
 
   return sensor
 }

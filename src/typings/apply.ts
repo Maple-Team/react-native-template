@@ -83,6 +83,9 @@ export interface ApplyStep5Parameter extends ApplyParameter {
   sex: Gender
   birth: string
   idcard: string
+  /**
+   * 婚姻状态
+   */
   maritalStatus: string
   homeAddrProvinceCode: string
   homeAddrProvince: string
@@ -101,11 +104,13 @@ export interface ApplyStep5Parameter extends ApplyParameter {
   email: string
   name: string
 }
-
+/**
+ * 区分是否需要活体校验
+ */
 export interface ApplyStep6Parameter extends ApplyParameter {
-  images: Image[]
-  livenessId: string
-  livenessAuthFlag: BOOL
+  images?: Image[]
+  livenessId?: string
+  livenessAuthFlag?: BOOL
 }
 export type BankCardType = 'CARD' | 'CLABE'
 export interface ApplyStep7Parameter extends ApplyParameter {
@@ -114,13 +119,40 @@ export interface ApplyStep7Parameter extends ApplyParameter {
   bankCardNo: string
 }
 
+export interface SensorDataType {
+  angleX: string
+  angleY: string
+  angleZ: string
+}
 export interface ApplyStep8Parameter extends ApplyParameter {
+  sensor: SensorDataType
+  /**
+   * GPS信息
+   */
   gps: string
+  /**
+   * 最大可选金额
+   */
   maxApplyAmount: number
+  /**
+   * 申请金额
+   */
   applyAmount: number
+  /**
+   * 申请期限
+   */
   loanTerms: number
+  /**
+   * 贷款编码
+   */
   loanCode: string
+  /**
+   * 产品编码
+   */
   productCode: string
+  /**
+   * 展期贷款期限
+   */
   displayLoanDays: number
 }
 
@@ -130,16 +162,40 @@ export interface ProductParemeter {
 }
 
 export interface Product {
+  /**
+   * 金额步长
+   */
   amountStep: number
   loanCode: string
+  /**
+   * 期限步长
+   */
   loanStep: number
   loanTerms?: any
   mandatoryItems?: any
+  /**
+   * 最大可选金额
+   */
   maxAmount: number
+  /**
+   * 最大可选期限
+   */
   maxLoanTerms: number
+  /**
+   * 最大展示金额
+   */
   maxViewAmount: number
+  /**
+   * 最大展示期限
+   */
   maxViewTerms: number
+  /**
+   * 最小可选金额
+   */
   minAmount: number
+  /**
+   * 最小可选期限
+   */
   minLoanTerms: number
   optionalItems?: any
   productCode: string
@@ -149,43 +205,114 @@ export interface Product {
   unSupportItem?: any
 }
 
-export interface ProductItem {
+interface ProductItem {
+  /**
+   * 金额步长
+   */
   amountStep: number
+  /**
+   * 是否可选
+   */
   available: string
+  /**
+   * 展示期限
+   */
   displayLoanDays: number
+  /**
+   * 贷款编码
+   */
   loanCode: string
+  /**
+   * 贷款期限
+   */
   loanTerms: number
   maxAmount: number
+  /**
+   * 最大展示金额
+   */
   maxViewAmount: number
+  /**
+   * 最小可选金额
+   */
   minAmount: number
+  /**
+   * 产品编码
+   */
   productCode: string
   specialFlag?: any
   specialRate?: any
 }
-
+/**
+ * 产品试算参数
+ */
 export interface CalculateParameter {
+  /**
+   * 展示期限
+   */
   displayLoanDays: number
+  /**
+   * 贷款金额
+   */
   loanAmt: number
+  /**
+   * 贷款编码
+   */
   loanCode: string
+  /**
+   * 贷款天数
+   */
   loanDay: number
 }
-
+/**
+ * 试算结果
+ */
 export interface Calculate {
+  /**
+   * 到手金额
+   */
   actualAmount: number
+  /**
+   * 申请日期
+   */
   applyDate: string
+  /**
+   * 分期标识
+   */
   instalmentMark: string
+  /**
+   * 利息
+   */
   interest: number
+  /**
+   * 到期日
+   */
   loanPmtDueDate: string
   preFeeList?: any
   schedules: Schedule[]
   surplusPrincipal: number
+  /**
+   * 服务费率
+   */
   svcFee: number
   term?: any
+
   termAmount: number
+  /**
+   * 分期还款计划
+   */
   termSchedules: TermSchedule[]
+  /**
+   * 总应还
+   */
   totalAmt: number
+  /**
+   * 合同金额
+   */
   txnAmt: number
 }
+/**
+ * 分期
+ */
 interface Schedule {
   actualAmount: number
   applyDate: string
@@ -198,24 +325,57 @@ interface Schedule {
   svcFee: number
   term?: any
   termAmount: number
-  termSchedules?: any
+  /**
+   * 分期还款计划
+   */
+  termSchedules?: TermSchedule[]
+  /**
+   * 总应还
+   */
   totalAmt: number
+  /**
+   * 合同金额
+   */
   txnAmt: number
 }
-export interface TermSchedule {
+/**
+ * 分期还款计划
+ */
+interface TermSchedule {
+  /**
+   * 当前期数
+   */
   currTerm: number
+  /**
+   * 免费标识
+   */
   freeMark?: string
+  /**
+   * 当期到期日
+   */
   loanPmtDueDate: string
+  /**
+   * 利息
+   */
   loanTermInterest: number
+  /**
+   * 本金
+   */
   loanTermPrin: number
+  /**
+   * 服务费
+   */
   loanTermSvcFee: number
+  /**
+   * 总金额
+   */
   totalAmt: number
 }
 
 export interface ImageUploadParameter {
   applyId: number
   type: ImageType
-  image: ''
+  image: any
   deviceId: string
   isSupplement: BOOL
 }

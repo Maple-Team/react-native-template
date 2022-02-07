@@ -25,7 +25,6 @@ import { filterArrayKey } from '@/utils/util'
 
 export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
-  // NOTE 顺序必需与下面的表单一致
   const schema = Yup.object<Shape<FormModel>>({
     industryCode: Yup.string().required(t('industryCode.required')),
     jobTypeCode: Yup.string().required(t('jobTypeCode.required')),
@@ -117,7 +116,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
   )
   const onSubmit = debounce(
     (values: FormModel) => {
-      submit({
+      submit<'2'>({
         ...(filterArrayKey(values) as FormModel),
         companyAddrCity: state.companyAddrCity,
         companyAddrProvince: state.companyAddrProvince,
@@ -206,7 +205,6 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
             initialValues={state}
             onSubmit={onSubmit}
             validateOnBlur
-            validateOnChange
             validationSchema={schema}>
             {({ handleSubmit, setFieldValue, errors, isValid }) => (
               <>
@@ -214,10 +212,10 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                   <NormalPicker
                     field="industryCode"
                     label={t('industryCode.label')}
-                    onChange={record => {
-                      setFieldValue('industryCode', record.code)
-                      dispatch({ type: 'updateIndustry', value: record })
-                      behavior.setModify('P02_C01_S_INDUSTRYCODE', record.code, state.industryCode)
+                    onChange={({ code, name }) => {
+                      setFieldValue('industryCode', code)
+                      dispatch({ type: 'updateIndustry', value: { code, name } })
+                      behavior.setModify('P02_C01_S_INDUSTRYCODE', code, state.industryCode)
                     }}
                     value={state.industryCode}
                     placeholder={t('industryCode.placeholder')}
@@ -232,10 +230,10 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     key="jobTypeCode"
                     label={t('jobTypeCode.label')}
                     scrollViewRef={scrollViewRef}
-                    onChange={record => {
-                      setFieldValue('jobTypeCode', record.code)
-                      dispatch({ type: 'jobType', value: record })
-                      behavior.setModify('P02_C02_S_JOBTYPECODE', record.code, state.jobTypeCode)
+                    onChange={({ code, name }) => {
+                      setFieldValue('jobTypeCode', code)
+                      dispatch({ type: 'jobType', value: { code, name } })
+                      behavior.setModify('P02_C02_S_JOBTYPECODE', code, state.jobTypeCode)
                     }}
                     value={state.jobTypeCode}
                     placeholder={t('jobTypeCode.placeholder')}
@@ -248,14 +246,10 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     key="monthlyIncome"
                     scrollViewRef={scrollViewRef}
                     label={t('monthlyIncome.label')}
-                    onChange={record => {
-                      setFieldValue('monthlyIncome', record.code)
-                      dispatch({ type: 'updateMonthlyIncome', value: record.code })
-                      behavior.setModify(
-                        'P02_C03_S_MONTHLYINCOME',
-                        record.code,
-                        state.monthlyIncome
-                      )
+                    onChange={({ code }) => {
+                      setFieldValue('monthlyIncome', code)
+                      dispatch({ type: 'updateMonthlyIncome', value: code })
+                      behavior.setModify('P02_C03_S_MONTHLYINCOME', code, state.monthlyIncome)
                     }}
                     value={state.monthlyIncome}
                     placeholder={t('monthlyIncome.placeholder')}
@@ -268,10 +262,10 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     key="salaryType"
                     scrollViewRef={scrollViewRef}
                     label={t('salaryType.label')}
-                    onChange={record => {
-                      setFieldValue('salaryType', record.code)
-                      dispatch({ type: 'updateSalaryType', value: record.code })
-                      behavior.setModify('P02_C04_S_SALARYTYPE', record.code, state.salaryType)
+                    onChange={({ code }) => {
+                      setFieldValue('salaryType', code)
+                      dispatch({ type: 'updateSalaryType', value: code })
+                      behavior.setModify('P02_C04_S_SALARYTYPE', code, state.salaryType)
                     }}
                     value={state.salaryType}
                     placeholder={t('salaryType.placeholder')}
@@ -292,10 +286,10 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                       field="salaryDate"
                       key="salaryDate"
                       label={t('salaryDate.label')}
-                      onChange={record => {
-                        setFieldValue('salaryDate', record.code)
-                        dispatch({ type: 'updateSalaryDate', value: record.code })
-                        behavior.setModify('P02_C05_S_SALARYDATE', record.code, state.salaryDate)
+                      onChange={({ code }) => {
+                        setFieldValue('salaryDate', code)
+                        dispatch({ type: 'updateSalaryDate', value: code })
+                        behavior.setModify('P02_C05_S_SALARYDATE', code, state.salaryDate)
                       }}
                       value={state.salaryDate}
                       placeholder={t('salaryDate.placeholder')}
@@ -333,16 +327,14 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                       setFieldValue('companyPhone', text)
                       dispatch({ type: 'companyPhone', value: text })
                     }}
-                    onClear={() => {
-                      setFieldValue('companyPhone', '')
-                    }}
+                    onClear={() => setFieldValue('companyPhone', '')}
                     maxLength={20}
-                    onFocus={() => {
+                    onFocus={() =>
                       behavior.setStartModify('P02_C02_I_COMPANYPHONE', state.companyPhone)
-                    }}
-                    onBlur={() => {
+                    }
+                    onBlur={() =>
                       behavior.setEndModify('P02_C02_I_COMPANYPHONE', state.companyPhone)
-                    }}
+                    }
                     value={state.companyPhone}
                     field={'companyPhone'}
                     key={'companyPhone'}
@@ -353,15 +345,11 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                   />
                   <NormalPicker
                     scrollViewRef={scrollViewRef}
-                    onChange={record => {
-                      setFieldValue('companyAddrProvinceCode', record.code)
-                      dispatch({ type: 'updateProvince', value: record })
+                    onChange={({ code, name }) => {
+                      setFieldValue('companyAddrProvinceCode', code)
+                      dispatch({ type: 'updateProvince', value: { code, name } })
                       dispatch({ type: 'updateCity', value: { code: '', name: '' } })
-                      behavior.setModify(
-                        'P02_C06_S_STATE',
-                        record.code,
-                        state.companyAddrProvinceCode
-                      )
+                      behavior.setModify('P02_C06_S_STATE', code, state.companyAddrProvinceCode)
                     }}
                     value={state.companyAddrProvinceCode}
                     title={t('companyAddrProvinceCode.label')}
@@ -374,10 +362,10 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                   />
                   <NormalPicker
                     scrollViewRef={scrollViewRef}
-                    onChange={record => {
-                      setFieldValue('companyAddrCityCode', record.code)
-                      dispatch({ type: 'updateCity', value: record })
-                      behavior.setModify('P02_C07_S_CITY', record.code, state.companyAddrCityCode)
+                    onChange={({ code, name }) => {
+                      setFieldValue('companyAddrCityCode', code)
+                      dispatch({ type: 'updateCity', value: { code, name } })
+                      behavior.setModify('P02_C07_S_CITY', code, state.companyAddrCityCode)
                     }}
                     title={t('companyAddrCityCode.label')}
                     field={'companyAddrCityCode'}
@@ -394,18 +382,16 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                       setFieldValue('companyAddrDetail', text)
                       dispatch({ type: 'companyAddrDetail', value: text })
                     }}
-                    onClear={() => {
-                      setFieldValue('companyAddrDetail', '')
-                    }}
-                    onFocus={() => {
+                    onClear={() => setFieldValue('companyAddrDetail', '')}
+                    onFocus={() =>
                       behavior.setStartModify(
                         'P02_C03_I_COMPANYADDRDETAIL',
                         state.companyAddrDetail
                       )
-                    }}
-                    onBlur={() => {
+                    }
+                    onBlur={() =>
                       behavior.setEndModify('P02_C03_I_COMPANYADDRDETAIL', state.companyAddrDetail)
-                    }}
+                    }
                     value={state.companyAddrDetail}
                     field={'companyAddrDetail'}
                     key={'companyAddrDetail'}
@@ -419,10 +405,10 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     field="incumbency"
                     key="incumbency"
                     label={t('incumbency.label')}
-                    onChange={record => {
-                      setFieldValue('incumbency', record.code)
-                      dispatch({ type: 'updateIncumbency', value: record.code })
-                      behavior.setModify('P02_C08_S_INCUMBENCY', record.code, state.incumbency)
+                    onChange={({ code }) => {
+                      setFieldValue('incumbency', code)
+                      dispatch({ type: 'updateIncumbency', value: code })
+                      behavior.setModify('P02_C08_S_INCUMBENCY', code, state.incumbency)
                     }}
                     value={state.incumbency}
                     placeholder={t('incumbency.placeholder')}
@@ -465,7 +451,7 @@ type Step2Action =
     }
   | {
       type: 'updateProvince'
-      value: Dict
+      value: Pick<Dict, 'code' | 'name'>
     }
   | {
       type: 'updateCities'
@@ -473,7 +459,7 @@ type Step2Action =
     }
   | {
       type: 'updateCity'
-      value: Dict
+      value: Pick<Dict, 'code' | 'name'>
     }
   | {
       type: 'updateSalaryType'
@@ -509,7 +495,7 @@ type Step2Action =
     }
   | {
       type: 'updateIndustry'
-      value: Dict
+      value: Pick<Dict, 'code' | 'name'>
     }
   | {
       type: 'company'
@@ -529,5 +515,5 @@ type Step2Action =
     }
   | {
       type: 'jobType'
-      value: Dict
+      value: Pick<Dict, 'code' | 'name'>
     }
