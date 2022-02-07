@@ -8,43 +8,46 @@ import debounce from 'lodash.debounce'
 import { Slider } from '@miblanchard/react-native-slider'
 
 import { PageStyles, Text, Hint } from '@/components'
-import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT, KEY_APPLYID, TOTAL_STEPS } from '@/utils/constant'
+import {
+  DEBOUNCE_OPTIONS,
+  DEBOUNCE_WAIT,
+  KEY_APPLYID,
+  KEY_GPS,
+  TOTAL_STEPS,
+} from '@/utils/constant'
 import { ApplyButton } from '@components/form/FormItem'
 import { Color } from '@/styles/color'
-import type {
-  ApplyParameter,
-  ApplyStep8Parameter,
-  Calculate,
-  Product,
-  SensorDataType,
-} from '@/typings/apply'
+import type { Calculate, Product } from '@/typings/apply'
 import { useBehavior, useLocation, useSensor } from '@/hooks'
 import { queryProduct, scheduleCalc, submit } from '@/services/apply'
 import { MMKV } from '@/utils'
 import { default as MoneyyaContext } from '@/state'
 import { useLinkTo } from '@react-navigation/native'
 
-type FormModel = Omit<
-  ApplyStep8Parameter,
-  keyof ApplyParameter & {
-    sensor: SensorDataType
-    gps: string
-  }
->
 export const Step8 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
   const sensor = useSensor()
 
   const onSubmit = debounce(
-    (values: FormModel) => {
+    () => {
       submit<'8'>({
-        ...values,
-        ...sensor,
+        sensor: {
+          angleX: sensor?.angleX || '',
+          angleY: sensor?.angleY || '',
+          angleZ: sensor?.angleZ || '',
+        },
+        gps: MMKV.getString(KEY_GPS) || '',
+        loanCode: productInfo?.loanCode || '',
+        loanTerms: loanDay,
+        displayLoanDays: productInfo?.products[0].displayLoanDays || 0,
+        applyAmount: loanAmt,
+        maxApplyAmount: productInfo?.maxViewAmount || 0,
+        productCode: productInfo?.productCode || '',
         applyId: +(MMKV.getString(KEY_APPLYID) || '0'),
         currentStep: 8,
         totalSteps: TOTAL_STEPS,
       }).then(() => {
-        navigation.navigate('done')
+        navigation.navigate('BottomTab', { screen: 'Order' })
       })
     },
     DEBOUNCE_WAIT,

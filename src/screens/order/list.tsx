@@ -1,11 +1,17 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { FlatList, Image, View, StatusBar, ImageBackground, Pressable } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { TabHeader, Text } from '@/components'
 import { Color } from '@/styles/color'
+import { queryOrders } from '@/services/order'
 
 export function BillsList() {
   const data: Bill[] = []
+  useEffect(() => {
+    queryOrders().then(res => {
+      console.log(res)
+    })
+  }, [])
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar translucent={false} backgroundColor="#fff" barStyle="dark-content" />

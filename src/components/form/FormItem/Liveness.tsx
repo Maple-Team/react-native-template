@@ -18,7 +18,7 @@ export function LivenessPicker({ onPress, error }: { error?: string; onPress: ()
         </Pressable>
       </View>
       <View>
-        {error && (
+        {error !== undefined && (
           <Text styles={[formItemStyles.warn, formItemStyles.error, style.error]}>{error}</Text>
         )}
       </View>
