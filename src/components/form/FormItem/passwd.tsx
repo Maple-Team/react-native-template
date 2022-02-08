@@ -54,13 +54,13 @@ export const PasswordInput = ({
               {!showPwd ? (
                 <Image
                   style={styles.suffix}
-                  source={require('@assets/images/common/open.webp')}
+                  source={require('@assets/compressed/common/open.webp')}
                   resizeMode="cover"
                 />
               ) : (
                 <Image
                   style={styles.suffix}
-                  source={require('@assets/images/common/hide.webp')}
+                  source={require('@assets/compressed/common/hide.webp')}
                   resizeMode="cover"
                 />
               )}

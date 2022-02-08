@@ -92,7 +92,7 @@ export function PhonePicker({
           <Pressable style={formItemStyles.suffixWrap} onPress={onRequestContactsPermission}>
             <Image
               style={formItemStyles.suffix}
-              source={require('@assets/images/apply/contacts.webp')}
+              source={require('@assets/compressed/apply/contacts.webp')}
               resizeMode="cover"
             />
           </Pressable>

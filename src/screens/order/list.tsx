@@ -18,7 +18,7 @@ export function BillsList() {
       <View style={{ paddingTop: 0, paddingHorizontal: 0 }}>
         <View>
           <ImageBackground
-            source={require('@/assets/images/bills/banner.webp')}
+            source={require('@/assets/compressed/bills/banner.webp')}
             resizeMode="cover"
             style={{
               height: 45,
@@ -50,7 +50,7 @@ export function BillsList() {
                         width: '100%',
                       }}>
                       <Image
-                        source={require('@/assets/images/bills/repay1.webp')} //FIXME switch state
+                        source={require('@/assets/compressed/bills/repay1.webp')} //FIXME switch state
                         resizeMode="cover"
                       />
                     </Pressable>
@@ -106,7 +106,10 @@ export function BillsList() {
             />
           ) : (
             <View style={{ paddingTop: 122, alignItems: 'center' }}>
-              <Image source={require('@/assets/images/bills/no-bill.webp')} resizeMode="cover" />
+              <Image
+                source={require('@/assets/compressed/bills/no-bill.webp')}
+                resizeMode="cover"
+              />
             </View>
           )}
         </View>

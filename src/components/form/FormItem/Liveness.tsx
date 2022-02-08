@@ -14,7 +14,7 @@ export function LivenessPicker({ onPress, error }: { error?: string; onPress: ()
           paddingBottom: 47.5,
         }}>
         <Pressable onPress={onPress}>
-          <Image source={require('@assets/images/apply/liveness.webp')} resizeMode="cover" />
+          <Image source={require('@assets/compressed/apply/liveness.webp')} resizeMode="cover" />
         </Pressable>
       </View>
       <View>

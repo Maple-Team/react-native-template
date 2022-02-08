@@ -193,8 +193,8 @@ const PermissionHint = ({ onPress, check }: { onPress: () => void; check?: boole
         <Image
           source={
             check
-              ? require('@/assets/images/account/check.webp')
-              : require('@/assets/images/account/uncheck.webp')
+              ? require('@/assets/compressed/account/check.webp')
+              : require('@/assets/compressed/account/uncheck.webp')
           }
           resizeMode="cover"
         />

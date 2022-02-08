@@ -58,7 +58,7 @@ export function Step1() {
         keyboardShouldPersistTaps="handled">
         <View>
           <ImageBackground
-            source={require('@/assets/images/apply/banner.webp')}
+            source={require('@/assets/compressed/apply/banner.webp')}
             resizeMode="cover"
             style={{
               height: 284,
@@ -67,7 +67,7 @@ export function Step1() {
           </ImageBackground>
           <View style={Styles.loanInfo}>
             <View style={Styles.cashWrap}>
-              <Image source={require('@/assets/images/apply/cash.webp')} resizeMode="cover" />
+              <Image source={require('@/assets/compressed/apply/cash.webp')} resizeMode="cover" />
             </View>
             <View
               style={{
@@ -174,22 +174,22 @@ const ads = [
     key: 'one',
     title: 'Convenient operation',
     text: 'Fill up information within 5 mins',
-    ad: require('@/assets/images/apply/ad1.webp'),
-    num: require('@/assets/images/apply/1.webp'),
+    ad: require('@/assets/compressed/apply/ad1.webp'),
+    num: require('@/assets/compressed/apply/1.webp'),
   },
   {
     key: 'two',
     title: 'Fast Approval',
     text: 'Verification finished within 2 hours',
-    ad: require('@/assets/images/apply/ad2.webp'),
-    num: require('@/assets/images/apply/2.webp'),
+    ad: require('@/assets/compressed/apply/ad2.webp'),
+    num: require('@/assets/compressed/apply/2.webp'),
   },
   {
     key: 'three',
     title: 'Get the disbursement',
     text: 'Disbursement within 24 hours',
-    ad: require('@/assets/images/apply/ad3.webp'),
-    num: require('@/assets/images/apply/3.webp'),
+    ad: require('@/assets/compressed/apply/ad3.webp'),
+    num: require('@/assets/compressed/apply/3.webp'),
   },
 ]
 const dot = (

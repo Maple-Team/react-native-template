@@ -55,7 +55,7 @@ export const SigninScreen = ({ route }: { route: any }) => {
     <SafeAreaView style={styles.flex1}>
       <StatusBar translucent={false} backgroundColor={Color.primary} barStyle="default" />
       <Image
-        source={require('@/assets/images/account/bg.webp')}
+        source={require('@/assets/compressed/account/bg.webp')}
         resizeMode="stretch"
         style={styles.bg}
       />

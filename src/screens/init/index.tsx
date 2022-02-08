@@ -11,19 +11,19 @@ const slides = [
     key: 'one',
     title: 'Title 1',
     text: 'Description.\nSay something cool',
-    image: require('@/assets/images/splash/splash1.webp'),
+    image: require('@/assets/compressed/splash/splash1.webp'),
   },
   {
     key: 'two',
     title: 'Title 2',
     text: 'Other cool stuff',
-    image: require('@/assets/images/splash/splash2.webp'),
+    image: require('@/assets/compressed/splash/splash2.webp'),
   },
   {
     key: 'three',
     title: 'Title 3',
     text: "I'm already out of descriptions\n\nLorem ipsum bla bla bla",
-    image: require('@/assets/images/splash/splash3.webp'),
+    image: require('@/assets/compressed/splash/splash3.webp'),
   },
 ]
 type Item = typeof slides[0]

@@ -108,13 +108,13 @@ export const Step8 = ({ navigation }: NativeStackHeaderProps) => {
       <Hint
         hint="Maintaining a good repayment behavior will help you to increase your loan amount. 96% of users loan amount haveincreased subsequently."
         hintColor="rgba(255, 50, 50, 1)"
-        img={require('@/assets/images/apply/loan_notice.webp')}
+        img={require('@/assets/compressed/apply/loan_notice.webp')}
       />
       <ScrollView style={PageStyles.scroll} keyboardShouldPersistTaps="handled">
         <View style={PageStyles.container}>
           <View style={[PageStyles.form, { paddingHorizontal: 0, paddingTop: 0 }]}>
             <ImageBackground
-              source={require('@/assets/images/apply/loan_bg.webp')}
+              source={require('@/assets/compressed/apply/loan_bg.webp')}
               resizeMode="stretch"
               style={{ width: '100%', height: 159 }}>
               <View style={{ alignItems: 'center', paddingTop: 23.5 }}>
@@ -135,7 +135,7 @@ export const Step8 = ({ navigation }: NativeStackHeaderProps) => {
                   trackStyle={{ height: 5 }}
                   thumbStyle={{ alignItems: 'center', height: 34 }}
                   thumbTintColor="transparent"
-                  thumbImage={require('@/assets/images/apply/slider_dot.webp')}
+                  thumbImage={require('@/assets/compressed/apply/slider_dot.webp')}
                   maximumValue={productInfo?.maxViewAmount || 10000}
                   minimumTrackTintColor={Color.primary}
                   maximumTrackTintColor="rgba(179, 206, 242, 1)"

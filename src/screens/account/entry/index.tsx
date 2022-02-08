@@ -53,7 +53,7 @@ export const EntryScreen = ({ navigation }: NativeStackHeaderProps) => {
   return (
     <SafeAreaView style={styles.flex1}>
       <ImageBackground
-        source={require('@/assets/images/account/bg.webp')}
+        source={require('@/assets/compressed/account/bg.webp')}
         resizeMode="cover"
         style={styles.bg}>
         <ScrollView style={styles.flex1}>

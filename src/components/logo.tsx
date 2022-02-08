@@ -5,12 +5,12 @@ import StyleSheet from 'react-native-adaptive-stylesheet'
 export const Logo = () => (
   <View style={styles.logoWrapper}>
     <Image
-      source={require('@/assets/images/common/logo.webp')}
+      source={require('@/assets/compressed/common/logo.webp')}
       style={styles.logo}
       resizeMode="cover"
     />
     <Image
-      source={require('@/assets/images/account/moneyya.webp')}
+      source={require('@/assets/compressed/account/moneyya.webp')}
       style={styles.moneyya}
       resizeMode="cover"
     />

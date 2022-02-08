@@ -16,7 +16,8 @@
     "prepare": "husky install",
     "add-field": "ts-node scripts/add-field.ts",
     "sync-locale": "ts-node scripts/sync-locale.ts",
-    "rn": "ts-node scripts/change-name.ts"
+    "rn": "ts-node scripts/change-name.ts",
+    "tinify": "ts-node scripts/tinify.ts"
   },
   "dependencies": {
     "@adrianso/react-native-device-brightness": "^1.2.5",
@@ -72,6 +73,7 @@
     "react-native-webview": "^11.15.0",
     "react-native-wheel-picker-android": "^2.0.6",
     "rn-fetch-blob-v2": "^0.14.1",
+    "tinify": "^1.6.1",
     "usehooks-ts": "^2.2.1",
     "yup": "^0.32.11"
   },

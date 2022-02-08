@@ -104,7 +104,7 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
     <SafeAreaView style={PageStyles.sav}>
       <StatusBar translucent={false} backgroundColor={Color.primary} barStyle="default" />
       <Hint
-        img={require('@/assets/images/apply/loan_notice.webp')}
+        img={require('@/assets/compressed/apply/loan_notice.webp')}
         hint={'Tips:ReceiptAs and repayments may be affected by bank working'}
         hintColor={'rgba(255, 50, 50, 1)'}
       />

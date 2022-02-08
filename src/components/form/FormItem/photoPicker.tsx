@@ -156,7 +156,7 @@ export function PhotoPicker({
                 onGranted: takePicture,
               })
             }}>
-            <Image source={require('@assets/images/apply/camera.webp')} resizeMode="cover" />
+            <Image source={require('@assets/compressed/apply/camera.webp')} resizeMode="cover" />
           </Pressable>
         </ImageBackground>
       </View>

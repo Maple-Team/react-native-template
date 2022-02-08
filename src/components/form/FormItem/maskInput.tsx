@@ -92,14 +92,14 @@ export const MaskInput = ({
                   hitSlop={{ bottom: 10, left: 10, right: 10, top: 10 }}>
                   <Image
                     style={styles.suffix}
-                    source={require('@assets/images/common/clear.webp')}
+                    source={require('@assets/compressed/common/clear.webp')}
                     resizeMode="cover"
                   />
                 </Pressable>
               ) : (
                 <Image
                   style={styles.suffix}
-                  source={require('@assets/images/common/correct.webp')}
+                  source={require('@assets/compressed/common/correct.webp')}
                   resizeMode="cover"
                 />
               )}

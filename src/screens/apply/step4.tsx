@@ -63,7 +63,7 @@ export const Step4 = ({ navigation }: NativeStackHeaderProps) => {
                     key="idcard"
                     hint=""
                     title={'Proporciona tu INE/IFE por favor'}
-                    bg={require('@assets/images/apply/id1.webp')}
+                    bg={require('@assets/compressed/apply/id1.webp')}
                     imageType="INE_OR_IFE_BACK"
                     cameraType="back"
                     onUploadSuccess={id => {

@@ -10,15 +10,15 @@ export function UserCenter() {
       <View style={{ paddingTop: 0, paddingHorizontal: 0 }}>
         <View>
           <ImageBackground
-            source={require('@/assets/images/user-center/bg.webp')}
+            source={require('@/assets/compressed/user-center/bg.webp')}
             resizeMode="cover"
             style={{
               height: 309,
             }}>
             <TabHeader
-              title={require('@/assets/images/common/active/moneyya.webp')}
-              notice={require('@/assets/images/common/active/notice.webp')}
-              help={require('@/assets/images/common/active/help.webp')}
+              title={require('@/assets/compressed/common/active/moneyya.webp')}
+              notice={require('@/assets/compressed/common/active/notice.webp')}
+              help={require('@/assets/compressed/common/active/help.webp')}
             />
           </ImageBackground>
         </View>
@@ -33,12 +33,12 @@ export function UserCenter() {
             backgroundColor: '#fff',
           }}>
           {[
-            { img: require('@/assets/images/user-center/Payment.webp'), title: 'Payment' },
+            { img: require('@/assets/compressed/user-center/Payment.webp'), title: 'Payment' },
             {
-              img: require('@/assets/images/user-center/History-Bills.webp'),
+              img: require('@/assets/compressed/user-center/History-Bills.webp'),
               title: 'History Bills',
             },
-            { img: require('@/assets/images/user-center/My-Card.webp'), title: 'My Card' },
+            { img: require('@/assets/compressed/user-center/My-Card.webp'), title: 'My Card' },
           ].map(({ img, title }) => (
             <Pressable key={title}>
               <Image source={img} resizeMode="cover" style={{ marginBottom: 14.5 }} />
@@ -60,17 +60,17 @@ export function UserCenter() {
           }}>
           {[
             {
-              img: require('@/assets/images/user-center/Contact-Us.webp'),
+              img: require('@/assets/compressed/user-center/Contact-Us.webp'),
               title: 'Contact Us',
               onPress: () => {},
             },
             {
-              img: require('@/assets/images/user-center/About-Moneyya.webp'),
+              img: require('@/assets/compressed/user-center/About-Moneyya.webp'),
               title: 'About Moneyya',
               onPress: () => {},
             },
             {
-              img: require('@/assets/images/user-center/Logout.webp'),
+              img: require('@/assets/compressed/user-center/Logout.webp'),
               title: 'Logout',
               onPress: () => {
                 emitter.emit('LOGOUT_SUCCESS')
@@ -100,7 +100,7 @@ export function UserCenter() {
                   </Text>
                   <Image
                     resizeMode="cover"
-                    source={require('@/assets/images/user-center/right.webp')}
+                    source={require('@/assets/compressed/user-center/right.webp')}
                   />
                 </Pressable>
               </View>
