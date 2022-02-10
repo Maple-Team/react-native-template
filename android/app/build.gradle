@@ -71,12 +71,25 @@ android {
     abi {
       enable enableSeparateBuildPerCPUArchitecture
       reset()
-      universalApk true  // If true, also generate a universal APK
+      universalApk false  // If true, also generate a universal APK
 //      include "arm64-v8a" // "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
     }
   }
+  def taskName = getGradle().getStartParameter().getTaskRequests().toString()
   packagingOptions {
     pickFirst '**/*.so'
+    // For Hermes, delete all the libjsc* files
+    exclude "**/libjsc*.so"
+    if (taskName.contains("InternalDebug")) {
+      // Release libs take precedence and must be removed
+      // to allow debugging
+      exclude '**/libhermes-executor-release.so'
+    } else {
+      // Reduce size by deleting the debugger/inspector
+      exclude '**/libhermes-inspector.so'
+      exclude '**/libhermes-executor-debug.so'
+      exclude '**/libhermes-executor-common-debug.so'
+    }
   }
   signingConfigs {
     release {
@@ -164,6 +177,7 @@ dependencies {
     def hermesPath = "../../node_modules/hermes-engine/android/";
     debugImplementation files(hermesPath + "hermes-debug.aar")
     releaseImplementation files(hermesPath + "hermes-release.aar")
+
   } else {
     implementation jscFlavor
   }

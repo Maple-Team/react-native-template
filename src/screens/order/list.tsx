@@ -1,17 +1,47 @@
-import React, { useEffect } from 'react'
-import { FlatList, Image, View, StatusBar, ImageBackground, Pressable } from 'react-native'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
+import {
+  FlatList,
+  Image,
+  View,
+  StatusBar,
+  ImageBackground,
+  Pressable,
+  ActivityIndicator,
+  RefreshControl,
+} from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { TabHeader, Text } from '@/components'
 import { Color } from '@/styles/color'
 import { queryOrders } from '@/services/order'
+import { Order } from '@/typings/order'
+import { default as MoneyyaContext } from '@/state'
+import { APPLY_STATE } from '@/state/enum'
+import { useNavigation } from '@react-navigation/native'
+import emitter from '@/eventbus'
+import uniqBy from 'lodash.uniqby'
 
 export function BillsList() {
-  const data: Bill[] = []
+  const [data, setData] = useState<Order[]>([])
   useEffect(() => {
     queryOrders().then(res => {
-      console.log(res)
+      setData(res)
     })
   }, [])
+  const context = useContext(MoneyyaContext)
+  const na = useNavigation()
+  const [refreshing, setRefreshing] = useState<boolean>(false)
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true)
+    if (data.length < 10) {
+      queryOrders().then(res => {
+        setData(uniqBy(res.concat(data), 'applyId'))
+        setRefreshing(false)
+      })
+    } else {
+      emitter.emit('SHOW_MESSAGE', { type: 'info', message: 'No more new data available' })
+      setRefreshing(false)
+    }
+  }, [data])
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar translucent={false} backgroundColor="#fff" barStyle="dark-content" />
@@ -30,8 +60,17 @@ export function BillsList() {
           style={{
             marginBottom: 47.5,
           }}>
-          {data.length ? (
+          {context.loading.effects.ORDER_LIST ? (
+            <ActivityIndicator />
+          ) : data.length > 0 ? (
             <FlatList
+              refreshControl={
+                <RefreshControl
+                  colors={[Color.primary]}
+                  refreshing={refreshing}
+                  onRefresh={onRefresh}
+                />
+              }
               style={{ paddingHorizontal: 47.5 }}
               data={data}
               renderItem={({ item }) => (
@@ -43,6 +82,12 @@ export function BillsList() {
                       alignItems: 'center',
                     }}>
                     <Pressable
+                      onPress={() => {
+                        //@ts-ignore
+                        na.navigate('BillsDetail', {
+                          applyId: item.applyId,
+                        })
+                      }}
                       style={{
                         top: -35.5,
                         alignItems: 'center',
@@ -71,7 +116,7 @@ export function BillsList() {
                           }}>
                           借款金额
                         </Text>
-                        <Text>{item.loanAmount}</Text>
+                        <Text>{item.applyAmount}</Text>
                       </View>
                       <View style={{ alignItems: 'center' }}>
                         <Text
@@ -84,7 +129,7 @@ export function BillsList() {
                         <Text>{item.repayDate}</Text>
                       </View>
                     </View>
-                    {!item.isSettled && (
+                    {item.contractStatus === APPLY_STATE.WAIT.toString() && (
                       <Pressable
                         style={{
                           backgroundColor: Color.primary, //FIXME switch state
@@ -97,7 +142,7 @@ export function BillsList() {
                           justifyContent: 'center',
                           width: '100%',
                         }}>
-                        <Text>Repay</Text>
+                        <Text color="#fff">Repay</Text>
                       </Pressable>
                     )}
                   </View>
@@ -116,9 +161,4 @@ export function BillsList() {
       </View>
     </SafeAreaView>
   )
-}
-interface Bill {
-  loanAmount: number
-  repayDate: string
-  isSettled?: boolean
 }

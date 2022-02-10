@@ -31,7 +31,7 @@ export const Step61 = ({ navigation }: NativeStackHeaderProps) => {
         currentStep: 6,
         totalSteps: TOTAL_STEPS,
         livenessId: `${imageId}`,
-        livenessAuthFlag: context.barnd?.livenessAuthEnable,
+        livenessAuthFlag: context.brand?.livenessAuthEnable,
       }).then(() => {
         navigation.navigate('Step7')
       })
@@ -57,10 +57,10 @@ export const Step61 = ({ navigation }: NativeStackHeaderProps) => {
   }, [errorTimes, onSubmit])
 
   useEffect(() => {
-    if (errorTimes >= (context.barnd?.livenessAuthCount || 100)) {
+    if (errorTimes >= (context.brand?.livenessAuthCount || 100)) {
       navigation.navigate('Step62')
     }
-  }, [context.barnd?.livenessAuthCount, errorTimes, navigation])
+  }, [context.brand?.livenessAuthCount, errorTimes, navigation])
   return (
     <SafeAreaView style={PageStyles.sav}>
       <StatusBar translucent={false} backgroundColor={Color.primary} barStyle="default" />

@@ -27,11 +27,7 @@ export const UseFocusOnError = ({
   canFocus,
   offsetY,
 }: UseFocusOnErrorProps) => {
-  const {
-    // submitCount,
-    isValid,
-    errors,
-  } = useFormikContext()
+  const { submitCount, isValid, errors } = useFormikContext()
   const headerHeight = useHeaderHeight()
 
   /**
@@ -43,20 +39,21 @@ export const UseFocusOnError = ({
     if (isValid || !fieldRef.current || !scrollViewRef?.current) {
       return
     }
-    console.log('first error key', errorKey, 'name', name, { offsetY })
+    console.log('first error key', errorKey, 'name', name, { offsetY }, { submitCount })
     // if (prevSubmitCountRef.current !== submitCount) {
     if (errorKey === name) {
       if (canFocus) {
-        fieldRef.current.focus() // 多种表单元素
+        // fieldRef.current.focus() // 多种表单元素
       }
-      scrollViewRef.current.scrollTo({
-        y: offsetY - headerHeight,
-      })
+      submitCount >= 1 &&
+        scrollViewRef.current.scrollTo({
+          y: offsetY - headerHeight,
+        })
     }
 
     // prevSubmitCountRef.current = submitCount
   }, [
-    // submitCount,
+    submitCount,
     isValid,
     errorKey,
     fieldRef,

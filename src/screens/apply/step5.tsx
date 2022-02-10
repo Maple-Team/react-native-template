@@ -65,7 +65,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
       .required(t('secondCardNo.required')),
   })
   const context = useContext(MoneyyaContext)
-
+  const step5Data = (MMKV.getMap('step5Data') as Partial<Step5State>) || {}
   const [state, dispatch] = useReducer<Reducer<Step5State, Step5Action>>(
     (s, { type, value }) => {
       switch (type) {
@@ -122,40 +122,46 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
       }
     },
     {
-      firstName: orcResult?.userName || '',
-      middleName: orcResult?.mothersurname || '',
-      lastName: orcResult?.fathersurname || '',
-      educationCode: '',
-      email: '',
-      homeAddrCity: '',
-      homeAddrCityCode: '',
-      homeAddrDetail: orcResult?.addressAll || '',
-      homeAddrProvince: '',
-      homeAddrProvinceCode: '',
-      backupPhone: '',
-      birth: orcResult?.birthday || '',
-      docType: '',
-      idcard: orcResult?.idCard || '',
-      loanPurpose: '',
-      maritalStatus: '',
+      firstName: orcResult?.userName || step5Data.firstName || '',
+      middleName: orcResult?.mothersurname || step5Data.middleName || '',
+      lastName: orcResult?.fathersurname || step5Data.lastName || '',
+      educationCode: step5Data.educationCode || '',
+      email: step5Data.email || '',
+      homeAddrCity: step5Data.homeAddrCity || '',
+      homeAddrCityCode: step5Data.homeAddrCityCode || '',
+      homeAddrDetail: orcResult?.addressAll || step5Data.homeAddrDetail || '',
+      homeAddrProvince: step5Data.homeAddrProvince || '',
+      homeAddrProvinceCode: step5Data.homeAddrProvinceCode || '',
+      backupPhone: step5Data.backupPhone || '',
+      birth: orcResult?.birthday || step5Data.birth || '',
+      docType: step5Data.docType || '',
+      idcard: orcResult?.idCard || step5Data.idcard || '',
+      loanPurpose: step5Data.loanPurpose || '',
+      maritalStatus: step5Data.maritalStatus || '',
       name: '',
-      secondCardNo: '',
-      sex: (orcResult?.gender as Gender) || '',
+      secondCardNo: step5Data.secondCardNo || '',
+      sex: (orcResult?.gender as Gender) || step5Data.sex || '',
       maritalStatusArray: [],
       homeAddrProvinceArray: [],
       homeAddrCityArray: [],
       docTypeArray: [],
       educationArray: [],
       loanPurposeArray: [],
-      authPhone: '',
-      whatsapp: '',
+      authPhone: step5Data.authPhone || '',
+      whatsapp: step5Data.whatsapp || '',
     }
   )
 
   const onSubmit = debounce(
     (values: FormModel) => {
-      submit<'5'>({
+      const data = {
         ...(filterArrayKey(values) as FormModel),
+        homeAddrCity: state.homeAddrCity,
+        homeAddrProvince: state.homeAddrProvince,
+        authPhone: state.authPhone,
+      }
+      submit<'5'>({
+        ...data,
         applyId: +(MMKV.getString(KEY_APPLYID) || '0'),
         currentStep: 5,
         totalSteps: TOTAL_STEPS,
@@ -168,11 +174,10 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
             thirdName: 'whatsApp',
           },
         ],
-        homeAddrCity: state.homeAddrCity,
-        homeAddrProvince: state.homeAddrProvince,
         name: `${values.firstName.trim()} ${values.middleName.trim()} ${values.lastName.trim()}`,
       }).then(() => {
-        if (context.barnd?.livenessAuthEnable === 'Y') {
+        MMKV.setMapAsync('step5Data', data)
+        if (context.brand?.livenessAuthEnable === 'Y') {
           navigation.navigate('Step61')
         } else {
           navigation.navigate('Step62')

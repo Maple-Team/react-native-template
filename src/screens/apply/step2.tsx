@@ -45,7 +45,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
       .required(t('companyAddrDetail.required')),
     incumbency: Yup.string().required(t('incumbency.required')),
   })
-
+  const step2Data = (MMKV.getMap('step2Data') as Partial<Step2State>) || {}
   const [state, dispatch] = useReducer<Reducer<Step2State, Step2Action>>(
     (s, { type, value }) => {
       switch (type) {
@@ -97,35 +97,39 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
       jobTypeArray: [],
       industryArray: [],
       salaryDateArray: [],
-      industryCode: '',
-      industry: '',
-      incumbency: '',
-      company: '',
-      companyAddrCity: '',
-      companyAddrCityCode: '',
-      companyAddrDetail: '',
-      companyAddrProvince: '',
-      companyAddrProvinceCode: '',
-      companyPhone: '',
-      jobTypeCode: '',
-      jobType: '',
-      salaryDate: '',
-      salaryType: '',
-      monthlyIncome: '',
+      industryCode: step2Data.industryCode || '',
+      industry: step2Data.industry || '',
+      incumbency: step2Data.incumbency || '',
+      company: step2Data.company || '',
+      companyAddrCity: step2Data.companyAddrCity || '',
+      companyAddrCityCode: step2Data.companyAddrCityCode || '',
+      companyAddrDetail: step2Data.companyAddrDetail || '',
+      companyAddrProvince: step2Data.companyAddrProvince || '',
+      companyAddrProvinceCode: step2Data.companyAddrProvinceCode || '',
+      companyPhone: step2Data.companyPhone || '',
+      jobTypeCode: step2Data.jobTypeCode || '',
+      jobType: step2Data.jobType || '',
+      salaryDate: step2Data.salaryDate || '',
+      salaryType: step2Data.salaryType || '',
+      monthlyIncome: step2Data.monthlyIncome || '',
     }
   )
   const onSubmit = debounce(
     (values: FormModel) => {
-      submit<'2'>({
+      const data = {
         ...(filterArrayKey(values) as FormModel),
         companyAddrCity: state.companyAddrCity,
         companyAddrProvince: state.companyAddrProvince,
         industry: state.industry,
         jobType: state.jobType,
+      }
+      submit<'2'>({
+        ...data,
         applyId: +(MMKV.getString(KEY_APPLYID) || '0'),
         currentStep: 2,
         totalSteps: TOTAL_STEPS,
       }).then(() => {
+        MMKV.setMapAsync('step2Data', data)
         navigation.navigate('Step3')
       })
     },
@@ -304,16 +308,10 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                       setFieldValue('company', text)
                       dispatch({ type: 'company', value: text })
                     }}
-                    onClear={() => {
-                      setFieldValue('company', '')
-                    }}
+                    onClear={() => setFieldValue('company', '')}
                     maxLength={100}
-                    onFocus={() => {
-                      behavior.setStartModify('P02_C01_I_COMPANY', state.company)
-                    }}
-                    onBlur={() => {
-                      behavior.setEndModify('P02_C01_I_COMPANY', state.company)
-                    }}
+                    onFocus={() => behavior.setStartModify('P02_C01_I_COMPANY', state.company)}
+                    onBlur={() => behavior.setEndModify('P02_C01_I_COMPANY', state.company)}
                     value={state.company}
                     field={'company'}
                     key={'company'}

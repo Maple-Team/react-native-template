@@ -44,12 +44,15 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
         currentStep: 7,
         totalSteps: TOTAL_STEPS,
       }).then(() => {
+        MMKV.setMapAsync('step7Data', values)
         navigation.navigate('Step8')
       })
     },
     DEBOUNCE_WAIT,
     DEBOUNCE_OPTIONS
   )
+  const step7Data = (MMKV.getMap('step7Data') as Partial<Step7State>) || {}
+
   const [state, dispatch] = useReducer<Reducer<Step7State, Step7Action>>(
     (s, { type, value }) => {
       switch (type) {
@@ -69,9 +72,9 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
     },
     {
       bankArray: [],
-      bankCardNo: '',
-      bankCode: '',
-      cardNoType: 'CARD',
+      bankCardNo: step7Data.bankCardNo || '',
+      bankCode: step7Data.bankCode || '',
+      cardNoType: step7Data.cardNoType || 'CARD',
       cardNoTypeArray: [],
     }
   )

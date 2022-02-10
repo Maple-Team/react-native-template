@@ -63,7 +63,7 @@ export function PhonePicker({
       }),
     [onSelectContacts, t]
   )
-  console.log({ field }, 'PhonePicker rendering')
+  // console.log({ field }, 'PhonePicker rendering')
   const fieldRef = useRef<TextInput>(null)
   const [height, setHeight] = useState<number>(0)
   return (

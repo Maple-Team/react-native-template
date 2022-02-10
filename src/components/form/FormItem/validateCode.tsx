@@ -42,7 +42,7 @@ export const ValidateCode = ({
   const { t } = useTranslation()
   const context = useContext(MoneyyaContext)
   const [count, setCount] = useState<number>(60)
-  const [times, setTimtes] = useState<number>(context.barnd?.codeValidatecount || 5) // Brand info
+  const [times, setTimtes] = useState<number>(context.brand?.codeValidatecount || 5) // Brand info
   const [isPlaying, setPlaying] = useState<boolean>(false)
 
   const handlePress = debounce(

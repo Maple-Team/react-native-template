@@ -1,5 +1,3 @@
-export { default as getDevice } from './device'
-
 export const toThousands = (number: number, thousandSeparator = ',') => {
   if (number === 0) {
     return number
@@ -20,10 +18,10 @@ export async function errorCaptured(func: Function) {
  * @param model
  * @returns
  */
-export const filterArrayKey = (model: any) => {
-  const val: { [key: string]: any } = {}
+export const filterArrayKey = (model: Record<string, string | boolean | number>) => {
+  const val: Record<string, string | boolean | number> = {}
   Object.keys(model)
-    .filter(k => k!.endsWith('Array'))
+    .filter(k => !k.endsWith('Array'))
     .forEach(k => {
       val[k] = model[k]
     })

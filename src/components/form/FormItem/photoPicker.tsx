@@ -1,8 +1,8 @@
 import React, { useCallback, useState } from 'react'
 import { View, Image, Pressable, ImageBackground, type ImageSourcePropType } from 'react-native'
-import formItemStyles from './style'
+// import formItemStyles from './style'
 import { Text } from '@/components'
-import { ErrorMessage } from 'formik'
+// import { ErrorMessage } from 'formik'
 import { onRequestPermission } from '@/utils/permission'
 import type { ImageStyle, ViewStyle } from 'react-native'
 import StyleSheet from 'react-native-adaptive-stylesheet'
@@ -28,13 +28,11 @@ interface Props {
   isSupplement: BOOL
   imageType: ImageType
   cameraType: CameraType
-  onUploadSuccess: (id: number, cb?: () => void) => void
+  onUploadSuccess: (id: number) => void
   reportExif: (exif: string) => void
 }
 const PROGRESS_CIRCLE_RADIUS = 50
 export function PhotoPicker({
-  field,
-  title,
   bg,
   hint,
   cameraType,
@@ -46,7 +44,7 @@ export function PhotoPicker({
   const [source, setSource] = useState<{ uri: string }>()
   const [progress, setProgress] = useState<number>(0)
   const [indeterminate, setIndeterminate] = useState<boolean>(false)
-  console.log({ field }, 'PhotoPicker rendering')
+  // console.log({ field }, 'PhotoPicker rendering')
   const takePicture = useCallback(async () => {
     if (await isEmulator()) {
       handleEmulator(setSource, imageType, isSupplement, onUploadSuccess)
@@ -134,7 +132,6 @@ export function PhotoPicker({
   return (
     <>
       <View style={styles.container}>
-        {title && <Text>{title}</Text>}
         <ImageBackground style={styles.bg} source={bg} resizeMode="cover">
           {source && <Image source={source} resizeMode="cover" style={styles.preview} />}
           {source && (
@@ -159,10 +156,10 @@ export function PhotoPicker({
             <Image source={require('@assets/compressed/apply/camera.webp')} resizeMode="cover" />
           </Pressable>
         </ImageBackground>
+        {/* <ErrorMessage name={field}>
+          {msg => <Text styles={[formItemStyles.warn, formItemStyles.error]}>{msg}</Text>}
+        </ErrorMessage> */}
       </View>
-      <ErrorMessage name={field}>
-        {msg => <Text styles={[formItemStyles.warn, formItemStyles.error]}>{msg}</Text>}
-      </ErrorMessage>
       <View style={{ alignItems: 'center' }}>
         <Text>{hint}</Text>
       </View>
@@ -177,8 +174,7 @@ const styles = StyleSheet.create<{
   progress: ViewStyle
 }>({
   container: {
-    paddingTop: 17,
-    paddingBottom: 47.5,
+    paddingVertical: 17,
     alignItems: 'center',
   },
   bg: {

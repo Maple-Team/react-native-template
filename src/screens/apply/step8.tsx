@@ -8,13 +8,7 @@ import debounce from 'lodash.debounce'
 import { Slider } from '@miblanchard/react-native-slider'
 
 import { PageStyles, Text, Hint } from '@/components'
-import {
-  DEBOUNCE_OPTIONS,
-  DEBOUNCE_WAIT,
-  KEY_APPLYID,
-  KEY_GPS,
-  TOTAL_STEPS,
-} from '@/utils/constant'
+import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT, KEY_APPLYID, TOTAL_STEPS } from '@/utils/constant'
 import { ApplyButton } from '@components/form/FormItem'
 import { Color } from '@/styles/color'
 import type { Calculate, Product } from '@/typings/apply'
@@ -36,8 +30,8 @@ export const Step8 = ({ navigation }: NativeStackHeaderProps) => {
           angleY: sensor?.angleY || '',
           angleZ: sensor?.angleZ || '',
         },
-        gps: MMKV.getString(KEY_GPS) || '',
-        loanCode: productInfo?.loanCode || '',
+        gps: context.header.gps,
+        loanCode: productInfo?.products[0].loanCode || '',
         loanTerms: loanDay,
         displayLoanDays: productInfo?.products[0].displayLoanDays || 0,
         applyAmount: loanAmt,
@@ -53,6 +47,7 @@ export const Step8 = ({ navigation }: NativeStackHeaderProps) => {
     DEBOUNCE_WAIT,
     DEBOUNCE_OPTIONS
   )
+  // 加载转圈
   useBehavior<'P08'>('P08', 'P08_C00', 'P08_C99')
   useLocation()
   const context = useContext(MoneyyaContext)
@@ -68,6 +63,7 @@ export const Step8 = ({ navigation }: NativeStackHeaderProps) => {
         console.log('productInfo', res)
         setProductInfo(res)
         setLoanAmt(res.maxAmount)
+        setLoanDay(res.maxLoanTerms)
       })
     }
   }, [context.user?.phone])
@@ -82,7 +78,7 @@ export const Step8 = ({ navigation }: NativeStackHeaderProps) => {
         loanDay,
       }).then(res => {
         console.log('calc', res)
-        setcalcResult(res)
+        res && setcalcResult(res)
       })
     }
   }, [loanAmt, loanDay, productInfo?.loanCode, productInfo?.products])

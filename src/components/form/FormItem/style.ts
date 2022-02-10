@@ -50,6 +50,7 @@ export default StyleSheet.create<{
     justifyContent: 'center',
     right: 0,
     height: '100%',
+    backgroundColor: 'rgba(180, 204, 226, 0)',
   },
   suffix: {
     width: 22,

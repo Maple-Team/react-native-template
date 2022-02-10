@@ -31,6 +31,8 @@ export const NormalTypeArray = [
   'VERSION',
   'PV',
   'BRAND',
+  'ORDER_LIST',
+  'ORDER_DETAIL',
 ] as const
 
 type NormalType = typeof NormalTypeArray[number]
@@ -58,6 +60,8 @@ let _dispatchMap: Record<DispatchMapType, string> = {
   VERSION: '/smart-loan/app/version',
   PV: '/smart-loan/app/index',
   BRAND: '/smart-loan/system/brand',
+  ORDER_LIST: '/smart-loan/contract/list',
+  ORDER_DETAIL: '/smart-loan/contract/detail',
 }
 
 DictTypeArray.forEach(k => {

@@ -1,12 +1,15 @@
-import React from 'react'
-import { View, ImageBackground, Image, Pressable } from 'react-native'
+import React, { useContext } from 'react'
+import { View, ImageBackground, Image, Pressable, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { TabHeader, Text } from '@/components'
 import emitter from '@/eventbus'
+import { default as MoneyyaContext } from '@/state'
 
 export function UserCenter() {
+  const context = useContext(MoneyyaContext)
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      <StatusBar translucent={true} barStyle="default" />
       <View style={{ paddingTop: 0, paddingHorizontal: 0 }}>
         <View>
           <ImageBackground
@@ -20,6 +23,14 @@ export function UserCenter() {
               notice={require('@/assets/compressed/common/active/notice.webp')}
               help={require('@/assets/compressed/common/active/help.webp')}
             />
+            <View style={{ alignItems: 'center', paddingTop: 190 }}>
+              <Text color="#fff" fontSize={18}>
+                {context.user?.name}
+              </Text>
+              <Text color="rgba(214, 220, 254, 1)" fontSize={13}>
+                {context.user?.phone}
+              </Text>
+            </View>
           </ImageBackground>
         </View>
         <View
@@ -40,7 +51,7 @@ export function UserCenter() {
             },
             { img: require('@/assets/compressed/user-center/My-Card.webp'), title: 'My Card' },
           ].map(({ img, title }) => (
-            <Pressable key={title}>
+            <Pressable key={title} style={{ alignItems: 'center' }}>
               <Image source={img} resizeMode="cover" style={{ marginBottom: 14.5 }} />
               <Text fontSize={16} color="rgba(51, 50, 48, 1)">
                 {title}

@@ -45,7 +45,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
   })
 
   const context = useContext(MoneyyaContext)
-
+  const step3Data = (MMKV.getMap('step3Data') as Partial<Step3State>) || {}
   const [state, dispatch] = useReducer<Reducer<Step3State, Step3Action>>(
     (s, { type, value }) => {
       switch (type) {
@@ -76,18 +76,18 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
       }
     },
     {
-      contactName1: '',
-      contactPhone1: '',
-      contactRelation1: '',
-      contactRelationCode1: '',
-      contactName2: '',
-      contactPhone2: '',
-      contactRelation2: '',
-      contactRelationCode2: '',
-      contactName3: '',
-      contactPhone3: '',
-      contactRelation3: '',
-      contactRelationCode3: '',
+      contactName1: step3Data.contactName1 || '',
+      contactPhone1: step3Data.contactPhone1 || '',
+      contactRelation1: step3Data.contactRelation1 || '',
+      contactRelationCode1: step3Data.contactRelationCode1 || '',
+      contactName2: step3Data.contactName2 || '',
+      contactPhone2: step3Data.contactPhone2 || '',
+      contactRelation2: step3Data.contactRelation2 || '',
+      contactRelationCode2: step3Data.contactRelationCode2 || '',
+      contactName3: step3Data.contactName3 || '',
+      contactPhone3: step3Data.contactPhone3 || '',
+      contactRelation3: step3Data.contactRelation3 || '',
+      contactRelationCode3: step3Data.contactRelationCode3 || '',
       contactRelationArray: [],
       otherContactRelationArray: [],
     }
@@ -115,7 +115,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
     queryDict()
   }, [])
   const onSubmit = debounce(
-    () => {
+    (values: FormModel) => {
       const contacts: Contact[] = []
       for (let index = 1; index <= 3; index++) {
         contacts.push({
@@ -135,6 +135,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
         currentStep: 3,
         totalSteps: TOTAL_STEPS,
       }).then(() => {
+        MMKV.setMapAsync('step3Data', values)
         navigation.navigate('Step4')
       })
     },
@@ -193,6 +194,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                     field={'contactName1'}
                     key={'contactName1'}
                     label={t('contactName.label')}
+                    error={errors.contactName1}
                     placeholder={t('contactName.placeholder')}
                   />
                   <PhonePicker
@@ -242,6 +244,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                     value={state.contactName2}
                     field={'contactName2'}
                     key={'contactName2'}
+                    error={errors.contactName2}
                     label={t('contactName.label')}
                     placeholder={t('contactName.placeholder')}
                   />
@@ -283,15 +286,16 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                       dispatch({ type: 'updateContactName3', value: text })
                     }}
                     maxLength={100}
-                    onFocus={() => {
+                    onFocus={() =>
                       behavior.setStartModify('P03_C03_I_CONTACTNAME', state.contactName3)
-                    }}
-                    onBlur={() => {
+                    }
+                    onBlur={() =>
                       behavior.setEndModify('P03_C03_I_CONTACTNAME', state.contactName3)
-                    }}
+                    }
                     value={state.contactName3}
                     field={'contactName3'}
                     key={'contactName3'}
+                    error={errors.contactName3}
                     label={t('contactName.label')}
                     placeholder={t('contactName.placeholder')}
                   />

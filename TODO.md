@@ -70,3 +70,16 @@
 - [reactnativeelements](https://reactnativeelements.com/docs), 国外`UI`风格
 - [Ant Design Mobile RN of React](https://rn.mobile.ant.design/docs/react/introduce-cn)
 - [jestjs](https://jestjs.io/docs/getting-started), 测试框架
+
+ERROR Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.
+in Step3 (at SceneView.tsx:126)
+ERROR Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.
+in Step4 (at SceneView.tsx:126)
+ERROR Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.
+in Step8 (at SceneView.tsx:126)
+ERROR Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.
+in Step2 (at SceneView.tsx:126)
+ERROR Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.
+in Step61 (at SceneView.tsx:126)
+ERROR Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.
+in Step7 (at SceneView.tsx:126)

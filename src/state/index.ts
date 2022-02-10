@@ -45,7 +45,7 @@ export let moneyyaState: State = {
   },
   hasInit: MMKV.getBool(KEY_INIT) || false,
   user: MMKV.getMap(KEY_USER) || undefined,
-  barnd: MMKV.getMap(KEY_BRAND) || undefined,
+  brand: MMKV.getMap(KEY_BRAND) || undefined,
 }
 
 const StateContext = createContext(moneyyaState)
@@ -53,7 +53,6 @@ const StateContext = createContext(moneyyaState)
 export default StateContext
 
 export function reducer(state: State, action: Action): State {
-  console.log('action', action)
   switch (action.type) {
     case UPDATE_TOKEN:
       MMKV.setString(KEY_TOKEN, action.token)
@@ -118,7 +117,7 @@ export function reducer(state: State, action: Action): State {
       MMKV.setMapAsync(KEY_BRAND, action.brand)
       moneyyaState = {
         ...state,
-        barnd: action.brand,
+        brand: action.brand,
       }
       break
 
@@ -158,7 +157,7 @@ interface State {
       [key: string]: boolean
     }
   }
-  barnd?: Brand
+  brand?: Brand
   hasInit?: boolean
 }
 

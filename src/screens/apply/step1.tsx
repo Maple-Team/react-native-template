@@ -12,16 +12,11 @@ import { queryVersion, submit } from '@/services/apply'
 import { default as MoneyyaContext } from '@/state'
 
 import { MMKV } from '@/utils/storage'
-import {
-  DEBOUNCE_OPTIONS,
-  DEBOUNCE_WAIT,
-  KEY_APPLYID,
-  KEY_DEVICEID,
-  TOTAL_STEPS,
-} from '@/utils/constant'
+import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT, KEY_APPLYID, TOTAL_STEPS } from '@/utils/constant'
 import debounce from 'lodash.debounce'
 import { useLocation } from '@/hooks'
 import { toThousands } from '@/utils/util'
+import { APPLY_STATE } from '@/state/enum'
 
 export function Step1() {
   const navigation = useNavigation()
@@ -33,17 +28,23 @@ export function Step1() {
     })
   }, [])
   const location = useLocation()
+  const applyStatus = context.user?.applyStatus
   const onSubmit = debounce(
     () => {
+      if (applyStatus !== APPLY_STATE.SETTLE) {
+        // TODO 跳转逻辑
+      } else {
+      }
       submit<'1'>({
-        deviceId: MMKV.getString(KEY_DEVICEID) || '',
+        deviceId: context.header.deviceId,
         phone: context.user?.phone || '',
         gps: `${location.latitude},${location.longitude}`,
         idcard: context.user?.idcard || '',
         applyId: +(MMKV.getString(KEY_APPLYID) || '0'),
         currentStep: 1,
         totalSteps: TOTAL_STEPS,
-      }).then(() => {
+      }).then(res => {
+        MMKV.setString(KEY_APPLYID, `${res.applyId}`)
         navigation.getParent()?.navigate('Step2')
       })
     },
@@ -116,6 +117,7 @@ export function Step1() {
                 }}>
                 <Text fontSize={18} color="#fff" fontWeight="bold">
                   Continue Loan
+                  {/* TODO 跳转逻辑 */}
                 </Text>
               </Button>
             </View>

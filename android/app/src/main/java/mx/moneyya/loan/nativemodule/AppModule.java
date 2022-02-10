@@ -33,7 +33,8 @@ public class AppModule extends ReactContextBaseJavaModule {
       case "staging":
       case "development":
       default:
-        url = "http://94.74.68.216:8081";
+//        url = "http://94.74.68.216:8081";
+        url = "http://hbpub0561.6655.la";
         break;
     }
     return url;

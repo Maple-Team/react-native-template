@@ -1,3 +1,4 @@
+import type { Order } from '@/typings/order'
 import type { BaseResponse } from '@/utils/http'
 import { request } from '@/utils/http'
 /**
@@ -6,7 +7,7 @@ import { request } from '@/utils/http'
  * @returns
  */
 export async function queryOrders() {
-  return request<BaseResponse>({
+  return request<Order[]>({
     url: '/smart-loan/contract/list',
     method: 'POST',
   })
@@ -17,7 +18,7 @@ export async function queryOrders() {
  * @returns
  */
 export async function queryOrderDetail(params: { applyId: string }) {
-  return request<BaseResponse>({
+  return request<Order>({
     url: '/smart-loan/contract/detail',
     method: 'POST',
     params,
