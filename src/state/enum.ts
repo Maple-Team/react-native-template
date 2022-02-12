@@ -1,6 +1,10 @@
 // FIXME more elegant
 export enum APPLY_STATE {
   /**
+   * 	未申请 点击首页继续申请流程
+   */
+  EMPTY = 'EMPTY',
+  /**
    * 	申请中 点击首页继续申请流程
    */
   APPLY = 'APPLY',

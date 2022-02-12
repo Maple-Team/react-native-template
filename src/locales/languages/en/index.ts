@@ -3,6 +3,7 @@ import field from './field.json'
 import fieldCustom from './field-custom.json'
 import user from './user.json'
 import misc from './misc.json'
+import currency from './currency.json'
 
 export default {
   ...common,
@@ -10,4 +11,5 @@ export default {
   ...fieldCustom,
   ...misc,
   ...user,
+  ...currency,
 }

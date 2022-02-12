@@ -10,18 +10,16 @@ interface Props {
   hintColor: string
 }
 
-export const Hint = ({ img, hint, hintColor }: Props) => {
-  return (
-    <View style={styles.container}>
-      <Image source={img} resizeMode="cover" />
-      <View style={styles.hintWrap}>
-        <Text styles={[styles.hint, { color: hintColor } as unknown as RegisteredStyle<TextStyle>]}>
-          {hint}
-        </Text>
-      </View>
+export const Hint = ({ img, hint, hintColor }: Props) => (
+  <View style={styles.container}>
+    <Image source={img} resizeMode="cover" />
+    <View style={styles.hintWrap}>
+      <Text styles={[styles.hint, { color: hintColor } as unknown as RegisteredStyle<TextStyle>]}>
+        {hint}
+      </Text>
     </View>
-  )
-}
+  </View>
+)
 
 const styles = StyleSheet.create<{
   container: ViewStyle
@@ -29,16 +27,18 @@ const styles = StyleSheet.create<{
   hint: TextStyle
 }>({
   container: {
-    paddingHorizontal: 22,
     flexDirection: 'row',
     backgroundColor: '#fff',
     paddingTop: 8,
     paddingBottom: 5,
     alignItems: 'center',
+    flex: 1,
   },
   hintWrap: {
     marginLeft: 6.5,
     alignItems: 'center',
+    flexWrap: 'wrap',
+    flex: 1,
   },
   hint: {
     color: 'rgba(255, 50, 50, 1)',

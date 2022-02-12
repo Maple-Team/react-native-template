@@ -4,9 +4,7 @@ import { readdir } from 'fs'
 
 tinify.key = 'ZNq3Tq1WKrc4tj3jxDrLrjTdgKCJZhBB'
 
-const commonPath = resolve(__dirname, '../src/assets/compressed')
-// TODO 更新处理新添加的资源
-// `${commonPath}/account`,  `${commonPath}/apply/active|normal`
+const commonPath = resolve(__dirname, '../src/assets/items')
 ;(async () => {
   const dirs: string[] = await new Promise(reso => {
     readdir(commonPath, (err, files) => {
@@ -17,6 +15,7 @@ const commonPath = resolve(__dirname, '../src/assets/compressed')
       }
     })
   })
+  console.log(dirs)
   const allImages = await dirs.reduce((prev, curr) => {
     return prev.then(async prevFiles => {
       const files: string[] = await new Promise(r => {
@@ -53,7 +52,7 @@ const commonPath = resolve(__dirname, '../src/assets/compressed')
 
   allImages.reduce((prev, curr, index) => {
     return prev.then(async () => {
-      const target = curr.replace('images', 'compressed')
+      const target = curr.replace('items', 'items2')
       await tinify.fromFile(curr).toFile(target)
       console.log(`progress: ${index + 1}/${total}`)
     })

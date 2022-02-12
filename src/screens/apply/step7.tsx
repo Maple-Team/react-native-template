@@ -1,6 +1,6 @@
 import type { NativeStackHeaderProps } from '@react-navigation/native-stack'
-import React, { type Reducer, useEffect, useReducer } from 'react'
-import { View, StatusBar } from 'react-native'
+import React, { type Reducer, useEffect, useReducer, useState } from 'react'
+import { View, StatusBar, Image, Pressable } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
 import { ScrollView } from 'react-native-gesture-handler'
@@ -36,8 +36,16 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
     cardNoType: Yup.string().required(t('cardNoType.required')),
   })
 
-  const onSubmit = debounce(
-    (values: FormModel) => {
+  const onSubmit = () => {
+    setVisible(true)
+  }
+  const onRealSubmit = debounce(
+    () => {
+      const values = {
+        bankCode: state.bankCode,
+        cardNoType: state.cardNoType,
+        bankCardNo: state.bankCardNo,
+      }
       submit<'7'>({
         ...values,
         applyId: +(MMKV.getString(KEY_APPLYID) || '0'),
@@ -45,7 +53,9 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
         totalSteps: TOTAL_STEPS,
       }).then(() => {
         MMKV.setMapAsync('step7Data', values)
-        navigation.navigate('Step8')
+        navigation.navigate('Step8', {
+          bankCardNo: state.bankCardNo,
+        })
       })
     },
     DEBOUNCE_WAIT,
@@ -61,7 +71,7 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
         case 'bankCardNo':
           return { ...s, bankCardNo: value }
         case 'bankCode':
-          return { ...s, bankCode: value }
+          return { ...s, bankCode: value.code, bankCodeName: value.name }
         case 'cardNoTypeArray':
           return { ...s, cardNoTypeArray: value }
         case 'cardNoType':
@@ -75,6 +85,7 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
       bankCardNo: step7Data.bankCardNo || '',
       bankCode: step7Data.bankCode || '',
       cardNoType: step7Data.cardNoType || 'CARD',
+      bankCodeName: '',
       cardNoTypeArray: [],
     }
   )
@@ -101,104 +112,236 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
     queryDict()
   }, [])
   useLocation()
+  const [visible, setVisible] = useState<boolean>(false)
 
   const behavior = useBehavior<'P07'>('P07', 'P07_C00', 'P07_C99')
   return (
     <SafeAreaView style={PageStyles.sav}>
       <StatusBar translucent={false} backgroundColor={Color.primary} barStyle="default" />
-      <Hint
-        img={require('@/assets/compressed/apply/loan_notice.webp')}
-        hint={'Tips:ReceiptAs and repayments may be affected by bank working'}
-        hintColor={'rgba(255, 50, 50, 1)'}
-      />
-      <ScrollView style={PageStyles.scroll} keyboardShouldPersistTaps="always">
-        <View style={PageStyles.container}>
-          <Formik<FormModel>
-            validateOnBlur
-            initialValues={state}
-            onSubmit={onSubmit}
-            validationSchema={schema}>
-            {({ handleSubmit, isValid, setFieldValue, values }) => (
-              <>
-                <View style={PageStyles.form}>
-                  <NormalPicker
-                    onChange={({ code }) => {
-                      setFieldValue('bankCode', code)
-                      dispatch({ type: 'bankCode', value: code })
-                      behavior.setModify('P07_C01_S_BANKCODE', code, state.bankCode)
-                    }}
-                    key="bankCode"
-                    value={state.bankCode}
-                    title={t('bankCode.label')}
-                    field={'bankCode'}
-                    label={t('bankCode.label')}
-                    placeholder={t('bankCode.placeholder')}
-                    dataSource={state.bankArray}
+      {!visible ? (
+        <>
+          <View style={{ paddingHorizontal: 37, backgroundColor: '#fff', flexDirection: 'row' }}>
+            <Hint
+              img={require('@/assets/compressed/apply/loan_notice.webp')}
+              hint={'Tips:ReceiptAs and repayments may be affected by bank working'}
+              hintColor={'rgba(255, 50, 50, 1)'}
+            />
+          </View>
+          <ScrollView style={PageStyles.scroll} keyboardShouldPersistTaps="always">
+            <View style={PageStyles.container}>
+              <Formik<FormModel>
+                validateOnBlur
+                initialValues={state}
+                onSubmit={onSubmit}
+                validationSchema={schema}>
+                {({ handleSubmit, isValid, setFieldValue, values }) => (
+                  <>
+                    <View style={PageStyles.form}>
+                      <NormalPicker
+                        onChange={({ code, name }) => {
+                          setFieldValue('bankCode', code)
+                          dispatch({ type: 'bankCode', value: { code, name } })
+                          behavior.setModify('P07_C01_S_BANKCODE', code, state.bankCode)
+                        }}
+                        key="bankCode"
+                        value={state.bankCode}
+                        title={t('bankCode.label')}
+                        field={'bankCode'}
+                        label={t('bankCode.label')}
+                        placeholder={t('bankCode.placeholder')}
+                        dataSource={state.bankArray}
+                      />
+                      <NormalPicker
+                        onChange={({ code }) => {
+                          setFieldValue('cardNoType', code)
+                          dispatch({ type: 'cardNoType', value: code })
+                          behavior.setModify('P07_C01_S_CARDNOTYPE', code, state.cardNoType)
+                        }}
+                        key="bankCardType"
+                        value={values.cardNoType}
+                        title={t('cardNoType.label')}
+                        field={'cardNoType'}
+                        label={t('cardNoType.label')}
+                        placeholder={t('cardNoType.placeholder')}
+                        dataSource={state.cardNoTypeArray}
+                      />
+                      {state.cardNoType === 'CARD' ? (
+                        <MaskInput
+                          onFocus={() =>
+                            behavior.setStartModify('P07_C01_I_BANKCARDNO', state.bankCardNo)
+                          }
+                          onBlur={() =>
+                            behavior.setEndModify('P07_C01_I_BANKCARDNO', state.bankCardNo)
+                          }
+                          value={state.bankCardNo}
+                          field={'bankCardNo'}
+                          keyboardType="phone-pad"
+                          label={t('bankCardNo.label') + '_card'}
+                          placeholder={t('bankCardNo.placeholder')}
+                          key="bankCardNo_card"
+                          mask={'[0000] [0000] [0000] [0000] [00]'}
+                          onChangeText={(text: string, extracted?: string) => {
+                            setFieldValue('bankCardNo', extracted || '')
+                            dispatch({ type: 'bankCardNo', value: extracted || '' })
+                          }}
+                        />
+                      ) : (
+                        <MaskInput
+                          onChangeText={(text: string, extracted?: string) => {
+                            setFieldValue('bankCardNo', extracted || '')
+                            dispatch({ type: 'bankCardNo', value: extracted || '' })
+                          }}
+                          onFocus={() =>
+                            behavior.setStartModify('P07_C01_I_BANKCARDNO', state.bankCardNo)
+                          }
+                          onBlur={() =>
+                            behavior.setEndModify('P07_C01_I_BANKCARDNO', state.bankCardNo)
+                          }
+                          value={state.bankCardNo}
+                          field={'bankCardNo'}
+                          keyboardType="phone-pad"
+                          label={t('bankCardNo.label') + '_clabe'}
+                          placeholder={t('bankCardNo.placeholder')}
+                          key="bankCardNo_clabe"
+                          mask={'[0000] [0000] [0000] [0000]'}
+                        />
+                      )}
+                    </View>
+                    <View style={PageStyles.btnWrap}>
+                      <ApplyButton type={isValid ? 'primary' : undefined} onPress={handleSubmit}>
+                        <Text fontSize={18} color="#fff">
+                          {t('submit')}
+                        </Text>
+                      </ApplyButton>
+                    </View>
+                  </>
+                )}
+              </Formik>
+            </View>
+          </ScrollView>
+        </>
+      ) : (
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: '#AFAFAF',
+            justifyContent: 'center',
+          }}>
+          <View
+            style={{
+              justifyContent: 'center',
+              paddingHorizontal: 27.5,
+            }}>
+            <View style={{ backgroundColor: '#fff', borderRadius: 14 }}>
+              <View
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  paddingTop: 47,
+                  paddingBottom: 33.5,
+                }}>
+                <View
+                  style={{
+                    padding: 13,
+                    width: 75 + 13,
+                    height: 75 + 13,
+                    borderRadius: (75 + 13) / 2,
+                    top: -(75 + 13) / 2,
+                    backgroundColor: '#fff',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    position: 'absolute',
+                  }}>
+                  <Image
+                    source={require('@/assets/compressed/additional/bank.webp')}
+                    resizeMode="cover"
                   />
-                  <NormalPicker
-                    onChange={({ code }) => {
-                      setFieldValue('cardNoType', code)
-                      dispatch({ type: 'cardNoType', value: code })
-                      behavior.setModify('P07_C01_S_CARDNOTYPE', code, state.cardNoType)
-                    }}
-                    key="bankCardType"
-                    value={values.cardNoType}
-                    title={t('cardNoType.label')}
-                    field={'cardNoType'}
-                    label={t('cardNoType.label')}
-                    placeholder={t('cardNoType.placeholder')}
-                    dataSource={state.cardNoTypeArray}
-                  />
-                  {state.cardNoType === 'CARD' ? (
-                    <MaskInput
-                      onFocus={() =>
-                        behavior.setStartModify('P07_C01_I_BANKCARDNO', state.bankCardNo)
-                      }
-                      onBlur={() => behavior.setEndModify('P07_C01_I_BANKCARDNO', state.bankCardNo)}
-                      value={state.bankCardNo}
-                      field={'bankCardNo'}
-                      keyboardType="phone-pad"
-                      label={t('bankCardNo.label') + '_card'}
-                      placeholder={t('bankCardNo.placeholder')}
-                      key="bankCardNo_card"
-                      mask={'[0000] [0000] [0000] [0000] [00]'}
-                      onChangeText={(text: string, extracted?: string) => {
-                        setFieldValue('bankCardNo', extracted || '')
-                        dispatch({ type: 'bankCardNo', value: extracted || '' })
-                      }}
-                    />
-                  ) : (
-                    <MaskInput
-                      onChangeText={(text: string, extracted?: string) => {
-                        setFieldValue('bankCardNo', extracted || '')
-                        dispatch({ type: 'bankCardNo', value: extracted || '' })
-                      }}
-                      onFocus={() =>
-                        behavior.setStartModify('P07_C01_I_BANKCARDNO', state.bankCardNo)
-                      }
-                      onBlur={() => behavior.setEndModify('P07_C01_I_BANKCARDNO', state.bankCardNo)}
-                      value={state.bankCardNo}
-                      field={'bankCardNo'}
-                      keyboardType="phone-pad"
-                      label={t('bankCardNo.label') + '_clabe'}
-                      placeholder={t('bankCardNo.placeholder')}
-                      key="bankCardNo_clabe"
-                      mask={'[0000] [0000] [0000] [0000]'}
-                    />
-                  )}
                 </View>
-                <View style={PageStyles.btnWrap}>
-                  <ApplyButton type={isValid ? 'primary' : undefined} onPress={handleSubmit}>
-                    <Text fontSize={18} color="#fff">
-                      {t('submit')}
-                    </Text>
-                  </ApplyButton>
+                <Text color="#333030" fontSize={18} fontFamily="Arial-BoldMT" fontWeight="bold">
+                  {t('information.confirmed')}
+                </Text>
+              </View>
+              <View style={{ paddingVertical: 10, paddingHorizontal: 11 }}>
+                <View style={{ flexDirection: 'row' }}>
+                  <Text
+                    fontSize={13}
+                    color="#333030" //@ts-ignore
+                    styles={{ marginRight: 10 }}>
+                    {t('bankCode.label')}:
+                  </Text>
+                  <Text color="#333030" fontSize={15} fontWeight="bold" fontFamily="Arial-BoldMT">
+                    {state.bankCodeName}
+                  </Text>
                 </View>
-              </>
-            )}
-          </Formik>
+                <View style={{ flexDirection: 'row' }}>
+                  <Text
+                    fontSize={13}
+                    color="#333030" //@ts-ignore
+                    styles={{ marginRight: 10 }}>
+                    {t('cardNoType.label')}:
+                  </Text>
+                  <Text color="#333030" fontSize={15} fontWeight="bold" fontFamily="Arial-BoldMT">
+                    {state.cardNoType}
+                  </Text>
+                </View>
+                <View style={{ flexDirection: 'row' }}>
+                  <Text
+                    fontSize={13}
+                    color="#333030" //@ts-ignore
+                    styles={{ marginRight: 10 }}>
+                    {t('bankCardNo.label')}:
+                  </Text>
+                  <Text color="#333030" fontSize={15} fontWeight="bold" fontFamily="Arial-BoldMT">
+                    {state.bankCardNo}
+                  </Text>
+                </View>
+              </View>
+              <View style={{ paddingHorizontal: 14.5, paddingBottom: 47, flexDirection: 'row' }}>
+                <Hint
+                  img={require('@/assets/compressed/apply/loan_notice.webp')}
+                  hint={
+                    'If account information is incorrecctly filled,you will not be able to receive loans.'
+                  }
+                  hintColor={'rgba(255, 50, 50, 1)'}
+                />
+              </View>
+              <View style={{ flexDirection: 'row' }}>
+                <Pressable
+                  //@ts-ignore
+                  onPress={onRealSubmit}
+                  style={{
+                    width: '50%',
+                    backgroundColor: Color.primary,
+                    borderRadius: 0,
+                    borderBottomLeftRadius: 14,
+                    paddingVertical: 17,
+                    alignItems: 'center',
+                  }}>
+                  <Text color="#fff" fontSize={17}>
+                    {t('submit')}
+                  </Text>
+                </Pressable>
+                <Pressable
+                  onPress={() => {
+                    setVisible(false)
+                  }}
+                  style={{
+                    width: '50%',
+                    backgroundColor: '#E3E3E3',
+                    borderRadius: 0,
+                    borderBottomRightRadius: 14,
+                    paddingVertical: 17,
+                    alignItems: 'center',
+                  }}>
+                  <Text color="#909090" fontSize={17}>
+                    {t('modify')}
+                  </Text>
+                </Pressable>
+              </View>
+            </View>
+          </View>
         </View>
-      </ScrollView>
+      )}
     </SafeAreaView>
   )
 }
@@ -208,6 +351,7 @@ interface Step7State extends FormModel {
   bankArray: Dict[]
   bankCardNo: string
   bankCode: string
+  bankCodeName: string
   cardNoTypeArray: Dict[]
 }
 
@@ -218,7 +362,7 @@ type Step7Action =
     }
   | {
       type: 'bankCode'
-      value: string
+      value: Dict
     }
   | {
       type: 'cardNoTypeArray'

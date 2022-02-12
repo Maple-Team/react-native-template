@@ -5,7 +5,10 @@ import { ScrollView } from 'react-native-gesture-handler'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 import debounce from 'lodash.debounce'
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import type {
+  NativeStackHeaderProps,
+  NativeStackNavigationProp,
+} from '@react-navigation/native-stack'
 
 import { Logo } from '@/components/logo'
 import Text from '@/components/Text'
@@ -23,9 +26,11 @@ import type { LoginParameter } from '@/typings/request'
 import { default as MoneyyaContext } from '@/state'
 import { MMKV } from '@/utils'
 
-export const SigninScreen = ({ route }: { route: any }) => {
+export const SigninScreen = ({ route }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
-  const { phone } = route.params || ({ phone: __DEV__ ? '9868960898' : '' } as { phone?: string })
+  const { phone } =
+    (route.params as { phone?: string }) ||
+    ({ phone: __DEV__ ? '9868960898' : '' } as { phone?: string })
   const tabs = [{ title: t('password-login') }, { title: t('validation-code-login') }]
   const [signInPhone, setSignInPhone] = useState<string>('')
   const tabPanels = [

@@ -16,5 +16,15 @@
   },
   "forget-password": "忘记密码",
   "password-login": "密码登录",
-  "validation-code-login": "验证码登录"
+  "validation-code-login": "验证码登录",
+  "applyState": {
+    "apply": "申请",
+    "check": "查看",
+    "repay": "还款",
+    "continueLoan": "续贷"
+  },
+  "modify": "修改",
+  "old": "旧",
+  "loading": "加载中...",
+  "loan": "签约"
 }

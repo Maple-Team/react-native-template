@@ -5,5 +5,10 @@
     "part2": "In order to infer the appropriate type for t function, you should use type augmentation to override the Resources type.",
     "part3": "Check out the @types/react-i18next to see an example."
   },
-  "tostep7": "返回修改银行卡号"
+  "tostep7": "返回修改银行卡号",
+  "Bill-information": "Bill information",
+  "information": {
+    "confirmed": " Information Confirmed"
+  },
+  "choose-product-prompt": "请选择贷款期限"
 }

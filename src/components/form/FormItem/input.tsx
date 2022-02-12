@@ -8,17 +8,18 @@ import { UseFocusOnError } from '@/hooks'
 import type { ScrollView } from 'react-native-gesture-handler'
 
 interface InputProps {
-  onChangeText: (text: string) => void
+  onChangeText?: (text: string) => void
   onClear?: () => void
   onFocus?: () => void
   onBlur?: () => void
   value: string
   error?: string
-  field: string
+  field?: string
   textSize?: number
   label: string
   placeholder: string
   maxLength?: number
+  readonly?: boolean
   keyboardType?: KeyboardTypeOptions
   scrollViewRef?: RefObject<ScrollView>
 }
@@ -35,6 +36,7 @@ export const Input = ({
   label,
   placeholder,
   keyboardType,
+  readonly = true,
   scrollViewRef,
 }: InputProps) => {
   const fieldRef = useRef<TextInput>(null)
@@ -42,13 +44,15 @@ export const Input = ({
   // console.log({ field }, 'Input rendering')
   return (
     <>
-      <UseFocusOnError
-        fieldRef={fieldRef}
-        name={field}
-        scrollViewRef={scrollViewRef}
-        offsetY={height}
-        canFocus={true}
-      />
+      {field && (
+        <UseFocusOnError
+          fieldRef={fieldRef}
+          name={field}
+          scrollViewRef={scrollViewRef}
+          offsetY={height}
+          canFocus={true}
+        />
+      )}
       <View style={styles.formItem}>
         <Text styles={styles.label}>{label}</Text>
         <View style={styles.inputWrap}>
@@ -56,6 +60,7 @@ export const Input = ({
             onChangeText={onChangeText}
             maxLength={maxLength}
             value={value}
+            editable={readonly}
             multiline={true}
             ref={fieldRef}
             onLayout={() => {
@@ -100,13 +105,15 @@ export const Input = ({
             <></>
           )}
         </View>
-        <ErrorMessage name={field}>
-          {msg => (
-            <Text color="red" styles={[styles.warn, styles.error]}>
-              {msg}
-            </Text>
-          )}
-        </ErrorMessage>
+        {field && (
+          <ErrorMessage name={field}>
+            {msg => (
+              <Text color="red" styles={[styles.warn, styles.error]}>
+                {msg}
+              </Text>
+            )}
+          </ErrorMessage>
+        )}
       </View>
     </>
   )

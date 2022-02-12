@@ -120,19 +120,20 @@ export function reducer(state: State, action: Action): State {
         brand: action.brand,
       }
       break
-
     default:
       if ([...NormalTypeArray, ...DictTypeArray].includes(action.type)) {
         moneyyaState = {
           ...state,
           loading: {
             effects: {
+              ...state.loading.effects,
               [`${action.type}`]: action.loading,
             },
           },
         }
+      } else {
+        moneyyaState = { ...state }
       }
-      moneyyaState = { ...state }
       break
   }
   return moneyyaState

@@ -15,5 +15,15 @@
   "signup": "注册",
   "submit": "提交",
   "validation-code-login": "验证码登录",
-  "start": "start"
+  "start": "start",
+  "applyState": {
+    "apply": "apply",
+    "check": "Check",
+    "repay": "Repay",
+    "continueLoan": "Continue Loan"
+  },
+  "modify": "Modify",
+  "old": "old",
+  "loading": "Loading...",
+  "loan": "Loan"
 }

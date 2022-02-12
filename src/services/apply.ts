@@ -10,6 +10,7 @@ import type {
   ApplyStep6Parameter,
   ApplyStep7Parameter,
   ApplyStep8Parameter,
+  BankInfoParameter,
   Calculate,
   CalculateParameter,
   Product,
@@ -159,6 +160,18 @@ export async function pv() {
 export async function uploadBehavior<T extends PAGE_ID>(data: BehaviorModel<T>) {
   return request<BaseResponse>({
     url: '/smart-loan/app/behavior',
+    method: 'POST',
+    data,
+  })
+}
+/**
+ * 更新银行卡号
+ * @param data
+ * @returns
+ */
+export async function updateBankInfo(data: BankInfoParameter) {
+  return request<BaseResponse>({
+    url: '/smart-loan/customer/updateBankInfo',
     method: 'POST',
     data,
   })

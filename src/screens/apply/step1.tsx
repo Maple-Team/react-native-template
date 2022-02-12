@@ -1,6 +1,6 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useMemo } from 'react'
 import { View, Image, StatusBar, ImageBackground } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
+import { StackActions, useNavigation } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { TabHeader, Text } from '@/components'
 import { ScrollView } from 'react-native-gesture-handler'
@@ -17,6 +17,9 @@ import debounce from 'lodash.debounce'
 import { useLocation } from '@/hooks'
 import { toThousands } from '@/utils/util'
 import { APPLY_STATE } from '@/state/enum'
+import emitter from '@/eventbus'
+import { queryUserinfo } from '@/services/user'
+import { useTranslation } from 'react-i18next'
 
 export function Step1() {
   const navigation = useNavigation()
@@ -28,25 +31,67 @@ export function Step1() {
     })
   }, [])
   const location = useLocation()
+  const { t } = useTranslation()
+  console.dir(context.user)
+  console.dir(context.brand)
+  console.dir(context.loading.effects)
   const applyStatus = context.user?.applyStatus
+  const btnText = useMemo(() => {
+    switch (applyStatus) {
+      case APPLY_STATE.LOAN:
+      case APPLY_STATE.WAIT:
+        return t('applyState.check')
+      case APPLY_STATE.NORMAL:
+      case APPLY_STATE.OVERDUE:
+        return t('applyState.repay')
+      case APPLY_STATE.SETTLE:
+        return t('applyState.continueLoan')
+      case APPLY_STATE.EMPTY:
+      case APPLY_STATE.APPLY:
+      case APPLY_STATE.CANCEL:
+      case APPLY_STATE.REJECTED:
+      default:
+        return t('applyState.apply')
+    }
+  }, [applyStatus, t])
+
+  useEffect(() => {
+    queryUserinfo().then(res => {
+      MMKV.setString(KEY_APPLYID, `${res.applyId}`)
+      emitter.emit('USER_INFO', res)
+    })
+  }, [])
   const onSubmit = debounce(
     () => {
-      if (applyStatus !== APPLY_STATE.SETTLE) {
-        // TODO 跳转逻辑
-      } else {
+      switch (applyStatus) {
+        case APPLY_STATE.LOAN:
+        case APPLY_STATE.WAIT:
+          navigation.getParent()?.navigate('Order')
+          break
+        case APPLY_STATE.NORMAL:
+        case APPLY_STATE.OVERDUE:
+          navigation.getParent()?.navigate('Repay')
+          break
+        case APPLY_STATE.SETTLE:
+        case APPLY_STATE.EMPTY:
+        case APPLY_STATE.APPLY:
+        case APPLY_STATE.CANCEL:
+        case APPLY_STATE.REJECTED:
+        default:
+          submit<'1'>({
+            deviceId: context.header.deviceId,
+            phone: context.user?.phone || '',
+            gps: `${location.latitude},${location.longitude}`,
+            idcard: context.user?.idcard || '',
+            applyId: +(MMKV.getString(KEY_APPLYID) || '0'),
+            currentStep: 1,
+            totalSteps: TOTAL_STEPS,
+          }).then(res => {
+            MMKV.setString(KEY_APPLYID, `${res.applyId}`)
+            navigation.getParent()?.dispatch(StackActions.replace('Step2'))
+          })
+          break
       }
-      submit<'1'>({
-        deviceId: context.header.deviceId,
-        phone: context.user?.phone || '',
-        gps: `${location.latitude},${location.longitude}`,
-        idcard: context.user?.idcard || '',
-        applyId: +(MMKV.getString(KEY_APPLYID) || '0'),
-        currentStep: 1,
-        totalSteps: TOTAL_STEPS,
-      }).then(res => {
-        MMKV.setString(KEY_APPLYID, `${res.applyId}`)
-        navigation.getParent()?.navigate('Step2')
-      })
     },
     DEBOUNCE_WAIT,
     DEBOUNCE_OPTIONS
@@ -108,16 +153,20 @@ export function Step1() {
                 //@ts-ignore
                 onPress={onSubmit}
                 type="primary"
-                loading={context.loading.effects.APPLY}
+                loading={context.loading.effects.USER_INFO || context.loading.effects.APPLY}
                 style={{
                   marginTop: 17,
                   backgroundColor: Color.primary,
                   width: '100%',
                   borderRadius: 9,
                 }}>
-                <Text fontSize={18} color="#fff" fontWeight="bold">
-                  Continue Loan
-                  {/* TODO 跳转逻辑 */}
+                <Text
+                  fontSize={18}
+                  color="#fff"
+                  fontWeight="bold"
+                  //@ts-ignore
+                  styles={{ textTransform: 'uppercase' }}>
+                  {btnText}
                 </Text>
               </Button>
             </View>

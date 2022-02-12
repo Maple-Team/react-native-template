@@ -3,7 +3,7 @@ import fs from 'fs'
 import { Command } from 'commander'
 import path from 'path'
 
-const dir = (o: string) => path.resolve(__dirname, `../src/assets/compressed/${o}`)
+const dir = (o: string) => path.resolve(__dirname, `../src/assets/items2/${o}`)
 const rename = (o: string, n: string) =>
   new Promise<void>((resolve, reject) => {
     fs.rename(dir(o), dir(n), err => {

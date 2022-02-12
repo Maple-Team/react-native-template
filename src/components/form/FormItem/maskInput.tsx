@@ -9,7 +9,7 @@ import type { ScrollView } from 'react-native-gesture-handler'
 import TextInputMask from 'react-native-text-input-mask'
 
 interface InputProps {
-  onChangeText: (formatted: string, extracted?: string) => void
+  onChangeText?: (formatted: string, extracted?: string) => void
   onClear?: () => void
   onFocus?: () => void
   onBlur?: () => void

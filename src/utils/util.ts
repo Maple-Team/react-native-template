@@ -4,6 +4,12 @@ export const toThousands = (number: number, thousandSeparator = ',') => {
   }
   return `${number}`.replace(/(?!^)(?=(\d{3})+$)/g, thousandSeparator)
 }
+export const fourGap = (str: string, reg: string = 'd', gapSeparator = ' ') => {
+  if (!str) {
+    return ''
+  }
+  return `${str}`.replace(new RegExp(`(?!^)(?=(\\${reg}{4})+$)`, 'g'), gapSeparator)
+}
 
 export async function errorCaptured(func: Function) {
   try {
@@ -18,8 +24,8 @@ export async function errorCaptured(func: Function) {
  * @param model
  * @returns
  */
-export const filterArrayKey = (model: Record<string, string | boolean | number>) => {
-  const val: Record<string, string | boolean | number> = {}
+export const filterArrayKey = (model: any) => {
+  const val: any = {}
   Object.keys(model)
     .filter(k => !k.endsWith('Array'))
     .forEach(k => {

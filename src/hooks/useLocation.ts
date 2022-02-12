@@ -51,6 +51,7 @@ export const useLocation = () => {
     const gps = `${latitude},${longitude}`
     emitter.emit('UPDATE_GPS', gps)
     MMKV.setString(KEY_GPS, gps)
+    console.log('gps', gps)
   }, [location])
 
   return location

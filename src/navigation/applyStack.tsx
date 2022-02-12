@@ -4,17 +4,17 @@ import { Provider } from '@ant-design/react-native'
 import { useEventListener } from '@/hooks'
 import { Color } from '@/styles/color'
 import { ImageStyle } from 'react-native'
-import { Step2, Step3, Step4, Step5, Step61, Step62, Step7, Step8 } from '@screens/apply'
+import { Step2, Step3, Step4, Step5, Step61, Step62, Step7, Step71, Step8 } from '@screens/apply'
 import type { ViewStyle } from 'react-native'
 import StyleSheet from 'react-native-adaptive-stylesheet'
 import { HeaderLeft, HeaderRight } from '@components/header'
 import { BottomTab } from './bottomTab'
-import { useNavigationState } from '@react-navigation/native'
+import { useNavigation, useNavigationState } from '@react-navigation/native'
 import emitter from '@/eventbus'
 import { queryBrand } from '@/services/apply'
-import { queryUserinfo } from '@/services/user'
 import { MMKV } from '@/utils'
-import { KEY_APPLYID, KEY_BRAND } from '@/utils/constant'
+import { KEY_BRAND } from '@/utils/constant'
+import { t } from 'i18next'
 
 export type ApplyStackList = {
   BottomTab: undefined
@@ -25,6 +25,7 @@ export type ApplyStackList = {
   Step61: undefined
   Step62: undefined
   Step7: undefined
+  Step71: undefined
   Step8: undefined
 }
 
@@ -32,26 +33,14 @@ const Stack = createNativeStackNavigator()
 
 export function ApplyStack() {
   useEventListener()
-  const _ = useNavigationState(state => state)
-  _ &&
-    console.log(
-      'navigation state tree',
-      _.routes,
-      '\r\ntype:',
-      _.type,
-      '\r\nrouteNames:',
-      _.routeNames
-    )
+  console.log(useNavigationState(state => state))
   useEffect(() => {
-    queryUserinfo().then(res => {
-      MMKV.setString(KEY_APPLYID, `${res.applyId}`)
-      emitter.emit('USER_INFO', res)
-    })
     queryBrand().then(brand => {
       emitter.emit('UPDATE_BRAND', brand)
       MMKV.setMap(KEY_BRAND, brand)
     })
   }, [])
+  const na = useNavigation()
   return (
     <Provider>
       <Stack.Navigator
@@ -73,7 +62,13 @@ export function ApplyStack() {
               }}
             />
           ),
-          headerLeft: () => <HeaderLeft onPress={() => navigation.goBack()} />,
+          headerLeft: () => (
+            <HeaderLeft
+              onPress={() => {
+                navigation.goBack()
+              }}
+            />
+          ),
           gestureEnabled: true,
         })}>
         <Stack.Group>
@@ -91,6 +86,14 @@ export function ApplyStack() {
             component={Step2}
             options={() => ({
               title: 'step2',
+              headerLeft: () => (
+                <HeaderLeft
+                  onPress={() => {
+                    // @ts-ignore
+                    na.navigate('BottomTab')
+                  }}
+                />
+              ),
             })}
           />
           <Stack.Screen
@@ -142,11 +145,19 @@ export function ApplyStack() {
             })}
           />
           <Stack.Screen
+            key="Step71"
+            name="Step71"
+            component={Step71}
+            options={() => ({
+              title: 'Step71',
+            })}
+          />
+          <Stack.Screen
             key="Step8"
             name="Step8"
             component={Step8}
             options={() => ({
-              title: 'step8',
+              title: t('loan'),
             })}
           />
         </Stack.Group>

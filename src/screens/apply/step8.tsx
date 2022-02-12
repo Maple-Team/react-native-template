@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { ScrollView } from 'react-native-gesture-handler'
 import debounce from 'lodash.debounce'
 import { Slider } from '@miblanchard/react-native-slider'
+import { ActivityIndicator } from '@ant-design/react-native'
 
 import { PageStyles, Text, Hint } from '@/components'
 import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT, KEY_APPLYID, TOTAL_STEPS } from '@/utils/constant'
@@ -16,14 +17,19 @@ import { useBehavior, useLocation, useSensor } from '@/hooks'
 import { queryProduct, scheduleCalc, submit } from '@/services/apply'
 import { MMKV } from '@/utils'
 import { default as MoneyyaContext } from '@/state'
-import { useLinkTo } from '@react-navigation/native'
+import emitter from '@/eventbus'
 
-export const Step8 = ({ navigation }: NativeStackHeaderProps) => {
+export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
   const sensor = useSensor()
+  const params = (route.params as { bankCardNo?: string }) || {}
 
   const onSubmit = debounce(
     () => {
+      if (!loanCode || !productCode) {
+        emitter.emit('SHOW_MESSAGE', { type: 'info', message: t('choose-product-prompt') })
+        return
+      }
       submit<'8'>({
         sensor: {
           angleX: sensor?.angleX || '',
@@ -31,12 +37,12 @@ export const Step8 = ({ navigation }: NativeStackHeaderProps) => {
           angleZ: sensor?.angleZ || '',
         },
         gps: context.header.gps,
-        loanCode: productInfo?.products[0].loanCode || '',
+        loanCode,
         loanTerms: loanDay,
-        displayLoanDays: productInfo?.products[0].displayLoanDays || 0,
+        displayLoanDays,
         applyAmount: loanAmt,
         maxApplyAmount: productInfo?.maxViewAmount || 0,
-        productCode: productInfo?.productCode || '',
+        productCode,
         applyId: +(MMKV.getString(KEY_APPLYID) || '0'),
         currentStep: 8,
         totalSteps: TOTAL_STEPS,
@@ -47,13 +53,16 @@ export const Step8 = ({ navigation }: NativeStackHeaderProps) => {
     DEBOUNCE_WAIT,
     DEBOUNCE_OPTIONS
   )
-  // 加载转圈
   useBehavior<'P08'>('P08', 'P08_C00', 'P08_C99')
   useLocation()
   const context = useContext(MoneyyaContext)
   const [productInfo, setProductInfo] = useState<Product>()
-  const [loanAmt, setLoanAmt] = useState<number>(6000)
-  const [loanDay, setLoanDay] = useState<number>(7)
+  const [loanAmt, setLoanAmt] = useState<number>(0)
+  const [loanDay, setLoanDay] = useState<number>(0)
+
+  const [displayLoanDays, setDisplayLoanDays] = useState<number>(0)
+  const [loanCode, setLoanCode] = useState<string>('')
+  const [productCode, setProductCode] = useState<string>('')
 
   // 获取产品信息
   useEffect(() => {
@@ -64,47 +73,72 @@ export const Step8 = ({ navigation }: NativeStackHeaderProps) => {
         setProductInfo(res)
         setLoanAmt(res.maxAmount)
         setLoanDay(res.maxLoanTerms)
+        const maxProduct = res.products.find(({ available }) => available === 'Y')
+        if (maxProduct) {
+          setLoanCode(maxProduct.loanCode)
+          setProductCode(maxProduct.productCode)
+        }
       })
     }
   }, [context.user?.phone])
   // 试算信息
   const [calcResult, setcalcResult] = useState<Calculate>()
   useEffect(() => {
-    if (productInfo?.loanCode && productInfo?.products) {
+    if (loanCode && displayLoanDays > 0) {
       scheduleCalc({
-        displayLoanDays: productInfo?.products[0].displayLoanDays || 0,
+        displayLoanDays,
         loanAmt,
-        loanCode: productInfo?.loanCode,
+        loanCode,
         loanDay,
       }).then(res => {
         console.log('calc', res)
         res && setcalcResult(res)
       })
     }
-  }, [loanAmt, loanDay, productInfo?.loanCode, productInfo?.products])
-  // loanterm信息
-  const loanTerms: {
+  }, [loanAmt, loanDay, loanCode, displayLoanDays])
+  const loanTermArray: {
     day: number
     activate: boolean
-  }[] = useMemo(() => {
-    const loanStep = productInfo?.loanStep!
-    const maxViewTerms = productInfo?.maxViewTerms!
-    const maxLoanTerms = productInfo?.maxLoanTerms!
-    const data = Array.from({ length: maxViewTerms / loanStep - 1 }, (_, i) => i)
-    data.push(maxViewTerms)
-    return data.map(item => ({
-      day: (item + 1) * loanStep,
-      activate: maxLoanTerms >= item,
-    }))
-  }, [productInfo])
-  const linkTo = useLinkTo()
+    productCode: string
+    loanCode: string
+    loanTerms: number
+  }[] = useMemo(
+    () =>
+      productInfo
+        ? productInfo.products.map(
+            ({
+              displayLoanDays: day,
+              available,
+              loanTerms: _loanTerms,
+              loanCode: _loanCode,
+              productCode: _productCode,
+            }) => ({
+              day,
+              activate: available === 'Y',
+              loanTerms: _loanTerms,
+              loanCode: _loanCode,
+              productCode: _productCode,
+            })
+          )
+        : [],
+    [productInfo]
+  )
+
   return (
     <SafeAreaView style={PageStyles.sav}>
       <StatusBar translucent={false} backgroundColor={Color.primary} barStyle="default" />
-      <Hint
-        hint="Maintaining a good repayment behavior will help you to increase your loan amount. 96% of users loan amount haveincreased subsequently."
-        hintColor="rgba(255, 50, 50, 1)"
-        img={require('@/assets/compressed/apply/loan_notice.webp')}
+      <View style={{ paddingHorizontal: 12, backgroundColor: '#fff', flexDirection: 'row' }}>
+        <Hint
+          hint="Maintaining a good repayment behavior will help you to increase your loan amount. 96% of users loan amount haveincreased subsequently."
+          hintColor="rgba(255, 50, 50, 1)"
+          img={require('@/assets/compressed/apply/loan_notice.webp')}
+        />
+      </View>
+      <ActivityIndicator
+        animating={context.loading.effects.PRODUCT}
+        toast
+        size="large"
+        text={t('loading')}
       />
       <ScrollView style={PageStyles.scroll} keyboardShouldPersistTaps="handled">
         <View style={PageStyles.container}>
@@ -171,32 +205,43 @@ export const Step8 = ({ navigation }: NativeStackHeaderProps) => {
                 </Text>
               </View>
               <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                {loanTerms.map(({ day, activate }) => (
-                  <Pressable
-                    key={`${day}`}
-                    disabled={!activate}
-                    onPress={() => {
-                      setLoanDay(day)
-                    }}
-                    style={{
-                      backgroundColor: activate
-                        ? loanDay === day
-                          ? Color.primary
-                          : '#fff'
-                        : '#eeeeee',
-                      borderColor: activate ? Color.primary : '#eeeeee',
-                      borderWidth: 1,
-                      borderRadius: 17.5,
-                      paddingHorizontal: 33,
-                      paddingVertical: 12.5,
-                    }}>
-                    <Text
-                      fontSize={13}
-                      color={activate ? (loanDay === day ? '#fff' : '#333') : '#777'}>
-                      {`${day}`.padStart(2, '0')}
-                    </Text>
-                  </Pressable>
-                ))}
+                {loanTermArray.map(
+                  ({
+                    day,
+                    activate,
+                    loanCode: _loanCode,
+                    productCode: _productCode,
+                    loanTerms,
+                  }) => (
+                    <Pressable
+                      key={`${day}`}
+                      disabled={!activate}
+                      onPress={() => {
+                        setDisplayLoanDays(day)
+                        setLoanDay(loanTerms)
+                        setLoanCode(_loanCode)
+                        setProductCode(_productCode)
+                      }}
+                      style={{
+                        backgroundColor: activate
+                          ? loanDay === day
+                            ? Color.primary
+                            : '#fff'
+                          : '#eeeeee',
+                        borderColor: activate ? Color.primary : '#eeeeee',
+                        borderWidth: 1,
+                        borderRadius: 17.5,
+                        paddingHorizontal: 33,
+                        paddingVertical: 12.5,
+                      }}>
+                      <Text
+                        fontSize={13}
+                        color={activate ? (loanDay === day ? '#fff' : '#333') : '#777'}>
+                        {`${day}`.padStart(2, '0')}
+                      </Text>
+                    </Pressable>
+                  )
+                )}
               </View>
             </View>
             <View
@@ -214,11 +259,19 @@ export const Step8 = ({ navigation }: NativeStackHeaderProps) => {
               <RightBottomDot />
               <ListInfo
                 data={[
-                  { name: 'Loan amount', value: `${loanAmt}`, type: 'money' },
-                  { name: 'Loan days', value: `${loanDay}`, type: 'day' },
-                  { name: 'Transfer amount', value: '261800', type: 'money' },
-                  { name: 'Fee', value: `${calcResult?.svcFee}`, type: 'money' },
-                  { name: 'Collection bank card', value: '261800', type: 'bank' },
+                  { name: 'Loan amount', value: loanAmt, type: 'money' },
+                  { name: 'Loan days', value: loanDay, type: 'day' },
+                  { name: 'Transfer amount', value: productInfo?.maxAmount || 0, type: 'money' },
+                  {
+                    name: 'Fee',
+                    value: calcResult?.svcFee ? calcResult?.svcFee : 0,
+                    type: 'money',
+                  },
+                  {
+                    name: 'Collection bank card',
+                    value: params.bankCardNo ? +params.bankCardNo : 0, // FIXME ${params?.bankCardNo
+                    type: 'bank',
+                  },
                 ]}
               />
               <View
@@ -228,7 +281,11 @@ export const Step8 = ({ navigation }: NativeStackHeaderProps) => {
                   paddingVertical: 13,
                   flexDirection: 'row',
                 }}>
-                <Pressable onPress={() => linkTo('Step7')}>
+                <Pressable
+                  onPress={() => {
+                    // @ts-ignore
+                    navigation.navigate('Step71')
+                  }}>
                   <Text fontSize={10} color={Color.primary}>
                     {'->'}
                     {'    '}
@@ -239,33 +296,58 @@ export const Step8 = ({ navigation }: NativeStackHeaderProps) => {
             </View>
             <View style={{ alignItems: 'center' }}>
               <Text fontSize={15} color={Color.primary}>
-                Bill information
+                {t('Bill-information')}
               </Text>
               <ListInfo
-                data={[
-                  { name: 'First repayment date ', value: '261800', type: 'date' },
-                  { name: 'First repayment amount', value: '7', type: 'money' },
-                  { name: 'Second repayment date', value: '261800', type: 'date' },
-                  {
-                    name: 'Second repayment amount ',
-                    value: '261800',
-                    type: 'money',
-                    extra: (
-                      <View
-                        style={{
-                          paddingHorizontal: 7,
-                          paddingVertical: 6,
-                          backgroundColor: Color.primary,
-                          borderRadius: 5,
-                          marginLeft: 9,
-                        }}>
-                        <Text fontSize={12} fontWeight="bold" color="#fff">
-                          Free
-                        </Text>
-                      </View>
-                    ),
-                  },
-                ]}
+                data={
+                  calcResult?.instalmentMark === 'Y'
+                    ? [
+                        { name: 'First repayment date ', value: 1772832832, type: 'date' },
+                        { name: 'First repayment amount', value: 7, type: 'money' },
+                      ]
+                    : [
+                        { name: 'Loan amount', value: loanAmt, type: 'money' },
+                        { name: 'Loan days', value: loanDay, type: 'day' },
+                      ]
+                }
+              />
+              {calcResult?.instalmentMark === 'Y' && (
+                <View
+                  style={{
+                    height: 10,
+                    width: '90%',
+                    alignSelf: 'center',
+                    marginVertical: 2,
+                  }}
+                />
+              )}
+              <ListInfo
+                data={
+                  calcResult?.instalmentMark === 'Y'
+                    ? [
+                        { name: 'Second repayment date', value: 1772832832, type: 'date' },
+                        {
+                          name: 'Second repayment amount ',
+                          value: 261800,
+                          type: 'money',
+                          extra: (
+                            <View
+                              style={{
+                                paddingHorizontal: 7,
+                                paddingVertical: 6,
+                                backgroundColor: Color.primary,
+                                borderRadius: 5,
+                                marginLeft: 9,
+                              }}>
+                              <Text fontSize={12} fontWeight="bold" color="#fff">
+                                Free
+                              </Text>
+                            </View>
+                          ),
+                        },
+                      ]
+                    : []
+                }
               />
             </View>
           </View>
@@ -345,7 +427,7 @@ type ValueType = 'day' | 'money' | 'bank' | 'date'
 const ListInfo = ({
   data,
 }: {
-  data: { name: string; value: string; type: ValueType; extra?: ReactNode }[]
+  data: { name: string; value: number; type: ValueType; extra?: ReactNode }[]
 }) => {
   return (
     <View style={{ width: '100%', paddingHorizontal: 17 }}>
@@ -382,12 +464,13 @@ const ListInfo = ({
   )
 }
 
-const ValueText = ({ value, type }: { value: string; type: ValueType }) => {
+const ValueText = ({ value, type }: { value: number; type: ValueType }) => {
+  const { t } = useTranslation()
   switch (type) {
     case 'bank':
       return (
         <Text fontSize={12} color="rgba(28, 37, 42, 1)">
-          {value}***
+          **** **** **** {`${value}`.substring(`${value}`.length - 4)}
         </Text>
       )
     case 'day':
@@ -399,7 +482,7 @@ const ValueText = ({ value, type }: { value: string; type: ValueType }) => {
     case 'money':
       return (
         <Text fontSize={12} color="rgba(28, 37, 42, 1)">
-          ${value}
+          {value ? t('intlCurrency', { val: value }) : 'N/A'}
         </Text>
       )
     default:

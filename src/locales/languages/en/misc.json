@@ -1,5 +1,10 @@
 {
   "permission blocked": "permission blocked",
   "permission unavailable": "permission unavailable",
-  "tostep7": "Click here to modify bank card"
+  "tostep7": "Click here to modify bank card",
+  "Bill-information": "Bill information",
+  "information": {
+    "confirmed": " Information Confirmed"
+  },
+  "choose-product-prompt": "please choose loan terms"
 }

@@ -379,3 +379,11 @@ export interface ImageUploadParameter {
   deviceId: string
   isSupplement: BOOL
 }
+export interface BankInfoParameter {
+  cardNoType: string
+  bankCardNo: string
+  bankCode: string
+  customerId: number
+  validateCode: string
+  autoRepayment: false
+}
