@@ -46,7 +46,10 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
       .required(t('lastname.required')),
     birth: Yup.string().required(t('birth.required')),
     sex: Yup.string().required(t('gender.required')),
-    idcard: Yup.string().max(18, t('idcard.invalid')).required(t('idcard.required')),
+    idcard: Yup.string()
+      .min(18, t('idcard.invalid'))
+      .max(18, t('idcard.invalid')) // 英文加数字都有
+      .required(t('idcard.required')),
     maritalStatus: Yup.string().required(t('maritalStatus.required')),
     homeAddrProvinceCode: Yup.string().required(t('homeAddrProvinceCode.required')),
     homeAddrCityCode: Yup.string().required(t('homeAddrCityCode.required')),

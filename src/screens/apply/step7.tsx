@@ -175,6 +175,7 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
                           }
                           value={state.bankCardNo}
                           field={'bankCardNo'}
+                          // TODO 动态校验
                           keyboardType="phone-pad"
                           label={t('bankCardNo.label') + '_card'}
                           placeholder={t('bankCardNo.placeholder')}
@@ -271,6 +272,7 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
                   </Text>
                   <Text color="#333030" fontSize={15} fontWeight="bold" fontFamily="Arial-BoldMT">
                     {state.bankCodeName}
+                    {/* TODO 处理缓存 */}
                   </Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
@@ -282,6 +284,7 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
                   </Text>
                   <Text color="#333030" fontSize={15} fontWeight="bold" fontFamily="Arial-BoldMT">
                     {state.cardNoType}
+                    {/*TODO 展示对应的name */}
                   </Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>

@@ -1,9 +1,9 @@
 import { Home } from '@screens/apply'
-import { OrderStack } from './orderStack'
 import { UserStack } from './userStack'
 import React from 'react'
 import { Image } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { BillsList } from '@screens/order'
 
 const Tab = createBottomTabNavigator()
 
@@ -26,7 +26,7 @@ export const BottomTab = () => (
     <Tab.Screen
       name="Order"
       key="Order"
-      component={OrderStack}
+      component={BillsList}
       options={{
         headerShown: false,
         tabBarIcon: ({ focused }) => {

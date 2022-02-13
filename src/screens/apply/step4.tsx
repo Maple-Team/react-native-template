@@ -67,8 +67,8 @@ export const Step4 = ({ navigation }: NativeStackHeaderProps) => {
                       hint="El frente de tu ID"
                       title={'Proporciona tu INE/IFE por favor'}
                       bg={require('@assets/compressed/apply/id1.webp')}
-                      imageType="INE_OR_IFE_BACK"
-                      cameraType="back"
+                      imageType="INE_OR_IFE_FRONT"
+                      cameraType="front"
                       onUploadSuccess={id => setFieldValue('idcard1', id)}
                       reportExif={exif => {
                         setExif(exif)

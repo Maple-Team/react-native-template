@@ -13,6 +13,16 @@ export async function queryOrders() {
   })
 }
 /**
+ * 待还款列表
+ * @returns
+ */
+export async function queryPaymentList() {
+  return request<Order[]>({
+    url: '/smart-loan/contract/repayList',
+    method: 'POST',
+  })
+}
+/**
  * 合同详情
  * @param params
  * @returns
@@ -44,20 +54,25 @@ export async function queryOrderAgreement(data: {
 }
 /**
  * 获取还款码
- * @param params
+ * @param data
  * @returns
  */
-export async function queryPayCode(params: { applyId: number; amount: number }) {
-  return request<BaseResponse>({
-    url: '/smart-loan/contract/barCode',
+export async function queryPayCode(data: FormData) {
+  return request<{ barcode: string; barcodeUrl: string }>({
+    url: '/smart-loan/pay/barCode',
     method: 'POST',
-    params,
+    data,
   })
 }
-export async function queryClabe(params: { applyId: number }) {
-  return request<BaseResponse>({
+/**
+ * 获取clabe账号
+ * @param data
+ * @returns
+ */
+export async function queryClabe(data: FormData) {
+  return request<{ clabe: string }>({
     url: '/smart-loan/pay/clabe',
     method: 'POST',
-    params,
+    data,
   })
 }

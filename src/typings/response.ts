@@ -17,13 +17,23 @@ export interface Version {
 }
 export interface Brand {
   channelInfo: ChannelInfo
+  /**
+   * 注册环节验证次数，如果1次，读秒结束跳过不校验
+   * TODO 验证几次后跳过
+   */
   codeValidatecount: number
+  /**
+   * 注册环节是否需要校验验证码，暂不取值处理
+   */
   isValidateCode: string
+  /**
+   * 验证码读秒数, 短信服务不佳时跳过
+   */
+  smsWaitInterval: number
   livenessAuthCount: number
   livenessAuthEnable: BOOL
   serviceInfo: ServiceInfo
   smsSendEnable: string
-  smsWaitInterval: number
 }
 
 interface ServiceInfo {

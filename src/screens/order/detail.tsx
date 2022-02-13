@@ -1,5 +1,5 @@
 import { queryOrderDetail } from '@/services/order'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { SafeAreaView, StatusBar, View, Image, type ViewStyle } from 'react-native'
 import { PageStyles, Text } from '@/components'
 import { Order } from '@/typings/order'
@@ -8,6 +8,11 @@ import { ApplyButton } from '@components/form/FormItem'
 import { default as MoneyyaContext } from '@/state'
 import { ScrollView } from 'react-native-gesture-handler'
 
+interface Status {
+  showButton?: boolean
+  onPress?: () => void
+  text?: string
+}
 export default ({ route }: { route: any }) => {
   const { applyId } = route.params as { applyId: string }
   const [data, setData] = useState<Order>()
@@ -22,6 +27,34 @@ export default ({ route }: { route: any }) => {
   }, [applyId])
   const { t } = useTranslation()
   const na = useNavigation()
+  const status: Status = useMemo(() => {
+    let value: Status = {}
+    switch (data?.contractStatus) {
+      case APPLY_STATE.NORMAL:
+      case APPLY_STATE.OVERDUE:
+        value = {
+          showButton: true,
+          text: t('applyState.repay'),
+          onPress: () => {
+            //@ts-ignore
+            na.navigate('Payment', {
+              applyId: data?.applyId,
+              repayAmount: data?.repayAmount,
+            })
+          },
+        }
+        break
+      case APPLY_STATE.SETTLE:
+      case APPLY_STATE.WAIT:
+      case APPLY_STATE.LOAN:
+      case APPLY_STATE.CANCEL:
+      case APPLY_STATE.REJECTED:
+      default:
+        value = { showButton: false }
+        break
+    }
+    return value
+  }, [data?.applyId, data?.contractStatus, data?.repayAmount, na, t])
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar translucent={false} backgroundColor={Color.primary} barStyle="default" />
@@ -64,7 +97,18 @@ export default ({ route }: { route: any }) => {
               </View>
             </View>
           </View>
-          <View style={style.itemContainer}>
+          <View
+            style={[
+              style.itemContainer,
+              status.showButton
+                ? data?.instalmentMark === 'Y'
+                  ? {
+                      paddingBottom: 0,
+                      marginBottom: 20,
+                    }
+                  : {}
+                : { paddingBottom: 10 },
+            ]}>
             <View style={style.itemWrapper}>
               <Text color="#869096" fontSize={14}>
                 Order number
@@ -78,7 +122,7 @@ export default ({ route }: { route: any }) => {
                 Loan amount
               </Text>
               <Text color="#869096" fontSize={14}>
-                MXN 6,000
+                MXN {data?.loanAmount}
               </Text>
             </View>
             <View style={style.itemWrapper}>
@@ -86,7 +130,55 @@ export default ({ route }: { route: any }) => {
                 Loan Term
               </Text>
               <Text color="#869096" fontSize={14}>
-                7days
+                {data?.displayLoanDays}days
+              </Text>
+            </View>
+            <View style={style.itemWrapper}>
+              <Text color="#869096" fontSize={14}>
+                Filing date
+              </Text>
+              <Text color="#869096" fontSize={14}>
+                {data?.applyDate}
+              </Text>
+            </View>
+            <View style={style.itemWrapper}>
+              <Text color="#869096" fontSize={14}>
+                Payment date
+              </Text>
+              <Text color="#869096" fontSize={14}>
+                {data?.loanDate}
+              </Text>
+            </View>
+            <View style={style.itemWrapper}>
+              <Text color="#869096" fontSize={14}>
+                Repayment date
+              </Text>
+              <Text color="#869096" fontSize={14}>
+                {data?.repayDate}
+              </Text>
+            </View>
+            <View style={style.itemWrapper}>
+              <Text color="#869096" fontSize={14}>
+                Service Fee
+              </Text>
+              <Text color="#869096" fontSize={14}>
+                MXN {toThousands(0)}
+              </Text>
+            </View>
+            <View style={style.itemWrapper}>
+              <Text color="#869096" fontSize={14}>
+                Amount of repayment
+              </Text>
+              <Text color="#869096" fontSize={14}>
+                MXN {toThousands(data?.repayAmount)}
+              </Text>
+            </View>
+            <View style={style.itemWrapper}>
+              <Text color="#869096" fontSize={14}>
+                Repayment amount
+              </Text>
+              <Text color="#869096" fontSize={14}>
+                MXN {toThousands(data?.realRepayAmount)}
               </Text>
             </View>
             <View style={[style.itemWrapper, { borderBottomWidth: 0 }]}>
@@ -94,26 +186,98 @@ export default ({ route }: { route: any }) => {
                 Status
               </Text>
               <Text color="#869096" fontSize={14}>
-                To be repaid
+                {data?.contractStatusName}
               </Text>
             </View>
           </View>
-          <View style={PageStyles.btnWrap}>
-            <ApplyButton
-              type={'primary'}
-              onPress={() => {
+          {data?.instalmentMark === 'Y' && (
+            <View
+              style={[
+                style.itemContainer,
+                status.showButton ? { borderRadius: 14, paddingTop: 10 } : { paddingBottom: 10 },
+              ]}>
+              <>
+                <View style={{ paddingBottom: 10, paddingLeft: 10 }}>
+                  <Text>Stage 1/{data?.paymentSchedules?.length}</Text>
+                </View>
+                <View
+                  style={{
+                    borderColor: '#DDE3E8',
+                    borderWidth: 1,
+                    borderRadius: 14,
+                    paddingVertical: 10,
+                    paddingHorizontal: 10,
+                    borderStyle: 'dashed',
+                    marginBottom: 10,
+                  }}>
+                  <View style={[style.itemWrapper]}>
+                    <Text color="#869096" fontSize={14}>
+                      第一次应还
+                    </Text>
+                    <Text color="#869096" fontSize={14}>
+                      MXN{' '}
+                      {toThousands(
+                        data?.paymentSchedules ? data?.paymentSchedules[0].loanTermTotalAmt : 0
+                      )}
+                    </Text>
+                  </View>
+                  <View style={[style.itemWrapper, { borderBottomWidth: 0 }]}>
+                    <Text color="#869096" fontSize={14}>
+                      第一次还款时间
+                    </Text>
+                    <Text color="#869096" fontSize={14}>
+                      {data?.paymentSchedules ? data?.paymentSchedules[0].loanPmtDueDate : 0}
+                    </Text>
+                  </View>
+                </View>
+              </>
+              {/*分期长度最多两期*/}
+              {data?.paymentSchedules?.length === 2 && (
+                <>
+                  <View style={{ paddingBottom: 10, paddingLeft: 10 }}>
+                    <Text>Stage 1/{data?.paymentSchedules.length}</Text>
+                  </View>
+                  <View
+                    style={{
+                      borderColor: '#DDE3E8',
+                      borderWidth: 1,
+                      borderRadius: 14,
+                      paddingVertical: 10,
+                      paddingHorizontal: 10,
+                      borderStyle: 'dashed',
+                    }}>
+                    <View style={[style.itemWrapper]}>
+                      <Text color="#869096" fontSize={14}>
+                        第二次应还
+                      </Text>
+                      <Text color="#869096" fontSize={14}>
+                        MXN 6.618 freeMark
+                      </Text>
+                    </View>
+                    <View style={[style.itemWrapper, { borderBottomWidth: 0 }]}>
+                      <Text color="#869096" fontSize={14}>
+                        第二次还款时间
+                      </Text>
+                      <Text color="#869096" fontSize={14}>
+                        2020-12-08
+                      </Text>
+                    </View>
+                  </View>
+                </>
+              )}
+            </View>
+          )}
+          {status.showButton && (
+            <View style={PageStyles.btnWrap}>
+              <ApplyButton
+                type={'primary'}
                 //@ts-ignore
-                na.navigate('Repay', {
-                  screen: 'Payment',
-                  params: {
-                    applyId: '23423423423',
-                  },
-                })
-              }}
-              loading={context.loading.effects.APPLY}>
-              <Text color={'#fff'}>{t('applyState.repay')}</Text>
-            </ApplyButton>
-          </View>
+                onPress={status.onPress}
+                loading={context.loading.effects.APPLY}>
+                <Text color={'#fff'}>{status.text}</Text>
+              </ApplyButton>
+            </View>
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -123,6 +287,8 @@ export default ({ route }: { route: any }) => {
 import StyleSheet from 'react-native-adaptive-stylesheet'
 import { Color } from '@/styles/color'
 import { useNavigation } from '@react-navigation/native'
+import { APPLY_STATE } from '@/state/enum'
+import { toThousands } from '@/utils/util'
 
 const style = StyleSheet.create<{
   itemWrapper: ViewStyle
@@ -131,7 +297,7 @@ const style = StyleSheet.create<{
   itemContainer: {
     backgroundColor: '#fff',
     paddingHorizontal: 15,
-    paddingBottom: 150,
+    paddingBottom: 100,
     borderBottomLeftRadius: 14,
     borderBottomRightRadius: 14,
   },

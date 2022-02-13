@@ -8,7 +8,7 @@ import { Button } from '@ant-design/react-native'
 import { Color } from '@/styles/color'
 import Swiper from 'react-native-swiper'
 import Styles from './style'
-import { queryVersion, submit } from '@/services/apply'
+import { pv, queryVersion, submit } from '@/services/apply'
 import { default as MoneyyaContext } from '@/state'
 
 import { MMKV } from '@/utils/storage'
@@ -20,7 +20,13 @@ import { APPLY_STATE } from '@/state/enum'
 import emitter from '@/eventbus'
 import { queryUserinfo } from '@/services/user'
 import { useTranslation } from 'react-i18next'
-
+interface Status {
+  btnText: string
+  amount: number
+  prompt: string
+  repayDate?: string
+  repayAmount?: string
+}
 export function Step1() {
   const navigation = useNavigation()
   const context = useContext(MoneyyaContext)
@@ -30,30 +36,75 @@ export function Step1() {
       console.log('version', res)
     })
   }, [])
+
+  useEffect(() => {
+    pv({ userId: `${context.user?.userId}` || '' })
+  }, [context.user?.userId])
+
   const location = useLocation()
   const { t } = useTranslation()
-  console.dir(context.user)
-  console.dir(context.brand)
-  console.dir(context.loading.effects)
+  console.log(context.user)
+  console.log(context.loading.effects)
   const applyStatus = context.user?.applyStatus
-  const btnText = useMemo(() => {
+  const status: Status = useMemo(() => {
+    let value: Status = {
+      btnText: '',
+      amount: 0,
+      prompt: '',
+    }
     switch (applyStatus) {
       case APPLY_STATE.LOAN:
       case APPLY_STATE.WAIT:
-        return t('applyState.check')
+        value = {
+          btnText: t('applyState.check'),
+          prompt: 'Apply amount',
+          amount: context.user?.applyAmount || 0,
+        }
+        break
       case APPLY_STATE.NORMAL:
       case APPLY_STATE.OVERDUE:
-        return t('applyState.repay')
+        value = {
+          btnText: t('applyState.repay'),
+          prompt: '请您保持良好的还款习惯',
+          repayAmount: `${context.user?.repayAmount}` || '',
+          repayDate: context.user?.repayDate || '',
+          amount: 0,
+        }
+        break
       case APPLY_STATE.SETTLE:
-        return t('applyState.continueLoan')
+        value = {
+          btnText: t('applyState.continueLoan'),
+          prompt: 'Available balance',
+          amount: context.user?.maxAmount || 0,
+        }
+        break
       case APPLY_STATE.EMPTY:
       case APPLY_STATE.APPLY:
+        value = {
+          btnText: t('applyState.apply'),
+          prompt: 'The maximum amount can be borrowed',
+          amount: context.user?.MaxViewAmount || 0,
+        }
+        break
       case APPLY_STATE.CANCEL:
       case APPLY_STATE.REJECTED:
       default:
-        return t('applyState.apply')
+        value = {
+          btnText: t('applyState.apply'),
+          prompt: 'Available balance',
+          amount: context.user?.maxAmount || 0,
+        }
     }
-  }, [applyStatus, t])
+    return value
+  }, [
+    applyStatus,
+    context.user?.MaxViewAmount,
+    context.user?.applyAmount,
+    context.user?.maxAmount,
+    context.user?.repayAmount,
+    context.user?.repayDate,
+    t,
+  ])
 
   useEffect(() => {
     queryUserinfo().then(res => {
@@ -70,11 +121,15 @@ export function Step1() {
           break
         case APPLY_STATE.NORMAL:
         case APPLY_STATE.OVERDUE:
-          navigation.getParent()?.navigate('Repay')
+          // TODO 待还款列表
+          // navigation.getParent()?.navigate('Payment', {
+          //   applyId: context.user?.applyId,
+          //   amount: context.user?.repayAmount,
+          // })
           break
         case APPLY_STATE.SETTLE:
-        case APPLY_STATE.EMPTY:
         case APPLY_STATE.APPLY:
+        case APPLY_STATE.EMPTY:
         case APPLY_STATE.CANCEL:
         case APPLY_STATE.REJECTED:
         default:
@@ -88,9 +143,17 @@ export function Step1() {
             totalSteps: TOTAL_STEPS,
           }).then(res => {
             MMKV.setString(KEY_APPLYID, `${res.applyId}`)
-            navigation.getParent()?.dispatch(StackActions.replace('Step2'))
+            // NOTE 快捷通道
+            if (context.user?.continuedLoan === 'Y') {
+              navigation.getParent()?.dispatch(StackActions.replace('Step8'))
+            } else {
+              if (res?.fromOther === 'Y') {
+                navigation.getParent()?.dispatch(StackActions.replace('Step3'))
+              } else {
+                navigation.getParent()?.dispatch(StackActions.replace('Step2'))
+              }
+            }
           })
-          break
       }
     },
     DEBOUNCE_WAIT,
@@ -130,25 +193,48 @@ export function Step1() {
                 borderWidth: 1,
               }}>
               <Text fontSize={14} color="rgba(1, 0, 56, 1)">
-                Available balance
+                {status.prompt}
               </Text>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'flex-start',
-                }}>
-                <Text
-                  fontSize={22}
-                  fontWeight="bold"
-                  color={Color.primary}
-                  //@ts-ignore
-                  styles={{ top: 12 }}>
-                  $
-                </Text>
-                <Text fontSize={57} color={Color.primary} fontWeight="bold">
-                  {toThousands(6600)}
-                </Text>
-              </View>
+
+              {status.repayAmount ? (
+                <>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                    }}>
+                    <View style={{ width: '50%' }}>
+                      <Text>还款日期</Text>
+                      <Text>{status.repayDate}</Text>
+                    </View>
+                    <View style={{ width: '50%' }}>
+                      <Text>还款金额</Text>
+                      <Text>{status.repayAmount}</Text>
+                    </View>
+                  </View>
+                </>
+              ) : (
+                <>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'flex-start',
+                    }}>
+                    <Text
+                      fontSize={22}
+                      fontWeight="bold"
+                      color={Color.primary}
+                      //@ts-ignore
+                      styles={{ top: 12 }}>
+                      $
+                    </Text>
+                    <Text fontSize={57} color={Color.primary} fontWeight="bold">
+                      {toThousands(status.amount)}
+                    </Text>
+                  </View>
+                </>
+              )}
               <Button
                 //@ts-ignore
                 onPress={onSubmit}
@@ -166,7 +252,7 @@ export function Step1() {
                   fontWeight="bold"
                   //@ts-ignore
                   styles={{ textTransform: 'uppercase' }}>
-                  {btnText}
+                  {status.btnText}
                 </Text>
               </Button>
             </View>

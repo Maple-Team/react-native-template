@@ -55,16 +55,41 @@ export function Payment() {
       {!visible ? (
         <ScrollView style={[PageStyles.scroll, { paddingHorizontal: 0, paddingTop: 26.5 }]}>
           <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-            <Image source={require('@/assets/compressed/additional/cash.webp')} />
-            <Text>Repayment amount</Text>
-            <Text>MXN {toThousands(params?.repayAmount || 0)}</Text>
-            <Text>There is one unpaid bill and 6 days overdue</Text>
+            <Image
+              source={require('@/assets/compressed/additional/cash.webp')}
+              resizeMode="cover"
+              style={{ marginBottom: 18.5 }}
+            />
+            <Text fontFamily="Arial-BoldMT" fontWeight="bold" fontSize={15} color="#26272B">
+              Repayment amount
+            </Text>
+            <Text
+              //@ts-ignore
+              styles={{ paddingTop: 21.5, paddingBottom: 16.5 }}
+              fontFamily="Arial-BoldMT"
+              fontWeight="bold"
+              fontSize={37}
+              color="#26272B">
+              MXN {toThousands(params?.repayAmount || 0)}
+            </Text>
+            <Text fontFamily="ArialMT" fontSize={12} color="#26272B">
+              There is one unpaid bill and 6 days overdue
+            </Text>
           </View>
-          <View>
-            <Text>我们建议您在此页面立即偿还贷款，以免影响您的下次贷款申请。</Text>
-          </View>
-          <View>
-            <Text>
+          <View
+            style={{
+              backgroundColor: '#8BA2B0',
+              borderRadius: 5,
+              marginHorizontal: 8,
+              paddingTop: 5,
+              paddingBottom: 8.5,
+              paddingHorizontal: 14,
+              marginVertical: 16,
+            }}>
+            <Text color="#fff" fontSize={12}>
+              我们建议您在此页面立即偿还贷款，以免影响您的下次贷款申请。
+            </Text>
+            <Text color="#fff" fontSize={12}>
               我们需要几分钟来处理您的还贷申请，请耐心等待。如果收不到验证码，请重新发送验证码。谢谢您的配合。
             </Text>
           </View>

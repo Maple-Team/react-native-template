@@ -87,7 +87,7 @@ export function NormalDatePicker({
         mode="date"
         onConfirm={(date: Date) => {
           setVisible(false)
-          onChange(dayjs(date).format('YYYY-MM-DD'))
+          onChange(dayjs(date).format('DD-MM-YYYY'))
         }}
         onCancel={() => setVisible(false)}
         locale={i18n.language}

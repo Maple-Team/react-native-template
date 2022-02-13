@@ -18,6 +18,7 @@ import { default as MoneyyaContext } from '@/state'
 import type { ApplyParameter, ApplyStep3Parameter, Contact } from '@/typings/apply'
 import type { Dict, DictField } from '@/typings/response'
 
+//TODO fromOther==='Y' 少填一个联系人
 export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
   const schema = Yup.object().shape({

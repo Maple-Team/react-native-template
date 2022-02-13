@@ -49,13 +49,13 @@ export function BillsList() {
    */
   const getStateContent = useCallback((item: Order) => {
     let content: { text?: string; color: string; state: number } = {
-      text: 'check',
+      text: item.contractStatusName,
       color: Color.primary,
       state: 0,
     }
     switch (item.contractStatus) {
       case APPLY_STATE.OVERDUE:
-        content = { text: 'repay', color: '#FF4800', state: -1 }
+        content = { text: item.contractStatusName, color: '#FF4800', state: -1 }
         break
       case APPLY_STATE.SETTLE:
         content = { color: '#FF4800', state: 1 }
@@ -162,6 +162,12 @@ export function BillsList() {
 
                     {getStateContent(item).state !== 1 && (
                       <Pressable
+                        onPress={() =>
+                          //@ts-ignore
+                          na.navigate('BillsDetail', {
+                            applyId: item.applyId,
+                          })
+                        }
                         style={{
                           backgroundColor: getStateContent(item).color,
                           paddingVertical: 11,

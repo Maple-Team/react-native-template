@@ -1,4 +1,8 @@
-import React, { useContext, useMemo, useState } from 'react'
+import React, {
+  // useContext,
+  useMemo,
+  useState,
+} from 'react'
 import { Pressable, TextInput, View, Image } from 'react-native'
 import type { KeyboardTypeOptions } from 'react-native'
 import { ErrorMessage } from 'formik'
@@ -6,7 +10,7 @@ import { useTranslation } from 'react-i18next'
 import debounce from 'lodash.debounce'
 import { useInterval } from 'usehooks-ts'
 
-import { default as MoneyyaContext } from '@/state'
+// import { default as MoneyyaContext } from '@/state'
 import type { ValidateCodeType } from '@/typings/request'
 import styles from './style'
 import Text from '@components/Text'
@@ -26,7 +30,7 @@ interface InputProps {
   phone: string
   validateCodeType: ValidateCodeType
 }
-
+// 后台数据动态处理
 export const ValidateCode = ({
   onChangeText,
   value,
@@ -40,16 +44,16 @@ export const ValidateCode = ({
   validateCodeType,
 }: InputProps) => {
   const { t } = useTranslation()
-  const context = useContext(MoneyyaContext)
+  // const context = useContext(MoneyyaContext)
   const [count, setCount] = useState<number>(60)
-  const [times, setTimtes] = useState<number>(context.brand?.codeValidatecount || 5) // Brand info
+  // FIXME
+  // const [times, setTimtes] = useStaxwte<number>(context.brand?.codeValidatecount || 5) // Brand info
   const [isPlaying, setPlaying] = useState<boolean>(false)
 
   const handlePress = debounce(
     () => {
       setPlaying(true)
       getValidateCode({ sendChannel: 'SMS', phone, type: validateCodeType }).then(code => {
-        setTimtes(times - 1)
         console.log({ kaptcha: code.kaptcha })
       })
     },
@@ -109,19 +113,9 @@ export const ValidateCode = ({
             <></>
           )}
           {count !== 60 ? (
-            <>
-              {times >= 0 ? (
-                <Pressable style={[styles.validBtnWrap, styles.validBtnWrapDisabled]}>
-                  <Text color="#aaa" styles={[styles.validBtn, styles.validBtnDisabled]}>
-                    {t('validateCode.wait', { num: count })}
-                  </Text>
-                </Pressable>
-              ) : (
-                <Pressable style={[styles.validBtnWrap]}>
-                  <Text styles={[styles.validBtn]}>{t('validateCode.maxTime')}</Text>
-                </Pressable>
-              )}
-            </>
+            <Pressable style={[styles.validBtnWrap]}>
+              <Text styles={[styles.validBtn]}>{t('validateCode.maxTime')}</Text>
+            </Pressable>
           ) : (
             <Pressable
               disabled={!isPhoneValid}

@@ -27,7 +27,7 @@ const slides = [
   },
 ]
 type Item = typeof slides[0]
-
+// TODO delete this
 export default function Init() {
   const { t } = useTranslation()
   const renderItem = ({ item: { key, image, text, title } }: { item: Item }) => {

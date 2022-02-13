@@ -24,19 +24,18 @@ export function PaymentDetail() {
   }, [navigation, params?.type])
   useEffect(() => {
     if (params) {
+      const formdata = new FormData()
+      formdata.append('applyId', params.applyId || '')
       if (params?.type === 'spei') {
-        queryClabe({ applyId: +(params.applyId || '0') }).then(res => {
-          console.log(res)
-          setAccount('123')
+        queryClabe(formdata).then(({ clabe }) => {
+          setAccount(clabe)
         })
       } else {
-        queryPayCode({ applyId: +(params.applyId || '0'), amount: +(params.amount || '0') }).then(
-          res => {
-            console.log(res)
-            setAccount('123')
-            setSource('https://www.baidu.com')
-          }
-        )
+        formdata.append('amount', `${params.amount}` || '0')
+        queryPayCode(formdata).then(({ barcode, barcodeUrl }) => {
+          setAccount(barcode)
+          setSource(barcodeUrl)
+        })
       }
     }
   }, [params])
@@ -107,11 +106,14 @@ export function PaymentDetail() {
             </Pressable>
           </View>
           {params?.type === 'oxxo' && (
-            <View>
+            <View style={{ paddingTop: 23, flex: 1, alignItems: 'center' }}>
               {source && (
                 <Image
-                  resizeMode="cover"
+                  width={224}
+                  style={{ width: 224 }}
+                  height={100}
                   source={{
+                    // TODO calculate image width
                     uri: source,
                   }}
                 />

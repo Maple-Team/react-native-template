@@ -13,7 +13,7 @@ import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT, KEY_APPLYID, TOTAL_STEPS } from '@/uti
 import { ApplyButton } from '@components/form/FormItem'
 import { Color } from '@/styles/color'
 import type { Calculate, Product } from '@/typings/apply'
-import { useBehavior, useLocation, useSensor } from '@/hooks'
+import { useBehavior, useLocation } from '@/hooks'
 import { queryProduct, scheduleCalc, submit } from '@/services/apply'
 import { MMKV } from '@/utils'
 import { default as MoneyyaContext } from '@/state'
@@ -21,7 +21,6 @@ import emitter from '@/eventbus'
 
 export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
-  const sensor = useSensor()
   const params = (route.params as { bankCardNo?: string }) || {}
 
   const onSubmit = debounce(
@@ -31,11 +30,7 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
         return
       }
       submit<'8'>({
-        sensor: {
-          angleX: sensor?.angleX || '',
-          angleY: sensor?.angleY || '',
-          angleZ: sensor?.angleZ || '',
-        },
+        // sensor: { //TODO 设备信息页, 登录成功后/最有一步签约时也提交设备信息
         gps: context.header.gps,
         loanCode,
         loanTerms: loanDay,
@@ -47,7 +42,9 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
         currentStep: 8,
         totalSteps: TOTAL_STEPS,
       }).then(() => {
-        navigation.navigate('BottomTab', { screen: 'Order' })
+        // TODO 获取userinfo userStatus === 'N' 需要再次验证验证码 type: CONFIRM=>  跳转一个新的页面 -> 不强制, 点击返回-> 合同详情
+        // TODO 提交/smart-loan/app/validate/kaptcha
+        navigation.navigate('BottomTab', { screen: 'Order' }) // FIXME -> 合同详情
       })
     },
     DEBOUNCE_WAIT,
@@ -66,17 +63,17 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
 
   // 获取产品信息
   useEffect(() => {
-    console.log(context.user?.phone, 'phone')
     if (context.user?.phone) {
       queryProduct({ phone: context.user?.phone || '', source: 'APP' }).then(res => {
         console.log('productInfo', res)
         setProductInfo(res)
         setLoanAmt(res.maxAmount)
-        setLoanDay(res.maxLoanTerms)
-        const maxProduct = res.products.find(({ available }) => available === 'Y')
-        if (maxProduct) {
-          setLoanCode(maxProduct.loanCode)
-          setProductCode(maxProduct.productCode)
+        const firstProduct = res.products.find(({ available }) => available === 'Y')
+        if (firstProduct) {
+          setLoanCode(firstProduct.loanCode)
+          setProductCode(firstProduct.productCode)
+          setDisplayLoanDays(firstProduct.displayLoanDays)
+          setLoanDay(firstProduct.loanTerms)
         }
       })
     }
@@ -159,6 +156,7 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
                   minimumValue={productInfo?.minAmount || 3000}
                   value={loanAmt}
                   onValueChange={v => {
+                    // TODO 选不到时显示红色，并提示当前最大可选金额是多少
                     setLoanAmt(Array.isArray(v) ? v[0] : v)
                   }}
                   step={productInfo?.amountStep || 1000}

@@ -189,7 +189,7 @@ const PermissionHint = ({ onPress, check }: { onPress: () => void; check?: boole
         flexWrap: 'wrap',
         justifyContent: 'flex-start',
       }}>
-      <Pressable onPress={onPress}>
+      <Pressable onPress={onPress} style={{ marginRight: 5 }}>
         <Image
           source={
             check
@@ -204,12 +204,6 @@ const PermissionHint = ({ onPress, check }: { onPress: () => void; check?: boole
       </Text>
       <Text fontSize={13} color={Color.primary}>
         Terms of Service{' '}
-      </Text>
-      <Text fontSize={13} color="rgba(144, 146, 155, 1)">
-        and{' '}
-      </Text>
-      <Text fontSize={13} color={Color.primary}>
-        Privacy Policy
       </Text>
     </View>
   )

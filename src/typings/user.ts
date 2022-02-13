@@ -35,6 +35,36 @@ export interface UserInfo {
   userAuthStatus: BOOL
   userId: number
   videoAuthFlag: string
+  fromOther?: string
+  /**
+   * 最大可选金额
+   */
+  maxAmount: number
+
+  /**
+   * 最大可视金额
+   */
+  MaxViewAmount: number
+
+  /**
+   * 申请金额
+   */
+  applyAmount: number
+
+  /**
+   * 还款金额
+   */
+  repayAmount: number
+
+  /**
+   * 申请日期
+   */
+  ApplyDate: string
+
+  /**
+   * 还款日期
+   */
+  repayDate: string
 }
 export type ImageType = 'INE_OR_IFE_FRONT' | 'INE_OR_IFE_BACK' | 'LIVENESS_IMAGE' | 'AUTH_VIDEO '
 

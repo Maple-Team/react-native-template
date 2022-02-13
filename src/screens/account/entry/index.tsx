@@ -25,7 +25,9 @@ import { StackActions } from '@react-navigation/native'
 interface FormModel {
   phone: string
 }
-
+// TODO 授权页(静态) -> 英式页 -> 请求权限
+// TODO 注册时同意
+// TODO 登录、注册、找回密码手机号输入框加前缀 +52
 export const EntryScreen = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
   const schema = Yup.object().shape({
@@ -96,7 +98,11 @@ export const EntryScreen = ({ navigation }: NativeStackHeaderProps) => {
                   style={[styles.signup, styles.btn]}
                   loading={context.loading.effects.LOGIN}
                   onPress={async () => {
-                    navigation.dispatch(StackActions.replace('SignUp'))
+                    navigation.dispatch(
+                      StackActions.replace('SignUp', {
+                        phone: '', // TODO 传值过去
+                      })
+                    )
                   }}>
                   <Text color={Color.primary}>{t('signup')}</Text>
                 </Button>

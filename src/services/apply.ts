@@ -146,10 +146,11 @@ export async function scheduleCalc(data: CalculateParameter) {
  * @param data
  * @returns
  */
-export async function pv() {
+export async function pv(data: { userId: string }) {
   return request<BaseResponse>({
     url: '/smart-loan/app/index',
     method: 'POST',
+    data,
   })
 }
 /**

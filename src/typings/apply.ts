@@ -9,6 +9,7 @@ export interface ApplyResponse {
   applyStatus: APPLY_STATE
   name: string
   ocrResult?: OcrResult
+  fromOther?: string
 }
 
 export interface OcrResult {
@@ -125,7 +126,6 @@ export interface SensorDataType {
   angleZ: string
 }
 export interface ApplyStep8Parameter extends ApplyParameter {
-  sensor: SensorDataType
   /**
    * GPS信息
    */

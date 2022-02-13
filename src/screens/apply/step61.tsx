@@ -31,6 +31,7 @@ export const Step61 = ({ navigation }: NativeStackHeaderProps) => {
         currentStep: 6,
         totalSteps: TOTAL_STEPS,
         livenessId: `${imageId}`,
+        images: [{ imageId: 2 }],
         livenessAuthFlag: context.brand?.livenessAuthEnable,
       }).then(() => {
         navigation.navigate('Step7')
@@ -44,7 +45,9 @@ export const Step61 = ({ navigation }: NativeStackHeaderProps) => {
   const startLiveness = useCallback(() => {
     Liveness.startLiveness(
       (livenessid, base64, transitionid, isPay) => {
-        console.log({ livenessid, base64, transitionid, isPay })
+        console.log({ livenessid, transitionid, isPay })
+        // FIXME 无活体id
+        // TODO 上传影像信息 base64 type：LIVENESS_IMAGE
         setImageId(+livenessid)
         setValid(true)
         onSubmit()

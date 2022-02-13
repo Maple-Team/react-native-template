@@ -1,4 +1,4 @@
 export { BillsList } from './list'
-export { default as BillsDetail } from './detail'
-export { Payment } from './pay'
-export { PaymentDetail } from './payDetail'
+export { default as RepayBillsDetail } from './detail2'
+export { Payment } from './payment'
+export { PaymentDetail } from './paymentDetail'
