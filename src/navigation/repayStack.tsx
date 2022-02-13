@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React, { useContext } from 'react'
-import { BillsList, BillsDetail } from '@/screens/order'
+import { BillsList, BillsDetail, Payment, PaymentDetail } from '@/screens/repay'
 import { Color } from '@/styles/color'
 import { HeaderLeft, HeaderRight } from '@components/header'
 import { Linking } from 'react-native'
@@ -9,7 +9,7 @@ import { useNavigation } from '@react-navigation/native'
 
 const Stack = createNativeStackNavigator()
 
-export function OrderStack() {
+export function RepayStack() {
   const context = useContext(MoneyyaContext)
   const na = useNavigation()
   return (
@@ -26,6 +26,21 @@ export function OrderStack() {
         },
         headerTitleAlign: 'center',
         gestureEnabled: true,
+        headerRight: () => (
+          <HeaderRight
+            onPress={() => {
+              context.brand?.serviceInfo.ccphone &&
+                Linking.openURL(`tel:${context.brand?.serviceInfo.ccphone}`)
+            }}
+          />
+        ),
+        headerLeft: () => (
+          <HeaderLeft
+            onPress={() => {
+              na.goBack()
+            }}
+          />
+        ),
       })}>
       <Stack.Group screenOptions={{ headerShown: true }}>
         <Stack.Screen
@@ -33,7 +48,7 @@ export function OrderStack() {
           key="BillsList"
           component={BillsList}
           options={() => ({
-            headerShown: false,
+            title: 'repay records',
           })}
         />
         <Stack.Screen
@@ -41,22 +56,23 @@ export function OrderStack() {
           key="BillsDetail"
           component={BillsDetail}
           options={() => ({
-            title: 'Loan detailed record',
-            headerRight: () => (
-              <HeaderRight
-                onPress={() => {
-                  context.brand?.serviceInfo.ccphone &&
-                    Linking.openURL(`tel:${context.brand?.serviceInfo.ccphone}`)
-                }}
-              />
-            ),
-            headerLeft: () => (
-              <HeaderLeft
-                onPress={() => {
-                  na.goBack()
-                }}
-              />
-            ),
+            title: 'repay record detail',
+          })}
+        />
+        <Stack.Screen
+          name="Payment"
+          key="Payment"
+          component={Payment}
+          options={() => ({
+            title: 'Payment',
+          })}
+        />
+        <Stack.Screen
+          name="PaymentDetail"
+          key="PaymentDetail"
+          component={PaymentDetail}
+          options={() => ({
+            title: 'pay type',
           })}
         />
       </Stack.Group>

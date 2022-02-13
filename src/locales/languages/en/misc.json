@@ -6,5 +6,9 @@
   "information": {
     "confirmed": " Information Confirmed"
   },
-  "choose-product-prompt": "please choose loan terms"
+  "choose-product-prompt": "please choose loan terms",
+  "restRepayAmount": "剩余应付金额",
+  "numberRequired": "you must specify a number",
+  "copySuccessed": "Copy SUccess",
+  "warnRepayPrompt": "我们建议您在此页面立即偿还贷款，以 免影响您的下次贷款申请。"
 }

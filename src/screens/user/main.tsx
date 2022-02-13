@@ -4,9 +4,11 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { TabHeader, Text } from '@/components'
 import emitter from '@/eventbus'
 import { default as MoneyyaContext } from '@/state'
+import { useNavigation } from '@react-navigation/native'
 
 export function UserCenter() {
   const context = useContext(MoneyyaContext)
+  const na = useNavigation()
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar translucent={true} barStyle="default" />
@@ -16,19 +18,28 @@ export function UserCenter() {
             source={require('@/assets/compressed/user-center/bg.webp')}
             resizeMode="cover"
             style={{
-              height: 309,
+              height: 209,
             }}>
             <TabHeader
               title={require('@/assets/compressed/common/active/moneyya.webp')}
               notice={require('@/assets/compressed/common/active/notice.webp')}
               help={require('@/assets/compressed/common/active/help.webp')}
             />
-            <View style={{ alignItems: 'center', paddingTop: 190 }}>
+            <View
+              style={{
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                paddingVertical: 26,
+              }}>
+              <Image
+                source={require('@/assets/compressed/user-center/avatar.webp')}
+                resizeMode="cover"
+              />
               <Text color="#fff" fontSize={18}>
-                {context.user?.name}
+                {context.user?.name || 'moneyya'}
               </Text>
-              <Text color="rgba(214, 220, 254, 1)" fontSize={13}>
-                {context.user?.phone}
+              <Text color="#D6DCFE" fontSize={13}>
+                {context.user?.phone.replace(/(\d{3})\d{3}(\d{4})/, '$1****$2')}
               </Text>
             </View>
           </ImageBackground>
@@ -44,14 +55,29 @@ export function UserCenter() {
             backgroundColor: '#fff',
           }}>
           {[
-            { img: require('@/assets/compressed/user-center/Payment.webp'), title: 'Payment' },
+            {
+              img: require('@/assets/compressed/user-center/Payment.webp'),
+              title: 'Payment',
+              onPress: () => {
+                //@ts-ignore
+                na.navigate('Repay')
+              },
+            },
             {
               img: require('@/assets/compressed/user-center/History-Bills.webp'),
               title: 'History Bills',
+              onPress: () => {
+                //@ts-ignore
+                na.navigate('Order')
+              },
             },
-            { img: require('@/assets/compressed/user-center/My-Card.webp'), title: 'My Card' },
-          ].map(({ img, title }) => (
-            <Pressable key={title} style={{ alignItems: 'center' }}>
+            {
+              img: require('@/assets/compressed/user-center/My-Card.webp'),
+              title: 'My Card',
+              onPress: () => {},
+            },
+          ].map(({ img, title, onPress }) => (
+            <Pressable key={title} style={{ alignItems: 'center' }} onPress={onPress}>
               <Image source={img} resizeMode="cover" style={{ marginBottom: 14.5 }} />
               <Text fontSize={16} color="rgba(51, 50, 48, 1)">
                 {title}

@@ -81,7 +81,7 @@ export const Step62 = ({ navigation }: NativeStackHeaderProps) => {
                 </View>
                 <View style={PageStyles.btnWrap}>
                   <ApplyButton
-                    type={isValid ? 'primary' : undefined}
+                    type={isValid ? 'primary' : 'ghost'}
                     onPress={handleSubmit}
                     loading={context.loading.effects.APPLY}>
                     <Text color={isValid ? '#fff' : '#aaa'}>{t('submit')}</Text>

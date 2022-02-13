@@ -241,5 +241,10 @@
     "placeholder": "social phone ",
     "required": "social phone required",
     "invalid": "social phone invalid"
+  },
+  "payAmount": {
+    "placeholder": "payment amount",
+    "required": "payment amount required",
+    "invalid": "payment amount should above {{val}} MXN"
   }
 }

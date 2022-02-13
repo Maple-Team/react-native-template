@@ -25,6 +25,7 @@
     "@ant-design/react-native": "^4.2.0",
     "@miblanchard/react-native-slider": "^2.1.0",
     "@react-native-async-storage/async-storage": "^1.15.4",
+    "@react-native-clipboard/clipboard": "^1.8.5",
     "@react-native-community/datetimepicker": "^5.1.0",
     "@react-native-community/hooks": "^2.8.1",
     "@react-native-community/netinfo": "^7.1.7",

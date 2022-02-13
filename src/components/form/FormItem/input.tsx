@@ -15,7 +15,6 @@ interface InputProps {
   value: string
   error?: string
   field?: string
-  textSize?: number
   label: string
   placeholder: string
   maxLength?: number
@@ -32,7 +31,6 @@ export const Input = ({
   onBlur,
   maxLength,
   field,
-  textSize,
   label,
   placeholder,
   keyboardType,
@@ -69,11 +67,7 @@ export const Input = ({
               })
             }}
             placeholder={placeholder}
-            style={[
-              styles.input,
-              { fontSize: textSize || 15 },
-              error ? { borderBottomColor: 'red' } : {},
-            ]}
+            style={[styles.input, { fontSize: 15 }, error ? { borderBottomColor: 'red' } : {}]}
             keyboardType={keyboardType}
             onFocus={onFocus}
             placeholderTextColor={'rgba(156, 171, 185, 1)'}

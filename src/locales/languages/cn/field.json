@@ -125,5 +125,10 @@
   },
   "cardNoType": {
     "label": "card type"
+  },
+  "payAmount": {
+    "placeholder": "请输入还款金额",
+    "required": "还款金额必需",
+    "invalid": "payment amount should above {{val}} MXN"
   }
 }

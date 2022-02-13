@@ -4,13 +4,12 @@ import {
   Image,
   View,
   StatusBar,
-  ImageBackground,
   Pressable,
   ActivityIndicator,
   RefreshControl,
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { TabHeader, Text } from '@/components'
+import { Text } from '@/components'
 import { Color } from '@/styles/color'
 import { queryOrders } from '@/services/order'
 import { Order } from '@/typings/order'
@@ -73,16 +72,6 @@ export function BillsList() {
           paddingBottom: 47.5,
           flex: 1,
         }}>
-        <View>
-          <ImageBackground
-            source={require('@/assets/compressed/bills/banner.webp')}
-            resizeMode="cover"
-            style={{
-              height: 45,
-            }}>
-            <TabHeader />
-          </ImageBackground>
-        </View>
         <View>
           {context.loading.effects.ORDER_LIST ? (
             <ActivityIndicator />
@@ -159,28 +148,6 @@ export function BillsList() {
                         <Text>{item.repayDate}</Text>
                       </View>
                     </View>
-
-                    {getStateContent(item).state !== 1 && (
-                      <Pressable
-                        style={{
-                          backgroundColor: getStateContent(item).color,
-                          paddingVertical: 11,
-                          borderBottomLeftRadius: 14,
-                          borderBottomRightRadius: 14,
-                          borderTopLeftRadius: 8,
-                          borderTopRightRadius: 8,
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          width: '100%',
-                        }}>
-                        <Text
-                          color="#fff"
-                          //@ts-ignore
-                          styles={{ textTransform: 'capitalize' }}>
-                          {getStateContent(item).text}
-                        </Text>
-                      </Pressable>
-                    )}
                   </View>
                 </View>
               )}

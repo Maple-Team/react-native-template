@@ -3,6 +3,7 @@ import React from 'react'
 import { About, UserCenter } from '@/screens/user'
 import { Color } from '@/styles/color'
 import { HeaderRight } from '@components/header'
+import { RepayStack } from './repayStack'
 
 const Stack = createNativeStackNavigator()
 
@@ -31,6 +32,7 @@ export function UserStack() {
             headerShown: false,
           })}
         />
+        <Stack.Screen name="Repay" key="Repay" component={RepayStack} />
         <Stack.Screen name="About" key="About" component={About} />
       </Stack.Group>
     </Stack.Navigator>

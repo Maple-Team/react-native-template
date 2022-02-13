@@ -54,3 +54,10 @@ export async function queryPayCode(params: { applyId: number; amount: number }) 
     params,
   })
 }
+export async function queryClabe(params: { applyId: number }) {
+  return request<BaseResponse>({
+    url: '/smart-loan/pay/clabe',
+    method: 'POST',
+    params,
+  })
+}

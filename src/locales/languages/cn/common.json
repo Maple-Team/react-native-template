@@ -26,5 +26,9 @@
   "modify": "修改",
   "old": "旧",
   "loading": "加载中...",
-  "loan": "签约"
+  "loan": "签约",
+  "repayDate": "应还日期",
+  "loanAmount": "贷款金额",
+  "ok": "确定",
+  "copy": "copy"
 }

@@ -21,7 +21,6 @@ export default ({ route }: { route: any }) => {
     }
   }, [applyId])
   const { t } = useTranslation()
-  const na = useNavigation()
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar translucent={false} backgroundColor={Color.primary} barStyle="default" />
@@ -101,15 +100,7 @@ export default ({ route }: { route: any }) => {
           <View style={PageStyles.btnWrap}>
             <ApplyButton
               type={'primary'}
-              onPress={() => {
-                //@ts-ignore
-                na.navigate('Repay', {
-                  screen: 'Payment',
-                  params: {
-                    applyId: '23423423423',
-                  },
-                })
-              }}
+              onPress={() => {}}
               loading={context.loading.effects.APPLY}>
               <Text color={'#fff'}>{t('applyState.repay')}</Text>
             </ApplyButton>
@@ -122,7 +113,6 @@ export default ({ route }: { route: any }) => {
 
 import StyleSheet from 'react-native-adaptive-stylesheet'
 import { Color } from '@/styles/color'
-import { useNavigation } from '@react-navigation/native'
 
 const style = StyleSheet.create<{
   itemWrapper: ViewStyle

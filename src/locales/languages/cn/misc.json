@@ -10,5 +10,9 @@
   "information": {
     "confirmed": " Information Confirmed"
   },
-  "choose-product-prompt": "请选择贷款期限"
+  "choose-product-prompt": "请选择贷款期限",
+  "restRepayAmount": "剩余应付金额",
+  "numberRequired": "必需输入数字",
+  "copySuccessed": "复制成功！",
+  "warnRepayPrompt": "我们建议您在此页面立即偿还贷款，以 免影响您的下次贷款申请。"
 }

@@ -25,5 +25,9 @@
   "modify": "Modify",
   "old": "old",
   "loading": "Loading...",
-  "loan": "Loan"
+  "loan": "Loan",
+  "repayDate": "repayDate",
+  "loanAmount": "Loan Amount",
+  "ok": "OK",
+  "copy": "copy"
 }
