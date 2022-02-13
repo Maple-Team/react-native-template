@@ -33,6 +33,7 @@ export const NormalTypeArray = [
   'BRAND',
   'ORDER_LIST',
   'ORDER_DETAIL',
+  'REPAY_LIST',
 ] as const
 
 type NormalType = typeof NormalTypeArray[number]
@@ -53,7 +54,7 @@ let _dispatchMap: Record<DispatchMapType, string> = {
   USER_INFO: '/smart-loan/user/getUserInfo',
   PRODUCT: '/smart-loan/product/v1/getProduct',
   CALCULATE: '/smart-loan/contract/scheduleCalc',
-  REPAY: 'boolean', //TODO
+  REPAY_LIST: '/smart-loan/contract/repayList',
   DEVICE_INFO: '/smart-loan/login/deviceInfo',
   IMAGE: '/smart-loan/image/v2/oneImage',
   VALIDATE_CODE: '/smart-loan/app/getValidateCode',

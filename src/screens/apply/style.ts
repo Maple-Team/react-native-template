@@ -16,7 +16,12 @@ export default StyleSheet.create<{
   textWrap: ViewStyle
   sliderTitle: TextStyle
   sliderSubTitle: TextStyle
-  cashWrap: ViewStyle
+  cashIconWrap: ViewStyle
+  loanInfoPrompt: ViewStyle
+  repayWrap: ViewStyle
+  repayItemLeft: ViewStyle
+  repayItem: ViewStyle
+  repayItemRight: ViewStyle
 }>({
   scroll: {
     flex: 1,
@@ -29,22 +34,16 @@ export default StyleSheet.create<{
     paddingBottom: 200 - 14 - 50,
     alignItems: 'center',
   },
-  loanInfo: {
-    alignItems: 'center',
-    paddingHorizontal: 10,
-    width: '100%',
-    top: -40,
-  },
+
   ad: {
     paddingHorizontal: 0,
-    paddingTop: 24.5,
+    marginTop: -18,
     marginBottom: 50,
   },
   adTextWrap: {
     alignItems: 'center',
     marginBottom: 15,
   },
-
   btnWrap: {
     alignItems: 'center',
     bottom: -40,
@@ -95,7 +94,12 @@ export default StyleSheet.create<{
     color: 'rgba(123, 123, 123, 1)',
     fontFamily: 'Aller',
   },
-  cashWrap: {
+  loanInfo: {
+    alignItems: 'center',
+    paddingHorizontal: 10,
+    top: -40,
+  },
+  cashIconWrap: {
     bottom: 160 + 17,
     zIndex: 99,
     backgroundColor: '#fff',
@@ -105,5 +109,40 @@ export default StyleSheet.create<{
     alignItems: 'center',
     position: 'absolute',
     justifyContent: 'center',
+  },
+  loanInfoPrompt: {
+    backgroundColor: '#fff',
+    borderRadius: 15,
+    width: '100%',
+    paddingTop: 50,
+    paddingHorizontal: 10,
+    paddingBottom: 11,
+    alignItems: 'center',
+    zIndex: 9,
+    borderColor: 'rgba(216, 222, 236, 1)',
+    borderWidth: 1,
+  },
+  repayWrap: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    marginTop: 24,
+  },
+  repayItemLeft: {
+    marginRight: 27,
+    paddingHorizontal: 12,
+  },
+  repayItem: {
+    width: '50%',
+    borderWidth: 1,
+    borderColor: '#D8DEEC',
+    borderRadius: 9.5,
+    paddingVertical: 16,
+    justifyContent: 'space-between',
+  },
+  repayItemRight: {
+    padding: 16,
+    paddingBottom: 10,
   },
 })

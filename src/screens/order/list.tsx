@@ -16,34 +16,36 @@ import { queryOrders } from '@/services/order'
 import { Order } from '@/typings/order'
 import { default as MoneyyaContext } from '@/state'
 import { APPLY_STATE } from '@/state/enum'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import emitter from '@/eventbus'
 import uniqBy from 'lodash.uniqby'
-import { t } from 'i18next'
+import { useTranslation } from 'react-i18next'
 
 export function BillsList() {
+  const route = useRoute()
+  const { t } = useTranslation()
+  const { type } = (route.params || { type: 'order' }) as { type: 'payment' | 'order' }
   const [data, setData] = useState<Order[]>([])
   useEffect(() => {
-    queryOrders().then(res => {
+    queryOrders(type).then(res => {
       setData(res)
     })
-  }, [])
+  }, [type])
   const context = useContext(MoneyyaContext)
   const na = useNavigation()
   const [refreshing, setRefreshing] = useState<boolean>(false)
   const onRefresh = useCallback(async () => {
     setRefreshing(true)
     if (data.length < 10) {
-      queryOrders().then(res => {
+      queryOrders(type).then(res => {
         setData(uniqBy(res.concat(data), 'applyId'))
-        setData(res.concat(data))
         setRefreshing(false)
       })
     } else {
       emitter.emit('SHOW_MESSAGE', { type: 'info', message: 'No more new data available' })
       setRefreshing(false)
     }
-  }, [data])
+  }, [data, type])
   /**
    * 计算出还款相关状态
    */
@@ -63,6 +65,7 @@ export function BillsList() {
     }
     return content
   }, [])
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar translucent={false} backgroundColor="#fff" barStyle="dark-content" />
@@ -84,8 +87,10 @@ export function BillsList() {
           </ImageBackground>
         </View>
         <View>
-          {context.loading.effects.ORDER_LIST ? (
-            <ActivityIndicator />
+          {context.loading.effects.ORDER_LIST || context.loading.effects.REPAY_LIST ? (
+            <View style={{ flex: 1, alignContent: 'center', justifyContent: 'center' }}>
+              <ActivityIndicator size="large" color={Color.primary} />
+            </View>
           ) : data.length > 0 ? (
             <FlatList
               refreshControl={

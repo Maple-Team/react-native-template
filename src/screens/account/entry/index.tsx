@@ -1,5 +1,5 @@
 import type { NativeStackHeaderProps } from '@react-navigation/native-stack'
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { View, ImageBackground } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Button } from '@ant-design/react-native'
@@ -27,7 +27,6 @@ interface FormModel {
 }
 // TODO 授权页(静态) -> 英式页 -> 请求权限
 // TODO 注册时同意
-// TODO 登录、注册、找回密码手机号输入框加前缀 +52
 export const EntryScreen = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
   const schema = Yup.object().shape({
@@ -37,6 +36,7 @@ export const EntryScreen = ({ navigation }: NativeStackHeaderProps) => {
       .matches(REGEX_PHONE, t('phone.invalid')),
   })
   const initialValue: FormModel = { phone: '' }
+  const [phone, setPhone] = useState<string>()
   const onSubmit = debounce(
     (values: FormModel) => {
       navigation.dispatch(StackActions.replace('SignIn', { phone: values.phone }))
@@ -75,12 +75,13 @@ export const EntryScreen = ({ navigation }: NativeStackHeaderProps) => {
                           label={t('phone.label')}
                           onChangeText={(formatted, extracted) => {
                             setFieldValue('phone', extracted)
+                            setPhone(extracted)
                           }}
                           value={values.phone}
                           placeholder={t('phone.placeholder')}
                           error={errors.phone}
                           keyboardType="phone-pad"
-                          mask={'[0000] [000] [000]'}
+                          mask={'+52 [0000] [000] [000]'}
                         />
                       </View>
                       <Button
@@ -100,7 +101,7 @@ export const EntryScreen = ({ navigation }: NativeStackHeaderProps) => {
                   onPress={async () => {
                     navigation.dispatch(
                       StackActions.replace('SignUp', {
-                        phone: '', // TODO 传值过去
+                        phone,
                       })
                     )
                   }}>

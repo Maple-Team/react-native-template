@@ -28,9 +28,7 @@ import { MMKV } from '@/utils'
 
 export const SigninScreen = ({ route }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
-  const { phone } =
-    (route.params as { phone?: string }) ||
-    ({ phone: __DEV__ ? '9868960898' : '' } as { phone?: string })
+  const { phone } = (route.params as { phone?: string }) || ({ phone: '' } as { phone?: string })
   const tabs = [{ title: t('password-login') }, { title: t('validation-code-login') }]
   const [signInPhone, setSignInPhone] = useState<string>('')
   const tabPanels = [
@@ -83,7 +81,7 @@ export const SigninScreen = ({ route }: NativeStackHeaderProps) => {
             {tabPanels[index]}
             <View style={styles.jump}>
               <Text fontSize={19} color="#fff">
-                Don't have an account ?{' '}
+                {t('signinPrompt')}{' '}
               </Text>
               <Text
                 fontSize={19}
@@ -163,7 +161,7 @@ const PasswdTab = ({
               placeholder={t('phone.placeholder')}
               error={errors.phone}
               keyboardType="phone-pad"
-              mask={'[0000] [000] [000]'}
+              mask={'+52 [0000] [000] [000]'}
             />
             <PasswordInput
               field="password"
@@ -258,7 +256,7 @@ const ValidTab = ({
               placeholder={t('phone.placeholder')}
               error={errors.phone}
               keyboardType="phone-pad"
-              mask={'[0000] [000] [000]'}
+              mask={'+52 [0000] [000] [000]'}
             />
             <ValidateCode
               field="code"

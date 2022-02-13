@@ -88,7 +88,7 @@ export const ResetScreen = ({ navigation }: NativeStackHeaderProps) => {
                     placeholder={t('phone.placeholder')}
                     error={errors.phone}
                     keyboardType="phone-pad"
-                    mask={'[0000] [000] [000]'}
+                    mask={'+52 [0000] [000] [000]'}
                   />
                   <ValidateCode
                     field="validateCode"

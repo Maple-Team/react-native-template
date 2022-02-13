@@ -10,7 +10,6 @@
     "success": "登录成功"
   },
   "password-login": "密码登录",
-  "resetpwd": "忘记密码",
   "signin": "登录",
   "signup": "注册",
   "submit": "提交",
@@ -27,6 +26,7 @@
   "loading": "Loading...",
   "loan": "Loan",
   "repayDate": "repayDate",
+  "repayAmount": "repay Amount",
   "loanAmount": "Loan Amount",
   "ok": "OK",
   "copy": "copy"

@@ -26,13 +26,13 @@ export default StyleSheet.create<{
   tabBar: {
     width: '50%',
     paddingVertical: 18,
-    backgroundColor: '#fff',
+    backgroundColor: 'rgba(255,255,255, .78)',
     borderTopRightRadius: 15,
     borderTopLeftRadius: 15,
     alignItems: 'center',
   },
   tabBarAct: {
-    backgroundColor: 'rgba(255,255,255, .78)',
+    backgroundColor: '#fff',
   },
   tabBarText: {
     color: 'rgba(51, 50, 48, 1)',

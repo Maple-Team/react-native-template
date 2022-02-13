@@ -6,22 +6,21 @@ import { request } from '@/utils/http'
  * @param params
  * @returns
  */
-export async function queryOrders() {
-  return request<Order[]>({
-    url: '/smart-loan/contract/list',
-    method: 'POST',
-  })
+export async function queryOrders(type: 'payment' | 'order') {
+  switch (type) {
+    case 'payment':
+      return request<Order[]>({
+        url: '/smart-loan/contract/repayList',
+        method: 'POST',
+      })
+    case 'order':
+      return request<Order[]>({
+        url: '/smart-loan/contract/list',
+        method: 'POST',
+      })
+  }
 }
-/**
- * 待还款列表
- * @returns
- */
-export async function queryPaymentList() {
-  return request<Order[]>({
-    url: '/smart-loan/contract/repayList',
-    method: 'POST',
-  })
-}
+
 /**
  * 合同详情
  * @param params

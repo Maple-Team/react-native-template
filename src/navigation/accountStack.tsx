@@ -9,14 +9,17 @@ import AppModule from '@/modules/AppModule'
 import RNAdvertisingId from 'react-native-advertising-id'
 import DeviceInfo from 'react-native-device-info'
 import { usePersmission } from '@/utils/permission'
-import { StackActions, useNavigationState } from '@react-navigation/native'
+import { StackActions } from '@react-navigation/native'
+import { Color } from '@/styles/color'
 
 export type AccountStackParams = {
   Entry: undefined
   SignIn: {
     phone: string
   }
-  SignUp: undefined
+  SignUp: {
+    phone: string
+  }
   Reset: undefined
 }
 const Stack = createNativeStackNavigator<AccountStackParams>()
@@ -51,15 +54,30 @@ export function AccountStack() {
     }
     query()
   }, [])
-  const _ = useNavigationState(state => state)
-  _ && console.log(_.routes, 'type:', _.type, 'routeNames:', _.routeNames) // TODO navigation state tree
   useLocation()
   return (
     <Stack.Navigator
       initialRouteName="Entry"
-      screenOptions={{
-        headerShown: false,
-      }}>
+      screenOptions={({ navigation }) => ({
+        headerStyle: {
+          backgroundColor: Color.primary,
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontFamily: 'ArialMT',
+        },
+        headerTitleAlign: 'center',
+        headerRight: () => null,
+        headerLeft: () => (
+          <HeaderLeft
+            onPress={() => {
+              navigation.goBack()
+            }}
+          />
+        ),
+        gestureEnabled: true,
+      })}>
       <Stack.Screen
         key="Entry"
         name="Entry"
@@ -83,6 +101,7 @@ export function AccountStack() {
         component={SignupScreen}
         options={({ navigation: { dispatch } }) => ({
           title: t('signup'),
+          headerShown: true,
           headerLeft: () => <HeaderLeft onPress={() => dispatch(StackActions.replace('Entry'))} />,
         })}
       />
@@ -92,7 +111,7 @@ export function AccountStack() {
         component={ResetScreen}
         // @ts-ignore
         options={({ navigation: { dispatch } }) => ({
-          title: t('resetpwd'),
+          title: t('resetpwd.label'),
           headerLeft: () => <HeaderLeft onPress={() => dispatch(StackActions.replace('Entry'))} />,
         })}
       />

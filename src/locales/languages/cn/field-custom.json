@@ -10,6 +10,7 @@
   },
   "upload-Failed": "upload failed",
   "resetpwd": {
+    "label": "重置密码",
     "success": "reset pwd success"
   }
 }

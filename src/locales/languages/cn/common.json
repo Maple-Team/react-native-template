@@ -10,7 +10,6 @@
   "Order": "Order",
   "done": "Done",
   "account": "Account",
-  "resetpwd": "忘记密码",
   "login": {
     "success": "登录成功"
   },
@@ -28,6 +27,7 @@
   "loading": "加载中...",
   "loan": "签约",
   "repayDate": "应还日期",
+  "repayAmount": "应还金额",
   "loanAmount": "贷款金额",
   "ok": "确定",
   "copy": "copy"

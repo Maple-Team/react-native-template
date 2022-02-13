@@ -1,4 +1,5 @@
 import React, {
+  useContext,
   // useContext,
   useMemo,
   useState,
@@ -10,7 +11,7 @@ import { useTranslation } from 'react-i18next'
 import debounce from 'lodash.debounce'
 import { useInterval } from 'usehooks-ts'
 
-// import { default as MoneyyaContext } from '@/state'
+import { default as MoneyyaContext } from '@/state'
 import type { ValidateCodeType } from '@/typings/request'
 import styles from './style'
 import Text from '@components/Text'
@@ -44,12 +45,16 @@ export const ValidateCode = ({
   validateCodeType,
 }: InputProps) => {
   const { t } = useTranslation()
-  // const context = useContext(MoneyyaContext)
-  const [count, setCount] = useState<number>(60)
+  const context = useContext(MoneyyaContext)
+  const maxCount = useMemo(
+    () => context.brand?.smsWaitInterval || 60,
+    [context.brand?.smsWaitInterval]
+  )
+  const [count, setCount] = useState<number>(maxCount)
   // FIXME
-  // const [times, setTimtes] = useStaxwte<number>(context.brand?.codeValidatecount || 5) // Brand info
+  const [times, setTimtes] = useState<number>(context.brand?.codeValidatecount || 5) // Brand info
   const [isPlaying, setPlaying] = useState<boolean>(false)
-
+  console.log(times, setTimtes)
   const handlePress = debounce(
     () => {
       setPlaying(true)
@@ -66,7 +71,7 @@ export const ValidateCode = ({
       let _count = count - 1
       if (_count <= 0) {
         setPlaying(false)
-        setCount(60)
+        setCount(maxCount)
       } else {
         setCount(_count)
       }
@@ -112,9 +117,9 @@ export const ValidateCode = ({
           ) : (
             <></>
           )}
-          {count !== 60 ? (
-            <Pressable style={[styles.validBtnWrap]}>
-              <Text styles={[styles.validBtn]}>{t('validateCode.maxTime')}</Text>
+          {count !== maxCount ? (
+            <Pressable style={[styles.validBtnWrap, { backgroundColor: '#eee' }]}>
+              <Text styles={[styles.validBtn]}>{t('validateCode.wait', { num: count })}</Text>
             </Pressable>
           ) : (
             <Pressable

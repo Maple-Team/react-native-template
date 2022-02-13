@@ -10,5 +10,9 @@
   "restRepayAmount": "剩余应付金额",
   "numberRequired": "you must specify a number",
   "copySuccessed": "Copy SUccess",
-  "warnRepayPrompt": "我们建议您在此页面立即偿还贷款，以 免影响您的下次贷款申请。"
+  "warnRepayPrompt": "我们建议您在此页面立即偿还贷款，以 免影响您的下次贷款申请。",
+  "signinPrompt": "Don't have an account?",
+  "logoutPrompt": "Logout Prompt",
+  "logoutPromptContent": "Are you sure to logout?",
+  "adPrompt": "Easy steps to get and pay for a loan:"
 }

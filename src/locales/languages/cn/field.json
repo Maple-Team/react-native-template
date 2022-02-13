@@ -120,7 +120,7 @@
     "invalid": "Validate Code Invalid",
     "required": "Validate Code Required",
     "get": "Get Code",
-    "wait": "Please wait {{num}} to get code",
+    "wait": "{{num}}",
     "maxTime": "最大次数，请稍候再试"
   },
   "cardNoType": {

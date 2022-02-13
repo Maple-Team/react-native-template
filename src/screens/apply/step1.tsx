@@ -117,15 +117,15 @@ export function Step1() {
       switch (applyStatus) {
         case APPLY_STATE.LOAN:
         case APPLY_STATE.WAIT:
-          navigation.getParent()?.navigate('Order')
+          navigation.getParent()?.navigate('Order', {
+            type: 'order',
+          })
           break
         case APPLY_STATE.NORMAL:
         case APPLY_STATE.OVERDUE:
-          // TODO 待还款列表
-          // navigation.getParent()?.navigate('Payment', {
-          //   applyId: context.user?.applyId,
-          //   amount: context.user?.repayAmount,
-          // })
+          navigation.getParent()?.navigate('Order', {
+            type: 'payment',
+          })
           break
         case APPLY_STATE.SETTLE:
         case APPLY_STATE.APPLY:
@@ -175,42 +175,49 @@ export function Step1() {
             <TabHeader />
           </ImageBackground>
           <View style={Styles.loanInfo}>
-            <View style={Styles.cashWrap}>
+            <View
+              style={[
+                Styles.cashIconWrap,
+                status.repayAmount
+                  ? {
+                      bottom: 204,
+                    }
+                  : {},
+              ]}>
               <Image source={require('@/assets/compressed/apply/cash.webp')} resizeMode="cover" />
             </View>
-            <View
-              style={{
-                flex: 1,
-                backgroundColor: '#fff',
-                borderRadius: 15,
-                width: '100%',
-                paddingTop: 50,
-                paddingHorizontal: 10,
-                paddingBottom: 11,
-                alignItems: 'center',
-                zIndex: 9,
-                borderColor: 'rgba(216, 222, 236, 1)',
-                borderWidth: 1,
-              }}>
+            <View style={Styles.loanInfoPrompt}>
               <Text fontSize={14} color="rgba(1, 0, 56, 1)">
                 {status.prompt}
               </Text>
-
               {status.repayAmount ? (
                 <>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                    }}>
-                    <View style={{ width: '50%' }}>
-                      <Text>还款日期</Text>
-                      <Text>{status.repayDate}</Text>
+                  <View style={Styles.repayWrap}>
+                    <View style={[Styles.repayItem, Styles.repayItemLeft]}>
+                      <Text color="#9C9CB7" fontSize={13}>
+                        {t('repayDate')}
+                      </Text>
+                      <Text fontWeight="bold" fontSize={18} color="#010038">
+                        {status.repayDate}
+                      </Text>
                     </View>
-                    <View style={{ width: '50%' }}>
-                      <Text>还款金额</Text>
-                      <Text>{status.repayAmount}</Text>
+                    <View style={[Styles.repayItem, Styles.repayItemRight]}>
+                      <Text color="#9C9CB7" fontSize={13}>
+                        {t('repayAmount')}
+                      </Text>
+                      <View style={{ flexDirection: 'row' }}>
+                        <Text
+                          fontSize={13}
+                          fontWeight="bold"
+                          color="#010038"
+                          //@ts-ignore
+                          styles={{ top: 4 }}>
+                          $
+                        </Text>
+                        <Text fontWeight="bold" fontSize={24} color="#010038">
+                          {toThousands(+status.repayAmount)}
+                        </Text>
+                      </View>
                     </View>
                   </View>
                 </>
@@ -264,14 +271,17 @@ export function Step1() {
   )
 }
 
-const AD = () => (
-  <View style={Styles.ad}>
-    <View style={Styles.adTextWrap}>
-      <Text fontSize={18}>Easy steps to get and pay for a loan:</Text>
+const AD = () => {
+  const { t } = useTranslation()
+  return (
+    <View style={Styles.ad}>
+      <View style={Styles.adTextWrap}>
+        <Text fontSize={18}>{t('adPrompt')}</Text>
+      </View>
+      <Slider />
     </View>
-    <Slider />
-  </View>
-)
+  )
+}
 const Slider = () => (
   <Swiper
     style={{ alignItems: 'center', paddingHorizontal: 10 }}

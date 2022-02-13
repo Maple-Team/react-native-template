@@ -5,10 +5,13 @@ import { TabHeader, Text } from '@/components'
 import emitter from '@/eventbus'
 import { default as MoneyyaContext } from '@/state'
 import { useNavigation } from '@react-navigation/native'
+import { Modal } from '@ant-design/react-native'
+import { useTranslation } from 'react-i18next'
 
 export function UserCenter() {
   const context = useContext(MoneyyaContext)
   const na = useNavigation()
+  const { t } = useTranslation()
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar translucent={true} barStyle="default" />
@@ -18,7 +21,7 @@ export function UserCenter() {
             source={require('@/assets/compressed/user-center/bg.webp')}
             resizeMode="cover"
             style={{
-              height: 209,
+              height: 220,
             }}>
             <TabHeader
               title={require('@/assets/compressed/common/active/moneyya.webp')}
@@ -60,7 +63,7 @@ export function UserCenter() {
               title: 'Payment',
               onPress: () => {
                 //@ts-ignore
-                na.navigate('Repay')
+                na.navigate('Order', { type: 'payment' })
               },
             },
             {
@@ -68,7 +71,7 @@ export function UserCenter() {
               title: 'History Bills',
               onPress: () => {
                 //@ts-ignore
-                na.navigate('Order')
+                na.navigate('Order', { type: 'order' })
               },
             },
             {
@@ -110,7 +113,17 @@ export function UserCenter() {
               img: require('@/assets/compressed/user-center/Logout.webp'),
               title: 'Logout',
               onPress: () => {
-                emitter.emit('LOGOUT_SUCCESS')
+                Modal.alert(t('logoutPrompt'), t('logoutPromptContent'), [
+                  {
+                    text: t('cancel'),
+                    onPress: () => {},
+                    style: 'cancel',
+                  },
+                  {
+                    text: t('ok'),
+                    onPress: () => emitter.emit('LOGOUT_SUCCESS'),
+                  },
+                ])
               },
             },
           ].map(({ img, title, onPress }, i) => {
