@@ -1,5 +1,6 @@
 import { request } from '@/utils/http'
 import type { BaseResponse } from '@/utils/http'
+import type { ZhanneiLetter } from '@/typings/user'
 
 /**
  * 站内信数量未读 展示红点
@@ -12,16 +13,24 @@ export async function queryZhanLetter() {
     method: 'POST',
   })
 }
+interface MessageListParameter {
+  currentPage: number
+  messageType?: string
+  pageSize: number
+  status?: string
+}
+
 /**
  * 站内信列表
  * @param data
  * @returns
  * TODO 10条
  */
-export async function queryZhanLetterList() {
-  return request<BaseResponse>({
+export async function queryZhanLetterList(data: MessageListParameter) {
+  return request<ZhanneiLetter[]>({
     url: '/smart-loan/system/message/list',
     method: 'POST',
+    data,
   })
 }
 /**
@@ -30,10 +39,10 @@ export async function queryZhanLetterList() {
  * @returns
  * TODO
  */
-export async function queryZhanLetterDetail(id: string) {
-  return request<BaseResponse>({
+export async function markZhanLetterRead(messageId: string) {
+  return request<ZhanneiLetter>({
     url: '/smart-loan/system/message/read',
     method: 'POST',
-    params: { id },
+    params: { messageId },
   })
 }

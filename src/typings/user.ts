@@ -126,3 +126,14 @@ export interface SocialInfo {
   thirdCode: 'whatsApp'
   thirdName: 'whatsApp'
 }
+
+export interface ZhanneiLetter {
+  content: string
+  createTime: string
+  id: number
+  messageType: string
+  sendDate: string
+  status: string
+  title: string
+  typeDescription: string
+}

@@ -21,6 +21,7 @@ export const Step61 = ({ navigation }: NativeStackHeaderProps) => {
 
   const [isValid, setValid] = useState<Boolean>()
   const [imageId, setImageId] = useState<number>()
+  // TODO 总次数跟随申请单， 防止刷活体接口
   const [errorTimes, setErrorTimes] = useState<number>(0)
   const context = useContext(MoneyyaContext)
 

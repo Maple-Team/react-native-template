@@ -105,13 +105,22 @@ export function Step1() {
     context.user?.repayDate,
     t,
   ])
-
   useEffect(() => {
     queryUserinfo().then(res => {
+      console.log('get user')
       MMKV.setString(KEY_APPLYID, `${res.applyId}`)
       emitter.emit('USER_INFO', res)
     })
   }, [])
+  // useFocusEffect(() => {
+  //   console.log('==============get user==============')
+  //   // queryUserinfo().then(res => {
+  //   //   console.log('get user')
+  //   //   MMKV.setString(KEY_APPLYID, `${res.applyId}`)
+  //   //   emitter.emit('USER_INFO', res)
+  // TODO刷新用户信息
+  //   // })
+  // })
   const onSubmit = debounce(
     () => {
       switch (applyStatus) {

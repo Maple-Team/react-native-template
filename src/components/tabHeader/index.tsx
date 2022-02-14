@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import { View, Image, Linking, Pressable } from 'react-native'
 import headerStyles from './style'
 import { default as MoneyyaContext } from '@/state'
+import { useNavigation } from '@react-navigation/native'
 
 interface HeaderProps {
   title?: any
@@ -11,6 +12,7 @@ interface HeaderProps {
 
 export const TabHeader = ({ title, help, notice }: HeaderProps) => {
   const context = useContext(MoneyyaContext)
+  const na = useNavigation()
   return (
     <View style={headerStyles.header}>
       <View style={headerStyles.headerLeft}>
@@ -28,7 +30,7 @@ export const TabHeader = ({ title, help, notice }: HeaderProps) => {
       <View style={headerStyles.headerRight}>
         <Pressable
           onPress={() => {
-            //TODO
+            na.getParent()?.navigate('Letters')
           }}>
           <Image
             style={headerStyles.notice}

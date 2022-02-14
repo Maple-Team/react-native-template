@@ -40,7 +40,7 @@ public class AppModule extends ReactContextBaseJavaModule {
     return url;
   }
   @ReactMethod(isBlockingSynchronousMethod = true)
-  public String getVersionID(){
-    return BuildConfig.VERSION_NAME;
+  public int getVersionID(){
+    return BuildConfig.VERSION_CODE;
   }
 }

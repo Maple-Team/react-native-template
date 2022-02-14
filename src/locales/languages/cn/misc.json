@@ -19,7 +19,7 @@
   "logoutPrompt": "退出登录",
   "logoutPromptContent": "确定要退出登录吗?",
   "adPrompt": "简单几步，即可完成贷款:",
-  "noMessagePrompt": "消息列表为空’",
+  "noMessagePrompt": "消息列表为空",
   "noMore": "没有更多的数据了",
   "notice": "消息",
   "payment": "还款"
