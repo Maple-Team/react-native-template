@@ -1,10 +1,4 @@
 {
-  "title": "欢迎使用react-i18next和typescript 4.1",
-  "description": {
-    "part1": "This is an example without namespaces.",
-    "part2": "In order to infer the appropriate type for t function, you should use type augmentation to override the Resources type.",
-    "part3": "Check out the @types/react-i18next to see an example."
-  },
   "tostep7": "返回修改银行卡号",
   "Bill-information": "Bill information",
   "information": {
@@ -22,5 +16,7 @@
   "noMessagePrompt": "消息列表为空",
   "noMore": "没有更多的数据了",
   "notice": "消息",
-  "payment": "还款"
+  "payment": "还款",
+  "authorizaiton": "授权说明",
+  "authorizaiton-not-reading": "请阅读完"
 }

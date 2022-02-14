@@ -18,5 +18,7 @@
   "noMessagePrompt": "Message list is empty!",
   "noMore": "No more new data available",
   "notice": "Notice",
-  "payment": "Payment"
+  "payment": "Payment",
+  "authorizaiton": "authorizaiton",
+  "authorizaiton-not-reading": "请阅读完"
 }
