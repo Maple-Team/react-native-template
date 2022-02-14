@@ -4,5 +4,6 @@
     "src/locales",
     "src/locales/languages"
   ],
-  "i18n-ally.keystyle": "nested"
+  "i18n-ally.keystyle": "nested",
+  "i18n-ally.sourceLanguage": "en"
 }

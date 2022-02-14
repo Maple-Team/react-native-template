@@ -30,9 +30,10 @@ export async function queryZhanLetterList() {
  * @returns
  * TODO
  */
-export async function queryZhanLetterDetail() {
+export async function queryZhanLetterDetail(id: string) {
   return request<BaseResponse>({
     url: '/smart-loan/system/message/read',
     method: 'POST',
+    params: { id },
   })
 }

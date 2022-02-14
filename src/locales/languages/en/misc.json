@@ -14,5 +14,9 @@
   "signinPrompt": "Don't have an account?",
   "logoutPrompt": "Logout Prompt",
   "logoutPromptContent": "Are you sure to logout?",
-  "adPrompt": "Easy steps to get and pay for a loan:"
+  "adPrompt": "Easy steps to get and pay for a loan:",
+  "noMessagePrompt": "Message list is empty!",
+  "noMore": "No more new data available",
+  "notice": "Notice",
+  "payment": "Payment"
 }

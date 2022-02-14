@@ -8,6 +8,8 @@ import { HeaderRight, HeaderLeft } from '@components/header'
 import { Linking } from 'react-native'
 import { default as MoneyyaContext } from '@/state'
 import { useNavigation } from '@react-navigation/native'
+import { LetterList, LetterDetail } from '@screens/letter'
+import { useTranslation } from 'react-i18next'
 
 const Stack = createNativeStackNavigator()
 // https://reactnavigation.org/docs/hiding-tabbar-in-screens
@@ -15,6 +17,7 @@ const Stack = createNativeStackNavigator()
 export function MainStack() {
   const context = useContext(MoneyyaContext)
   const na = useNavigation()
+  const { t } = useTranslation()
   return (
     <Stack.Navigator
       initialRouteName="Apply"
@@ -73,10 +76,19 @@ export function MainStack() {
         key="Payment"
         component={Payment}
         options={() => ({
-          title: 'Payment',
+          title: t('payment'),
         })}
       />
       <Stack.Screen name="PaymentDetail" key="PaymentDetail" component={PaymentDetail} />
+      <Stack.Screen
+        name="Letters"
+        key="Letters"
+        component={LetterList}
+        options={() => ({
+          title: t('notice'),
+        })}
+      />
+      <Stack.Screen name="LetterDetail" key="LetterDetail" component={LetterDetail} />
     </Stack.Navigator>
   )
 }
