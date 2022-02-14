@@ -47,7 +47,6 @@ export const SignupScreen = ({ route }: { route: any }) => {
       .max(4, t('field.long', { field: 'Validate Code' }))
       .matches(REGEX_VALIDATE_CODE, t('validateCode.invalid'))
       .required(t('validateCode.required')),
-    hasAgree: Yup.string().required(t('hasAgree.required')),
   })
   type Model = RegisterParameter & {
     hasAgree?: boolean

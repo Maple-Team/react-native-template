@@ -28,12 +28,11 @@ public class AppModule extends ReactContextBaseJavaModule {
     String url;
     switch (getEnv()){
       case "production":
-//        url = "https://";
-//        break;
+        url = "http://hbpub0561.6655.la";
+        break;
       case "staging":
       case "development":
       default:
-//        url = "http://94.74.68.216:8081";
         url = "http://hbpub0561.6655.la";
         break;
     }

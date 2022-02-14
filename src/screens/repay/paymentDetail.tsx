@@ -15,6 +15,7 @@ interface RouteParams {
   amount?: number
   type?: 'spei' | 'oxxo'
 }
+// TODO 返回上一步
 export function PaymentDetail() {
   const route = useRoute()
   const params: RouteParams | undefined = route.params

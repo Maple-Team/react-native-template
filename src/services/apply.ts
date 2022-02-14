@@ -67,6 +67,7 @@ export async function queryBrand() {
 
 /**
  * 获取版本信息
+ * // TODO 强制更新
  * @returns
  */
 export async function queryVersion() {

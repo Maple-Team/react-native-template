@@ -1,7 +1,7 @@
 apply plugin: "com.android.application"
 
 import com.android.build.OutputFile
-
+import groovy.json.JsonSlurper
 
 project.ext.react = [
   enableHermes: true,  // clean and rebuild if changing
@@ -60,8 +60,8 @@ android {
     applicationId "mx.moneyya.loan"
     minSdkVersion rootProject.ext.minSdkVersion
     targetSdkVersion rootProject.ext.targetSdkVersion
-    versionCode 1
-    versionName "1.0"
+    versionCode getVersionCode()
+    versionName getVersionName()
     ndk {
       abiFilters "arm64-v8a"
 //      , "x86"
@@ -85,7 +85,7 @@ android {
       // to allow debugging
       exclude '**/libhermes-executor-release.so'
     } else {
-      // Reduce size by deleting the debugger/inspector
+      // Reduce size by deleting the debugger/inspector TODO
       exclude '**/libhermes-inspector.so'
       exclude '**/libhermes-executor-debug.so'
       exclude '**/libhermes-executor-common-debug.so'
@@ -132,13 +132,10 @@ android {
     variant.outputs.each { output ->
       // For each separate APK per architecture, set a unique version code as described here:
       // https://developer.android.com/studio/build/configure-apk-splits.html
-      // Example: versionCode 1 will generate 1001 for armeabi-v7a, 1002 for x86, etc.
-      def versionCodes = ["armeabi-v7a": 1, "x86": 2, "arm64-v8a": 3, "x86_64": 4]
-      def abi = output.getFilter(OutputFile.ABI)
-      if (abi != null) {  // null for the universal-debug, universal-release variants
-        output.versionCodeOverride =
-          defaultConfig.versionCode * 1000 + versionCodes.get(abi)
-      }
+      output.versionNameOverride = getVersionName()
+      output.versionCodeOverride = getVersionCode()
+      output.outputFileName = "Moneyya_${variant.buildType.name}_v${getVersionName()}-${getVersionCode()}.apk"
+
 
     }
   }
@@ -191,3 +188,17 @@ task copyDownloadableDepsToLibs(type: Copy) {
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+
+static def getVersionCode() {
+  def name = getVersionName()
+  def (_major, _minor, _patch) = name.tokenize( '.' )
+  int major = _major as int
+  int minor = _minor as int
+  int patch = _patch as int
+  return  major + minor + patch
+}
+
+static def getVersionName() {
+  def jsonSlurper = new JsonSlurper()
+  return jsonSlurper.parse(new File('../package.json'))['version']
+}

@@ -225,7 +225,7 @@ export const Step71 = ({ navigation }: NativeStackHeaderProps) => {
                     onClear={() => setFieldValue('validateCode', '')}
                     placeholder={t('validateCode.placeholder')}
                     error={errors.validateCode}
-                    validateCodeType="LOGIN"
+                    validateCodeType="MODIFY_BANKCARD"
                     phone={context.user?.phone || ''}
                     keyboardType="number-pad"
                   />

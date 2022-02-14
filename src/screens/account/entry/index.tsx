@@ -27,6 +27,7 @@ interface FormModel {
 }
 // TODO 授权页(静态) -> 英式页 -> 请求权限
 // TODO 注册时同意
+// TODO 直接显示+52
 export const EntryScreen = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
   const schema = Yup.object().shape({

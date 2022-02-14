@@ -33,7 +33,10 @@ export function Payment() {
   const params = route.params as { applyId: string; repayAmount: number }
   const [payType, setPayType] = useState<'spei' | 'oxxo'>()
   const [visible, setVisible] = useState<boolean>(false)
-  const initialValue: FormModel = { amount: '', applyId: params?.applyId || '' }
+  const initialValue: FormModel = {
+    amount: `${params?.repayAmount}` || '0',
+    applyId: params?.applyId || '',
+  }
   const na = useNavigation()
   const onSubmit = debounce(
     (values: FormModel) => {
@@ -93,7 +96,8 @@ export function Payment() {
               我们需要几分钟来处理您的还贷申请，请耐心等待。如果收不到验证码，请重新发送验证码。谢谢您的配合。
             </Text>
           </View>
-          <View style={{ backgroundColor: '#fff' }}>
+          {/* TODO */}
+          <View style={{ backgroundColor: '#fff', paddingHorizontal: 20 }}>
             <Pressable
               key={'spei'}
               style={style.payitem}

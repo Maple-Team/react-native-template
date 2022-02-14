@@ -8,6 +8,7 @@ import { Provider, Toast } from '@ant-design/react-native'
 import {
   BackHandler,
   Alert,
+  // View,
   // ActivityIndicator,
   // View,
   // ViewStyle,
@@ -21,17 +22,17 @@ import * as RNLocalize from 'react-native-localize'
 import { MainStack } from '@/navigation/mainStack'
 import { AccountStack } from '@/navigation/accountStack'
 import i18n, { getI18nConfig } from '@/locales/i18n'
-import { navigationRef } from '@/navigation/rootNavigation'
+// import { navigationRef } from '@/navigation/rootNavigation'
 // import { Color } from '@/styles/color'
 import { KEY_PHONE, MESSAGE_DURATION } from '@/utils/constant'
 import SplashScreen from 'react-native-splash-screen'
-import Init from '@screens/init'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { useEventListener } from '@/hooks'
 import { reducer, default as MoneyyaContext, moneyyaState } from '@/state'
-import { useFlipper } from '@react-navigation/devtools'
+// import { useFlipper } from '@react-navigation/devtools'
 import emitter from '@/eventbus'
 import { MMKV } from '@/utils/storage'
+import { WebViewScreen } from '@components/webview'
 
 // Authentication flows: https://reactnavigation.org/docs/auth-flow/
 Toast.config({
@@ -92,7 +93,7 @@ const App = () => {
 
   // const [isReady, setIsReady] = useState(__DEV__ ? false : true)
   // const [initialState, setInitialState] = useState()
-  useFlipper(navigationRef)
+  // useFlipper(navigationRef)
   // NOTE 处理用户上一次打开的页面(进件过程), 开发环境? https://reactnavigation.org/docs/state-persistence
   // useEffect(() => {
   //   const restoreState = async () => {
@@ -119,6 +120,7 @@ const App = () => {
 
   useEffect(() => {
     emitter.on('FIRST_INIT', init => {
+      // FIXME emitter emit/on 同一页的问题
       dispatch({
         type: 'UPDATE_HAS_INIT',
         hasInit: init,
@@ -179,10 +181,35 @@ const App = () => {
       <Provider>
         <MoneyyaContext.Provider value={moneyyaState}>
           <NavigationContainer
-            ref={navigationRef}
+            // ref={navigationRef}
             // initialState={initialState}
             onStateChange={_ => AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(_))}>
-            {!hasInit ? <Init /> : accessToken ? <MainStack /> : <AccountStack />}
+            {!hasInit ? (
+              <WebViewScreen
+                actions={[
+                  { text: '取消', color: '#bbbcbd', backgroundColor: '#fff', onPress: () => {} },
+                  {
+                    text: '确定',
+                    color: '#eee',
+                    backgroundColor: '#8e8f90',
+                    onPress: () => {
+                      dispatch({
+                        type: 'UPDATE_HAS_INIT',
+                        hasInit: true,
+                      })
+                    },
+                  },
+                ]}
+                title={'授权说明'}
+                warnMessage={'请阅读完'}
+                type="html"
+                content={'en'}
+              />
+            ) : accessToken ? (
+              <MainStack />
+            ) : (
+              <AccountStack />
+            )}
           </NavigationContainer>
         </MoneyyaContext.Provider>
       </Provider>

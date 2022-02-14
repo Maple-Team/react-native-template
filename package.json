@@ -1,6 +1,6 @@
 {
   "name": "moneyya",
-  "version": "0.0.2",
+  "version": "1.0.1",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -72,7 +72,7 @@
     "react-native-svg": "^12.1.1",
     "react-native-swiper": "^1.6.0",
     "react-native-text-input-mask": "^3.1.4",
-    "react-native-webview": "^11.15.0",
+    "react-native-webview": "^11.17.2",
     "react-native-wheel-picker-android": "^2.0.6",
     "rn-fetch-blob-v2": "^0.14.1",
     "tinify": "^1.6.1",

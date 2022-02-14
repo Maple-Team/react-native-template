@@ -27,6 +27,7 @@ interface Status {
   repayDate?: string
   repayAmount?: string
 }
+// TODO get data
 export function Step1() {
   const navigation = useNavigation()
   const context = useContext(MoneyyaContext)

@@ -18,7 +18,7 @@ import type { Dict, DictField } from '@/typings/response'
 import { MMKV } from '@/utils'
 import { fetchDict, submit } from '@/services/apply'
 import { REGEX_BANK_CARD, REGEX_BANK_CLABE } from '@/utils/reg'
-
+// 返回 次数-> 手持/活体
 export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
   const schema = Yup.object().shape({
