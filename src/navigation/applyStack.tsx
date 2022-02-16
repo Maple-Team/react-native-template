@@ -41,6 +41,7 @@ export function ApplyStack() {
     })
   }, [])
   const na = useNavigation()
+  // TODO title 文案
   return (
     <Provider>
       <Stack.Navigator
@@ -125,7 +126,7 @@ export function ApplyStack() {
             name="Step61"
             component={Step61}
             options={() => ({
-              title: 'Face Recognition',
+              title: t('screenTitle.faceRecognition'),
             })}
           />
           <Stack.Screen
@@ -133,7 +134,7 @@ export function ApplyStack() {
             name="Step62"
             component={Step62}
             options={() => ({
-              title: 'Hold ID Photo',
+              title: t('screenTitle.holdIDPhoto'),
             })}
           />
           <Stack.Screen
@@ -157,7 +158,7 @@ export function ApplyStack() {
             name="Step8"
             component={Step8}
             options={() => ({
-              title: t('loan'),
+              title: t('screenTitle.loan'),
             })}
           />
         </Stack.Group>

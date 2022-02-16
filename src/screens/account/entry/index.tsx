@@ -25,9 +25,8 @@ import { StackActions } from '@react-navigation/native'
 interface FormModel {
   phone: string
 }
-// TODO 授权页(静态) -> 英式页 -> 请求权限
-// TODO 注册时同意
-// TODO 直接显示+52
+// TODO 授权页(静态) -> 隐私页 -> 请求权限
+// TODO 注册时同意用户条款
 export const EntryScreen = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
   const schema = object().shape({
@@ -82,7 +81,8 @@ export const EntryScreen = ({ navigation }: NativeStackHeaderProps) => {
                           placeholder={t('phone.placeholder')}
                           error={errors.phone}
                           keyboardType="phone-pad"
-                          mask={'+52 [0000] [000] [000]'}
+                          mask={'[0000] [000] [000]'}
+                          Prefix={<Text color="#eee">+52</Text>}
                         />
                       </View>
                       <Button

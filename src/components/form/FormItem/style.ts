@@ -2,12 +2,28 @@ import { Color } from '@/styles/color'
 import type { ImageStyle, TextStyle, ViewStyle } from 'react-native'
 import StyleSheet from 'react-native-adaptive-stylesheet'
 
+/**
+ * 绝对定位容器
+ */
+const extraWrap = StyleSheet.create<{ extraWrap: ViewStyle }>({
+  extraWrap: {
+    flexDirection: 'row',
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '100%',
+    backgroundColor: 'rgba(180, 204, 226, 0)',
+  },
+})
+
 export default StyleSheet.create<{
   formItem: ViewStyle
   label: TextStyle
   inputWrap: ViewStyle
   input: ViewStyle | TextStyle
+
   suffixWrap: ViewStyle
+  prefixWrap: ViewStyle
   suffix: ImageStyle
   validBtnWrapDisabled: ViewStyle
   validBtnWrap: ViewStyle
@@ -43,14 +59,14 @@ export default StyleSheet.create<{
     flexWrap: 'wrap',
     paddingRight: 34,
   },
+
   suffixWrap: {
-    flexDirection: 'row',
-    position: 'absolute',
-    alignItems: 'center',
-    justifyContent: 'center',
     right: 0,
-    height: '100%',
-    backgroundColor: 'rgba(180, 204, 226, 0)',
+    ...extraWrap,
+  },
+  prefixWrap: {
+    left: 0,
+    ...extraWrap,
   },
   suffix: {
     width: 22,

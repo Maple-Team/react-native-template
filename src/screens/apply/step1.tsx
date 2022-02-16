@@ -19,7 +19,7 @@ import { toThousands } from '@/utils/util'
 import { APPLY_STATE } from '@/state/enum'
 import emitter from '@/eventbus'
 import { queryUserinfo } from '@/services/user'
-import { useTranslation } from 'react-i18next'
+import { t } from 'i18next'
 interface Status {
   btnText: string
   amount: number
@@ -43,7 +43,6 @@ export function Step1() {
   }, [context.user?.userId])
 
   const location = useLocation()
-  const { t } = useTranslation()
   console.log(context.user)
   console.log(context.loading.effects)
   const applyStatus = context.user?.applyStatus
@@ -58,7 +57,7 @@ export function Step1() {
       case APPLY_STATE.WAIT:
         value = {
           btnText: t('applyState.check'),
-          prompt: 'Apply amount',
+          prompt: t('applyAmount'),
           amount: context.user?.applyAmount || 0,
         }
         break
@@ -66,7 +65,7 @@ export function Step1() {
       case APPLY_STATE.OVERDUE:
         value = {
           btnText: t('applyState.repay'),
-          prompt: '请您保持良好的还款习惯',
+          prompt: t('repayHint'),
           repayAmount: `${context.user?.repayAmount}` || '',
           repayDate: context.user?.repayDate || '',
           amount: 0,
@@ -75,7 +74,7 @@ export function Step1() {
       case APPLY_STATE.SETTLE:
         value = {
           btnText: t('applyState.continueLoan'),
-          prompt: 'Available balance',
+          prompt: t('availableAmount'),
           amount: context.user?.maxAmount || 0,
         }
         break
@@ -83,7 +82,7 @@ export function Step1() {
       case APPLY_STATE.APPLY:
         value = {
           btnText: t('applyState.apply'),
-          prompt: 'The maximum amount can be borrowed',
+          prompt: t('maxAvailableAmount'),
           amount: context.user?.MaxViewAmount || 0,
         }
         break
@@ -92,7 +91,7 @@ export function Step1() {
       default:
         value = {
           btnText: t('applyState.apply'),
-          prompt: 'Available balance',
+          prompt: t('availableAmount'),
           amount: context.user?.maxAmount || 0,
         }
     }
@@ -104,7 +103,6 @@ export function Step1() {
     context.user?.maxAmount,
     context.user?.repayAmount,
     context.user?.repayDate,
-    t,
   ])
   useEffect(() => {
     queryUserinfo().then(res => {
@@ -119,7 +117,7 @@ export function Step1() {
   //   //   console.log('get user')
   //   //   MMKV.setString(KEY_APPLYID, `${res.applyId}`)
   //   //   emitter.emit('USER_INFO', res)
-  // TODO刷新用户信息
+  // TODO 刷新用户信息
   //   // })
   // })
   const onSubmit = debounce(
@@ -222,7 +220,7 @@ export function Step1() {
                           color="#010038"
                           //@ts-ignore
                           styles={{ top: 4 }}>
-                          $
+                          {t('$')}
                         </Text>
                         <Text fontWeight="bold" fontSize={24} color="#010038">
                           {toThousands(+status.repayAmount)}
@@ -244,7 +242,7 @@ export function Step1() {
                       color={Color.primary}
                       //@ts-ignore
                       styles={{ top: 12 }}>
-                      $
+                      {t('$')}
                     </Text>
                     <Text fontSize={57} color={Color.primary} fontWeight="bold">
                       {toThousands(status.amount)}
@@ -282,7 +280,6 @@ export function Step1() {
 }
 
 const AD = () => {
-  const { t } = useTranslation()
   return (
     <View style={Styles.ad}>
       <View style={Styles.adTextWrap}>
@@ -329,22 +326,22 @@ const Slider = () => (
 const ads = [
   {
     key: 'one',
-    title: 'Convenient operation',
-    text: 'Fill up information within 5 mins',
+    title: t('ads.0.title'),
+    text: t('ads.0.text'),
     ad: require('@/assets/compressed/apply/ad1.webp'),
     num: require('@/assets/compressed/apply/1.webp'),
   },
   {
     key: 'two',
-    title: 'Fast Approval',
-    text: 'Verification finished within 2 hours',
+    title: t('ads.1.title'),
+    text: t('ads.1.text'),
     ad: require('@/assets/compressed/apply/ad2.webp'),
     num: require('@/assets/compressed/apply/2.webp'),
   },
   {
     key: 'three',
-    title: 'Get the disbursement',
-    text: 'Disbursement within 24 hours',
+    title: t('ads.2.title'),
+    text: t('ads.2.text'),
     ad: require('@/assets/compressed/apply/ad3.webp'),
     num: require('@/assets/compressed/apply/3.webp'),
   },

@@ -74,9 +74,7 @@ export const Step62 = ({ navigation }: NativeStackHeaderProps) => {
                     }}
                     isSupplement="N"
                     error={errors.handId}
-                    hint={
-                      'Must provide above mentioned images, otherwise application will be rejected.'
-                    }
+                    hint={t('providehandleIDcardPrompt')}
                   />
                 </View>
                 <View style={PageStyles.btnWrap}>

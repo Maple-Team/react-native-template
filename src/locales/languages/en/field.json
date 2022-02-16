@@ -1,4 +1,37 @@
 {
+  "authPhone": {
+    "label": "scoical account",
+    "placeholder": "social phone ",
+    "required": "social phone required",
+    "invalid": "social phone invalid"
+  },
+  "backupPhone": {
+    "required": "backup phone required",
+    "label": "backup phone",
+    "placeholder": "backup phone",
+    "invalid": "backup Phone invalid"
+  },
+  "bankCardNo": {
+    "label": "bank Card No",
+    "placeholder": "bank Card No",
+    "required": "bank Card No required",
+    "invalid": "bank Card No invalid"
+  },
+  "bankCode": {
+    "label": "bank code",
+    "placeholder": "bank code",
+    "required": "back code required"
+  },
+  "birth": {
+    "required": "birth required",
+    "label": "birth",
+    "placeholder": "birth"
+  },
+  "cardNoType": {
+    "required": "card No Type required",
+    "label": "bank card type",
+    "placeholder": "cardno type"
+  },
   "comfirmPassword": {
     "label": "confirmPassword",
     "placeholder": "confirmPassword",
@@ -15,7 +48,6 @@
   "companyAddrCityCode": {
     "label": "company  city",
     "placeholder": "company city",
-    "invalid": "",
     "required": "company city required"
   },
   "companyAddrDetail": {
@@ -27,7 +59,6 @@
   "companyAddrProvinceCode": {
     "label": "state",
     "placeholder": "state",
-    "invalid": "",
     "required": "company state required"
   },
   "companyPhone": {
@@ -39,7 +70,7 @@
   "contactName": {
     "label": "contactName",
     "placeholder": "contact phone",
-    "invalid": "",
+    "invalid": "contact phone invalid",
     "required": "contact name required"
   },
   "contactPhone": {
@@ -51,59 +82,57 @@
   "contactRelationCode": {
     "label": "contactRelation",
     "placeholder": "contact relation",
-    "invalid": "",
     "required": "contact relation required"
+  },
+  "docType": {
+    "required": "doctype required",
+    "label": "docType",
+    "placeholder": "docType"
+  },
+  "educationCode": {
+    "required": "education required",
+    "label": "education",
+    "placeholder": "education"
+  },
+  "email": {
+    "required": "email required",
+    "label": "email",
+    "invalid": "email invalid",
+    "placeholder": "email"
   },
   "firstName": {
     "label": "first name",
     "placeholder": "first name",
-    "invalid": "",
+    "invalid": "first name invalid",
     "required": "first name required"
+  },
+  "gender": {
+    "required": "gender required",
+    "label": "gender"
   },
   "hasAgree": {
     "required": "please agree agreement"
   },
-  "incumbency": {
-    "label": "incumbency",
-    "placeholder": "incumbency",
-    "invalid": "",
-    "required": "incumbency required"
+  "homeAddrCityCode": {
+    "required": "home city required",
+    "label": "home Addr City",
+    "placeholder": "home Addr City"
   },
-  "industryCode": {
-    "label": "industry",
-    "placeholder": "industry",
-    "invalid": "",
-    "required": "industry required"
+  "homeAddrDetail": {
+    "required": "home detail required",
+    "label": "home Addr Detail",
+    "placeholder": "home Addr Detail"
   },
-  "jobTypeCode": {
-    "label": "job type",
-    "placeholder": "job type",
-    "invalid": "",
-    "required": "job type required"
+  "homeAddrProvinceCode": {
+    "required": "home state required",
+    "label": "homeAddrProvinceCode",
+    "placeholder": "home Addr Province"
   },
-  "lastname": {
-    "label": "last name",
-    "placeholder": "",
-    "invalid": "",
-    "required": "last name required"
-  },
-  "monthlyIncome": {
-    "label": "month income",
-    "placeholder": "month incode",
-    "invalid": "",
-    "required": "monthincome required"
-  },
-  "password": {
-    "label": "password",
-    "placeholder": "password",
-    "required": "password required",
-    "invalid": "password invalid"
-  },
-  "phone": {
-    "label": "Phone",
-    "placeholder": "Phone",
-    "invalid": "Phone invalid",
-    "required": "Phone Required"
+  "idcard": {
+    "required": "idcard required",
+    "label": "idcard",
+    "placeholder": "idcard",
+    "invalid": "idcard invalid"
   },
   "idcard1": {
     "label": "idcard1",
@@ -113,17 +142,91 @@
     "label": "idcard2",
     "required": "idcard2 Required"
   },
+  "incumbency": {
+    "label": "incumbency",
+    "placeholder": "incumbency",
+    "required": "incumbency required"
+  },
+  "industryCode": {
+    "label": "industry",
+    "placeholder": "industry",
+    "required": "industry required"
+  },
+  "jobTypeCode": {
+    "label": "job type",
+    "placeholder": "job type",
+    "required": "job type required"
+  },
+  "lastName": {
+    "label": "last name",
+    "invalid": "last name invalid",
+    "required": "last name required",
+    "placeholder": "last name"
+  },
+  "lastname": {
+    "label": "last name",
+    "placeholder": "last name",
+    "invalid": "last name invalid",
+    "required": "last name required"
+  },
+  "liveness": {
+    "required": "liveness required"
+  },
+  "loanPurpose": {
+    "label": "loan purpose",
+    "placeholder": "loan purpose"
+  },
+  "loanPurposeCode": {
+    "required": "loan purpose required"
+  },
+  "maritalStatus": {
+    "required": "marital status required",
+    "label": "maritalStatus",
+    "placeholder": "maritalStatus"
+  },
+  "middleName": {
+    "label": "middle name",
+    "invalid": "middle name invalid",
+    "required": "middle name required",
+    "placeholder": "middle name"
+  },
+  "monthlyIncome": {
+    "label": "month income",
+    "placeholder": "month income",
+    "required": "monthincome required"
+  },
+  "password": {
+    "label": "password",
+    "placeholder": "password",
+    "required": "password required",
+    "invalid": "password invalid"
+  },
+  "payAmount": {
+    "placeholder": "payment amount",
+    "required": "payment amount required",
+    "invalid": "payment amount should above {{val}} MXN"
+  },
+  "phone": {
+    "label": "Phone",
+    "placeholder": "Phone",
+    "invalid": "Phone invalid",
+    "required": "Phone Required"
+  },
   "salaryDate": {
     "label": "pay date",
     "placeholder": "pay date",
-    "invalid": "",
     "required": "salary date required"
   },
   "salaryType": {
     "label": "salary type",
     "placeholder": "salary type",
-    "invalid": "",
     "required": "salary type required"
+  },
+  "secondCardNo": {
+    "required": "second phone required",
+    "label": "secondCardNo",
+    "placeholder": "secondCardNo",
+    "invalid": "secondCardNo invalid"
   },
   "validateCode": {
     "label": "Validate Code",
@@ -134,117 +237,9 @@
     "wait": "{{num}}",
     "maxTime": "最大次数, 请稍候再试"
   },
-  "birth": {
-    "required": "birth required",
-    "label": "birth",
-    "placeholder": "birth"
-  },
-  "gender": {
-    "required": "gender required",
-    "label": "gender"
-  },
-  "idcard": {
-    "required": "idcard required",
-    "label": "idcard",
-    "placeholder": "idcard",
-    "invalid": "idcard invalid"
-  },
-  "maritalStatus": {
-    "required": "marital status required",
-    "label": "maritalStatus",
-    "placeholder": "maritalStatus"
-  },
-  "homeAddrProvinceCode": {
-    "required": "home state required",
-    "label": "homeAddrProvinceCode",
-    "placeholder": "home Addr Province"
-  },
-  "homeAddrDetail": {
-    "required": "home detail required",
-    "label": "home Addr Detail",
-    "placeholder": "home Addr Detail"
-  },
-  "homeAddrCityCode": {
-    "required": "home city required",
-    "label": "home Addr City",
-    "placeholder": "home Addr City"
-  },
-  "docType": {
-    "required": "doctype required",
-    "label": "docType",
-    "placeholder": "docType"
-  },
-  "backupPhone": {
-    "required": "backup phone required",
-    "label": "backup phone",
-    "placeholder": "backup phone",
-    "invalid": "backup Phone invalid"
-  },
-  "educationCode": {
-    "required": "education required",
-    "label": "education",
-    "placeholder": "education"
-  },
-  "loanPurposeCode": {
-    "required": "loan purpose required"
-  },
   "whatsapp": {
     "required": "whatsAPP required",
     "label": "whatsapp",
     "placeholder": "whatsapp"
-  },
-  "email": {
-    "required": "email required",
-    "label": "email",
-    "placeholder": "email"
-  },
-  "secondCardNo": {
-    "required": "second phone required",
-    "label": "secondCardNo",
-    "placeholder": "secondCardNo",
-    "invalid": "secondCardNo invalid"
-  },
-  "middleName": {
-    "label": "middle name",
-    "required": "middle name required",
-    "placeholder": "middle name"
-  },
-  "lastName": {
-    "label": "last name",
-    "placeholder": "last name"
-  },
-  "loanPurpose": {
-    "label": "loan purpose",
-    "placeholder": "loan purpose"
-  },
-  "bankCode": {
-    "label": "bank code",
-    "placeholder": "bank code",
-    "required": "back code required"
-  },
-  "bankCardNo": {
-    "label": "bank Card No",
-    "placeholder": "bank Card No",
-    "required": "bank Card No required",
-    "invalid": "bank Card No invalid"
-  },
-  "cardNoType": {
-    "required": "card No Type required",
-    "label": "bank card type",
-    "placeholder": "cardno type"
-  },
-  "liveness": {
-    "required": "liveness required"
-  },
-  "authPhone": {
-    "label": "scoical account",
-    "placeholder": "social phone ",
-    "required": "social phone required",
-    "invalid": "social phone invalid"
-  },
-  "payAmount": {
-    "placeholder": "payment amount",
-    "required": "payment amount required",
-    "invalid": "payment amount should above {{val}} MXN"
   }
 }

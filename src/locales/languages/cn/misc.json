@@ -1,26 +1,35 @@
 {
-  "title": "欢迎使用react-i18next和typescript 4.1",
-  "description": {
-    "part1": "This is an example without namespaces.",
-    "part2": "In order to infer the appropriate type for t function, you should use type augmentation to override the Resources type.",
-    "part3": "Check out the @types/react-i18next to see an example."
-  },
-  "tostep7": "返回修改银行卡号",
-  "Bill-information": "Bill information",
-  "information": {
-    "confirmed": " Information Confirmed"
-  },
+  "adPrompt": "简单几步，即可完成贷款:",
+  "ads": [{
+    "title": "Convenient operation",
+    "text": "Fill up information within 5 mins"
+  }, {
+    "title": "Fast Approval",
+    "text": "Verification finished within 2 hours"
+  }, {
+    "title": "Get the disbursement",
+    "text": "Disbursement within 24 hours"
+  }],
+  "bill-information": "Bill information",
   "choose-product-prompt": "请选择贷款期限",
-  "restRepayAmount": "剩余应付金额",
-  "numberRequired": "必需输入数字",
   "copySuccessed": "复制成功！",
-  "warnRepayPrompt": "我们建议您在此页面立即偿还贷款，以 免影响您的下次贷款申请。",
-  "signinPrompt": "Don't have an account?",
+  "currentLoanInfoHint": "本次还款申请",
+  "fillBankCodePrompt": "Please fill in bank account information of your own, or loan would fail",
+  "firstPaymentAmount": "第一期还款日期",
+  "firstPaymentdate": "第一期还款日期",
+  "informationConfirmed": "Information Confirmed",
   "logoutPrompt": "退出登录",
   "logoutPromptContent": "确定要退出登录吗?",
-  "adPrompt": "简单几步，即可完成贷款:",
+  "maxAvailableAmount": "The maximum amount can be borrowed",
   "noMessagePrompt": "消息列表为空",
   "noMore": "没有更多的数据了",
   "notice": "消息",
-  "payment": "还款"
+  "numberRequired": "必需输入数字",
+  "payment": "还款",
+  "promptRepayHint": "Maintaining a good repayment behavior will help you to increase your loan amount. 96% of users loan amount haveincreased subsequently.",
+  "providehandleIDcardPrompt": "Must provide above mentioned images, otherwise application will be rejected.",
+  "restRepayAmount": "剩余应付金额",
+  "signinPrompt": "Don't have an account?",
+  "tostep7": "返回修改银行卡号",
+  "warnRepayPrompt": "我们建议您在此页面立即偿还贷款，以 免影响您的下次贷款申请。"
 }

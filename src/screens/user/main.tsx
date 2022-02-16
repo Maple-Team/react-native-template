@@ -60,7 +60,7 @@ export function UserCenter() {
           {[
             {
               img: require('@/assets/compressed/user-center/Payment.webp'),
-              title: 'Payment',
+              title: t('screenTitle.payment'),
               onPress: () => {
                 //@ts-ignore
                 na.navigate('Order', { type: 'payment' })
@@ -68,7 +68,7 @@ export function UserCenter() {
             },
             {
               img: require('@/assets/compressed/user-center/History-Bills.webp'),
-              title: 'History Bills',
+              title: t('screenTitle.historyBills'),
               onPress: () => {
                 //@ts-ignore
                 na.navigate('Order', { type: 'order' })
@@ -76,7 +76,7 @@ export function UserCenter() {
             },
             {
               img: require('@/assets/compressed/user-center/My-Card.webp'),
-              title: 'My Card',
+              title: t('screenTitle.myCard'),
               onPress: () => {},
             },
           ].map(({ img, title, onPress }) => (
@@ -101,17 +101,17 @@ export function UserCenter() {
           {[
             {
               img: require('@/assets/compressed/user-center/Contact-Us.webp'),
-              title: 'Contact Us',
+              title: t('screenTitle.contactUs'),
               onPress: () => {},
             },
             {
               img: require('@/assets/compressed/user-center/About-Moneyya.webp'),
-              title: 'About Moneyya',
+              title: t('screenTitle.aboutUs'),
               onPress: () => {},
             },
             {
               img: require('@/assets/compressed/user-center/Logout.webp'),
-              title: 'Logout',
+              title: t('logout'),
               onPress: () => {
                 Modal.alert(t('logoutPrompt'), t('logoutPromptContent'), [
                   {

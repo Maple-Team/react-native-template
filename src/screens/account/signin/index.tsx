@@ -161,7 +161,8 @@ const PasswdTab = ({
               placeholder={t('phone.placeholder')}
               error={errors.phone}
               keyboardType="phone-pad"
-              mask={'+52 [0000] [000] [000]'}
+              mask={'[0000] [000] [000]'}
+              Prefix={<Text color="#eee">+52</Text>}
             />
             <PasswordInput
               field="password"
@@ -256,7 +257,8 @@ const ValidTab = ({
               placeholder={t('phone.placeholder')}
               error={errors.phone}
               keyboardType="phone-pad"
-              mask={'+52 [0000] [000] [000]'}
+              mask={'[0000] [000] [000]'}
+              Prefix={<Text color="#eee">+52</Text>}
             />
             <ValidateCode
               field="code"

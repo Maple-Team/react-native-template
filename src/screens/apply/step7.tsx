@@ -177,7 +177,7 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
                           field={'bankCardNo'}
                           // TODO 动态校验
                           keyboardType="phone-pad"
-                          label={t('bankCardNo.label') + '_card'}
+                          label={t('bankCardNo.label')}
                           placeholder={t('bankCardNo.placeholder')}
                           key="bankCardNo_card"
                           mask={'[0000] [0000] [0000] [0000] [00]'}
@@ -201,7 +201,7 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
                           value={state.bankCardNo}
                           field={'bankCardNo'}
                           keyboardType="phone-pad"
-                          label={t('bankCardNo.label') + '_clabe'}
+                          label={t('bankCardNo.label')}
                           placeholder={t('bankCardNo.placeholder')}
                           key="bankCardNo_clabe"
                           mask={'[0000] [0000] [0000] [0000]'}
@@ -259,7 +259,7 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
                   />
                 </View>
                 <Text color="#333030" fontSize={18} fontFamily="Arial-BoldMT" fontWeight="bold">
-                  {t('information.confirmed')}
+                  {t('informationConfirmed')}
                 </Text>
               </View>
               <View style={{ paddingVertical: 10, paddingHorizontal: 11 }}>

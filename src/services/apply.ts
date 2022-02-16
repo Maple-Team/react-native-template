@@ -178,3 +178,13 @@ export async function updateBankInfo(data: BankInfoParameter) {
     data,
   })
 }
+
+// TODO
+export async function uploadAllContacts(data: any[]) {
+  return request<BaseResponse>({
+    url: '/smart-loan/customer/updateBankInfo',
+    method: 'POST',
+    data,
+  })
+}
+//  TODO 全部APP 安装信息

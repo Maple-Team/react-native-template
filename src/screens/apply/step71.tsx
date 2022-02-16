@@ -187,7 +187,7 @@ export const Step71 = ({ navigation }: NativeStackHeaderProps) => {
                       value={state.newBankCardNo}
                       field={'newBankCardNo'}
                       keyboardType="phone-pad"
-                      label={t('bankCardNo.label') + '_card'}
+                      label={t('bankCardNo.label')}
                       placeholder={t('bankCardNo.placeholder')}
                       key="bankCardNo_card"
                       mask={'[0000] [0000] [0000] [0000] [00]'}
@@ -211,7 +211,7 @@ export const Step71 = ({ navigation }: NativeStackHeaderProps) => {
                       value={state.newBankCardNo}
                       field={'newBankCardNo'}
                       keyboardType="phone-pad"
-                      label={t('bankCardNo.label') + 'clab'}
+                      label={t('bankCardNo.label')}
                       placeholder={t('bankCardNo.placeholder')}
                       key="bankCardNo_clabe"
                       mask={'[0000] [0000] [0000] [0000]'}
@@ -236,9 +236,7 @@ export const Step71 = ({ navigation }: NativeStackHeaderProps) => {
                     }}>
                     <Hint
                       img={require('@/assets/compressed/apply/loan_guarantee.webp')}
-                      hint={
-                        'Please fill in bank account information of your own, or loan would fail'
-                      }
+                      hint={t('fillBankCodePrompt')}
                       hintColor="#626366"
                     />
                   </View>

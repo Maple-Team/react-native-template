@@ -33,6 +33,7 @@ import { reducer, default as MoneyyaContext, moneyyaState } from '@/state'
 import emitter from '@/eventbus'
 import { MMKV } from '@/utils/storage'
 import { WebViewScreen } from '@components/webview'
+import { t } from 'i18next'
 
 // Authentication flows: https://reactnavigation.org/docs/auth-flow/
 Toast.config({
@@ -187,9 +188,14 @@ const App = () => {
             {!hasInit ? (
               <WebViewScreen
                 actions={[
-                  { text: '取消', color: '#bbbcbd', backgroundColor: '#fff', onPress: () => {} },
                   {
-                    text: '确定',
+                    text: t('cancel'),
+                    color: '#bbbcbd',
+                    backgroundColor: '#fff',
+                    onPress: () => {},
+                  },
+                  {
+                    text: t('ok'),
                     color: '#eee',
                     backgroundColor: '#8e8f90',
                     onPress: () => {
@@ -233,7 +239,6 @@ export default App
 //     marginTop: 10,
 //   },
 // })
-// TODO change to SplashScreen
 // const Loading = () => (
 //   <View style={loadingStyles.container}>
 //     <ActivityIndicator size="large" color={Color.primary} />

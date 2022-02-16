@@ -16,6 +16,7 @@
     "prepare": "husky install",
     "add-field": "ts-node scripts/add-field.ts",
     "sync-locale": "ts-node scripts/sync-locale.ts",
+    "beauty-locale": "ts-node scripts/locale-beauty.ts",
     "rn": "ts-node scripts/change-name.ts",
     "tinify": "ts-node scripts/tinify.ts"
   },

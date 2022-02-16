@@ -6,6 +6,9 @@ import { Color } from '@/styles/color'
 import { useTranslation } from 'react-i18next'
 import emitter from '@/eventbus'
 
+/**
+ * @deprecated
+ */
 const slides = [
   {
     key: 'one',
@@ -26,8 +29,11 @@ const slides = [
     image: require('@/assets/compressed/splash/splash3.webp'),
   },
 ]
+
 type Item = typeof slides[0]
-// TODO delete this
+/**
+ * @deprecated
+ */
 export default function Init() {
   const { t } = useTranslation()
   const renderItem = ({ item: { key, image, text, title } }: { item: Item }) => {

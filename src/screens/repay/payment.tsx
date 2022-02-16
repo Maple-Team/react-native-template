@@ -210,12 +210,12 @@ export function Payment() {
                             fontSize={15}
                             //@ts-ignore
                             styles={{ marginLeft: 16.5 }}>
-                            MXN
+                            {t('mxn')}
                           </Text>
                         </View>
                         <View>
                           <View style={{ paddingTop: 44 }}>
-                            <Text>{'本次还款申请'}</Text>
+                            <Text>{t('currentLoanInfoHint')}</Text>
                             <View
                               style={{
                                 flexDirection: 'row',
@@ -236,7 +236,7 @@ export function Payment() {
                               />
                               {values.amount ? (
                                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                  <Text>MXN</Text>
+                                  <Text>{t('mxn')}</Text>
                                   {errors.amount ? (
                                     <Pressable
                                       android_disableSound={true}
