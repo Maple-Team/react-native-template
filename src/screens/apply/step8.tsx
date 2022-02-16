@@ -44,7 +44,12 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
       }).then(() => {
         // TODO 获取userinfo userStatus === 'N' 需要再次验证验证码 type: CONFIRM=>  跳转一个新的页面 -> 不强制, 点击返回-> 合同详情
         // TODO 提交/smart-loan/app/validate/kaptcha
-        navigation.navigate('BottomTab', { screen: 'Order' }) // FIXME -> 合同详情
+        navigation.navigate('BottomTab', {
+          screen: 'OrderDetail',
+          params: {
+            applyId: MMKV.getString(KEY_APPLYID),
+          },
+        })
       })
     },
     DEBOUNCE_WAIT,
@@ -126,7 +131,7 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
       <StatusBar translucent={false} backgroundColor={Color.primary} barStyle="default" />
       <View style={{ paddingHorizontal: 12, backgroundColor: '#fff', flexDirection: 'row' }}>
         <Hint
-          hint="Maintaining a good repayment behavior will help you to increase your loan amount. 96% of users loan amount haveincreased subsequently."
+          hint={t('promptRepayHint')}
           hintColor="rgba(255, 50, 50, 1)"
           img={require('@/assets/compressed/apply/loan_notice.webp')}
         />
@@ -257,17 +262,17 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
               <RightBottomDot />
               <ListInfo
                 data={[
-                  { name: 'Loan amount', value: loanAmt, type: 'money' },
-                  { name: 'Loan days', value: loanDay, type: 'day' },
-                  { name: 'Transfer amount', value: productInfo?.maxAmount || 0, type: 'money' },
+                  { name: t('loanAmount'), value: loanAmt, type: 'money' },
+                  { name: t('loanDays'), value: loanDay, type: 'day' },
+                  { name: t('transferAmount'), value: productInfo?.maxAmount || 0, type: 'money' },
                   {
-                    name: 'Fee',
+                    name: t('fee'),
                     value: calcResult?.svcFee ? calcResult?.svcFee : 0,
                     type: 'money',
                   },
                   {
-                    name: 'Collection bank card',
-                    value: params.bankCardNo ? +params.bankCardNo : 0, // FIXME ${params?.bankCardNo
+                    name: t('bankCard'),
+                    value: params.bankCardNo ? +params.bankCardNo : 0,
                     type: 'bank',
                   },
                 ]}
@@ -294,18 +299,18 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
             </View>
             <View style={{ alignItems: 'center' }}>
               <Text fontSize={15} color={Color.primary}>
-                {t('Bill-information')}
+                {t('bill-information')}
               </Text>
               <ListInfo
                 data={
                   calcResult?.instalmentMark === 'Y'
                     ? [
-                        { name: 'First repayment date ', value: 1772832832, type: 'date' },
-                        { name: 'First repayment amount', value: 7, type: 'money' },
+                        { name: t('firstPaymentdate'), value: 1772832832, type: 'date' },
+                        { name: t('firstPaymentAmount'), value: 7, type: 'money' },
                       ]
                     : [
-                        { name: 'Loan amount', value: loanAmt, type: 'money' },
-                        { name: 'Loan days', value: loanDay, type: 'day' },
+                        { name: t('loanAmount'), value: loanAmt, type: 'money' },
+                        { name: t('loanDays'), value: loanDay, type: 'day' },
                       ]
                 }
               />
@@ -323,9 +328,9 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
                 data={
                   calcResult?.instalmentMark === 'Y'
                     ? [
-                        { name: 'Second repayment date', value: 1772832832, type: 'date' },
+                        { name: t('secondPaymentDate'), value: 1772832832, type: 'date' },
                         {
-                          name: 'Second repayment amount ',
+                          name: t('secondPaymentAmount'),
                           value: 261800,
                           type: 'money',
                           extra: (
@@ -338,7 +343,7 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
                                 marginLeft: 9,
                               }}>
                               <Text fontSize={12} fontWeight="bold" color="#fff">
-                                Free
+                                {t('free')}
                               </Text>
                             </View>
                           ),
@@ -474,13 +479,14 @@ const ValueText = ({ value, type }: { value: number; type: ValueType }) => {
     case 'day':
       return (
         <Text fontSize={12} color="rgba(28, 37, 42, 1)">
-          {value}days
+          {value}
+          {t('days')}
         </Text>
       )
     case 'money':
       return (
         <Text fontSize={12} color="rgba(28, 37, 42, 1)">
-          {value ? t('intlCurrency', { val: value }) : 'N/A'}
+          {value ? t('intlCurrency', { val: value }) : '--'}
         </Text>
       )
     default:

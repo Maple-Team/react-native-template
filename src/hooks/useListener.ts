@@ -14,7 +14,6 @@ export const useEventListener = () => {
     })
     emitter.on('RESPONSE_ERROR', e => {
       console.error('axios response error', e.config?.url, e.message)
-      // TODO 错误上报
     })
     emitter.on('SHOW_MESSAGE', ({ message, type }) => {
       Toast[type](message, MESSAGE_DURATION)

@@ -240,7 +240,6 @@ export default App
 //     marginTop: 10,
 //   },
 // })
-// TODO change to SplashScreen
 // const Loading = () => (
 //   <View style={loadingStyles.container}>
 //     <ActivityIndicator size="large" color={Color.primary} />

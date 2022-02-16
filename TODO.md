@@ -71,6 +71,8 @@
 - [Ant Design Mobile RN of React](https://rn.mobile.ant.design/docs/react/introduce-cn)
 - [jestjs](https://jestjs.io/docs/getting-started), 测试框架
 
+## error
+
 ERROR Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.
 in Step3 (at SceneView.tsx:126)
 ERROR Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.
@@ -83,3 +85,11 @@ ERROR Warning: Can't perform a React state update on an unmounted component. Thi
 in Step61 (at SceneView.tsx:126)
 ERROR Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.
 in Step7 (at SceneView.tsx:126)
+
+## bundle size
+
+- remove react-native-svg： 100kb + 86kb
+- fix react-native-sensor 中的 rxjs 全量导入 154kb
+- lodash 全量导入问题 102kb
+- react-native-gesture-hanlder ->scrollview 是否有必要 72kb
+- react-native-device-info 39kb

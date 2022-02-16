@@ -1,4 +1,7 @@
 {
+  "cardNoType": {
+    "label": "card type"
+  },
   "comfirmPassword": {
     "label": "confirmPassword",
     "placeholder": "confirmPassword",
@@ -96,6 +99,11 @@
     "placeholder": "password",
     "required": "password required"
   },
+  "payAmount": {
+    "placeholder": "请输入还款金额",
+    "required": "还款金额必需",
+    "invalid": "payment amount should above {{val}} MXN"
+  },
   "phone": {
     "label": "Phone",
     "placeholder": "Phone",
@@ -122,13 +130,5 @@
     "get": "Get Code",
     "wait": "{{num}}",
     "maxTime": "最大次数，请稍候再试"
-  },
-  "cardNoType": {
-    "label": "card type"
-  },
-  "payAmount": {
-    "placeholder": "请输入还款金额",
-    "required": "还款金额必需",
-    "invalid": "payment amount should above {{val}} MXN"
   }
 }

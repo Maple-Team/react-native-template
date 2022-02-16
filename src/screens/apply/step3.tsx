@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Formik } from 'formik'
-import * as Yup from 'yup'
+import { object, string } from 'yup'
 import debounce from 'lodash.debounce'
 import { PageStyles, Text, FormGap } from '@/components'
 import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT, KEY_APPLYID, TOTAL_STEPS } from '@/utils/constant'
@@ -21,28 +21,22 @@ import type { Dict, DictField } from '@/typings/response'
 //TODO fromOther==='Y' 少填一个联系人
 export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
-  const schema = Yup.object().shape({
-    contactName1: Yup.string()
-      .max(100, t('contactName.invalid'))
-      .required(t('contactName.required')),
-    contactPhone1: Yup.string()
+  const schema = object().shape({
+    contactName1: string().max(100, t('contactName.invalid')).required(t('contactName.required')),
+    contactPhone1: string()
       .required(t('contactPhone.required'))
       .matches(REGEX_PHONE, t('contactPhone.invalid')),
-    contactRelationCode1: Yup.string().required(t('contactRelationCode.required')),
-    contactName2: Yup.string()
-      .max(100, t('contactName.invalid'))
-      .required(t('contactName.required')),
-    contactPhone2: Yup.string()
+    contactRelationCode1: string().required(t('contactRelationCode.required')),
+    contactName2: string().max(100, t('contactName.invalid')).required(t('contactName.required')),
+    contactPhone2: string()
       .required(t('contactPhone.required'))
       .matches(REGEX_PHONE, t('contactPhone.invalid')),
-    contactRelationCode2: Yup.string().required(t('contactRelationCode.required')),
-    contactName3: Yup.string()
-      .max(100, t('contactName.invalid'))
-      .required(t('contactName.required')),
-    contactPhone3: Yup.string()
+    contactRelationCode2: string().required(t('contactRelationCode.required')),
+    contactName3: string().max(100, t('contactName.invalid')).required(t('contactName.required')),
+    contactPhone3: string()
       .required(t('contactPhone.required'))
       .matches(REGEX_PHONE, t('contactPhone.invalid')),
-    contactRelationCode3: Yup.string().required(t('contactRelationCode.required')),
+    contactRelationCode3: string().required(t('contactRelationCode.required')),
   })
 
   const context = useContext(MoneyyaContext)

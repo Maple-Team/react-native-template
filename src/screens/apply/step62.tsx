@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Formik } from 'formik'
-import * as Yup from 'yup'
+import { object, string } from 'yup'
 import debounce from 'lodash.debounce'
 
 import { PageStyles, Text } from '@/components'
@@ -23,8 +23,8 @@ type FormModel = Omit<ApplyStep6Parameter, keyof ApplyParameter> & {
 }
 export const Step62 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
-  const schema = Yup.object().shape({
-    handId: Yup.string().required(t('idcard.required')),
+  const schema = object().shape({
+    handId: string().required(t('idcard.required')),
   })
   const initialValue: FormModel = {
     handId: '',
@@ -74,9 +74,7 @@ export const Step62 = ({ navigation }: NativeStackHeaderProps) => {
                     }}
                     isSupplement="N"
                     error={errors.handId}
-                    hint={
-                      'Must provide above mentioned images, otherwise application will be rejected.'
-                    }
+                    hint={t('providehandleIDcardPrompt')}
                   />
                 </View>
                 <View style={PageStyles.btnWrap}>

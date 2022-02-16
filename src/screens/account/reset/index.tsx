@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Formik } from 'formik'
-import * as Yup from 'yup'
+import { string, object, ref } from 'yup'
 import debounce from 'lodash.debounce'
 
 import { PageStyles, Text } from '@/components'
@@ -23,20 +23,20 @@ import { default as MoneyyaContext } from '@/state'
 export const ResetScreen = ({ navigation }: NativeStackHeaderProps) => {
   const context = useContext(MoneyyaContext)
   const { t } = useTranslation()
-  const schema = Yup.object().shape({
-    phone: Yup.string()
+  const schema = object().shape({
+    phone: string()
       .min(10, t('field.short', { field: 'Phone' }))
       .max(10, t('field.long', { field: 'Phone' }))
       .matches(REGEX_PHONE, t('phone.invalid'))
       .required(t('phone.required')),
-    password: Yup.string()
+    password: string()
       .matches(REGEX_PASSWORD, t('password.invalid'))
       .required(t('password.required')),
-    comfirmPassword: Yup.string()
+    comfirmPassword: string()
       .matches(REGEX_PASSWORD, t('comfirmPassword.invalid'))
       .required(t('password.required'))
-      .oneOf([Yup.ref('password'), null], t('comfirmPassword.notSame')),
-    validateCode: Yup.string()
+      .oneOf([ref('password'), null], t('comfirmPassword.notSame')),
+    validateCode: string()
       .min(4, t('field.short', { field: 'Validate Code' }))
       .max(4, t('field.long', { field: 'Validate Code' }))
       .required(t('validateCode.required'))
@@ -88,7 +88,8 @@ export const ResetScreen = ({ navigation }: NativeStackHeaderProps) => {
                     placeholder={t('phone.placeholder')}
                     error={errors.phone}
                     keyboardType="phone-pad"
-                    mask={'+52 [0000] [000] [000]'}
+                    mask={'[0000] [000] [000]'}
+                    Prefix={<Text color="#eee">+52</Text>}
                   />
                   <ValidateCode
                     field="validateCode"

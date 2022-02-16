@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Formik } from 'formik'
-import * as Yup from 'yup'
+import { object, string } from 'yup'
 import debounce from 'lodash.debounce'
 
 import { Hint, PageStyles, Text } from '@/components'
@@ -29,20 +29,20 @@ import { default as MoneyyaContext } from '@/state'
 
 export const Step71 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
-  const schema = Yup.object().shape({
-    newBankCardNo: Yup.string()
+  const schema = object().shape({
+    newBankCardNo: string()
       .when('cardNoType', {
         is: 'CARD',
-        then: Yup.string().matches(REGEX_BANK_CARD, t('bankCardNo.invalid')),
+        then: string().matches(REGEX_BANK_CARD, t('bankCardNo.invalid')),
       })
       .when('cardNoType', {
         is: 'ACCOUNT',
-        then: Yup.string().matches(REGEX_BANK_CLABE, t('bankCardNo.invalid')),
+        then: string().matches(REGEX_BANK_CLABE, t('bankCardNo.invalid')),
       })
       .required(t('bankCardNo.required')),
-    bankCode: Yup.string().required(t('bankCode.required')),
-    cardNoType: Yup.string().required(t('cardNoType.required')),
-    validateCode: Yup.string()
+    bankCode: string().required(t('bankCode.required')),
+    cardNoType: string().required(t('cardNoType.required')),
+    validateCode: string()
       .min(4, t('field.short', { field: 'Validate Code' }))
       .max(4, t('field.long', { field: 'Validate Code' }))
       .required(t('validateCode.required'))
@@ -187,7 +187,7 @@ export const Step71 = ({ navigation }: NativeStackHeaderProps) => {
                       value={state.newBankCardNo}
                       field={'newBankCardNo'}
                       keyboardType="phone-pad"
-                      label={t('bankCardNo.label') + '_card'}
+                      label={t('bankCardNo.label')}
                       placeholder={t('bankCardNo.placeholder')}
                       key="bankCardNo_card"
                       mask={'[0000] [0000] [0000] [0000] [00]'}
@@ -211,7 +211,7 @@ export const Step71 = ({ navigation }: NativeStackHeaderProps) => {
                       value={state.newBankCardNo}
                       field={'newBankCardNo'}
                       keyboardType="phone-pad"
-                      label={t('bankCardNo.label') + 'clab'}
+                      label={t('bankCardNo.label')}
                       placeholder={t('bankCardNo.placeholder')}
                       key="bankCardNo_clabe"
                       mask={'[0000] [0000] [0000] [0000]'}
@@ -236,9 +236,7 @@ export const Step71 = ({ navigation }: NativeStackHeaderProps) => {
                     }}>
                     <Hint
                       img={require('@/assets/compressed/apply/loan_guarantee.webp')}
-                      hint={
-                        'Please fill in bank account information of your own, or loan would fail'
-                      }
+                      hint={t('fillBankCodePrompt')}
                       hintColor="#626366"
                     />
                   </View>

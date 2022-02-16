@@ -1,24 +1,39 @@
 {
-  "permission blocked": "permission blocked",
-  "permission unavailable": "permission unavailable",
-  "tostep7": "Click here to modify bank card",
-  "Bill-information": "Bill information",
-  "information": {
-    "confirmed": " Information Confirmed"
-  },
+  "adPrompt": "Easy steps to get and pay for a loan:",
+  "ads": [{
+    "title": "Convenient operation",
+    "text": "Fill up information within 5 mins"
+  }, {
+    "title": "Fast Approval",
+    "text": "Verification finished within 2 hours"
+  }, {
+    "title": "Get the disbursement",
+    "text": "Disbursement within 24 hours"
+  }],
+  "bill-information": "Bill information",
   "choose-product-prompt": "please choose loan terms",
-  "restRepayAmount": "剩余应付金额",
-  "numberRequired": "you must specify a number",
   "copySuccessed": "Copy SUccess",
-  "warnRepayPrompt": "我们建议您在此页面立即偿还贷款，以 免影响您的下次贷款申请。",
-  "signinPrompt": "Don't have an account?",
+  "currentLoanInfoHint": "本次还款申请",
+  "fillBankCodePrompt": "Please fill in bank account information of your own, or loan would fail",
+  "firstPaymentAmount": "First repayment amount",
+  "firstPaymentdate": "First repayment date",
+  "informationConfirmed": "Information Confirmed",
   "logoutPrompt": "Logout Prompt",
   "logoutPromptContent": "Are you sure to logout?",
-  "adPrompt": "Easy steps to get and pay for a loan:",
+  "maxAvailableAmount": "The maximum amount can be borrowed",
   "noMessagePrompt": "Message list is empty!",
   "noMore": "No more new data available",
   "notice": "Notice",
-  "payment": "Payment",
   "authorizaiton": "authorizaiton",
-  "authorizaiton-not-reading": "请阅读完"
+  "authorizaiton-not-reading": "请阅读完",
+  "numberRequired": "you must specify a number",
+  "payment": "Payment",
+  "permission blocked": "permission blocked",
+  "permission unavailable": "permission unavailable",
+  "promptRepayHint": "Maintaining a good repayment behavior will help you to increase your loan amount. 96% of users loan amount haveincreased subsequently.",
+  "providehandleIDcardPrompt": "Must provide above mentioned images, otherwise application will be rejected.",
+  "restRepayAmount": "剩余应付金额",
+  "signinPrompt": "Don't have an account?",
+  "tostep7": "Click here to modify bank card",
+  "warnRepayPrompt": "我们建议您在此页面立即偿还贷款，以 免影响您的下次贷款申请。"
 }

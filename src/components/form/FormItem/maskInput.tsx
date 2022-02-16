@@ -1,4 +1,4 @@
-import React, { type RefObject, useRef, useState } from 'react'
+import React, { type RefObject, useRef, useState, type ReactNode } from 'react'
 import { Pressable, View, Image } from 'react-native'
 import type { KeyboardTypeOptions } from 'react-native'
 import styles from './style'
@@ -21,6 +21,7 @@ interface InputProps {
   keyboardType?: KeyboardTypeOptions
   scrollViewRef?: RefObject<ScrollView>
   mask: string
+  Prefix?: ReactNode
 }
 export const MaskInput = ({
   onChangeText,
@@ -35,6 +36,7 @@ export const MaskInput = ({
   keyboardType,
   mask,
   scrollViewRef,
+  Prefix,
 }: InputProps) => {
   let fieldRef = useRef<any>(null)
   let wrapperRef = useRef<View>(null)
@@ -69,13 +71,18 @@ export const MaskInput = ({
               }
             )
           }}>
+          {Prefix && <View style={styles.prefixWrap}>{Prefix}</View>}
           <TextInputMask
             onChangeText={onChangeText}
             value={value}
             mask={mask}
             autoskip={true}
             placeholder={placeholder}
-            style={[styles.input, error ? { borderBottomColor: 'red' } : {}]}
+            style={[
+              styles.input,
+              error ? { borderBottomColor: 'red' } : {},
+              Prefix ? { paddingLeft: 34 } : {}, //NOTE 前缀位置
+            ]}
             keyboardType={keyboardType}
             onFocus={onFocus}
             ref={fieldRef}

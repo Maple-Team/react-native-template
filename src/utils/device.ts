@@ -16,9 +16,31 @@ const timezone = RNLocalize.getTimeZone()
  * 一部分从第三方模块中获取
  * 一部分从全局状态中获取(已经获取的，不需要重复获取)
  */
-const { } = DeviceInfo
-export type FromView = 'anglex' | 'angley' | 'anglez' | 'applyId' | 'googleAdvertisingId'
-  | 'phone' | 'screenSize' | 'deviceId' | 'gpsInfo' | 'idcard' | 'intranetIP' | 'isSimulator' | 'requestIp'
+const {} = DeviceInfo
+
+console.log(
+  RNAdvertisingId,
+  NetInfo,
+  getTimeSinceStartup,
+  ScreenBrightness,
+  dayjs,
+  NfcManager,
+  AppModule
+)
+export type FromView =
+  | 'anglex'
+  | 'angley'
+  | 'anglez'
+  | 'applyId'
+  | 'googleAdvertisingId'
+  | 'phone'
+  | 'screenSize'
+  | 'deviceId'
+  | 'gpsInfo'
+  | 'idcard'
+  | 'intranetIP'
+  | 'isSimulator'
+  | 'requestIp'
 type PrtialDevice = Omit<Device, FromView>
 export default async function getDeviceInfo(): Promise<PrtialDevice> {
   // 使用Promise.all并行获取
