@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Formik } from 'formik'
-import * as Yup from 'yup'
+import { string, object } from 'yup'
 import debounce from 'lodash.debounce'
 
 import { Hint, PageStyles, Text } from '@/components'
@@ -21,19 +21,19 @@ import { REGEX_BANK_CARD, REGEX_BANK_CLABE } from '@/utils/reg'
 // 返回 次数-> 手持/活体
 export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
-  const schema = Yup.object().shape({
-    bankCardNo: Yup.string()
+  const schema = object().shape({
+    bankCardNo: string()
       .when('cardNoType', {
         is: 'CARD',
-        then: Yup.string().matches(REGEX_BANK_CARD, t('bankCardNo.invalid')),
+        then: string().matches(REGEX_BANK_CARD, t('bankCardNo.invalid')),
       })
       .when('cardNoType', {
         is: 'ACCOUNT',
-        then: Yup.string().matches(REGEX_BANK_CLABE, t('bankCardNo.invalid')),
+        then: string().matches(REGEX_BANK_CLABE, t('bankCardNo.invalid')),
       })
       .required(t('bankCardNo.required')),
-    bankCode: Yup.string().required(t('bankCode.required')),
-    cardNoType: Yup.string().required(t('cardNoType.required')),
+    bankCode: string().required(t('bankCode.required')),
+    cardNoType: string().required(t('cardNoType.required')),
   })
 
   const onSubmit = () => {

@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Formik } from 'formik'
-import * as Yup from 'yup'
+import { object, string, ref } from 'yup'
 import debounce from 'lodash.debounce'
 
 import { PageStyles, Text } from '@/components'
@@ -29,20 +29,20 @@ export const SignupScreen = ({ route }: { route: any }) => {
   const context = useContext(MoneyyaContext)
   const { t } = useTranslation()
   const { phone } = route.params || ({ phone: '' } as { phone?: string })
-  const schema = Yup.object().shape({
-    phone: Yup.string()
+  const schema = object().shape({
+    phone: string()
       .min(10, t('field.short', { field: 'Phone' }))
       .max(10, t('field.long', { field: 'Phone' }))
       .matches(REGEX_PHONE, t('phone.invalid'))
       .required(t('phone.required')),
-    password: Yup.string()
+    password: string()
       .matches(REGEX_PASSWORD, t('password.invalid'))
       .required(t('password.required')),
-    comfirmPassword: Yup.string()
+    comfirmPassword: string()
       .matches(REGEX_PASSWORD, t('comfirmPassword.invalid'))
       .required(t('comfirmPassword.required'))
-      .oneOf([Yup.ref('password'), null], t('comfirmPassword.notSame')),
-    validateCode: Yup.string()
+      .oneOf([ref('password'), null], t('comfirmPassword.notSame')),
+    validateCode: string()
       .min(4, t('field.short', { field: 'Validate Code' }))
       .max(4, t('field.long', { field: 'Validate Code' }))
       .matches(REGEX_VALIDATE_CODE, t('validateCode.invalid'))

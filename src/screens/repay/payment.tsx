@@ -13,7 +13,7 @@ import {
   TextInput,
 } from 'react-native'
 import { StackActions, useNavigation, useRoute } from '@react-navigation/native'
-import * as Yup from 'yup'
+import { object, number } from 'yup'
 import type { Shape } from '@/typings/common'
 import { useTranslation } from 'react-i18next'
 import { ErrorMessage, Formik } from 'formik'
@@ -23,8 +23,8 @@ import debounce from 'lodash.debounce'
 type FormModel = { amount: string; applyId: string }
 export function Payment() {
   const { t } = useTranslation()
-  const schema = Yup.object<Shape<FormModel>>({
-    amount: Yup.number()
+  const schema = object<Shape<FormModel>>({
+    amount: number()
       .typeError(t('numberRequired'))
       .min(50, t('payAmount.invalid', { val: 50 }))
       .required(t('payAmount.required')),

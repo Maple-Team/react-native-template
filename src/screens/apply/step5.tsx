@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Formik } from 'formik'
-import * as Yup from 'yup'
+import { string, object } from 'yup'
 import debounce from 'lodash.debounce'
 
 import { PageStyles, Text } from '@/components'
@@ -34,38 +34,36 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
   const route = useRoute()
   const { orcResult } = route.params as { orcResult?: OcrResult }
-  const schema = Yup.object().shape({
-    firstName: Yup.string()
+  const schema = object().shape({
+    firstName: string()
       .max(50, t('field.long', { field: t('firstName.label') }))
       .required(t('firstName.required')),
-    middleName: Yup.string()
+    middleName: string()
       .max(100, t('field.long', { field: t('middleName.label') }))
       .required(t('middleName.required')),
-    lastName: Yup.string()
+    lastName: string()
       .max(50, t('field.long', { field: t('lastname.label') }))
       .required(t('lastname.required')),
-    birth: Yup.string().required(t('birth.required')),
-    sex: Yup.string().required(t('gender.required')),
-    idcard: Yup.string()
+    birth: string().required(t('birth.required')),
+    sex: string().required(t('gender.required')),
+    idcard: string()
       .min(18, t('idcard.invalid'))
       .max(18, t('idcard.invalid')) // 英文加数字都有
       .required(t('idcard.required')),
-    maritalStatus: Yup.string().required(t('maritalStatus.required')),
-    homeAddrProvinceCode: Yup.string().required(t('homeAddrProvinceCode.required')),
-    homeAddrCityCode: Yup.string().required(t('homeAddrCityCode.required')),
-    homeAddrDetail: Yup.string().required(t('homeAddrDetail.required')),
-    docType: Yup.string().required(t('docType.required')),
-    backupPhone: Yup.string()
+    maritalStatus: string().required(t('maritalStatus.required')),
+    homeAddrProvinceCode: string().required(t('homeAddrProvinceCode.required')),
+    homeAddrCityCode: string().required(t('homeAddrCityCode.required')),
+    homeAddrDetail: string().required(t('homeAddrDetail.required')),
+    docType: string().required(t('docType.required')),
+    backupPhone: string()
       .matches(REGEX_PHONE, t('backupPhone.invalid'))
       .required(t('backupPhone.required')),
-    educationCode: Yup.string().required(t('educationCode.required')),
-    loanPurpose: Yup.string().required(t('loanPurposeCode.required')),
-    authPhone: Yup.string().max(20, t('authPhone.invalid')).required(t('authPhone.required')),
-    whatsapp: Yup.string().required(t('whatsapp.required')),
-    email: Yup.string().email().required(t('email.required')),
-    secondCardNo: Yup.string()
-      .max(20, t('secondCardNo.invalid'))
-      .required(t('secondCardNo.required')),
+    educationCode: string().required(t('educationCode.required')),
+    loanPurpose: string().required(t('loanPurposeCode.required')),
+    authPhone: string().max(20, t('authPhone.invalid')).required(t('authPhone.required')),
+    whatsapp: string().required(t('whatsapp.required')),
+    email: string().email().required(t('email.required')),
+    secondCardNo: string().max(20, t('secondCardNo.invalid')).required(t('secondCardNo.required')),
   })
   const context = useContext(MoneyyaContext)
   const step5Data = (MMKV.getMap('step5Data') as Partial<Step5State>) || {}

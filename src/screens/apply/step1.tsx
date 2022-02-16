@@ -27,14 +27,14 @@ interface Status {
   repayDate?: string
   repayAmount?: string
 }
-// TODO get data
+// TODO use foucs event to get data
 export function Step1() {
   const navigation = useNavigation()
   const context = useContext(MoneyyaContext)
 
   useEffect(() => {
     queryVersion().then(res => {
-      console.log('version', res)
+      console.log('version', res) //TODO 强制更新
     })
   }, [])
 

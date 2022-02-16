@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Formik } from 'formik'
-import * as Yup from 'yup'
+import { object, string } from 'yup'
 import debounce from 'lodash.debounce'
 
 import { PageStyles, Text } from '@/components'
@@ -24,9 +24,9 @@ type FormModel = Omit<ApplyStep4Parameter, 'applyId' | 'currentStep' | 'totalSte
 }
 export const Step4 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
-  const schema = Yup.object().shape({
-    idcard1: Yup.string().required(t('idcard1.required')),
-    idcard2: Yup.string().required(t('idcard2.required')),
+  const schema = object().shape({
+    idcard1: string().required(t('idcard1.required')),
+    idcard2: string().required(t('idcard2.required')),
   })
   const context = useContext(MoneyyaContext)
   const initialValue: FormModel = { idcard1: '', idcard2: '' }

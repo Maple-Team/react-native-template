@@ -6,13 +6,33 @@ export interface Status {
   msg: string
   msgCn: string
 }
-
+/**
+ * 版本相关
+ */
 export interface Version {
+  /**
+   * 文件下载地址
+   */
   filePath: string
+  /**
+   * 是否强制下载
+   */
   isForceUpdate: BOOL
+  /**
+   * 版本描述
+   */
   versionDesc: string
+  /**
+   * 版本id
+   */
   versionId: number
+  /**
+   * 版本号
+   */
   versionNo: string
+  /**
+   * 版本类型
+   */
   versionType: string
 }
 export interface Brand {

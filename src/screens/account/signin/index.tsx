@@ -3,7 +3,7 @@ import { View, Image, Pressable, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Formik } from 'formik'
-import * as Yup from 'yup'
+import { string, object } from 'yup'
 import debounce from 'lodash.debounce'
 import type {
   NativeStackHeaderProps,
@@ -115,13 +115,13 @@ const PasswdTab = ({
   const context = useContext(MoneyyaContext)
   const navigation = useNavigation<SignInScreenProp>()
   const { t } = useTranslation()
-  const schema = Yup.object().shape({
-    phone: Yup.string()
+  const schema = object().shape({
+    phone: string()
       .min(10, t('field.short', { field: 'Phone' }))
       .max(10, t('field.long', { field: 'Phone' }))
       .matches(REGEX_PHONE, t('phone.invalid'))
       .required(t('phone.required')),
-    password: Yup.string().required(t('password.required')),
+    password: string().required(t('password.required')),
   })
   const initialValue = useMemo<Pick<LoginParameter, 'password' | 'phone'>>(
     () => ({ phone: phone || '', password: '' }),
@@ -207,13 +207,13 @@ const ValidTab = ({
   const context = useContext(MoneyyaContext)
   const navigation = useNavigation<SignInScreenProp>()
   const { t } = useTranslation()
-  const schema = Yup.object().shape({
-    phone: Yup.string()
+  const schema = object().shape({
+    phone: string()
       .min(10, t('field.short', { field: 'Phone' }))
       .max(10, t('field.long', { field: 'Phone' }))
       .matches(REGEX_PHONE, t('phone.invalid'))
       .required(t('phone.required')),
-    validateCode: Yup.string()
+    validateCode: string()
       .min(4, t('field.short', { field: 'Validate Code' }))
       .max(4, t('field.long', { field: 'Validate Code' }))
       .required(t('validateCode.required'))

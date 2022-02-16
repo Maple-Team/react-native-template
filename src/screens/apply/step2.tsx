@@ -6,7 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Formik } from 'formik'
-import * as Yup from 'yup'
+import { object, string } from 'yup'
 import debounce from 'lodash.debounce'
 
 import { PageStyles, Text } from '@/components'
@@ -25,25 +25,23 @@ import { filterArrayKey } from '@/utils/util'
 
 export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
-  const schema = Yup.object<Shape<FormModel>>({
-    industryCode: Yup.string().required(t('industryCode.required')),
-    jobTypeCode: Yup.string().required(t('jobTypeCode.required')),
-    monthlyIncome: Yup.string().required(t('monthlyIncome.required')),
-    salaryType: Yup.string().required(t('salaryType.required')),
-    salaryDate: Yup.string().when('salaryType', {
+  const schema = object<Shape<FormModel>>({
+    industryCode: string().required(t('industryCode.required')),
+    jobTypeCode: string().required(t('jobTypeCode.required')),
+    monthlyIncome: string().required(t('monthlyIncome.required')),
+    salaryType: string().required(t('salaryType.required')),
+    salaryDate: string().when('salaryType', {
       is: 'MONTHLY' || 'WEEKLY',
-      then: Yup.string().required(t('salaryDate.required')),
+      then: string().required(t('salaryDate.required')),
     }),
-    company: Yup.string().max(100, t('company.invalid')).required(t('company.required')),
-    companyPhone: Yup.string()
-      .max(20, t('companyPhone.invalid'))
-      .required(t('companyPhone.required')),
-    companyAddrProvinceCode: Yup.string().required(t('companyAddrProvinceCode.required')),
-    companyAddrCityCode: Yup.string().required(t('companyAddrCityCode.required')),
-    companyAddrDetail: Yup.string()
+    company: string().max(100, t('company.invalid')).required(t('company.required')),
+    companyPhone: string().max(20, t('companyPhone.invalid')).required(t('companyPhone.required')),
+    companyAddrProvinceCode: string().required(t('companyAddrProvinceCode.required')),
+    companyAddrCityCode: string().required(t('companyAddrCityCode.required')),
+    companyAddrDetail: string()
       .max(200, t('companyAddrDetail.invalid'))
       .required(t('companyAddrDetail.required')),
-    incumbency: Yup.string().required(t('incumbency.required')),
+    incumbency: string().required(t('incumbency.required')),
   })
   const step2Data = (MMKV.getMap('step2Data') as Partial<Step2State>) || {}
   const [state, dispatch] = useReducer<Reducer<Step2State, Step2Action>>(

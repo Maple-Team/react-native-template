@@ -6,7 +6,7 @@ import { Button } from '@ant-design/react-native'
 import { useTranslation } from 'react-i18next'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Formik } from 'formik'
-import * as Yup from 'yup'
+import { object, string } from 'yup'
 import debounce from 'lodash.debounce'
 
 import { Logo } from '@/components/logo'
@@ -30,8 +30,8 @@ interface FormModel {
 // TODO 直接显示+52
 export const EntryScreen = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
-  const schema = Yup.object().shape({
-    phone: Yup.string()
+  const schema = object().shape({
+    phone: string()
       .min(10, t('field.short', { field: 'Phone' }))
       .max(10, t('field.long', { field: 'Phone' }))
       .matches(REGEX_PHONE, t('phone.invalid')),
