@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+
+import cn.jiguang.plugins.push.JPushModule;
 import com.wheelpicker.WheelPickerPackage;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
@@ -65,6 +67,8 @@ public class MainApplication extends Application implements ReactApplication {
     GuardianLivenessDetectionSDK.init(this, "5e6112f28a09254b", "c827b638b749e602", Market.Mexico);
     GuardianLivenessDetectionSDK.letSDKHandleCameraPermission();
     GuardianLivenessDetectionSDK.isDetectOcclusion(true);
+    //调用此方法：点击通知让应用从后台切到前台
+    JPushModule.registerActivityLifecycle(this);
   }
 
   /**

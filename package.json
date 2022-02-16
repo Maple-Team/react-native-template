@@ -18,7 +18,8 @@
     "sync-locale": "ts-node scripts/sync-locale.ts",
     "beauty-locale": "ts-node scripts/locale-beauty.ts",
     "rn": "ts-node scripts/change-name.ts",
-    "tinify": "ts-node scripts/tinify.ts"
+    "tinify": "ts-node scripts/tinify.ts",
+    "analysis": "npx react-native-bundle-visualizer"
   },
   "dependencies": {
     "@adrianso/react-native-device-brightness": "^1.2.5",
@@ -39,6 +40,8 @@
     "formik": "^2.2.9",
     "i18next": "^21.6.3",
     "intl-pluralrules": "^1.3.1",
+    "jcore-react-native": "https://github.com/Maple-Team/jcore-react-native.git",
+    "jpush-react-native": "https://github.com/Maple-Team/jpush-react-native.git",
     "lodash.debounce": "^4.0.8",
     "lodash.uniqby": "^4.7.0",
     "mitt": "^3.0.0",
@@ -66,7 +69,7 @@
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.10.1",
     "react-native-select-contact": "^1.6.3",
-    "react-native-sensors": "https://github.com/Robert-Ro/react-native-sensors.git",
+    "react-native-sensors": "^7.3.5",
     "react-native-size-matters": "^0.4.0",
     "react-native-splash-screen": "^3.3.0",
     "react-native-startup-time": "^2.0.0",

@@ -17,6 +17,10 @@ target 'moneyya' do
 
   pod 'react-native-advertising-id', :path => '../node_modules/react-native-advertising-id'
 
+  pod 'JPush', :path => '../node_modules/jpush-react-native'
+
+  pod 'JCore', :path => '../node_modules/jcore-react-native'
+
   target 'moneyyaTests' do
     inherit! :complete
     # Pods for testing

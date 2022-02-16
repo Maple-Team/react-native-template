@@ -66,6 +66,10 @@ android {
       abiFilters "arm64-v8a"
 //      , "x86"
     }
+    manifestPlaceholders = [
+      JPUSH_APPKEY: "adb72c2b4a8434dcefd4f9bd",         //在此替换你的APPKey
+      JPUSH_CHANNEL: "developer-default"        //在此替换你的channel
+    ]
   }
   splits {
     abi {
@@ -158,6 +162,8 @@ dependencies {
   implementation project(':react-native-advertising-id')
   implementation project(":liveness")
   implementation project(":liveness_rn")
+  implementation project(':jpush-react-native')  // 添加 jpush 依赖
+  implementation project(':jcore-react-native')  // 添加 jcore 依赖
   debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
     exclude group: 'com.facebook.fbjni'
   }

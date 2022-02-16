@@ -10,6 +10,8 @@
     "title": "Get the disbursement",
     "text": "Disbursement within 24 hours"
   }],
+  "authorizaiton": "authorizaiton",
+  "authorizaiton-not-reading": "请阅读完",
   "bill-information": "Bill information",
   "choose-product-prompt": "please choose loan terms",
   "copySuccessed": "Copy SUccess",
@@ -24,8 +26,6 @@
   "noMessagePrompt": "Message list is empty!",
   "noMore": "No more new data available",
   "notice": "Notice",
-  "authorizaiton": "authorizaiton",
-  "authorizaiton-not-reading": "请阅读完",
   "numberRequired": "you must specify a number",
   "payment": "Payment",
   "permission blocked": "permission blocked",

@@ -1,24 +1,17 @@
 {
-  "tostep7": "返回修改银行卡号",
-  "Bill-information": "Bill information",
-  "information": {
-    "confirmed": " Information Confirmed"
-  },
   "adPrompt": "简单几步，即可完成贷款:",
-  "ads": [
-    {
-      "title": "Convenient operation",
-      "text": "Fill up information within 5 mins"
-    },
-    {
-      "title": "Fast Approval",
-      "text": "Verification finished within 2 hours"
-    },
-    {
-      "title": "Get the disbursement",
-      "text": "Disbursement within 24 hours"
-    }
-  ],
+  "ads": [{
+    "title": "Convenient operation",
+    "text": "Fill up information within 5 mins"
+  }, {
+    "title": "Fast Approval",
+    "text": "Verification finished within 2 hours"
+  }, {
+    "title": "Get the disbursement",
+    "text": "Disbursement within 24 hours"
+  }],
+  "authorizaiton": "授权说明",
+  "authorizaiton-not-reading": "请阅读完",
   "bill-information": "Bill information",
   "choose-product-prompt": "请选择贷款期限",
   "copySuccessed": "复制成功！",
@@ -33,13 +26,12 @@
   "noMessagePrompt": "消息列表为空",
   "noMore": "没有更多的数据了",
   "notice": "消息",
-  "authorizaiton": "授权说明",
-  "authorizaiton-not-reading": "请阅读完",
   "numberRequired": "必需输入数字",
   "payment": "还款",
   "promptRepayHint": "Maintaining a good repayment behavior will help you to increase your loan amount. 96% of users loan amount haveincreased subsequently.",
   "providehandleIDcardPrompt": "Must provide above mentioned images, otherwise application will be rejected.",
   "restRepayAmount": "剩余应付金额",
   "signinPrompt": "Don't have an account?",
+  "tostep7": "返回修改银行卡号",
   "warnRepayPrompt": "我们建议您在此页面立即偿还贷款，以 免影响您的下次贷款申请。"
 }

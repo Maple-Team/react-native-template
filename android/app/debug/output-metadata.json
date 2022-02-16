@@ -10,9 +10,9 @@
     {
       "type": "SINGLE",
       "filters": [],
-      "versionCode": 1,
-      "versionName": "1.0-Debug",
-      "outputFile": "app-debug.apk"
+      "versionCode": 2,
+      "versionName": "1.0.1",
+      "outputFile": "Moneyya_debug_v1.0.1-2.apk"
     }
   ]
 }

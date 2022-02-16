@@ -34,6 +34,7 @@ import emitter from '@/eventbus'
 import { MMKV } from '@/utils/storage'
 import { WebViewScreen } from '@components/webview'
 import { t } from 'i18next'
+import JPush from 'jpush-react-native'
 
 // Authentication flows: https://reactnavigation.org/docs/auth-flow/
 Toast.config({
@@ -174,7 +175,26 @@ const App = () => {
       })
     })
   }, [user?.phone])
+  useEffect(() => {
+    JPush.init({
+      appKey: __DEV__ ? 'adb72c2b4a8434dcefd4f9bd' : '',
+      titchannelle: 'developer-default',
+      production: __DEV__,
+    })
+    //连接状态
+    JPush.addConnectEventListener(result => {
+      console.log('connectListener:' + JSON.stringify(result))
+    })
 
+    JPush.addNotificationListener(result => {
+      console.log('notificationListener:' + JSON.stringify(result))
+    })
+    //本地通知回调
+
+    JPush.addLocalNotificationListener(result => {
+      console.log('localNotificationListener:' + JSON.stringify(result))
+    })
+  })
   // if (!isReady) {
   //   return <Loading />
   // }
