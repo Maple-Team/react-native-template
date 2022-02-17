@@ -1,5 +1,4 @@
 import { request } from '@/utils/http'
-import type { BaseResponse } from '@/utils/http'
 import type { ZhanneiLetter } from '@/typings/user'
 
 /**
@@ -7,8 +6,8 @@ import type { ZhanneiLetter } from '@/typings/user'
  * @param data
  * @returns
  */
-export async function queryZhanLetter() {
-  return request<BaseResponse>({
+export async function queryZhanLetterCount() {
+  return request<number>({
     url: '/smart-loan/system/message/count',
     method: 'POST',
   })
@@ -24,7 +23,6 @@ interface MessageListParameter {
  * 站内信列表
  * @param data
  * @returns
- * TODO 10条
  */
 export async function queryZhanLetterList(data: MessageListParameter) {
   return request<ZhanneiLetter[]>({
@@ -37,7 +35,7 @@ export async function queryZhanLetterList(data: MessageListParameter) {
  * 站内信详情
  * @param data
  * @returns
- * TODO
+ *
  */
 export async function markZhanLetterRead(messageId: string) {
   return request<ZhanneiLetter>({

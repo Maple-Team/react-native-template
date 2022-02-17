@@ -46,7 +46,12 @@
     "historyBills": "History Bills",
     "myCard": "My Card",
     "contactUs": "Contact Us",
-    "aboutUs": "About Moneyya"
+    "aboutUs": "About Moneyya",
+    "WorkInfo": "Work Info",
+    "RelativeInfo": "Relative's Info",
+    "IdcardImage": "Image of Idard",
+    "PersonInfo": "Person Info",
+    "BankInfo": "Bank Info"
   },
   "secondPaymentAmount": "Second repayment amount",
   "secondPaymentDate": "Second repayment date",
@@ -55,5 +60,6 @@
   "start": "start",
   "submit": "提交",
   "transferAmount": "Transfer amount",
-  "validation-code-login": "验证码登录"
+  "validation-code-login": "验证码登录",
+  "repaymentAmount": "Repayment amount"
 }

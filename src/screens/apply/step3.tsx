@@ -18,9 +18,12 @@ import { default as MoneyyaContext } from '@/state'
 import type { ApplyParameter, ApplyStep3Parameter, Contact } from '@/typings/apply'
 import type { Dict, DictField } from '@/typings/response'
 
-//TODO fromOther==='Y' 少填一个联系人
 export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
+  //TODO fromOther==='Y' 少填一个联系人
+  const context = useContext(MoneyyaContext)
+  const fromOther = context.user?.fromOther
+  console.log(fromOther)
   const schema = object().shape({
     contactName1: string().max(100, t('contactName.invalid')).required(t('contactName.required')),
     contactPhone1: string()
@@ -32,6 +35,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
       .required(t('contactPhone.required'))
       .matches(REGEX_PHONE, t('contactPhone.invalid')),
     contactRelationCode2: string().required(t('contactRelationCode.required')),
+    // fromOther==='Y'
     contactName3: string().max(100, t('contactName.invalid')).required(t('contactName.required')),
     contactPhone3: string()
       .required(t('contactPhone.required'))
@@ -39,7 +43,6 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
     contactRelationCode3: string().required(t('contactRelationCode.required')),
   })
 
-  const context = useContext(MoneyyaContext)
   const step3Data = (MMKV.getMap('step3Data') as Partial<Step3State>) || {}
   const [state, dispatch] = useReducer<Reducer<Step3State, Step3Action>>(
     (s, { type, value }) => {

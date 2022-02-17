@@ -35,7 +35,7 @@ export let moneyyaState: State = {
     inputChannel: 'MONEYYA',
     source: 'APP',
     channel: 'app',
-    versionId: MMKV.getString(KEY_VERSIONID) || AppModule.getVersionID(),
+    versionId: MMKV.getInt(KEY_VERSIONID) || AppModule.getVersionID(),
     gps: MMKV.getString(KEY_GPS) || '0,0',
     deviceId: MMKV.getString(KEY_DEVICEID) || '',
     accessToken: MMKV.getString(KEY_TOKEN) || '',
@@ -189,7 +189,7 @@ type Action =
     }
   | {
       type: typeof UPDATE_VESIONID
-      versionID: string
+      versionID: number
     }
   | {
       type: typeof UPDATE_BRAND

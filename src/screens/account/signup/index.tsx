@@ -1,10 +1,9 @@
 import React, { useContext, useMemo, useState } from 'react'
 import { View, StatusBar, Image, Pressable } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { useTranslation } from 'react-i18next'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Formik } from 'formik'
-import { object, string, ref } from 'yup'
+import { object, string, ref, boolean } from 'yup'
 import debounce from 'lodash.debounce'
 
 import { PageStyles, Text } from '@/components'
@@ -22,12 +21,13 @@ import { useNetInfo } from '@react-native-community/netinfo'
 import { MMKV } from '@/utils'
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import type { AccountStackParams } from '@navigation/accountStack'
+import { t } from 'i18next'
+import emitter from '@/eventbus'
 
 type NaviType = NativeStackNavigationProp<AccountStackParams, 'SignUp'>
 
 export const SignupScreen = ({ route }: { route: any }) => {
   const context = useContext(MoneyyaContext)
-  const { t } = useTranslation()
   const { phone } = route.params || ({ phone: '' } as { phone?: string })
   const schema = object().shape({
     phone: string()
@@ -47,6 +47,7 @@ export const SignupScreen = ({ route }: { route: any }) => {
       .max(4, t('field.long', { field: 'Validate Code' }))
       .matches(REGEX_VALIDATE_CODE, t('validateCode.invalid'))
       .required(t('validateCode.required')),
+    hasAgree: boolean().required(t('hasAgree.required')),
   })
   type Model = RegisterParameter & {
     hasAgree?: boolean
@@ -57,6 +58,7 @@ export const SignupScreen = ({ route }: { route: any }) => {
       password: '',
       comfirmPassword: '',
       validateCode: '',
+      hasAgree: true, // FIXME
     }),
     [phone]
   )
@@ -88,92 +90,89 @@ export const SignupScreen = ({ route }: { route: any }) => {
 
   useLocation()
 
-  const [check, setCheck] = useState<boolean>(false)
   return (
     <SafeAreaView style={PageStyles.sav}>
       <StatusBar translucent backgroundColor={Color.primary} barStyle="default" />
       <ScrollView style={PageStyles.scroll} keyboardShouldPersistTaps="handled">
         <View style={PageStyles.container}>
           <Formik<Model> initialValues={initialValue} onSubmit={onSubmit} validationSchema={schema}>
-            {({ handleChange, handleSubmit, values, setFieldValue, errors, isValid }) => (
-              <>
-                <View style={PageStyles.form}>
-                  <MaskInput
-                    field="phone"
-                    label={t('phone.label')}
-                    onChangeText={(formatted, extracted) => {
-                      setFieldValue('phone', extracted)
-                    }}
-                    value={values.phone}
-                    placeholder={t('phone.placeholder')}
-                    error={errors.phone}
-                    keyboardType="phone-pad"
-                    mask={'[0000] [000] [000]'}
-                    Prefix={<Text color="#eee">+52</Text>}
-                  />
-                  <ValidateCode
-                    field="validateCode"
-                    label={t('validateCode.label')}
-                    onChangeText={handleChange('validateCode')}
-                    value={values.validateCode}
-                    onClear={() => setFieldValue('validateCode', '')}
-                    placeholder={t('validateCode.placeholder')}
-                    error={errors.validateCode}
-                    validateCodeType="REGISTER"
-                    keyboardType="number-pad"
-                    phone={values.phone}
-                  />
-                  <PasswordInput
-                    field="password"
-                    label={t('password.label')}
-                    onChangeText={handleChange('password')}
-                    value={values.password}
-                    onClear={() => setFieldValue('password', '')}
-                    placeholder={t('password.placeholder')}
-                    error={errors.password}
-                    showPwd={showPwd}
-                    onToggle={() => setShowPwd(!showPwd)}
-                  />
-                  <PasswordInput
-                    field="comfirmPassword"
-                    label={t('comfirmPassword.label')}
-                    onChangeText={handleChange('comfirmPassword')}
-                    value={values.comfirmPassword}
-                    onClear={() => setFieldValue('comfirmPassword', '')}
-                    placeholder={t('comfirmPassword.placeholder')}
-                    error={errors.comfirmPassword}
-                    showPwd={showConfirmPwd}
-                    onToggle={() => setShowConfirmPwd(!showConfirmPwd)}
-                  />
-                  <PermissionHint
-                    onPress={() => {
-                      const _check = check
-                      setCheck(!_check)
-                      setFieldValue('hasAgree', !_check ? true : undefined)
-                    }}
-                    check={values.hasAgree}
-                  />
-                  <View>
-                    {errors.hasAgree && (
-                      <Text
-                        //@ts-ignore
-                        styles={{ position: 'absolute' }}
-                        color="red">
-                        {errors.hasAgree}
-                      </Text>
-                    )}
+            {({ handleChange, handleSubmit, values, setFieldValue, errors, isValid }) => {
+              emitter.on('AGREE_WITH_TERMS', () => {
+                setFieldValue('hasAgree', true)
+              })
+              return (
+                <>
+                  <View style={PageStyles.form}>
+                    <MaskInput
+                      field="phone"
+                      label={t('phone.label')}
+                      onChangeText={(formatted, extracted) => {
+                        setFieldValue('phone', extracted)
+                      }}
+                      value={values.phone}
+                      placeholder={t('phone.placeholder')}
+                      error={errors.phone}
+                      keyboardType="phone-pad"
+                      mask={'[0000] [000] [000]'}
+                      Prefix={<Text color={Color.primary}>+52</Text>}
+                    />
+                    <ValidateCode
+                      field="validateCode"
+                      label={t('validateCode.label')}
+                      onChangeText={handleChange('validateCode')}
+                      value={values.validateCode}
+                      onClear={() => setFieldValue('validateCode', '')}
+                      placeholder={t('validateCode.placeholder')}
+                      error={errors.validateCode}
+                      validateCodeType="REGISTER"
+                      keyboardType="number-pad"
+                      phone={values.phone}
+                    />
+                    <PasswordInput
+                      field="password"
+                      label={t('password.label')}
+                      onChangeText={handleChange('password')}
+                      value={values.password}
+                      onClear={() => setFieldValue('password', '')}
+                      placeholder={t('password.placeholder')}
+                      error={errors.password}
+                      showPwd={showPwd}
+                      onToggle={() => setShowPwd(!showPwd)}
+                    />
+                    <PasswordInput
+                      field="comfirmPassword"
+                      label={t('comfirmPassword.label')}
+                      onChangeText={handleChange('comfirmPassword')}
+                      value={values.comfirmPassword}
+                      onClear={() => setFieldValue('comfirmPassword', '')}
+                      placeholder={t('comfirmPassword.placeholder')}
+                      error={errors.comfirmPassword}
+                      showPwd={showConfirmPwd}
+                      onToggle={() => setShowConfirmPwd(!showConfirmPwd)}
+                    />
+                    <PermissionHint check={values.hasAgree} />
+                    <View>
+                      {errors.hasAgree && (
+                        <Text
+                          //@ts-ignore
+                          styles={{ position: 'absolute' }}
+                          color="red">
+                          {errors.hasAgree}
+                        </Text>
+                      )}
+                    </View>
                   </View>
-                </View>
-                <View style={PageStyles.btnWrap}>
-                  <ApplyButton
-                    type={isValid ? 'primary' : 'ghost'}
-                    onPress={handleSubmit}
-                    loading={context.loading.effects.REGISTER}>
-                    <Text color={isValid ? '#fff' : '#aaa'}>{t('submit')}</Text>
-                  </ApplyButton>
-                </View>
-              </>
-            )}
+                  <View style={PageStyles.btnWrap}>
+                    <ApplyButton
+                      type={isValid ? 'primary' : 'ghost'}
+                      onPress={handleSubmit}
+                      loading={context.loading.effects.REGISTER}>
+                      <Text color={isValid ? '#fff' : '#aaa'}>{t('submit')}</Text>
+                    </ApplyButton>
+                  </View>
+                </>
+              )
+            }}
           </Formik>
         </View>
       </ScrollView>
@@ -181,7 +180,8 @@ export const SignupScreen = ({ route }: { route: any }) => {
   )
 }
 
-const PermissionHint = ({ onPress, check }: { onPress: () => void; check?: boolean }) => {
+const PermissionHint = ({ check }: { check?: boolean }) => {
+  const na = useNavigation()
   return (
     <View
       style={{
@@ -189,7 +189,7 @@ const PermissionHint = ({ onPress, check }: { onPress: () => void; check?: boole
         flexWrap: 'wrap',
         justifyContent: 'flex-start',
       }}>
-      <Pressable onPress={onPress} style={{ marginRight: 5 }}>
+      <Pressable style={{ marginRight: 5 }}>
         <Image
           source={
             check
@@ -200,11 +200,17 @@ const PermissionHint = ({ onPress, check }: { onPress: () => void; check?: boole
         />
       </Pressable>
       <Text fontSize={13} color="rgba(144, 146, 155, 1)">
-        Agree with Moneyya{' '}
+        {t('agreeWithMoneyya')}{' '}
       </Text>
-      <Text fontSize={13} color={Color.primary}>
-        Terms of Service{' '}
-      </Text>
+      <Pressable
+        onPress={() => {
+          //@ts-ignore
+          na.navigate('Terms')
+        }}>
+        <Text fontSize={13} color={Color.primary}>
+          {t('termsofService')}
+        </Text>
+      </Pressable>
     </View>
   )
 }

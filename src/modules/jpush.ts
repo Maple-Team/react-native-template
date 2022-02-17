@@ -65,7 +65,7 @@ export default class JPush {
    *（判断长度需采用 UTF-8 编码）单个设备最多支持设置 1000 个 tag。App 全局 tag 数量无限制
    * */
   static addTags(params: any) {
-    if (Platform.OS == 'android') {
+    if (Platform.OS === 'android') {
       JPushModule.addTags(params)
     } else {
       JPushModule.addTags(params)

@@ -1,8 +1,9 @@
-import React, { useContext } from 'react'
+import React, { useCallback, useContext, useState } from 'react'
 import { View, Image, Linking, Pressable } from 'react-native'
 import headerStyles from './style'
 import { default as MoneyyaContext } from '@/state'
-import { useNavigation } from '@react-navigation/native'
+import { useFocusEffect, useNavigation } from '@react-navigation/native'
+import { queryZhanLetterCount } from '@/services/misc'
 
 interface HeaderProps {
   title?: any
@@ -13,6 +14,15 @@ interface HeaderProps {
 export const TabHeader = ({ title, help, notice }: HeaderProps) => {
   const context = useContext(MoneyyaContext)
   const na = useNavigation()
+  const [count, setCount] = useState<number>(0)
+  useFocusEffect(
+    useCallback(() => {
+      queryZhanLetterCount().then(_ => {
+        setCount(_)
+      })
+      return () => {}
+    }, [])
+  )
   return (
     <View style={headerStyles.header}>
       <View style={headerStyles.headerLeft}>
@@ -29,6 +39,7 @@ export const TabHeader = ({ title, help, notice }: HeaderProps) => {
       </View>
       <View style={headerStyles.headerRight}>
         <Pressable
+          style={{ position: 'relative' }}
           onPress={() => {
             na.getParent()?.navigate('Letters')
           }}>
@@ -37,6 +48,19 @@ export const TabHeader = ({ title, help, notice }: HeaderProps) => {
             source={notice || require('@/assets/compressed/common/normal/notice.webp')}
             resizeMode="cover"
           />
+          {count > 0 && (
+            <View
+              style={{
+                position: 'absolute',
+                width: 8,
+                height: 8,
+                borderRadius: 4,
+                backgroundColor: '#f00',
+                top: 0,
+                right: 0,
+              }}
+            />
+          )}
         </Pressable>
         <Pressable
           onPress={() => {

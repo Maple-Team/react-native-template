@@ -25,7 +25,7 @@ import { StackActions } from '@react-navigation/native'
 interface FormModel {
   phone: string
 }
-// TODO 授权页(静态) -> 隐私页 -> 请求权限
+// TODO 请求权限
 // TODO 注册时同意用户条款
 export const EntryScreen = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
@@ -82,7 +82,7 @@ export const EntryScreen = ({ navigation }: NativeStackHeaderProps) => {
                           error={errors.phone}
                           keyboardType="phone-pad"
                           mask={'[0000] [000] [000]'}
-                          Prefix={<Text color="#eee">+52</Text>}
+                          Prefix={<Text color={Color.primary}>+52</Text>}
                         />
                       </View>
                       <Button

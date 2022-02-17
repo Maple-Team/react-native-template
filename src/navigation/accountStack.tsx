@@ -1,6 +1,12 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React, { useEffect } from 'react'
-import { SigninScreen, EntryScreen, SignupScreen, ResetScreen } from '@/screens/account'
+import {
+  SigninScreen,
+  EntryScreen,
+  SignupScreen,
+  ResetScreen,
+  TermsScreen,
+} from '@/screens/account'
 import { useTranslation } from 'react-i18next'
 import { HeaderLeft } from '@components/header'
 import emitter from '@/eventbus'
@@ -21,22 +27,14 @@ export type AccountStackParams = {
     phone: string
   }
   Reset: undefined
+  Terms: undefined
 }
 const Stack = createNativeStackNavigator<AccountStackParams>()
 
 export function AccountStack() {
   const { t } = useTranslation()
   usePersmission()
-  useEffect(() => {
-    emitter.on('LOGIN_SUCCESS', () => {
-      emitter.emit('SHOW_MESSAGE', { type: 'success', message: t('login.success') })
-    })
-  }, [t])
-  useEffect(() => {
-    emitter.on('EXISTED_USER', message => {
-      message && emitter.emit('SHOW_MESSAGE', { type: 'info', message })
-    })
-  }, [])
+
   useEffect(() => {
     const versionID = AppModule.getVersionID()
     emitter.emit('UPDATE_VERSIONID', versionID)
@@ -115,6 +113,7 @@ export function AccountStack() {
           headerLeft: () => <HeaderLeft onPress={() => dispatch(StackActions.replace('Entry'))} />,
         })}
       />
+      <Stack.Screen key="Terms" name="Terms" component={TermsScreen} />
     </Stack.Navigator>
   )
 }

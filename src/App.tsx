@@ -32,9 +32,8 @@ import { reducer, default as MoneyyaContext, moneyyaState } from '@/state'
 // import { useFlipper } from '@react-navigation/devtools'
 import emitter from '@/eventbus'
 import { MMKV } from '@/utils/storage'
-import { WebViewScreen } from '@components/webview'
-import { t } from 'i18next'
 import JPush from 'jpush-react-native'
+import { InitStack } from '@navigation/initStack'
 
 // Authentication flows: https://reactnavigation.org/docs/auth-flow/
 Toast.config({
@@ -121,8 +120,18 @@ const App = () => {
   // }, [isReady])
 
   useEffect(() => {
+    emitter.on('LOGIN_SUCCESS', () => {
+      emitter.emit('SHOW_MESSAGE', { type: 'success', message: i18n.t('login.success') })
+    })
+  }, [])
+  useEffect(() => {
+    emitter.on('EXISTED_USER', message => {
+      message && emitter.emit('SHOW_MESSAGE', { type: 'info', message })
+    })
+  }, [])
+
+  useEffect(() => {
     emitter.on('FIRST_INIT', init => {
-      // FIXME emitter emit/on 同一页的问题
       dispatch({
         type: 'UPDATE_HAS_INIT',
         hasInit: init,
@@ -153,7 +162,6 @@ const App = () => {
       })
     })
     emitter.on('UPDATE_BRAND', brand => {
-      console.log(brand, '==============')
       dispatch({
         type: 'UPDATE_BRAND',
         brand,
@@ -163,6 +171,12 @@ const App = () => {
       dispatch({
         type: 'UPDATE_USER_INFO',
         user: u,
+      })
+    })
+    emitter.on('UPDATE_HAS_INIT', u => {
+      dispatch({
+        type: 'UPDATE_HAS_INIT',
+        hasInit: u,
       })
     })
   }, [])
@@ -175,11 +189,17 @@ const App = () => {
       })
     })
   }, [user?.phone])
+
   useEffect(() => {
     JPush.init({
-      appKey: __DEV__ ? 'adb72c2b4a8434dcefd4f9bd' : '',
-      titchannelle: 'developer-default',
+      appKey: __DEV__ ? 'adb72c2b4a8434dcefd4f9bd' : '', //TODO key
+      channel: 'default-developer',
       production: __DEV__,
+    })
+    JPush.setLoggerEnable(true)
+    JPush.getRegistrationID(registerID => {
+      console.log('registerID', registerID)
+      //TODO upload
     })
     //连接状态
     JPush.addConnectEventListener(result => {
@@ -190,7 +210,6 @@ const App = () => {
       console.log('notificationListener:' + JSON.stringify(result))
     })
     //本地通知回调
-
     JPush.addLocalNotificationListener(result => {
       console.log('localNotificationListener:' + JSON.stringify(result))
     })
@@ -206,37 +225,7 @@ const App = () => {
             // ref={navigationRef}
             // initialState={initialState}
             onStateChange={_ => AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(_))}>
-            {!hasInit ? (
-              <WebViewScreen
-                actions={[
-                  {
-                    text: t('cancel'),
-                    color: '#bbbcbd',
-                    backgroundColor: '#fff',
-                    onPress: () => {},
-                  },
-                  {
-                    text: t('ok'),
-                    color: '#eee',
-                    backgroundColor: '#8e8f90',
-                    onPress: () => {
-                      dispatch({
-                        type: 'UPDATE_HAS_INIT',
-                        hasInit: true,
-                      })
-                    },
-                  },
-                ]}
-                title={t('authorizaiton')}
-                warnMessage={t('authorizaiton-not-reading')}
-                type="html"
-                content={'en'}
-              />
-            ) : accessToken ? (
-              <MainStack />
-            ) : (
-              <AccountStack />
-            )}
+            {!hasInit ? <InitStack /> : accessToken ? <MainStack /> : <AccountStack />}
           </NavigationContainer>
         </MoneyyaContext.Provider>
       </Provider>

@@ -1,6 +1,6 @@
 import { Color } from '@/styles/color'
 import { PageStyles, Text } from '@/components'
-import React, { useState } from 'react'
+import React, { useContext, useMemo, useState } from 'react'
 import {
   SafeAreaView,
   StatusBar,
@@ -19,6 +19,7 @@ import { useTranslation } from 'react-i18next'
 import { ErrorMessage, Formik } from 'formik'
 import { DEBOUNCE_WAIT, DEBOUNCE_OPTIONS } from '@/utils/constant'
 import debounce from 'lodash.debounce'
+import { default as MoneyyaContext } from '@/state'
 
 type FormModel = { amount: string; applyId: string }
 export function Payment() {
@@ -33,6 +34,7 @@ export function Payment() {
   const params = route.params as { applyId: string; repayAmount: number }
   const [payType, setPayType] = useState<'spei' | 'oxxo'>()
   const [visible, setVisible] = useState<boolean>(false)
+  const context = useContext(MoneyyaContext)
   const initialValue: FormModel = {
     amount: `${params?.repayAmount}` || '0',
     applyId: params?.applyId || '',
@@ -52,6 +54,17 @@ export function Payment() {
     DEBOUNCE_WAIT,
     DEBOUNCE_OPTIONS
   )
+  /**
+   * FIXME
+   * 逾期日期
+   */
+  const day = useMemo(() => {
+    const repayDate = context.user?.repayDate
+    if (repayDate) {
+      return dayjs(repayDate).diff(dayjs(), 'days')
+    }
+    return '--'
+  }, [context.user?.repayDate])
   return (
     <SafeAreaView style={PageStyles.sav}>
       <StatusBar translucent={false} backgroundColor={Color.primary} barStyle="default" />
@@ -64,7 +77,7 @@ export function Payment() {
               style={{ marginBottom: 18.5 }}
             />
             <Text fontFamily="Arial-BoldMT" fontWeight="bold" fontSize={15} color="#26272B">
-              Repayment amount
+              {t('repaymentAmount')}
             </Text>
             <Text
               //@ts-ignore
@@ -73,10 +86,10 @@ export function Payment() {
               fontWeight="bold"
               fontSize={37}
               color="#26272B">
-              MXN {toThousands(params?.repayAmount || 0)}
+              {t('mxn')} {toThousands(params?.repayAmount || 0)}
             </Text>
             <Text fontFamily="ArialMT" fontSize={12} color="#26272B">
-              There is one unpaid bill and 6 days overdue
+              {t('overduePrompt', { day })}
             </Text>
           </View>
           <View
@@ -90,13 +103,12 @@ export function Payment() {
               marginVertical: 16,
             }}>
             <Text color="#fff" fontSize={12}>
-              我们建议您在此页面立即偿还贷款，以免影响您的下次贷款申请。
+              {t('paymentPrompt1')}
             </Text>
             <Text color="#fff" fontSize={12}>
-              我们需要几分钟来处理您的还贷申请，请耐心等待。如果收不到验证码，请重新发送验证码。谢谢您的配合。
+              {t('paymentPrompt2')}
             </Text>
           </View>
-          {/* TODO */}
           <View style={{ backgroundColor: '#fff', paddingHorizontal: 20 }}>
             <Pressable
               key={'spei'}
@@ -113,13 +125,15 @@ export function Payment() {
               <View style={[style.payinfo, { borderBottomColor: '#D0DEE4', borderBottomWidth: 1 }]}>
                 <View style={style.payinfoText}>
                   <Text fontSize={15} color="#333230">
-                    Tasa de Tramitacion{'  '}
+                    {t('paymentNumPrompt')}
+                    {'  '}
                   </Text>
                   <Text fontSize={17} color="#0123F7">
                     0
                   </Text>
                   <Text fontSize={15} color="#333230">
-                    {'  '}MXN
+                    {'  '}
+                    {t('mxn')}
                   </Text>
                 </View>
                 <Image
@@ -144,13 +158,14 @@ export function Payment() {
               <View style={style.payinfo}>
                 <View style={style.payinfoText}>
                   <Text fontSize={15} color="#333230">
-                    Tasa de Tramitacion{'  '}
+                    {t('paymentNumPrompt')}
+                    {'  '}
                   </Text>
                   <Text fontSize={17} color="#0123F7">
                     27
                   </Text>
                   <Text fontSize={15} color="#333230">
-                    {'  '}MXN
+                    {'  '} {t('mxn')}
                   </Text>
                 </View>
                 <Image
@@ -312,6 +327,7 @@ export function Payment() {
 
 import StyleSheet from 'react-native-adaptive-stylesheet'
 import { toThousands } from '@/utils/util'
+import dayjs from 'dayjs'
 
 const style = StyleSheet.create<{
   payitem: ViewStyle

@@ -9,7 +9,7 @@ export interface CommonHeader {
   /**
    * 进件端版本号
    */
-  versionId: string
+  versionId: number
   /**
    * 商户ID
    */

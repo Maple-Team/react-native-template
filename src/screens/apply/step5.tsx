@@ -443,7 +443,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       error={errors.backupPhone}
                       keyboardType="phone-pad"
                       mask={'[0000] [000] [000]'}
-                      Prefix={<Text color="#eee">+52</Text>}
+                      Prefix={<Text color={Color.primary}>+52</Text>}
                       key={'backupPhone'}
                       onFocus={() =>
                         behavior.setStartModify('P05_C06_I_BACKUPPHONE', state.backupPhone)

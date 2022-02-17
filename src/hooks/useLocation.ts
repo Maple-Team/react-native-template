@@ -1,4 +1,3 @@
-import emitter from '@/eventbus'
 import { MMKV } from '@/utils'
 import { KEY_GPS } from '@/utils/constant'
 import { onRequestPermission } from '@/utils/permission'
@@ -49,9 +48,7 @@ export const useLocation = () => {
   useEffect(() => {
     const { latitude, longitude } = location
     const gps = `${latitude},${longitude}`
-    emitter.emit('UPDATE_GPS', gps)
     MMKV.setString(KEY_GPS, gps)
-    console.log('gps', gps)
   }, [location])
 
   return location

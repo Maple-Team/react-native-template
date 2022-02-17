@@ -35,7 +35,7 @@ api.interceptors.request.use(
       config.headers.gps = MMKV.getString(KEY_GPS) || gps
       config.headers.merchantId = merchantId
       config.headers.source = source
-      config.headers.versionId = versionId
+      config.headers.versionId = `${versionId}`
       if (channel) {
         config.headers.channel = channel
       }

@@ -25,13 +25,15 @@ export type Events = {
   NETWORK_CONNECTED: boolean
   FIRST_INIT: boolean
   UPDATE_DEVICEID: string
-  UPDATE_VERSIONID: string
+  UPDATE_VERSIONID: number
   UPDATE_GPS: string
   USER_INFO: UserInfo
   EXISTED_USER?: string
   UNREGISTER_USER?: string
   UPDATE_BRAND: Brand
   REGISTER_SUCCESS: AccountInfo
+  UPDATE_HAS_INIT: boolean
+  AGREE_WITH_TERMS: boolean
 }
 
 /**

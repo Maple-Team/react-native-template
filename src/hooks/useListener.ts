@@ -21,11 +21,6 @@ export const useEventListener = () => {
     // 监听请求状态
     emitter.on('NETWORK_CONNECTED', isConnected => {
       console.log('network is connected', isConnected)
-      if (!isConnected) {
-        emitter.emit('SHOW_MESSAGE', { type: 'info', message: '网络断开' })
-      } else {
-        emitter.emit('SHOW_MESSAGE', { type: 'success', message: '网络回复正常' })
-      }
     })
   }, [])
   return []

@@ -86,7 +86,7 @@ export function ApplyStack() {
             name="Step2"
             component={Step2}
             options={() => ({
-              title: 'step2',
+              title: t('screenTitle.WorkInfo'),
               headerLeft: () => (
                 <HeaderLeft
                   onPress={() => {
@@ -102,7 +102,7 @@ export function ApplyStack() {
             name="Step3"
             component={Step3}
             options={() => ({
-              title: 'step3',
+              title: t('screenTitle.RelativeInfo'),
             })}
           />
           <Stack.Screen
@@ -110,7 +110,7 @@ export function ApplyStack() {
             name="Step4"
             component={Step4}
             options={() => ({
-              title: 'step4',
+              title: t('screenTitle.IdcardImage'),
             })}
           />
           <Stack.Screen
@@ -118,7 +118,7 @@ export function ApplyStack() {
             name="Step5"
             component={Step5}
             options={() => ({
-              title: 'Step5',
+              title: t('screenTitle.PersonInfo'),
             })}
           />
           <Stack.Screen
@@ -142,7 +142,7 @@ export function ApplyStack() {
             name="Step7"
             component={Step7}
             options={() => ({
-              title: 'Step7',
+              title: t('screenTitle.BankInfo'),
             })}
           />
           <Stack.Screen
@@ -150,7 +150,7 @@ export function ApplyStack() {
             name="Step71"
             component={Step71}
             options={() => ({
-              title: 'Step71',
+              title: t('screenTitle.BankInfo'),
             })}
           />
           <Stack.Screen

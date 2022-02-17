@@ -81,7 +81,7 @@ export const MaskInput = ({
             style={[
               styles.input,
               error ? { borderBottomColor: 'red' } : {},
-              Prefix ? { paddingLeft: 34 } : {}, //NOTE 前缀位置
+              Prefix ? { paddingLeft: 34 } : {},
             ]}
             keyboardType={keyboardType}
             onFocus={onFocus}

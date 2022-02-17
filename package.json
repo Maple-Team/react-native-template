@@ -77,7 +77,7 @@
     "react-native-swiper": "^1.6.0",
     "react-native-text-input-mask": "^3.1.4",
     "react-native-webview": "^11.17.2",
-    "react-native-wheel-picker-android": "https://github.com/Maple-Team/ReactNativeWheelPicker.git",
+    "react-native-wheel-picker-android": "^2.0.6",
     "rn-fetch-blob-v2": "^0.14.1",
     "tinify": "^1.6.1",
     "usehooks-ts": "^2.2.1",

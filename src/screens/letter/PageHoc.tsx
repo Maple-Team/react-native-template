@@ -3,7 +3,6 @@ import { PageStyles } from '@/components'
 import React from 'react'
 import { SafeAreaView, StatusBar, ScrollView } from 'react-native'
 
-//FIXME HOC type definition
 export function PageHoc<T, P>(Component: React.ComponentType<T>): React.FC<P> {
   return () => {
     const componentProps: any = {}

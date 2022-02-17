@@ -44,7 +44,7 @@ export interface UserInfo {
   /**
    * 最大可视金额
    */
-  MaxViewAmount: number
+  maxViewAmount: number
 
   /**
    * 申请金额

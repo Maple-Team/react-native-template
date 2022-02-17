@@ -45,7 +45,12 @@
     "contactUs": "Contact Us",
     "aboutUs": "About Moneyya",
     "faceRecognition": "Face Recognition",
-    "holdIDPhoto": "Hold ID Photo"
+    "holdIDPhoto": "Hold ID Photo",
+    "WorkInfo": "工作信息",
+    "RelativeInfo": "亲属信息",
+    "IdcardImage": "影像信息",
+    "PersonInfo": "个人信息",
+    "BankInfo": "银行卡信息"
   },
   "secondPaymentAmount": "Second repayment amount",
   "secondPaymentDate": "Second repayment date",
@@ -53,5 +58,6 @@
   "signup": "注册",
   "submit": "提交",
   "transferAmount": "到手金额",
-  "validation-code-login": "验证码登录"
+  "validation-code-login": "验证码登录",
+  "repaymentAmount": "Repayment amount"
 }

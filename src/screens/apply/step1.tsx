@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useMemo } from 'react'
+import React, { useCallback, useContext, useEffect, useMemo } from 'react'
 import { View, Image, StatusBar, ImageBackground } from 'react-native'
-import { StackActions, useNavigation } from '@react-navigation/native'
+import { StackActions, useFocusEffect, useNavigation } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { TabHeader, Text } from '@/components'
 import { ScrollView } from 'react-native-gesture-handler'
@@ -27,26 +27,34 @@ interface Status {
   repayDate?: string
   repayAmount?: string
 }
-// TODO use foucs event to get data
 export function Step1() {
   const navigation = useNavigation()
   const context = useContext(MoneyyaContext)
-
-  useEffect(() => {
-    queryVersion().then(res => {
-      console.log('version', res) //TODO 强制更新
-    })
-  }, [])
 
   useEffect(() => {
     pv({ userId: `${context.user?.userId}` || '' })
   }, [context.user?.userId])
 
   const location = useLocation()
-  console.log(context.user)
-  console.log(context.loading.effects)
+  useFocusEffect(
+    useCallback(() => {
+      queryUserinfo().then(user => {
+        emitter.emit('USER_INFO', user)
+      })
+      return () => {}
+    }, [])
+  )
+  useFocusEffect(
+    useCallback(() => {
+      queryVersion().then(res => {
+        console.log('version', res)
+        //TODO 强制更新
+      })
+      return () => {}
+    }, [])
+  )
   const applyStatus = context.user?.applyStatus
-  const status: Status = useMemo(() => {
+  const status = useMemo(() => {
     let value: Status = {
       btnText: '',
       amount: 0,
@@ -83,7 +91,7 @@ export function Step1() {
         value = {
           btnText: t('applyState.apply'),
           prompt: t('maxAvailableAmount'),
-          amount: context.user?.MaxViewAmount || 0,
+          amount: context.user?.maxViewAmount || 0,
         }
         break
       case APPLY_STATE.CANCEL:
@@ -98,9 +106,9 @@ export function Step1() {
     return value
   }, [
     applyStatus,
-    context.user?.MaxViewAmount,
     context.user?.applyAmount,
     context.user?.maxAmount,
+    context.user?.maxViewAmount,
     context.user?.repayAmount,
     context.user?.repayDate,
   ])
