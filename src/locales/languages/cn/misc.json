@@ -44,5 +44,6 @@
   "paymentNumPrompt": "Tasa de Tramitacion",
   "agreeWithMoneyya": "Agree with Moneyya",
   "termsofService": "Terms of Service",
-  "loanInfoHint": "Loan information"
+  "loanInfoHint": "Loan information",
+  "exceedMaxAmount": "超出最大可贷金额"
 }

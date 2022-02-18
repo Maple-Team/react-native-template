@@ -56,7 +56,6 @@ export const SignupScreen = ({ route }: { route: any }) => {
       password: '',
       comfirmPassword: '',
       validateCode: '',
-      hasAgree: true, // FIXME
     }),
     [phone]
   )
@@ -87,7 +86,7 @@ export const SignupScreen = ({ route }: { route: any }) => {
   const [showConfirmPwd, setShowConfirmPwd] = useState<boolean>(false)
 
   useLocation()
-
+  const [, setCheck] = useState<boolean>(false)
   return (
     <SafeAreaView style={PageStyles.sav}>
       <StatusBar translucent backgroundColor={Color.primary} barStyle="default" />
@@ -97,8 +96,8 @@ export const SignupScreen = ({ route }: { route: any }) => {
             {({ handleChange, handleSubmit, values, setFieldValue, errors, isValid }) => {
               emitter.on('AGREE_WITH_TERMS', () => {
                 setFieldValue('hasAgree', true)
+                setCheck(true)
               })
-              // FIXME 使用弹窗的方式, Formik外部更新表单字段的方式
               return (
                 <>
                   <View style={PageStyles.form}>

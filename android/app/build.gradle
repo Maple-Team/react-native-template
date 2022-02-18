@@ -1,7 +1,9 @@
 apply plugin: "com.android.application"
 
-import com.android.build.OutputFile
+
 import groovy.json.JsonSlurper
+
+import java.text.SimpleDateFormat
 
 project.ext.react = [
   enableHermes: true,  // clean and rebuild if changing
@@ -138,9 +140,11 @@ android {
       // https://developer.android.com/studio/build/configure-apk-splits.html
       output.versionNameOverride = getVersionName()
       output.versionCodeOverride = getVersionCode()
-      output.outputFileName = "Moneyya_${variant.buildType.name}_v${getVersionName()}-${getVersionCode()}.apk"
-
-
+      if (variant.buildType.name =='debug'){
+        output.outputFileName = "app-${variant.buildType.name}.apk"
+      }else {
+        output.outputFileName = "Moneyya_${variant.buildType.name}_v${getVersionName()}-No.${getVersionCode()}_${getHash()}.apk"
+      }
     }
   }
 }
@@ -203,8 +207,16 @@ static def getVersionCode() {
   int patch = _patch as int
   return  major + minor + patch
 }
-
+static def getTime(){
+  def date = new Date()
+  def sdf = new SimpleDateFormat("MM-DD HH-mm-ss")
+  return sdf.format(date)
+}
 static def getVersionName() {
   def jsonSlurper = new JsonSlurper()
   return jsonSlurper.parse(new File('../package.json'))['version']
+}
+static def getHash() {
+  def content = new File('../.hash').text
+  return content.trim()
 }

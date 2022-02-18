@@ -45,10 +45,10 @@ export function BillsList() {
         })
         .finally(() => setLoading(false))
     } else {
-      emitter.emit('SHOW_MESSAGE', { type: 'info', message: 'No more new data available' })
+      emitter.emit('SHOW_MESSAGE', { type: 'info', message: t('noMore') })
       setRefreshing(false)
     }
-  }, [data, type])
+  }, [data, t, type])
   /**
    * 计算出还款相关状态
    */
@@ -61,6 +61,11 @@ export function BillsList() {
     switch (item.contractStatus) {
       case APPLY_STATE.OVERDUE:
         content = { text: item.contractStatusName, color: '#FF4800', state: -1 }
+        break
+      case APPLY_STATE.APPLY:
+      case APPLY_STATE.LOAN:
+      case APPLY_STATE.WAIT:
+        content = { text: item.contractStatusName, color: '#FF4800', state: 2 }
         break
       case APPLY_STATE.SETTLE:
         content = { color: '#FF4800', state: 1 }
@@ -127,7 +132,7 @@ export function BillsList() {
                       <Image
                         source={
                           getStateContent(item).state >= 0
-                            ? getStateContent(item).state === 1
+                            ? getStateContent(item).state === 1 || getStateContent(item).state === 2
                               ? require('@/assets/compressed/bills/setted.webp')
                               : require('@/assets/compressed/bills/repay1.webp')
                             : require('@/assets/compressed/bills/repay3.webp')
@@ -155,14 +160,29 @@ export function BillsList() {
                         <Text>{item.applyAmount}</Text>
                       </View>
                       <View style={{ alignItems: 'center' }}>
-                        <Text
-                          styles={{
-                            //@ts-ignore
-                            marginBottom: 15,
-                          }}>
-                          {t('repayDate')}
-                        </Text>
-                        <Text>{item.repayDate}</Text>
+                        {getStateContent(item).state === 2 ? (
+                          <>
+                            <Text
+                              styles={{
+                                //@ts-ignore
+                                marginBottom: 15,
+                              }}>
+                              {t('loanDate')}
+                            </Text>
+                            <Text>{item.loanDate}</Text>
+                          </>
+                        ) : (
+                          <>
+                            <Text
+                              styles={{
+                                //@ts-ignore
+                                marginBottom: 15,
+                              }}>
+                              {t('repayDate')}
+                            </Text>
+                            <Text>{item.repayDate}</Text>
+                          </>
+                        )}
                       </View>
                     </View>
 

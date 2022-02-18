@@ -61,5 +61,6 @@
   "submit": "提交",
   "transferAmount": "Transfer amount",
   "validation-code-login": "验证码登录",
-  "repaymentAmount": "Repayment amount"
+  "repaymentAmount": "Repayment amount",
+  "loanDate": "Loan Date"
 }

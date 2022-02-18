@@ -169,7 +169,7 @@ const App = () => {
   useEffect(() => {
     JPush.init({
       appKey: __DEV__ ? 'adb72c2b4a8434dcefd4f9bd' : '', //TODO key
-      channel: 'default-developer',
+      channel: 'developer-default',
       production: __DEV__,
     })
     JPush.setLoggerEnable(true)

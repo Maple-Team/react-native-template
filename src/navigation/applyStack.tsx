@@ -41,12 +41,11 @@ export function ApplyStack() {
     })
   }, [])
   const na = useNavigation()
-  // TODO title 文案
   return (
     <Provider>
       <Stack.Navigator
         initialRouteName="BottomTab"
-        screenOptions={({ navigation }) => ({
+        screenOptions={() => ({
           headerStyle: {
             backgroundColor: Color.primary,
           },
@@ -56,17 +55,16 @@ export function ApplyStack() {
             fontFamily: 'ArialMT',
           },
           headerTitleAlign: 'center',
-          headerRight: () => (
-            <HeaderRight
-              onPress={() => {
-                // go to help screen
-              }}
-            />
-          ),
+          headerRight: () => <HeaderRight onPress={() => {}} />,
           headerLeft: () => (
             <HeaderLeft
               onPress={() => {
-                navigation.goBack()
+                if (na.canGoBack()) {
+                  na.goBack()
+                } else {
+                  //@ts-ignore
+                  na.navigate('BottomTab')
+                }
               }}
             />
           ),

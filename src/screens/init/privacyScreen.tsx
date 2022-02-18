@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import emitter from '@/eventbus'
 import { queryBrand } from '@/services/apply'
-import { Brand } from '@/typings/response'
+import type { Brand } from '@/typings/response'
 
 export default () => {
   const { t } = useTranslation()

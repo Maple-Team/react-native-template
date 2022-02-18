@@ -17,7 +17,9 @@ import { queryProduct, scheduleCalc, submit } from '@/services/apply'
 import { MMKV } from '@/utils'
 import { default as MoneyyaContext } from '@/state'
 import emitter from '@/eventbus'
+import { Toast } from '@ant-design/react-native'
 
+const WARN_COLOR = '#f00'
 export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
   const params = (route.params as { bankCardNo?: string }) || {}
@@ -87,6 +89,7 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
   }, [context.user?.phone])
   // 试算信息
   const [calcResult, setcalcResult] = useState<Calculate>()
+  console.log({ calcResult })
   useEffect(() => {
     if (loanCode && displayLoanDays > 0) {
       scheduleCalc({
@@ -127,6 +130,21 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
         : [],
     [productInfo]
   )
+  const [isWarnging, setWarn] = useState<boolean>()
+  useEffect(() => {
+    if (productInfo?.maxAmount) {
+      if (loanAmt > productInfo?.maxAmount) {
+        setWarn(true)
+      } else {
+        setWarn(false)
+      }
+    }
+  }, [loanAmt, productInfo?.maxAmount])
+  useEffect(() => {
+    if (isWarnging) {
+      Toast.info(t('exceedMaxAmount'))
+    }
+  }, [isWarnging, t])
   return (
     <SafeAreaView style={PageStyles.sav}>
       <StatusBar translucent={false} backgroundColor={Color.primary} barStyle="default" />
@@ -146,10 +164,11 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
               resizeMode="stretch"
               style={{ width: '100%', height: 159 }}>
               <View style={{ alignItems: 'center', paddingTop: 23.5 }}>
-                <Text fontSize={25} fontWeight="bold" color="#fff">
-                  ${loanAmt}
+                <Text fontSize={25} fontWeight="bold" color={isWarnging ? WARN_COLOR : '#fff'}>
+                  {t('$')}
+                  {loanAmt}
                 </Text>
-                <Text fontSize={13} color="#fff">
+                <Text fontSize={13} color={isWarnging ? WARN_COLOR : '#fff'}>
                   {t('loanAmount')}
                 </Text>
                 <Slider
@@ -161,7 +180,7 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
                     setLoanAmt(Array.isArray(v) ? v[0] : v)
                   }}
                   step={productInfo?.amountStep || 1000}
-                  trackStyle={{ height: 5 }}
+                  trackStyle={{ height: 5, backgroundColor: isWarnging ? WARN_COLOR : '#B3CEF2' }}
                   thumbStyle={{ alignItems: 'center', height: 34 }}
                   thumbTintColor="transparent"
                   thumbImage={require('@/assets/compressed/apply/slider_dot.webp')}
@@ -301,8 +320,16 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
                 data={
                   calcResult?.instalmentMark === 'Y'
                     ? [
-                        { name: t('firstPaymentdate'), value: 1772832832, type: 'date' },
-                        { name: t('firstPaymentAmount'), value: 7, type: 'money' },
+                        {
+                          name: t('firstPaymentdate'),
+                          value: calcResult.termSchedules[0].loanPmtDueDate,
+                          type: 'date',
+                        },
+                        {
+                          name: t('firstPaymentAmount'),
+                          value: calcResult.termSchedules[0].totalAmt,
+                          type: 'money',
+                        },
                       ]
                     : [
                         { name: t('loanAmount'), value: loanAmt, type: 'money' },
@@ -324,10 +351,14 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
                 data={
                   calcResult?.instalmentMark === 'Y'
                     ? [
-                        { name: t('secondPaymentDate'), value: 1772832832, type: 'date' },
+                        {
+                          name: t('secondPaymentDate'),
+                          value: calcResult.termSchedules[1].loanPmtDueDate,
+                          type: 'date',
+                        },
                         {
                           name: t('secondPaymentAmount'),
-                          value: 261800,
+                          value: calcResult.termSchedules[1].totalAmt,
                           type: 'money',
                           extra: (
                             <View
@@ -426,7 +457,7 @@ type ValueType = 'day' | 'money' | 'bank' | 'date'
 const ListInfo = ({
   data,
 }: {
-  data: { name: string; value: number; type: ValueType; extra?: ReactNode }[]
+  data: { name: string; value: number | string; type: ValueType; extra?: ReactNode }[]
 }) => {
   return (
     <View style={{ width: '100%', paddingHorizontal: 17 }}>
@@ -463,7 +494,7 @@ const ListInfo = ({
   )
 }
 
-const ValueText = ({ value, type }: { value: number; type: ValueType }) => {
+const ValueText = ({ value, type }: { value: number | string; type: ValueType }) => {
   const { t } = useTranslation()
   switch (type) {
     case 'bank':
