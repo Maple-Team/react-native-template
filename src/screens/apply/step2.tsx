@@ -1,5 +1,5 @@
 import type { NativeStackHeaderProps } from '@react-navigation/native-stack'
-import React, { useContext, useEffect, useReducer, useRef } from 'react'
+import React, { useEffect, useReducer, useRef } from 'react'
 import type { Reducer } from 'react'
 import { View, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -19,7 +19,6 @@ import { useBehavior, useLocation } from '@/hooks'
 import type { Shape } from '@/typings/common'
 import { fetchDict, submit } from '@/services/apply'
 import type { Dict, DictField } from '@/typings/response'
-import { default as MoneyyaContext } from '@/state'
 import { MMKV } from '@/utils/storage'
 import { filterArrayKey } from '@/utils/util'
 
@@ -193,7 +192,6 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
 
   const behavior = useBehavior<'P02'>('P02', 'P02_C00', 'P02_C99')
   const scrollViewRef = useRef<ScrollView>(null)
-  const context = useContext(MoneyyaContext)
   return (
     <SafeAreaView style={PageStyles.sav}>
       <StatusBar translucent={false} backgroundColor={Color.primary} barStyle="default" />
@@ -414,10 +412,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                   />
                 </View>
                 <View style={PageStyles.btnWrap}>
-                  <ApplyButton
-                    type={isValid ? 'primary' : 'ghost'}
-                    onPress={handleSubmit}
-                    loading={context.loading.effects.apply}>
+                  <ApplyButton type={isValid ? 'primary' : 'ghost'} onPress={handleSubmit}>
                     <Text color={isValid ? '#fff' : '#aaa'}>{t('submit')}</Text>
                   </ApplyButton>
                 </View>

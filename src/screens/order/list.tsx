@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import {
   FlatList,
   Image,
@@ -6,15 +6,13 @@ import {
   StatusBar,
   ImageBackground,
   Pressable,
-  ActivityIndicator,
   RefreshControl,
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { TabHeader, Text } from '@/components'
+import { Loading, TabHeader, Text } from '@/components'
 import { Color } from '@/styles/color'
 import { queryOrders } from '@/services/order'
 import { Order } from '@/typings/order'
-import { default as MoneyyaContext } from '@/state'
 import { APPLY_STATE } from '@/state/enum'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import emitter from '@/eventbus'
@@ -26,21 +24,26 @@ export function BillsList() {
   const { t } = useTranslation()
   const { type } = (route.params || { type: 'order' }) as { type: 'payment' | 'order' }
   const [data, setData] = useState<Order[]>([])
+  const [loading, setLoading] = useState<boolean>()
   useEffect(() => {
-    queryOrders(type).then(res => {
-      setData(res)
-    })
+    setLoading(true)
+    queryOrders(type)
+      .then(res => {
+        setData(res)
+      })
+      .finally(() => setLoading(false))
   }, [type])
-  const context = useContext(MoneyyaContext)
   const na = useNavigation()
   const [refreshing, setRefreshing] = useState<boolean>(false)
   const onRefresh = useCallback(async () => {
     setRefreshing(true)
     if (data.length < 10) {
-      queryOrders(type).then(res => {
-        setData(uniqBy(res.concat(data), 'applyId'))
-        setRefreshing(false)
-      })
+      queryOrders(type)
+        .then(res => {
+          setData(uniqBy(res.concat(data), 'applyId'))
+          setRefreshing(false)
+        })
+        .finally(() => setLoading(false))
     } else {
       emitter.emit('SHOW_MESSAGE', { type: 'info', message: 'No more new data available' })
       setRefreshing(false)
@@ -65,7 +68,9 @@ export function BillsList() {
     }
     return content
   }, [])
-
+  if (loading) {
+    return <Loading />
+  }
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar translucent={false} backgroundColor="#fff" barStyle="dark-content" />
@@ -87,11 +92,7 @@ export function BillsList() {
           </ImageBackground>
         </View>
         <View>
-          {context.loading.effects.ORDER_LIST || context.loading.effects.REPAY_LIST ? (
-            <View style={{ flex: 1, alignContent: 'center', justifyContent: 'center' }}>
-              <ActivityIndicator size="large" color={Color.primary} />
-            </View>
-          ) : data.length > 0 ? (
+          {data.length > 0 ? (
             <FlatList
               refreshControl={
                 <RefreshControl

@@ -29,9 +29,8 @@ export const WebViewScreen = ({ actions, warnMessage, content, type = 'uri' }: P
       case 'zh-Hans-CN':
         return cn
       case 'en':
-        return en
       default:
-        return ''
+        return en
     }
   }, [i18n.language])
   const ref = useRef<WebView>(null)

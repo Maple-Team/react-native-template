@@ -4,14 +4,13 @@ import React from 'react'
 import { Image } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { BillsList } from '@screens/order'
-import { t } from 'i18next'
 
 const Tab = createBottomTabNavigator()
 
 export const BottomTab = () => (
   <Tab.Navigator>
     <Tab.Screen
-      name={t('home')}
+      name="Home"
       key="Home"
       component={Home}
       options={{
@@ -25,7 +24,7 @@ export const BottomTab = () => (
       }}
     />
     <Tab.Screen
-      name={t('order')}
+      name="Order"
       key="Order"
       component={BillsList}
       options={{
@@ -39,7 +38,7 @@ export const BottomTab = () => (
       }}
     />
     <Tab.Screen
-      name={t('account')}
+      name="Account"
       key="Account"
       component={UserStack}
       options={{

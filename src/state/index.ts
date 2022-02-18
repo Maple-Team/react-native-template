@@ -1,5 +1,3 @@
-import type { DispatchMapType } from '@/eventbus/type'
-import { DictTypeArray, NormalTypeArray } from '@/eventbus/type'
 import type { CommonHeader } from '@/typings/request'
 import type { Brand } from '@/typings/response'
 import type { UserInfo } from '@/typings/user'
@@ -39,9 +37,6 @@ export let moneyyaState: State = {
     gps: MMKV.getString(KEY_GPS) || '0,0',
     deviceId: MMKV.getString(KEY_DEVICEID) || '',
     accessToken: MMKV.getString(KEY_TOKEN) || '',
-  },
-  loading: {
-    effects: {},
   },
   hasInit: MMKV.getBool(KEY_INIT) || false,
   user: MMKV.getMap(KEY_USER) || undefined,
@@ -121,19 +116,7 @@ export function reducer(state: State, action: Action): State {
       }
       break
     default:
-      if ([...NormalTypeArray, ...DictTypeArray].includes(action.type)) {
-        moneyyaState = {
-          ...state,
-          loading: {
-            effects: {
-              ...state.loading.effects,
-              [`${action.type}`]: action.loading,
-            },
-          },
-        }
-      } else {
-        moneyyaState = { ...state }
-      }
+      moneyyaState = { ...state }
       break
   }
   return moneyyaState
@@ -142,22 +125,6 @@ export function reducer(state: State, action: Action): State {
 interface State {
   header: CommonHeader
   user?: UserInfo
-  /**
-   * 加载请求的状态
-   * 借鉴dva-loading的思路 https://github.com/dvajs/dva/tree/master/packages/dva-loading
-   */
-  loading: {
-    /**
-     * 是否全局显示,
-     */
-    global?: boolean
-    effects: {
-      /**
-       * 单个请求的请求状态
-       */
-      [key: string]: boolean
-    }
-  }
   brand?: Brand
   hasInit?: boolean
 }
@@ -178,10 +145,6 @@ type Action =
   | {
       type: typeof UPDATE_USERINFO
       user: UserInfo
-    }
-  | {
-      type: DispatchMapType
-      loading: boolean
     }
   | {
       type: typeof UPDATE_HAS_INIT

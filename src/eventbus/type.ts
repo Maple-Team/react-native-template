@@ -1,3 +1,6 @@
+/**
+ * @deprecated
+ */
 export const DictTypeArray = [
   'INDUSTRY',
   'PROFESSION',
@@ -15,6 +18,9 @@ export const DictTypeArray = [
   'LOAN_PURPOSE',
   'CARD_NO_TYPE',
 ] as const
+/**
+ * @deprecated
+ */
 export const NormalTypeArray = [
   'LOGIN',
   'LOGOUT',
@@ -40,6 +46,7 @@ type NormalType = typeof NormalTypeArray[number]
 type DictType = typeof DictTypeArray[number]
 
 /**
+ * @deprecated
  * dispatch type
  */
 export type DispatchMapType = DictType | NormalType
@@ -74,10 +81,12 @@ Object.keys(_dispatchMap).forEach(key => {
 })
 
 /**
+ * @deprecated
  * dispatch type与url映射map
  */
 export const DispatchMap = _dispatchMap
 /**
+ * @deprecated
  * url与dispatch type映射map
  */
 export const DispatchRVMap = _DispatchRvMap

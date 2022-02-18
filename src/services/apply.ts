@@ -147,15 +147,14 @@ export async function scheduleCalc(data: CalculateParameter) {
  * @param data
  * @returns
  */
-export async function pv(data: { userId: string }) {
-  if (!data.userId) {
-    return
+export async function pv(userId?: string) {
+  if (userId) {
+    return request<BaseResponse>({
+      url: '/smart-loan/app/index',
+      method: 'POST',
+      data: { userId },
+    })
   }
-  return request<BaseResponse>({
-    url: '/smart-loan/app/index',
-    method: 'POST',
-    data,
-  })
 }
 /**
  * 行为上传

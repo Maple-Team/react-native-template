@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { View, StatusBar, Image, Pressable } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { ScrollView } from 'react-native-gesture-handler'
@@ -15,7 +15,6 @@ import { Color } from '@/styles/color'
 import type { RegisterParameter } from '@/typings/request'
 import { register } from '@/services/user'
 import { useLocation } from '@/hooks'
-import { default as MoneyyaContext } from '@/state'
 import { useNavigation } from '@react-navigation/native'
 import { useNetInfo } from '@react-native-community/netinfo'
 import { MMKV } from '@/utils'
@@ -27,7 +26,6 @@ import emitter from '@/eventbus'
 type NaviType = NativeStackNavigationProp<AccountStackParams, 'SignUp'>
 
 export const SignupScreen = ({ route }: { route: any }) => {
-  const context = useContext(MoneyyaContext)
   const { phone } = route.params || ({ phone: '' } as { phone?: string })
   const schema = object().shape({
     phone: string()
@@ -164,10 +162,7 @@ export const SignupScreen = ({ route }: { route: any }) => {
                     </View>
                   </View>
                   <View style={PageStyles.btnWrap}>
-                    <ApplyButton
-                      type={isValid ? 'primary' : 'ghost'}
-                      onPress={handleSubmit}
-                      loading={context.loading.effects.REGISTER}>
+                    <ApplyButton type={isValid ? 'primary' : 'ghost'} onPress={handleSubmit}>
                       <Text color={isValid ? '#fff' : '#aaa'}>{t('submit')}</Text>
                     </ApplyButton>
                   </View>

@@ -1,5 +1,5 @@
 import type { NativeStackHeaderProps } from '@react-navigation/native-stack'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, ImageBackground } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Button } from '@ant-design/react-native'
@@ -11,7 +11,6 @@ import debounce from 'lodash.debounce'
 
 import { Logo } from '@/components/logo'
 import Text from '@/components/Text'
-import { default as MoneyyaContext } from '@/state'
 import styles from './style'
 import { REGEX_PHONE } from '@/utils/reg'
 import { DEBOUNCE_WAIT, DEBOUNCE_OPTIONS, KEY_BRAND } from '@/utils/constant'
@@ -45,7 +44,6 @@ export const EntryScreen = ({ navigation }: NativeStackHeaderProps) => {
     DEBOUNCE_OPTIONS
   )
 
-  const context = useContext(MoneyyaContext)
   useEffect(() => {
     queryBrand().then(brand => {
       emitter.emit('UPDATE_BRAND', brand)
@@ -88,7 +86,6 @@ export const EntryScreen = ({ navigation }: NativeStackHeaderProps) => {
                       <Button
                         style={[styles.signin, styles.btn]}
                         type="primary"
-                        loading={context.loading.effects.LOGIN}
                         // @ts-ignore
                         onPress={handleSubmit}>
                         <Text>{t('signin')}</Text>
@@ -98,7 +95,6 @@ export const EntryScreen = ({ navigation }: NativeStackHeaderProps) => {
                 </Formik>
                 <Button
                   style={[styles.signup, styles.btn]}
-                  loading={context.loading.effects.LOGIN}
                   onPress={async () => {
                     navigation.dispatch(
                       StackActions.replace('SignUp', {

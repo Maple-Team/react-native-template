@@ -90,6 +90,7 @@ api.interceptors.response.use(
 )
 
 /**
+ * @deprecated
  * 更新每个请求的请求状态
  * @param url 请求接口url
  * @param loading 请求状态
@@ -107,12 +108,9 @@ export const updateRequestStatus = (url: string, loading: boolean) => {
  */
 export const request = async <T = any>(config: AxiosRequestConfig): Promise<T> => {
   try {
-    updateRequestStatus(config.url!, true)
     const res = api.request({ method: 'GET', ...config })
-    updateRequestStatus(config.url!, false)
     return res as unknown as Promise<T>
   } catch (error) {
-    updateRequestStatus(config.url!, false)
     return Promise.reject(error)
   }
 }

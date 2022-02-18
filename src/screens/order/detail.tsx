@@ -1,11 +1,10 @@
 import { queryOrderDetail } from '@/services/order'
-import React, { useContext, useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { SafeAreaView, StatusBar, View, Image, type ViewStyle } from 'react-native'
-import { PageStyles, Text } from '@/components'
+import { Loading, PageStyles, Text } from '@/components'
 import { Order } from '@/typings/order'
 import { useTranslation } from 'react-i18next'
 import { ApplyButton } from '@components/form/FormItem'
-import { default as MoneyyaContext } from '@/state'
 import { ScrollView } from 'react-native-gesture-handler'
 
 interface Status {
@@ -16,13 +15,15 @@ interface Status {
 export default ({ route }: { route: any }) => {
   const { applyId } = route.params as { applyId: string }
   const [data, setData] = useState<Order>()
-
-  const context = useContext(MoneyyaContext)
+  const [loading, setLoading] = useState<boolean>()
   useEffect(() => {
     if (applyId) {
-      queryOrderDetail({ applyId }).then(res => {
-        setData(res)
-      })
+      setLoading(true)
+      queryOrderDetail({ applyId })
+        .then(res => {
+          setData(res)
+        })
+        .finally(() => setLoading(false))
     }
   }, [applyId])
   const { t } = useTranslation()
@@ -55,6 +56,9 @@ export default ({ route }: { route: any }) => {
     }
     return value
   }, [data?.applyId, data?.contractStatus, data?.repayAmount, na, t])
+  if (loading) {
+    return <Loading />
+  }
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar translucent={false} backgroundColor={Color.primary} barStyle="default" />
@@ -272,8 +276,7 @@ export default ({ route }: { route: any }) => {
               <ApplyButton
                 type={'primary'}
                 //@ts-ignore
-                onPress={status.onPress}
-                loading={context.loading.effects.APPLY}>
+                onPress={status.onPress}>
                 <Text color={'#fff'}>{status.text}</Text>
               </ApplyButton>
             </View>

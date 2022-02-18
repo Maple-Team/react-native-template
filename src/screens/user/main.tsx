@@ -1,20 +1,34 @@
-import React, { useContext } from 'react'
+import React, { useCallback, useContext, useState } from 'react'
 import { View, ImageBackground, Image, Pressable, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { TabHeader, Text } from '@/components'
+import { TabHeader, Text, ToastLoading } from '@/components'
 import emitter from '@/eventbus'
 import { default as MoneyyaContext } from '@/state'
-import { useNavigation } from '@react-navigation/native'
+import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import { Modal } from '@ant-design/react-native'
 import { useTranslation } from 'react-i18next'
+import { queryUserinfo } from '@/services/user'
 
 export function UserCenter() {
   const context = useContext(MoneyyaContext)
   const na = useNavigation()
   const { t } = useTranslation()
+  const [loading, setLoading] = useState<boolean>()
+  useFocusEffect(
+    useCallback(() => {
+      setLoading(true)
+      queryUserinfo()
+        .then(user => {
+          emitter.emit('USER_INFO', user)
+        })
+        .finally(() => setLoading(false))
+      return () => {}
+    }, [])
+  )
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar translucent={true} barStyle="default" />
+      <ToastLoading animating={loading} />
       <View style={{ paddingTop: 0, paddingHorizontal: 0 }}>
         <View>
           <ImageBackground

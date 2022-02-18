@@ -112,7 +112,6 @@ const PasswdTab = ({
   phone?: string
   onPhoneChange: (phone: string) => void
 }) => {
-  const context = useContext(MoneyyaContext)
   const navigation = useNavigation<SignInScreenProp>()
   const { t } = useTranslation()
   const schema = object().shape({
@@ -185,11 +184,7 @@ const PasswdTab = ({
               </Text>
             </Pressable>
           </View>
-          <ApplyButton
-            type={isValid ? 'primary' : 'ghost'}
-            onPress={handleSubmit}
-            loading={context.loading.effects.LOGIN}
-            disabled={context.loading.effects.LOGIN}>
+          <ApplyButton type={isValid ? 'primary' : 'ghost'} onPress={handleSubmit}>
             <Text color={isValid ? '#fff' : '#aaa'}>{t('submit')}</Text>
           </ApplyButton>
         </View>
@@ -273,11 +268,7 @@ const ValidTab = ({
               keyboardType="number-pad"
             />
           </View>
-          <ApplyButton
-            type={isValid ? 'primary' : undefined}
-            onPress={handleSubmit}
-            loading={context.loading.effects.LOGIN}
-            disabled={context.loading.effects.LOGIN}>
+          <ApplyButton type={isValid ? 'primary' : undefined} onPress={handleSubmit}>
             <Text color={isValid ? '#fff' : '#aaa'}>{t('signin')}</Text>
           </ApplyButton>
         </View>

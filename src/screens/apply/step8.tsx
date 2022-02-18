@@ -6,9 +6,8 @@ import { useTranslation } from 'react-i18next'
 import { ScrollView } from 'react-native-gesture-handler'
 import debounce from 'lodash.debounce'
 import { Slider } from '@miblanchard/react-native-slider'
-import { ActivityIndicator } from '@ant-design/react-native'
 
-import { PageStyles, Text, Hint } from '@/components'
+import { PageStyles, Text, Hint, ToastLoading } from '@/components'
 import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT, KEY_APPLYID, TOTAL_STEPS } from '@/utils/constant'
 import { ApplyButton } from '@components/form/FormItem'
 import { Color } from '@/styles/color'
@@ -22,7 +21,7 @@ import emitter from '@/eventbus'
 export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
   const params = (route.params as { bankCardNo?: string }) || {}
-
+  const [productLoading, setProductLoading] = useState<boolean>()
   const onSubmit = debounce(
     () => {
       if (!loanCode || !productCode) {
@@ -69,18 +68,21 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
   // 获取产品信息
   useEffect(() => {
     if (context.user?.phone) {
-      queryProduct({ phone: context.user?.phone || '', source: 'APP' }).then(res => {
-        console.log('productInfo', res)
-        setProductInfo(res)
-        setLoanAmt(res.maxAmount)
-        const firstProduct = res.products.find(({ available }) => available === 'Y')
-        if (firstProduct) {
-          setLoanCode(firstProduct.loanCode)
-          setProductCode(firstProduct.productCode)
-          setDisplayLoanDays(firstProduct.displayLoanDays)
-          setLoanDay(firstProduct.loanTerms)
-        }
-      })
+      setProductLoading(true)
+      queryProduct({ phone: context.user?.phone || '', source: 'APP' })
+        .then(res => {
+          console.log('productInfo', res)
+          setProductInfo(res)
+          setLoanAmt(res.maxAmount)
+          const firstProduct = res.products.find(({ available }) => available === 'Y')
+          if (firstProduct) {
+            setLoanCode(firstProduct.loanCode)
+            setProductCode(firstProduct.productCode)
+            setDisplayLoanDays(firstProduct.displayLoanDays)
+            setLoanDay(firstProduct.loanTerms)
+          }
+        })
+        .finally(() => setProductLoading(false))
     }
   }, [context.user?.phone])
   // 试算信息
@@ -125,10 +127,10 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
         : [],
     [productInfo]
   )
-
   return (
     <SafeAreaView style={PageStyles.sav}>
       <StatusBar translucent={false} backgroundColor={Color.primary} barStyle="default" />
+      <ToastLoading animating={productLoading} />
       <View style={{ paddingHorizontal: 12, backgroundColor: '#fff', flexDirection: 'row' }}>
         <Hint
           hint={t('promptRepayHint')}
@@ -136,12 +138,6 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
           img={require('@/assets/compressed/apply/loan_notice.webp')}
         />
       </View>
-      <ActivityIndicator
-        animating={context.loading.effects.PRODUCT}
-        toast
-        size="large"
-        text={t('loading')}
-      />
       <ScrollView style={PageStyles.scroll} keyboardShouldPersistTaps="handled">
         <View style={PageStyles.container}>
           <View style={[PageStyles.form, { paddingHorizontal: 0, paddingTop: 0 }]}>
@@ -154,7 +150,7 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
                   ${loanAmt}
                 </Text>
                 <Text fontSize={13} color="#fff">
-                  Loan Amount
+                  {t('loanAmount')}
                 </Text>
                 <Slider
                   containerStyle={{ width: 330, height: 34 }}
@@ -204,7 +200,7 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
               <RightTopDot />
               <View style={{ alignItems: 'center', paddingBottom: 24.5 }}>
                 <Text fontSize={15} color={Color.primary}>
-                  Loan Days
+                  {t('loanDays')}
                 </Text>
               </View>
               <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
@@ -256,7 +252,7 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
                 alignItems: 'center',
               }}>
               <Text fontSize={15} color={Color.primary}>
-                Loan information
+                {t('loanInfoHint')}
               </Text>
               <LeftBottomDot />
               <RightBottomDot />

@@ -1,14 +1,14 @@
-import React, { useCallback, useContext, useEffect, useMemo } from 'react'
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { View, Image, StatusBar, ImageBackground } from 'react-native'
 import { StackActions, useFocusEffect, useNavigation } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { TabHeader, Text } from '@/components'
+import { TabHeader, Text, ToastLoading } from '@/components'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Button } from '@ant-design/react-native'
 import { Color } from '@/styles/color'
 import Swiper from 'react-native-swiper'
 import Styles from './style'
-import { pv, queryVersion, submit } from '@/services/apply'
+import { pv, queryBrand, queryVersion, submit } from '@/services/apply'
 import { default as MoneyyaContext } from '@/state'
 
 import { MMKV } from '@/utils/storage'
@@ -20,6 +20,7 @@ import { APPLY_STATE } from '@/state/enum'
 import emitter from '@/eventbus'
 import { queryUserinfo } from '@/services/user'
 import { t } from 'i18next'
+import type { UserInfo } from '@/typings/user'
 interface Status {
   btnText: string
   amount: number
@@ -30,20 +31,14 @@ interface Status {
 export function Step1() {
   const navigation = useNavigation()
   const context = useContext(MoneyyaContext)
-
+  const [user, setUser] = useState<UserInfo>()
+  const [loading, setLoading] = useState<boolean>()
   useEffect(() => {
-    pv({ userId: `${context.user?.userId}` || '' })
-  }, [context.user?.userId])
+    pv(user?.userId ? `${user?.userId}` : '')
+  }, [user?.userId])
 
   const location = useLocation()
-  useFocusEffect(
-    useCallback(() => {
-      queryUserinfo().then(user => {
-        emitter.emit('USER_INFO', user)
-      })
-      return () => {}
-    }, [])
-  )
+
   useFocusEffect(
     useCallback(() => {
       queryVersion().then(res => {
@@ -53,7 +48,15 @@ export function Step1() {
       return () => {}
     }, [])
   )
-  const applyStatus = context.user?.applyStatus
+  useFocusEffect(
+    useCallback(() => {
+      queryBrand().then(brand => {
+        emitter.emit('UPDATE_BRAND', brand)
+      })
+      return () => {}
+    }, [])
+  )
+  const applyStatus = user?.applyStatus
   const status = useMemo(() => {
     let value: Status = {
       btnText: '',
@@ -66,7 +69,7 @@ export function Step1() {
         value = {
           btnText: t('applyState.check'),
           prompt: t('applyAmount'),
-          amount: context.user?.applyAmount || 0,
+          amount: user?.applyAmount || 0,
         }
         break
       case APPLY_STATE.NORMAL:
@@ -74,8 +77,8 @@ export function Step1() {
         value = {
           btnText: t('applyState.repay'),
           prompt: t('repayHint'),
-          repayAmount: `${context.user?.repayAmount}` || '',
-          repayDate: context.user?.repayDate || '',
+          repayAmount: `${user?.repayAmount}` || '',
+          repayDate: user?.repayDate || '',
           amount: 0,
         }
         break
@@ -83,7 +86,7 @@ export function Step1() {
         value = {
           btnText: t('applyState.continueLoan'),
           prompt: t('availableAmount'),
-          amount: context.user?.maxAmount || 0,
+          amount: user?.maxAmount || 0,
         }
         break
       case APPLY_STATE.EMPTY:
@@ -91,7 +94,7 @@ export function Step1() {
         value = {
           btnText: t('applyState.apply'),
           prompt: t('maxAvailableAmount'),
-          amount: context.user?.maxViewAmount || 0,
+          amount: user?.maxViewAmount || 0,
         }
         break
       case APPLY_STATE.CANCEL:
@@ -100,34 +103,33 @@ export function Step1() {
         value = {
           btnText: t('applyState.apply'),
           prompt: t('availableAmount'),
-          amount: context.user?.maxAmount || 0,
+          amount: user?.maxAmount || 0,
         }
     }
     return value
   }, [
     applyStatus,
-    context.user?.applyAmount,
-    context.user?.maxAmount,
-    context.user?.maxViewAmount,
-    context.user?.repayAmount,
-    context.user?.repayDate,
+    user?.applyAmount,
+    user?.maxAmount,
+    user?.maxViewAmount,
+    user?.repayAmount,
+    user?.repayDate,
   ])
-  useEffect(() => {
-    queryUserinfo().then(res => {
-      console.log('get user')
-      MMKV.setString(KEY_APPLYID, `${res.applyId}`)
-      emitter.emit('USER_INFO', res)
-    })
-  }, [])
-  // useFocusEffect(() => {
-  //   console.log('==============get user==============')
-  //   // queryUserinfo().then(res => {
-  //   //   console.log('get user')
-  //   //   MMKV.setString(KEY_APPLYID, `${res.applyId}`)
-  //   //   emitter.emit('USER_INFO', res)
-  // TODO 刷新用户信息
-  //   // })
-  // })
+
+  useFocusEffect(
+    useCallback(() => {
+      setLoading(true)
+      queryUserinfo()
+        .then(u => {
+          emitter.emit('USER_INFO', u)
+          MMKV.setString(KEY_APPLYID, `${u.applyId}`)
+          setUser(u)
+        })
+        .finally(() => setLoading(false))
+      return () => {}
+    }, [])
+  )
+
   const onSubmit = debounce(
     () => {
       switch (applyStatus) {
@@ -151,24 +153,25 @@ export function Step1() {
         default:
           submit<'1'>({
             deviceId: context.header.deviceId,
-            phone: context.user?.phone || '',
+            phone: user?.phone || '',
             gps: `${location.latitude},${location.longitude}`,
-            idcard: context.user?.idcard || '',
+            idcard: user?.idcard || '',
             applyId: +(MMKV.getString(KEY_APPLYID) || '0'),
             currentStep: 1,
             totalSteps: TOTAL_STEPS,
           }).then(res => {
             MMKV.setString(KEY_APPLYID, `${res.applyId}`)
             // NOTE 快捷通道
-            if (context.user?.continuedLoan === 'Y') {
-              navigation.getParent()?.dispatch(StackActions.replace('Step8'))
-            } else {
-              if (res?.fromOther === 'Y') {
-                navigation.getParent()?.dispatch(StackActions.replace('Step3'))
-              } else {
-                navigation.getParent()?.dispatch(StackActions.replace('Step2'))
-              }
-            }
+            navigation.getParent()?.dispatch(StackActions.replace('Step8'))
+            // if (user?.continuedLoan === 'Y') {
+            //   navigation.getParent()?.dispatch(StackActions.replace('Step8'))
+            // } else {
+            //   if (res?.fromOther === 'Y') {
+            //     navigation.getParent()?.dispatch(StackActions.replace('Step3'))
+            //   } else {
+            //     navigation.getParent()?.dispatch(StackActions.replace('Step2'))
+            //   }
+            // }
           })
       }
     },
@@ -178,6 +181,7 @@ export function Step1() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar translucent={false} backgroundColor="#fff" barStyle="dark-content" />
+      <ToastLoading animating={loading} />
       <ScrollView
         style={{ paddingTop: 0, paddingHorizontal: 0 }}
         keyboardShouldPersistTaps="handled">
@@ -262,7 +266,6 @@ export function Step1() {
                 //@ts-ignore
                 onPress={onSubmit}
                 type="primary"
-                loading={context.loading.effects.USER_INFO || context.loading.effects.APPLY}
                 style={{
                   marginTop: 17,
                   backgroundColor: Color.primary,

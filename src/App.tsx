@@ -1,35 +1,17 @@
-import React, {
-  useEffect,
-  useReducer,
-  // useState
-} from 'react'
+import React, { useEffect, useReducer } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { Provider, Toast } from '@ant-design/react-native'
-import {
-  BackHandler,
-  Alert,
-  // View,
-  // ActivityIndicator,
-  // View,
-  // ViewStyle,
-  // Linking,
-  // Platform,
-} from 'react-native'
+import { BackHandler, Alert } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-// import StyleSheet from 'react-native-adaptive-stylesheet'
-// import { Text } from '@/components'
-import * as RNLocalize from 'react-native-localize'
+import { getLocales, addEventListener } from 'react-native-localize'
 import { MainStack } from '@/navigation/mainStack'
 import { AccountStack } from '@/navigation/accountStack'
 import i18n, { getI18nConfig } from '@/locales/i18n'
-// import { navigationRef } from '@/navigation/rootNavigation'
-// import { Color } from '@/styles/color'
 import { KEY_PHONE, MESSAGE_DURATION } from '@/utils/constant'
 import SplashScreen from 'react-native-splash-screen'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { useEventListener } from '@/hooks'
 import { reducer, default as MoneyyaContext, moneyyaState } from '@/state'
-// import { useFlipper } from '@react-navigation/devtools'
 import emitter from '@/eventbus'
 import { MMKV } from '@/utils/storage'
 import JPush from 'jpush-react-native'
@@ -83,10 +65,10 @@ const App = () => {
 
   // 处理语言
   useEffect(() => {
-    const locales = RNLocalize.getLocales()
+    const locales = getLocales()
     const language = locales[0].languageTag
     // FIXME 'i18next: init: i18next is already initialized. You should call init just once!'
-    RNLocalize.addEventListener('change', (e: any) => {
+    addEventListener('change', (e: any) => {
       console.error('RNLocalize', e)
     })
     i18n.init(getI18nConfig(language))
@@ -149,12 +131,6 @@ const App = () => {
         token: '',
       })
     })
-    emitter.on('REQUEST_LOADING', ({ dispatchType, loading }) => {
-      dispatch({
-        type: dispatchType,
-        loading,
-      })
-    })
     emitter.on('UPDATE_DEVICEID', id => {
       dispatch({
         type: 'UPDATE_DEVICEID',
@@ -214,9 +190,7 @@ const App = () => {
       console.log('localNotificationListener:' + JSON.stringify(result))
     })
   })
-  // if (!isReady) {
-  //   return <Loading />
-  // }
+
   return (
     <SafeAreaProvider>
       <Provider>
@@ -234,24 +208,3 @@ const App = () => {
 }
 
 export default App
-
-// const loadingStyles = StyleSheet.create<{
-//   container: ViewStyle
-//   loadingHint: ViewStyle
-// }>({
-//   container: {
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     padding: 10,
-//     flex: 1,
-//   },
-//   loadingHint: {
-//     marginTop: 10,
-//   },
-// })
-// const Loading = () => (
-//   <View style={loadingStyles.container}>
-//     <ActivityIndicator size="large" color={Color.primary} />
-//     <Text styles={loadingStyles.loadingHint}>Loading...</Text>
-//   </View>
-// )

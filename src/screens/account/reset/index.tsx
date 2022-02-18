@@ -1,5 +1,5 @@
 import type { NativeStackHeaderProps } from '@react-navigation/native-stack'
-import React, { useContext, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { View, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
@@ -16,12 +16,9 @@ import { ApplyButton } from '@components/form/FormItem/applyButton'
 import { Color } from '@/styles/color'
 import { reset } from '@/services/user'
 import type { ResetPwdParameter } from '@/typings/account'
-
 import emitter from '@/eventbus'
-import { default as MoneyyaContext } from '@/state'
 
 export const ResetScreen = ({ navigation }: NativeStackHeaderProps) => {
-  const context = useContext(MoneyyaContext)
   const { t } = useTranslation()
   const schema = object().shape({
     phone: string()
@@ -127,10 +124,7 @@ export const ResetScreen = ({ navigation }: NativeStackHeaderProps) => {
                   />
                 </View>
                 <View style={PageStyles.btnWrap}>
-                  <ApplyButton
-                    type={isValid ? 'primary' : 'ghost'}
-                    onPress={handleSubmit}
-                    loading={context.loading.effects.RESET}>
+                  <ApplyButton type={isValid ? 'primary' : 'ghost'} onPress={handleSubmit}>
                     <Text color={isValid ? '#fff' : '#aaa'}>{t('submit')}</Text>
                   </ApplyButton>
                 </View>

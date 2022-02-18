@@ -1,5 +1,5 @@
 import type { NativeStackHeaderProps } from '@react-navigation/native-stack'
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import { View, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
@@ -14,7 +14,6 @@ import { ApplyButton, PhotoPicker } from '@components/form/FormItem'
 import { Color } from '@/styles/color'
 import type { ApplyStep4Parameter } from '@/typings/apply'
 import { useBehavior, useLocation } from '@/hooks'
-import { default as MoneyyaContext } from '@/state'
 import { submit } from '@/services/apply'
 import { MMKV } from '@/utils'
 
@@ -28,7 +27,6 @@ export const Step4 = ({ navigation }: NativeStackHeaderProps) => {
     idcard1: string().required(t('idcard1.required')),
     idcard2: string().required(t('idcard2.required')),
   })
-  const context = useContext(MoneyyaContext)
   const initialValue: FormModel = { idcard1: '', idcard2: '' }
   const onSubmit = debounce(
     (values: FormModel) => {
@@ -94,10 +92,7 @@ export const Step4 = ({ navigation }: NativeStackHeaderProps) => {
                     />
                   </View>
                   <View style={PageStyles.btnWrap}>
-                    <ApplyButton
-                      type={isValid ? 'primary' : 'ghost'}
-                      onPress={handleSubmit}
-                      loading={context.loading.effects.apply}>
+                    <ApplyButton type={isValid ? 'primary' : 'ghost'} onPress={handleSubmit}>
                       <Text color={isValid ? '#fff' : '#aaa'}>{t('submit')}</Text>
                     </ApplyButton>
                   </View>

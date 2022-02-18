@@ -1,13 +1,28 @@
-import { WebViewScreen } from '@components/webview'
-import React, { useContext } from 'react'
+import { WebViewScreen, Loading } from '@/components'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { default as MoneyyaContext } from '@/state'
 import emitter from '@/eventbus'
+import { queryBrand } from '@/services/apply'
+import { Brand } from '@/typings/response'
 
 export default () => {
   const { t } = useTranslation()
-  const context = useContext(MoneyyaContext)
-  //FIXME privacyUrl值存在与否的问题
+
+  const [brand, setBrand] = useState<Brand>()
+  const [loading, setLoading] = useState<boolean>()
+  useEffect(() => {
+    setLoading(true)
+    queryBrand()
+      .then(res => {
+        setBrand(res)
+      })
+      .finally(() => {
+        setLoading(false)
+      })
+  }, [])
+  if (loading) {
+    return <Loading />
+  }
   return (
     <WebViewScreen
       actions={[
@@ -29,7 +44,7 @@ export default () => {
       title={t('authorizaiton')}
       warnMessage={t('authorizaiton-not-reading')}
       type="uri"
-      content={context.brand?.channelInfo.privacyUrl || ''}
+      content={brand?.channelInfo.privacyUrl || ''}
     />
   )
 }

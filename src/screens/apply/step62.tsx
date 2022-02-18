@@ -1,5 +1,5 @@
 import type { NativeStackHeaderProps } from '@react-navigation/native-stack'
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import { View, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
@@ -16,7 +16,6 @@ import type { ApplyParameter, ApplyStep6Parameter } from '@/typings/apply'
 import { useBehavior, useLocation } from '@/hooks'
 import { submit } from '@/services/apply'
 import { MMKV } from '@/utils'
-import { default as MoneyyaContext } from '@/state'
 
 type FormModel = Omit<ApplyStep6Parameter, keyof ApplyParameter> & {
   handId: string
@@ -45,7 +44,6 @@ export const Step62 = ({ navigation }: NativeStackHeaderProps) => {
   )
   const behavior = useBehavior<'P06'>('P06', 'P06_C00', 'P06_C99')
   useLocation()
-  const context = useContext(MoneyyaContext)
   const [oldExif, setExif] = useState<string>()
   return (
     <SafeAreaView style={PageStyles.sav}>
@@ -78,10 +76,7 @@ export const Step62 = ({ navigation }: NativeStackHeaderProps) => {
                   />
                 </View>
                 <View style={PageStyles.btnWrap}>
-                  <ApplyButton
-                    type={isValid ? 'primary' : 'ghost'}
-                    onPress={handleSubmit}
-                    loading={context.loading.effects.APPLY}>
+                  <ApplyButton type={isValid ? 'primary' : 'ghost'} onPress={handleSubmit}>
                     <Text color={isValid ? '#fff' : '#aaa'}>{t('submit')}</Text>
                   </ApplyButton>
                 </View>

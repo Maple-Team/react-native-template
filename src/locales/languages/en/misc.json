@@ -45,5 +45,6 @@
   "paymentPrompt2": "我们需要几分钟来处理您的还贷申请，请耐心等待。如果收不到验证码，请重新发送验证码。谢谢您的配合。",
   "paymentNumPrompt": "Tasa de Tramitacion",
   "agreeWithMoneyya": "Agree with Moneyya",
-  "termsofService": "Terms of Service"
+  "termsofService": "Terms of Service",
+  "loanInfoHint": "Loan information"
 }
