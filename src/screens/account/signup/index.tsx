@@ -100,6 +100,7 @@ export const SignupScreen = ({ route }: { route: any }) => {
               emitter.on('AGREE_WITH_TERMS', () => {
                 setFieldValue('hasAgree', true)
               })
+              // FIXME 使用弹窗的方式, Formik外部更新表单字段的方式
               return (
                 <>
                   <View style={PageStyles.form}>

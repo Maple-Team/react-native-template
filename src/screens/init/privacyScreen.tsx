@@ -7,6 +7,7 @@ import emitter from '@/eventbus'
 export default () => {
   const { t } = useTranslation()
   const context = useContext(MoneyyaContext)
+  //FIXME privacyUrl值存在与否的问题
   return (
     <WebViewScreen
       actions={[
