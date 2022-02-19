@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useState } from 'react'
 import { View, ImageBackground, Image, Pressable, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { TabHeader, Text, ToastLoading } from '@/components'
+import { TabHeader, Text, ToastLoading, Update } from '@/components'
 import emitter from '@/eventbus'
 import { default as MoneyyaContext } from '@/state'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
@@ -29,6 +29,7 @@ export function UserCenter() {
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar translucent={true} barStyle="default" />
       <ToastLoading animating={loading} />
+      <Update />
       <View style={{ paddingTop: 0, paddingHorizontal: 0 }}>
         <View>
           <ImageBackground

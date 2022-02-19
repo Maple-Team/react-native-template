@@ -35,7 +35,7 @@
   "promptRepayHint": "Maintaining a good repayment behavior will help you to increase your loan amount. 96% of users loan amount haveincreased subsequently.",
   "providehandleIDcardPrompt": "Must provide above mentioned images, otherwise application will be rejected.",
   "restRepayAmount": "剩余应付金额",
-  "signinPrompt": "Don't have an account?",
+  "signinPrompt": "没有账号吗?",
   "tostep7": "返回修改银行卡号",
   "warnRepayPrompt": "我们建议您在此页面立即偿还贷款，以 免影响您的下次贷款申请。",
   "overduePrompt": "There is one unpaid bill and {day} days overdue",
@@ -45,5 +45,9 @@
   "agreeWithMoneyya": "Agree with Moneyya",
   "termsofService": "Terms of Service",
   "loanInfoHint": "Loan information",
-  "exceedMaxAmount": "超出最大可贷金额"
+  "exceedMaxAmount": "超出最大可贷金额",
+  "refreshSuccess": "刷新成功",
+  "toBottom": "我是有底线的",
+  "loadMore": "加载更多...",
+  "newVersion": "发现新版本"
 }

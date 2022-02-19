@@ -18,20 +18,20 @@
 - [ ] button rippleColor
 - [ ] 第三方埋点
 - [ ] 第三方 sdk
-  - [ ] 极光
-    - [ ] [push_gplay](https://api.srv.jpush.cn/v1/website/downloads/sdk/push_gplay)
-    - [ ] [jcore-react-native](https://github.com/jpush/jcore-react-native/blob/master/package.json)
-    - [ ] [jpush-react-native](https://github.com/jpush/jpush-react-native/blob/master/index.d.ts)
-  - [ ] liveness
+  - [x] 极光
+    - [x] [push_gplay](https://api.srv.jpush.cn/v1/website/downloads/sdk/push_gplay)
+    - [x] [jcore-react-native](https://github.com/jpush/jcore-react-native/blob/master/package.json)
+    - [x] [jpush-react-native](https://github.com/jpush/jpush-react-native/blob/master/index.d.ts)
+  - [x] liveness
 - [ ] android build:
-  - [ ] build aab release
+  - [x] build aab release
   - [signed-apk-android](https://reactnative.dev/docs/signed-apk-android)
-  - [ ] 分环境
+  - [x] 分环境
 - [x] 脚本：
   - [x] 命令行输入字段(接收多个字段)，产生对应的 field，并排序
   - [x] 资源图片重命名
 - [ ] background tasks
-  - [ ] fetch 站内信: [headless-js-android](https://reactnative.dev/docs/headless-js-android) || or 全局的页面做请求?
+  - [x] fetch 站内信: [headless-js-android](https://reactnative.dev/docs/headless-js-android) || or 全局的页面做请求?
 - [ ] [React Native Gesture Handler](https://docs.swmansion.com/react-native-gesture-handler/docs/1.10.3/about-handlers/#using-native-components) 组件尝试
 - [ ] functional hooks performance
   - https://github.com/facebook/react/issues/14099#thread-subscription-status

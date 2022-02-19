@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { View, StatusBar, Image, Pressable } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { ScrollView } from 'react-native-gesture-handler'
@@ -6,7 +6,7 @@ import { Formik } from 'formik'
 import { object, string, ref, boolean } from 'yup'
 import debounce from 'lodash.debounce'
 
-import { PageStyles, Text } from '@/components'
+import { PageStyles, Text, ToastLoading } from '@/components'
 import { REGEX_PASSWORD, REGEX_PHONE, REGEX_VALIDATE_CODE } from '@/utils/reg'
 import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT, KEY_INTERIP, KEY_OUTERIP } from '@/utils/constant'
 import { MaskInput, PasswordInput, ValidateCode } from '@components/form/FormItem'
@@ -21,12 +21,15 @@ import { MMKV } from '@/utils'
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import type { AccountStackParams } from '@navigation/accountStack'
 import { t } from 'i18next'
+import { uploadJpush } from '@/services/misc'
 import emitter from '@/eventbus'
+import { queryBrand } from '@/services/apply'
+import { Brand } from '@/typings/response'
 
 type NaviType = NativeStackNavigationProp<AccountStackParams, 'SignUp'>
 
 export const SignupScreen = ({ route }: { route: any }) => {
-  const { phone } = route.params || ({ phone: '' } as { phone?: string })
+  const params = route.params || ({ phone: '' } as { phone?: string })
   const schema = object().shape({
     phone: string()
       .min(10, t('field.short', { field: 'Phone' }))
@@ -52,12 +55,12 @@ export const SignupScreen = ({ route }: { route: any }) => {
   }
   const initialValue = useMemo<Model>(
     () => ({
-      phone,
+      phone: params?.phone,
       password: '',
       comfirmPassword: '',
       validateCode: '',
     }),
-    [phone]
+    [params?.phone]
   )
   const netInfo = useNetInfo()
   if (netInfo.isConnected) {
@@ -71,6 +74,10 @@ export const SignupScreen = ({ route }: { route: any }) => {
       register(values)
         .then(res => {
           MMKV.setString(KEY_OUTERIP, res.ip)
+          // NOTE JPUSH register Success
+          uploadJpush({
+            phone: values.phone,
+          })
           na.navigate('SignIn', { phone: values.phone })
         })
         .catch(res => {
@@ -177,35 +184,58 @@ export const SignupScreen = ({ route }: { route: any }) => {
 
 const PermissionHint = ({ check }: { check?: boolean }) => {
   const na = useNavigation()
+  const [loading, setLoading] = useState<boolean>()
+  const [brand, setBrand] = useState<Brand>()
+  useEffect(() => {
+    setLoading(true)
+    queryBrand()
+      .then(b => {
+        setBrand(b)
+        emitter.emit('UPDATE_BRAND', b)
+      })
+      .finally(() => {
+        setLoading(false)
+      })
+  }, [])
   return (
-    <View
-      style={{
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'flex-start',
-      }}>
-      <Pressable style={{ marginRight: 5 }}>
-        <Image
-          source={
-            check
-              ? require('@/assets/compressed/account/check.webp')
-              : require('@/assets/compressed/account/uncheck.webp')
-          }
-          resizeMode="cover"
-        />
-      </Pressable>
-      <Text fontSize={13} color="rgba(144, 146, 155, 1)">
-        {t('agreeWithMoneyya')}{' '}
-      </Text>
-      <Pressable
-        onPress={() => {
-          //@ts-ignore
-          na.navigate('Terms')
+    <>
+      <ToastLoading animating={loading} />
+      <View
+        style={{
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          justifyContent: 'flex-start',
         }}>
-        <Text fontSize={13} color={Color.primary}>
-          {t('termsofService')}
+        {check ? (
+          <Pressable style={{ marginRight: 5 }}>
+            <Image source={require('@/assets/compressed/account/check.webp')} resizeMode="cover" />
+          </Pressable>
+        ) : (
+          <Pressable
+            style={{ marginRight: 5 }}
+            onPress={() => {
+              //@ts-ignore
+              na.navigate('Terms', { url: brand?.channelInfo.serviceUrl })
+            }}>
+            <Image
+              source={require('@/assets/compressed/account/uncheck.webp')}
+              resizeMode="cover"
+            />
+          </Pressable>
+        )}
+        <Text fontSize={13} color="rgba(144, 146, 155, 1)">
+          {t('agreeWithMoneyya')}{' '}
         </Text>
-      </Pressable>
-    </View>
+        <Pressable
+          onPress={() => {
+            //@ts-ignore
+            na.navigate('Terms', { url: brand?.channelInfo.serviceUrl })
+          }}>
+          <Text fontSize={13} color={Color.primary}>
+            {t('termsofService')}
+          </Text>
+        </Pressable>
+      </View>
+    </>
   )
 }

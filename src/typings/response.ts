@@ -69,6 +69,7 @@ interface ServiceInfo {
 interface ChannelInfo {
   privacyUrl: string
   videoAuthUrl: string
+  serviceUrl: string
 }
 
 export interface Dict {

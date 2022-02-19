@@ -2,13 +2,13 @@ import React, { useCallback, useContext, useEffect, useMemo, useState } from 're
 import { View, Image, StatusBar, ImageBackground } from 'react-native'
 import { StackActions, useFocusEffect, useNavigation } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { TabHeader, Text, ToastLoading } from '@/components'
+import { TabHeader, Text, ToastLoading, Update } from '@/components'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Button } from '@ant-design/react-native'
 import { Color } from '@/styles/color'
 import Swiper from 'react-native-swiper'
 import Styles from './style'
-import { pv, queryBrand, queryVersion, submit } from '@/services/apply'
+import { pv, queryBrand, submit } from '@/services/apply'
 import { default as MoneyyaContext } from '@/state'
 
 import { MMKV } from '@/utils/storage'
@@ -21,6 +21,7 @@ import emitter from '@/eventbus'
 import { queryUserinfo } from '@/services/user'
 import { t } from 'i18next'
 import type { UserInfo } from '@/typings/user'
+import { uploadJpush } from '@/services/misc'
 interface Status {
   btnText: string
   amount: number
@@ -39,15 +40,6 @@ export function Step1() {
 
   const location = useLocation()
 
-  useFocusEffect(
-    useCallback(() => {
-      queryVersion().then(res => {
-        console.log('version', res)
-        //TODO 强制更新
-      })
-      return () => {}
-    }, [])
-  )
   useFocusEffect(
     useCallback(() => {
       queryBrand().then(brand => {
@@ -115,7 +107,6 @@ export function Step1() {
     user?.repayAmount,
     user?.repayDate,
   ])
-
   useFocusEffect(
     useCallback(() => {
       setLoading(true)
@@ -124,6 +115,11 @@ export function Step1() {
           emitter.emit('USER_INFO', u)
           MMKV.setString(KEY_APPLYID, `${u.applyId}`)
           setUser(u)
+          // NOTE JPUSH get userinfo
+          uploadJpush({
+            phone: u.phone,
+            customerId: `${u.customerDto.customerId}` || '',
+          })
         })
         .finally(() => setLoading(false))
       return () => {}
@@ -181,6 +177,7 @@ export function Step1() {
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar translucent={false} backgroundColor="#fff" barStyle="dark-content" />
       <ToastLoading animating={loading} />
+      <Update />
       <ScrollView
         style={{ paddingTop: 0, paddingHorizontal: 0 }}
         keyboardShouldPersistTaps="handled">

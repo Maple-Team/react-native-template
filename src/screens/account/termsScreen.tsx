@@ -3,12 +3,13 @@ import React, { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 import { default as MoneyyaContext } from '@/state'
 import emitter from '@/eventbus'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 
 export default () => {
   const { t } = useTranslation()
   const context = useContext(MoneyyaContext)
   const na = useNavigation()
+  const params = useRoute().params as { url?: string }
   return (
     <WebViewScreen
       actions={[
@@ -33,7 +34,7 @@ export default () => {
       title={t('authorizaiton')}
       warnMessage={t('authorizaiton-not-reading')}
       type="uri"
-      content={context.brand?.channelInfo.privacyUrl || ''} // FIXME TERMS OF SERVICE
+      content={params.url ? params.url : context.brand?.channelInfo.privacyUrl || ''}
     />
   )
 }

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   SafeAreaView,
   StatusBar,
@@ -7,8 +7,9 @@ import {
   FlatList,
   RefreshControl,
   Pressable,
+  Dimensions,
 } from 'react-native'
-import { PageStyles, Text } from '@/components'
+import { Loading, PageStyles, Text, ToastLoading } from '@/components'
 import { Color } from '@/styles/color'
 import { queryZhanLetterList } from '@/services/misc'
 import { useTranslation } from 'react-i18next'
@@ -16,54 +17,115 @@ import emitter from '@/eventbus'
 import uniqBy from 'lodash.uniqby'
 import type { ZhanneiLetter } from '@/typings/user'
 import { useNavigation } from '@react-navigation/native'
+import { ActivityIndicator } from '@ant-design/react-native'
+import { useHeaderHeight } from '@react-navigation/elements'
 
+// 上拉加载，下拉刷新
 export const LetterList = () => {
   const [data, setData] = useState<ZhanneiLetter[]>([])
   const [page, setPage] = useState<number>(1)
-  useEffect(() => {
-    queryZhanLetterList({
-      currentPage: 1,
-      pageSize: 10,
-    }).then(res => {
-      setData(res)
-      setPage(page + 1)
-    })
-  }, [page])
-  const [refreshing, setRefreshing] = useState<boolean>(false)
+  const [nomore, setNomore] = useState<boolean>()
+  const [loading, setLoading] = useState<boolean>(false)
+  // const [onEndReachedCalled, setOnEndReachedCalled] = useState<boolean>()
   const { t } = useTranslation()
+  const headerHeight = useHeaderHeight()
+
+  // 每页最大数量
+  const ListNums = useMemo(() => {
+    const window = Dimensions.get('window')
+    const listNum = (window.height - headerHeight) / 188 // 计算而来
+    return Math.ceil(listNum)
+  }, [headerHeight])
+
+  console.log(ListNums, data.map(({ id }) => id).sort(), nomore)
+  const loadData = useCallback(
+    async (pageNum: number, refresh: boolean) => {
+      setLoading(true)
+      queryZhanLetterList({ currentPage: pageNum, pageSize: ListNums })
+        .then(res => {
+          let noMore
+          if (res.length < ListNums) {
+            noMore = true
+          } else {
+            noMore = false
+          }
+          if (refresh) {
+            setData(res)
+            emitter.emit('SHOW_MESSAGE', { type: 'info', message: t('refreshSuccess') })
+          } else {
+            //  加载，叠加数据
+            setData(uniqBy(res.concat(data), 'id'))
+          }
+          setNomore(noMore)
+          setPage(page + 1)
+        })
+        .finally(() => {
+          setLoading(false)
+        })
+    },
+    [ListNums, data, page, t]
+  )
+
+  useEffect(() => {
+    console.log('first')
+    loadData(1, false)
+  }, [])
+  /**
+   * 刷新最新页
+   */
   const onRefresh = useCallback(async () => {
-    setRefreshing(true)
-    if (data.length < 10) {
-      queryZhanLetterList({ currentPage: page, pageSize: 10 }).then(res => {
-        setData(uniqBy(res.concat(data), 'applyId'))
-        setRefreshing(false)
-      })
-    } else {
-      emitter.emit('SHOW_MESSAGE', { type: 'info', message: t('noMore') })
-      setRefreshing(false)
-    }
-  }, [data, t, page])
+    setNomore(false)
+    loadData(1, true)
+  }, [loadData])
+
   const na = useNavigation()
+
   return (
     <SafeAreaView style={PageStyles.sav}>
       <StatusBar translucent={false} backgroundColor={Color.primary} barStyle="default" />
+      <ToastLoading animating={loading} />
       <View style={[PageStyles.sav, { paddingVertical: 20, backgroundColor: '#E6F1F8' }]}>
-        {data.length === 0 ? (
-          <View style={{ alignItems: 'center', paddingTop: 113, flex: 1 }}>
-            <Image source={require('@/assets/compressed/additional/no-message.webp')} />
-            <Text color="#f00" fontSize={14}>
-              {t('noMessagePrompt')}
-            </Text>
-          </View>
+        {loading ? (
+          <Loading />
         ) : (
           <FlatList
             style={{ paddingHorizontal: 38 }}
             refreshControl={
-              <RefreshControl
-                colors={[Color.primary]}
-                refreshing={refreshing}
-                onRefresh={onRefresh}
-              />
+              <RefreshControl colors={[Color.primary]} refreshing={loading} onRefresh={onRefresh} />
+            }
+            ListEmptyComponent={
+              <View style={{ alignItems: 'center', paddingTop: 113, flex: 1 }}>
+                <Image source={require('@/assets/compressed/additional/no-message.webp')} />
+                <Text color="#f00" fontSize={14}>
+                  {t('noMessagePrompt')}
+                </Text>
+              </View>
+            }
+            onEndReachedThreshold={0.2}
+            onEndReached={() => {
+              console.log('onEndReached')
+              if (
+                !nomore
+                // && onEndReachedCalled
+              ) {
+                loadData(page, false)
+              }
+              // setOnEndReachedCalled(true)
+            }}
+            keyExtractor={item => `${item.id}`}
+            ListFooterComponent={
+              <View style={{ alignItems: 'center' }}>
+                {data.length !== 0 ? (
+                  nomore ? (
+                    <Text>- {t('toBottom')} -</Text>
+                  ) : (
+                    <View style={{ alignItems: 'center' }}>
+                      <ActivityIndicator size="small" animating={loading} />
+                      <Text>{t('loadMore')}</Text>
+                    </View>
+                  )
+                ) : null}
+              </View>
             }
             data={data}
             renderItem={({ item }) => {
@@ -74,7 +136,7 @@ export const LetterList = () => {
                     na.navigate('LetterDetail', { record: item })
                   }}
                   style={{ alignItems: 'center', marginBottom: 17 }}
-                  key={item.content}>
+                  key={item.id}>
                   <View
                     style={{
                       backgroundColor: '#5D75F7',

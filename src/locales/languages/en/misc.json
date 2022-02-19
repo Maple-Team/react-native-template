@@ -47,5 +47,9 @@
   "agreeWithMoneyya": "Agree with Moneyya",
   "termsofService": "Terms of Service",
   "loanInfoHint": "Loan information",
-  "exceedMaxAmount": "Exceed max available loan amont!"
+  "exceedMaxAmount": "Exceed max available loan amont!",
+  "refreshSuccess": "刷新成功",
+  "toBottom": "到达底部了",
+  "loadMore": "Loading More...",
+  "newVersion": "Update to a new Version"
 }

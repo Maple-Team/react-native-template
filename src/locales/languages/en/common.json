@@ -51,7 +51,9 @@
     "RelativeInfo": "Relative's Info",
     "IdcardImage": "Image of Idard",
     "PersonInfo": "Person Info",
-    "BankInfo": "Bank Info"
+    "BankInfo": "Bank Info",
+    "authorizaiton": "Authorizaiton",
+    "privacy": "Privacy Policy"
   },
   "secondPaymentAmount": "Second repayment amount",
   "secondPaymentDate": "Second repayment date",

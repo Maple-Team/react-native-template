@@ -8,7 +8,13 @@ import debounce from 'lodash.debounce'
 import { Slider } from '@miblanchard/react-native-slider'
 
 import { PageStyles, Text, Hint, ToastLoading } from '@/components'
-import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT, KEY_APPLYID, TOTAL_STEPS } from '@/utils/constant'
+import {
+  DEBOUNCE_OPTIONS,
+  DEBOUNCE_WAIT,
+  KEY_APPLYID,
+  KEY_GPS,
+  TOTAL_STEPS,
+} from '@/utils/constant'
 import { ApplyButton } from '@components/form/FormItem'
 import { Color } from '@/styles/color'
 import type { Calculate, Product } from '@/typings/apply'
@@ -18,6 +24,7 @@ import { MMKV } from '@/utils'
 import { default as MoneyyaContext } from '@/state'
 import emitter from '@/eventbus'
 import { Toast } from '@ant-design/react-native'
+import { uploadJpush } from '@/services/misc'
 
 const WARN_COLOR = '#f00'
 export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
@@ -31,8 +38,7 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
         return
       }
       submit<'8'>({
-        // sensor: { //TODO 设备信息页, 登录成功后/最有一步签约时也提交设备信息
-        gps: context.header.gps,
+        gps: MMKV.getString(KEY_GPS) || '0,0',
         loanCode,
         loanTerms: loanDay,
         displayLoanDays,
@@ -43,8 +49,14 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
         currentStep: 8,
         totalSteps: TOTAL_STEPS,
       }).then(() => {
+        // 先提交
         // TODO 获取userinfo userStatus === 'N' 需要再次验证验证码 type: CONFIRM=>  跳转一个新的页面 -> 不强制, 点击返回-> 合同详情
         // TODO 提交/smart-loan/app/validate/kaptcha
+        // NOTE JPUSH 签约
+        uploadJpush({
+          phone: context?.user?.phone || '',
+          custId: context?.user?.idcard || '',
+        })
         navigation.navigate('BottomTab', {
           screen: 'OrderDetail',
           params: {

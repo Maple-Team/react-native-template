@@ -2,12 +2,11 @@ import React, { useEffect, useReducer } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { Provider, Toast } from '@ant-design/react-native'
 import { BackHandler, Alert } from 'react-native'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import { getLocales, addEventListener } from 'react-native-localize'
 import { MainStack } from '@/navigation/mainStack'
 import { AccountStack } from '@/navigation/accountStack'
 import i18n, { getI18nConfig } from '@/locales/i18n'
-import { KEY_PHONE, MESSAGE_DURATION } from '@/utils/constant'
+import { KEY_DEVICEID, KEY_JPUSH_ID, KEY_PHONE, MESSAGE_DURATION } from '@/utils/constant'
 import SplashScreen from 'react-native-splash-screen'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { useEventListener } from '@/hooks'
@@ -16,6 +15,7 @@ import emitter from '@/eventbus'
 import { MMKV } from '@/utils/storage'
 import JPush from 'jpush-react-native'
 import { InitStack } from '@navigation/initStack'
+import { uploadJpush } from './services/misc'
 
 // Authentication flows: https://reactnavigation.org/docs/auth-flow/
 Toast.config({
@@ -30,7 +30,7 @@ Toast.config({
    */
   stackable: false,
 })
-const PERSISTENCE_KEY = 'NAVIGATION_STATE'
+// const PERSISTENCE_KEY = 'NAVIGATION_STATE'
 
 const App = () => {
   const [
@@ -49,6 +49,7 @@ const App = () => {
   // 处理实体键返回逻辑
   useEffect(() => {
     const backAction = () => {
+      // FIXME
       Alert.alert('Hold on!', 'Are you sure you want to go back?', [
         {
           text: 'Cancel',
@@ -102,15 +103,24 @@ const App = () => {
   // }, [isReady])
 
   useEffect(() => {
-    emitter.on('LOGIN_SUCCESS', () => {
-      emitter.emit('SHOW_MESSAGE', { type: 'success', message: i18n.t('login.success') })
-    })
-  }, [])
-  useEffect(() => {
     emitter.on('EXISTED_USER', message => {
       message && emitter.emit('SHOW_MESSAGE', { type: 'info', message })
     })
   }, [])
+  useEffect(() => {
+    emitter.on('LOGIN_SUCCESS', u => {
+      dispatch({
+        type: 'UPDATE_TOKEN',
+        token: u?.accessToken || '',
+      })
+      // NOTE JPUSH login Success
+      uploadJpush({
+        phone: user?.phone || '',
+        deviceId: MMKV.getString(KEY_DEVICEID) || '',
+      })
+      emitter.emit('SHOW_MESSAGE', { type: 'success', message: i18n.t('login.success') })
+    })
+  }, [user?.phone])
 
   useEffect(() => {
     emitter.on('FIRST_INIT', init => {
@@ -119,12 +129,7 @@ const App = () => {
         hasInit: init,
       })
     })
-    emitter.on('LOGIN_SUCCESS', u => {
-      dispatch({
-        type: 'UPDATE_TOKEN',
-        token: u?.accessToken || '',
-      })
-    })
+
     emitter.on('LOGOUT_SUCCESS', () => {
       dispatch({
         type: 'UPDATE_TOKEN',
@@ -168,14 +173,13 @@ const App = () => {
 
   useEffect(() => {
     JPush.init({
-      appKey: __DEV__ ? 'adb72c2b4a8434dcefd4f9bd' : '', //TODO key
+      appKey: 'adb72c2b4a8434dcefd4f9bd',
       channel: 'developer-default',
       production: __DEV__,
     })
     JPush.setLoggerEnable(true)
-    JPush.getRegistrationID(registerID => {
-      console.log('registerID', registerID)
-      //TODO upload
+    JPush.getRegistrationID(({ registerID }) => {
+      MMKV.setString(KEY_JPUSH_ID, registerID)
     })
     //连接状态
     JPush.addConnectEventListener(result => {
@@ -196,9 +200,10 @@ const App = () => {
       <Provider>
         <MoneyyaContext.Provider value={moneyyaState}>
           <NavigationContainer
-            // ref={navigationRef}
-            // initialState={initialState}
-            onStateChange={_ => AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(_))}>
+          // ref={navigationRef}
+          // initialState={initialState}
+          // onStateChange={_ => AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(_))}
+          >
             {!hasInit ? <InitStack /> : accessToken ? <MainStack /> : <AccountStack />}
           </NavigationContainer>
         </MoneyyaContext.Provider>
