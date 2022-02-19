@@ -162,16 +162,15 @@ export function Step1() {
           }).then(res => {
             MMKV.setString(KEY_APPLYID, `${res.applyId}`)
             // NOTE 快捷通道
-            navigation.getParent()?.dispatch(StackActions.replace('Step8'))
-            // if (user?.continuedLoan === 'Y') {
-            //   navigation.getParent()?.dispatch(StackActions.replace('Step8'))
-            // } else {
-            //   if (res?.fromOther === 'Y') {
-            //     navigation.getParent()?.dispatch(StackActions.replace('Step3'))
-            //   } else {
-            //     navigation.getParent()?.dispatch(StackActions.replace('Step2'))
-            //   }
-            // }
+            if (user?.continuedLoan === 'Y') {
+              navigation.getParent()?.dispatch(StackActions.replace('Step8'))
+            } else {
+              if (res?.fromOther === 'Y') {
+                navigation.getParent()?.dispatch(StackActions.replace('Step3'))
+              } else {
+                navigation.getParent()?.dispatch(StackActions.replace('Step2'))
+              }
+            }
           })
       }
     },
