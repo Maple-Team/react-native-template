@@ -11,7 +11,13 @@ import debounce from 'lodash.debounce'
 import { PageStyles, Text } from '@/components'
 import { REGEX_PHONE } from '@/utils/reg'
 import { filterArrayKey } from '@/utils/util'
-import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT, KEY_APPLYID, TOTAL_STEPS } from '@/utils/constant'
+import {
+  DEBOUNCE_OPTIONS,
+  DEBOUNCE_WAIT,
+  KEY_APPLYID,
+  KEY_LIVENESS,
+  TOTAL_STEPS,
+} from '@/utils/constant'
 import {
   ApplyButton,
   Input,
@@ -179,7 +185,13 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
       }).then(() => {
         MMKV.setMapAsync('step5Data', data)
         if (context.brand?.livenessAuthEnable === 'Y') {
-          navigation.navigate('Step61')
+          const livenessTimes = MMKV.getInt(KEY_LIVENESS) || 0
+          // 当前申请单活体校验次数
+          if (livenessTimes > context.brand?.livenessAuthCount) {
+            navigation.navigate('Step62')
+          } else {
+            navigation.navigate('Step61')
+          }
         } else {
           navigation.navigate('Step62')
         }

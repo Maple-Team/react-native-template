@@ -50,7 +50,13 @@ export interface Brand {
    * 验证码读秒数, 短信服务不佳时跳过
    */
   smsWaitInterval: number
+  /**
+   * 活体校验最大次数
+   */
   livenessAuthCount: number
+  /**
+   * 是否需要活体校验
+   */
   livenessAuthEnable: BOOL
   serviceInfo: ServiceInfo
   smsSendEnable: string

@@ -23,5 +23,9 @@ export const KEY_VERSIONID = 'moneyya_VersionID'
 export const KEY_INTERIP = 'moneyya_Interip'
 export const KEY_OUTERIP = 'moneyya_Outerip'
 export const KEY_JPUSH_ID = 'moneyya_jpush_id'
+/**
+ * 活体校验次数，跟随申请单
+ */
+export const KEY_LIVENESS = 'moneyya_liveness'
 
 export const TOTAL_STEPS = 8

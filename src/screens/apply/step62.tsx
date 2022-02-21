@@ -25,6 +25,7 @@ export const Step62 = ({ navigation }: NativeStackHeaderProps) => {
   const schema = object().shape({
     handId: string().required(t('idcard.required')),
   })
+  // TODO 返回逻辑 活体校验次数
   const initialValue: FormModel = {
     handId: '',
   }

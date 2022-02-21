@@ -5474,7 +5474,7 @@ joi@^17.2.1:
 
 "jpush-react-native@https://github.com/Maple-Team/jpush-react-native.git":
   version "2.8.8"
-  resolved "https://github.com/Maple-Team/jpush-react-native.git#4b58179e80ad6f323f56dcbb9c8a231bf9f9ab28"
+  resolved "https://github.com/Maple-Team/jpush-react-native.git#72727961a452f1b9f95864e7460930fd191e4f62"
 
 js-beautify@^1.14.0:
   version "1.14.0"

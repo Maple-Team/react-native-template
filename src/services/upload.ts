@@ -68,6 +68,6 @@ export default async function uploadImages({
     console.error(err)
     return Promise.reject(err)
   } else {
-    return imageId
+    return imageId as number
   }
 }

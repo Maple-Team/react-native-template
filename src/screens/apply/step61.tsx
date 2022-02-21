@@ -6,8 +6,14 @@ import { useTranslation } from 'react-i18next'
 import { ScrollView } from 'react-native-gesture-handler'
 import debounce from 'lodash.debounce'
 
-import { PageStyles, Text } from '@/components'
-import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT, KEY_APPLYID, TOTAL_STEPS } from '@/utils/constant'
+import { PageStyles, Text, ToastLoading } from '@/components'
+import {
+  DEBOUNCE_OPTIONS,
+  DEBOUNCE_WAIT,
+  KEY_APPLYID,
+  KEY_LIVENESS,
+  TOTAL_STEPS,
+} from '@/utils/constant'
 import { ApplyButton, LivenessPicker } from '@components/form/FormItem'
 import { Color } from '@/styles/color'
 import { useLocation } from '@/hooks'
@@ -15,24 +21,26 @@ import { submit } from '@/services/apply'
 import { MMKV } from '@/utils'
 import { Liveness } from '@/modules'
 import { default as MoneyyaContext } from '@/state'
+import uploadImages from '@/services/upload'
 
 export const Step61 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
 
-  const [isValid, setValid] = useState<Boolean>()
-  const [imageId, setImageId] = useState<number>()
+  const [isValid, setValid] = useState<boolean>()
+  const [loading, setLoading] = useState<boolean>(false)
+  const [livenessId, setLivenessId] = useState<number>()
   // TODO 总次数跟随申请单， 防止刷活体接口
   const [errorTimes, setErrorTimes] = useState<number>(0)
   const context = useContext(MoneyyaContext)
-
+  const livenessTimes = MMKV.getInt(KEY_LIVENESS) || 0
   const onSubmit = debounce(
-    () => {
+    (id: number) => {
       submit<'6'>({
         applyId: +(MMKV.getString(KEY_APPLYID) || '0'),
         currentStep: 6,
         totalSteps: TOTAL_STEPS,
-        livenessId: `${imageId}`,
-        images: [{ imageId: 2 }],
+        livenessId: `${livenessId}`,
+        images: [{ imageId: id }],
         livenessAuthFlag: context.brand?.livenessAuthEnable,
       }).then(() => {
         navigation.navigate('Step7')
@@ -46,28 +54,43 @@ export const Step61 = ({ navigation }: NativeStackHeaderProps) => {
   const startLiveness = useCallback(() => {
     Liveness.startLiveness(
       (livenessid, base64, transitionid, isPay) => {
+        MMKV.setInt(KEY_LIVENESS, livenessTimes + 1)
         console.log({ livenessid, transitionid, isPay })
         // FIXME 无活体id
-        // TODO 上传影像信息 base64 type：LIVENESS_IMAGE
-        setImageId(+livenessid)
-        setValid(true)
-        onSubmit()
+        setLivenessId(+livenessid)
+        setLoading(true)
+        uploadImages({
+          response: {
+            type: 'image/png', // ?
+            base64,
+          },
+          isSupplement: 'N',
+          type: 'LIVENESS_IMAGE',
+          onUploadProgress: () => {},
+        })
+          .then(id => {
+            setValid(true)
+            onSubmit(id)
+          })
+          .finally(() => setLoading(false))
       },
       (cancel, errorMessage, errorCode) => {
         console.log({ cancel, errorMessage, errorCode })
+        MMKV.setInt(KEY_LIVENESS, livenessTimes + 1)
         setErrorTimes(errorTimes + 1)
       }
     )
-  }, [errorTimes, onSubmit])
+  }, [errorTimes, livenessTimes, onSubmit])
 
   useEffect(() => {
-    if (errorTimes >= (context.brand?.livenessAuthCount || 100)) {
+    if (errorTimes >= (context.brand?.livenessAuthCount || 0)) {
       navigation.navigate('Step62')
     }
   }, [context.brand?.livenessAuthCount, errorTimes, navigation])
   return (
     <SafeAreaView style={PageStyles.sav}>
       <StatusBar translucent={false} backgroundColor={Color.primary} barStyle="default" />
+      <ToastLoading animating={loading} />
       <ScrollView style={PageStyles.scroll} keyboardShouldPersistTaps="handled">
         <View style={PageStyles.container}>
           <View style={PageStyles.form}>
