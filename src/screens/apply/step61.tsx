@@ -29,7 +29,7 @@ export const Step61 = ({ navigation }: NativeStackHeaderProps) => {
   const [isValid, setValid] = useState<boolean>()
   const [loading, setLoading] = useState<boolean>(false)
   const [livenessId, setLivenessId] = useState<number>()
-  // TODO 总次数跟随申请单， 防止刷活体接口
+  // NOTE 总次数跟随申请单， 防止刷活体接口
   const [errorTimes, setErrorTimes] = useState<number>(0)
   const context = useContext(MoneyyaContext)
   const livenessTimes = MMKV.getInt(KEY_LIVENESS) || 0
@@ -52,35 +52,39 @@ export const Step61 = ({ navigation }: NativeStackHeaderProps) => {
 
   useLocation()
   const startLiveness = useCallback(() => {
-    Liveness.startLiveness(
-      (livenessid, base64, transitionid, isPay) => {
-        MMKV.setInt(KEY_LIVENESS, livenessTimes + 1)
-        console.log({ livenessid, transitionid, isPay })
-        // FIXME 无活体id
-        setLivenessId(+livenessid)
-        setLoading(true)
-        uploadImages({
-          response: {
-            type: 'image/png', // ?
-            base64,
-          },
-          isSupplement: 'N',
-          type: 'LIVENESS_IMAGE',
-          onUploadProgress: () => {},
-        })
-          .then(id => {
-            setValid(true)
-            onSubmit(id)
+    // 当前申请单活体校验次数
+    if (livenessTimes > context?.brand?.livenessAuthCount || 0) {
+      navigation.navigate('Step62')
+    } else {
+      Liveness.startLiveness(
+        (livenessid, base64, transitionid, isPay) => {
+          MMKV.setInt(KEY_LIVENESS, livenessTimes + 1)
+          console.log({ livenessid, transitionid, isPay })
+          setLivenessId(+livenessid)
+          setLoading(true)
+          uploadImages({
+            response: {
+              type: 'image/png', // ?
+              base64,
+            },
+            isSupplement: 'N',
+            type: 'LIVENESS_IMAGE',
+            onUploadProgress: () => {},
           })
-          .finally(() => setLoading(false))
-      },
-      (cancel, errorMessage, errorCode) => {
-        console.log({ cancel, errorMessage, errorCode })
-        MMKV.setInt(KEY_LIVENESS, livenessTimes + 1)
-        setErrorTimes(errorTimes + 1)
-      }
-    )
-  }, [errorTimes, livenessTimes, onSubmit])
+            .then(id => {
+              setValid(true)
+              onSubmit(id)
+            })
+            .finally(() => setLoading(false))
+        },
+        (cancel, errorMessage, errorCode) => {
+          console.log({ cancel, errorMessage, errorCode })
+          MMKV.setInt(KEY_LIVENESS, livenessTimes + 1)
+          setErrorTimes(errorTimes + 1)
+        }
+      )
+    }
+  }, [context?.brand?.livenessAuthCount, errorTimes, livenessTimes, navigation, onSubmit])
 
   useEffect(() => {
     if (errorTimes >= (context.brand?.livenessAuthCount || 0)) {

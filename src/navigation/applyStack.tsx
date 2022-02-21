@@ -13,8 +13,9 @@ import { useNavigation, useNavigationState } from '@react-navigation/native'
 import emitter from '@/eventbus'
 import { queryBrand } from '@/services/apply'
 import { MMKV } from '@/utils'
-import { KEY_BRAND } from '@/utils/constant'
+import { KEY_BRAND, KEY_LIVENESS } from '@/utils/constant'
 import { t } from 'i18next'
+import { Brand } from '@/typings/response'
 
 export type ApplyStackList = {
   BottomTab: undefined
@@ -59,12 +60,7 @@ export function ApplyStack() {
           headerLeft: () => (
             <HeaderLeft
               onPress={() => {
-                if (na.canGoBack()) {
-                  na.goBack()
-                } else {
-                  //@ts-ignore
-                  na.navigate('BottomTab')
-                }
+                na.goBack()
               }}
             />
           ),
@@ -133,6 +129,29 @@ export function ApplyStack() {
             component={Step62}
             options={() => ({
               title: t('screenTitle.holdIDPhoto'),
+              headerLeft: () => (
+                <HeaderLeft
+                  onPress={() => {
+                    const brand = MMKV.getMap(KEY_BRAND) as Brand
+                    if (brand?.livenessAuthEnable === 'Y') {
+                      const livenessTimes = MMKV.getInt(KEY_LIVENESS) || 0
+                      // 当前申请单活体校验次数
+                      if (livenessTimes > brand?.livenessAuthCount) {
+                        // @ts-ignore
+                        na.navigate('5')
+                      } else {
+                        // @ts-ignore
+                        na.navigate('Step61')
+                      }
+                    } else {
+                      // @ts-ignore
+                      na.navigate('5')
+                    }
+                    // @ts-ignore
+                    na.navigate('BottomTab')
+                  }}
+                />
+              ),
             })}
           />
           <Stack.Screen
@@ -141,6 +160,29 @@ export function ApplyStack() {
             component={Step7}
             options={() => ({
               title: t('screenTitle.BankInfo'),
+              headerLeft: () => (
+                <HeaderLeft
+                  onPress={() => {
+                    const brand = MMKV.getMap(KEY_BRAND) as Brand
+                    if (brand?.livenessAuthEnable === 'Y') {
+                      const livenessTimes = MMKV.getInt(KEY_LIVENESS) || 0
+                      // 当前申请单活体校验次数
+                      if (livenessTimes > brand?.livenessAuthCount) {
+                        // @ts-ignore
+                        na.navigate('Step62')
+                      } else {
+                        // @ts-ignore
+                        na.navigate('Step61')
+                      }
+                    } else {
+                      // @ts-ignore
+                      na.navigate('Step62')
+                    }
+                    // @ts-ignore
+                    na.navigate('BottomTab')
+                  }}
+                />
+              ),
             })}
           />
           <Stack.Screen

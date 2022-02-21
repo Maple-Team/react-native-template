@@ -25,7 +25,7 @@ export const Step62 = ({ navigation }: NativeStackHeaderProps) => {
   const schema = object().shape({
     handId: string().required(t('idcard.required')),
   })
-  // TODO 返回逻辑 活体校验次数
+
   const initialValue: FormModel = {
     handId: '',
   }
@@ -62,7 +62,7 @@ export const Step62 = ({ navigation }: NativeStackHeaderProps) => {
                     field="handId"
                     key="handId"
                     bg={require('@assets/compressed/apply/id1.webp')}
-                    imageType="INE_OR_IFE_FRONT"
+                    imageType="HANDHELD_IDCARD"
                     cameraType="front"
                     onUploadSuccess={id => {
                       setFieldValue('handId', id)

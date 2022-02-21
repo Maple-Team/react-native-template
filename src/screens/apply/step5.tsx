@@ -9,7 +9,7 @@ import { string, object } from 'yup'
 import debounce from 'lodash.debounce'
 
 import { PageStyles, Text } from '@/components'
-import { REGEX_PHONE } from '@/utils/reg'
+import { REGEX_PHONE, REGEX_IDCARD } from '@/utils/reg'
 import { filterArrayKey } from '@/utils/util'
 import {
   DEBOUNCE_OPTIONS,
@@ -53,8 +53,10 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
     birth: string().required(t('birth.required')),
     sex: string().required(t('gender.required')),
     idcard: string()
+      .transform((value, originalValue) => originalValue.replace(/\s/g, ''))
       .min(18, t('idcard.invalid'))
-      .max(18, t('idcard.invalid')) // 英文加数字都有
+      .max(18, t('idcard.invalid'))
+      .matches(REGEX_IDCARD, t('idcard.invalid'))
       .required(t('idcard.required')),
     maritalStatus: string().required(t('maritalStatus.required')),
     homeAddrProvinceCode: string().required(t('homeAddrProvinceCode.required')),
@@ -171,6 +173,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
         ...data,
         applyId: +(MMKV.getString(KEY_APPLYID) || '0'),
         currentStep: 5,
+        idcard: data.idcard.replace(/\s/g, ''),
         totalSteps: TOTAL_STEPS,
         thirdInfos: [
           {
@@ -342,17 +345,21 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                     />
                     <Input
                       onChangeText={text => {
-                        setFieldValue('idcard', text)
-                        dispatch({ type: 'idcard', value: text })
+                        const formatId = text.replace(
+                          /(?<=[0-9a-zA-Z]{4})[0-9a-zA-Z]+/,
+                          $0 => ` ${$0}`
+                        )
+                        setFieldValue('idcard', formatId)
+                        dispatch({ type: 'idcard', value: formatId })
                       }}
                       onFocus={() => behavior.setStartModify('P05_C04_I_IDCARD', state.idcard)}
                       onBlur={() => behavior.setEndModify('P05_C04_I_IDCARD', state.idcard)}
                       onClear={() => setFieldValue('idcard', '')}
                       value={state.idcard}
                       field={'idcard'}
-                      keyboardType="number-pad"
                       key={'idcard'}
-                      maxLength={18}
+                      error={errors.idcard}
+                      maxLength={18 + 4} // 格式化输入
                       label={t('idcard.label')}
                       scrollViewRef={scrollviewRef}
                       placeholder={t('idcard.placeholder')}

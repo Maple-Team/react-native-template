@@ -65,12 +65,13 @@ export function BillsList() {
       case APPLY_STATE.APPLY:
       case APPLY_STATE.LOAN:
       case APPLY_STATE.WAIT:
-        content = { text: item.contractStatusName, color: '#FF4800', state: 2 }
+        content = { text: item.contractStatusName, color: Color.primary, state: 2 }
         break
       case APPLY_STATE.SETTLE:
-        content = { color: '#FF4800', state: 1 }
+        content = { color: Color.primary, state: 1 }
         break
     }
+
     return content
   }, [])
   if (loading) {
@@ -169,7 +170,7 @@ export function BillsList() {
                               }}>
                               {t('loanDate')}
                             </Text>
-                            <Text>{item.loanDate}</Text>
+                            <Text>{item.applyDate}</Text>
                           </>
                         ) : (
                           <>

@@ -13,6 +13,7 @@ import {
   DEBOUNCE_WAIT,
   KEY_APPLYID,
   KEY_GPS,
+  KEY_LIVENESS,
   TOTAL_STEPS,
 } from '@/utils/constant'
 import { ApplyButton } from '@components/form/FormItem'
@@ -57,8 +58,12 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
           phone: context?.user?.phone || '',
           custId: context?.user?.idcard || '',
         })
+        ;['Step2Data', 'Step3Data', 'Step5Data', 'Step7Data'].forEach(k => {
+          MMKV.removeItem(k)
+        })
+        MMKV.removeItem(KEY_LIVENESS)
         navigation.navigate('BottomTab', {
-          screen: 'OrderDetail',
+          screen: 'BillsDetail',
           params: {
             applyId: MMKV.getString(KEY_APPLYID),
           },
@@ -101,7 +106,7 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
   }, [context.user?.phone])
   // 试算信息
   const [calcResult, setcalcResult] = useState<Calculate>()
-  console.log({ calcResult })
+  console.log({ calcResult }, params)
   useEffect(() => {
     if (loanCode && displayLoanDays > 0) {
       scheduleCalc({
@@ -188,7 +193,6 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
                   minimumValue={productInfo?.minAmount || 3000}
                   value={loanAmt}
                   onValueChange={v => {
-                    // TODO 选不到时显示红色，并提示当前最大可选金额是多少
                     setLoanAmt(Array.isArray(v) ? v[0] : v)
                   }}
                   step={productInfo?.amountStep || 1000}
@@ -299,7 +303,7 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
                   },
                   {
                     name: t('bankCard'),
-                    value: params.bankCardNo ? +params.bankCardNo : 0,
+                    value: params.bankCardNo ? params.bankCardNo : 0,
                     type: 'bank',
                   },
                 ]}

@@ -1,4 +1,5 @@
 export const REGEX_PASSWORD = new RegExp('^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,12}$')
+export const REGEX_IDCARD = new RegExp('^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{18}$')
 export const REGEX_PHONE = new RegExp('^[1-9][0-9]{9}$')
 export const REGEX_COMPANYPHONE = new RegExp('^[0-9]{1,20}$')
 export const REGEX_BANK_CARD = new RegExp('^[0-9]{18}$')

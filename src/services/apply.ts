@@ -184,7 +184,7 @@ export async function updateBankInfo(data: BankInfoParameter) {
 // TODO
 export async function uploadAllContacts(data: any[]) {
   return request<BaseResponse>({
-    url: '/smart-loan/customer/updateBankInfo',
+    url: '',
     method: 'POST',
     data,
   })

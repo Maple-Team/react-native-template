@@ -1,4 +1,5 @@
 import type { Order } from '@/typings/order'
+import { ValidateCodeParameter } from '@/typings/request'
 import type { BaseResponse } from '@/utils/http'
 import { request } from '@/utils/http'
 /**
@@ -71,6 +72,14 @@ export async function queryPayCode(data: FormData) {
 export async function queryClabe(data: FormData) {
   return request<{ clabe: string }>({
     url: '/smart-loan/pay/clabe',
+    method: 'POST',
+    data,
+  })
+}
+
+export async function getValidateCode(data: ValidateCodeParameter) {
+  return request<BaseResponse>({
+    url: '/smart-loan/app/validate/kaptcha',
     method: 'POST',
     data,
   })

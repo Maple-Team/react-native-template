@@ -18,7 +18,7 @@ import type { Dict, DictField } from '@/typings/response'
 import { MMKV } from '@/utils'
 import { fetchDict, submit } from '@/services/apply'
 import { REGEX_BANK_CARD, REGEX_BANK_CLABE } from '@/utils/reg'
-// TODO 返回逻辑 活体校验次数 返回 次数-> 手持/活体
+
 export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
   const schema = object().shape({
@@ -52,7 +52,11 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
         currentStep: 7,
         totalSteps: TOTAL_STEPS,
       }).then(() => {
-        MMKV.setMapAsync('step7Data', values)
+        MMKV.setMapAsync('step7Data', {
+          ...values,
+          bankCodeName: state.bankCodeName,
+          cardNoTypeName: state.cardNoTypeName,
+        })
         navigation.navigate('Step8', {
           bankCardNo: state.bankCardNo,
         })
@@ -71,11 +75,13 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
         case 'bankCardNo':
           return { ...s, bankCardNo: value }
         case 'bankCode':
+          MMKV.setString('bankCodeName', value.name)
           return { ...s, bankCode: value.code, bankCodeName: value.name }
         case 'cardNoTypeArray':
           return { ...s, cardNoTypeArray: value }
         case 'cardNoType':
-          return { ...s, cardNoType: value }
+          MMKV.setString('cardNoTypeName', value.name)
+          return { ...s, cardNoType: value.code, cardNoTypeName: value.name }
         default:
           return { ...s }
       }
@@ -85,7 +91,8 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
       bankCardNo: step7Data.bankCardNo || '',
       bankCode: step7Data.bankCode || '',
       cardNoType: step7Data.cardNoType || 'CARD',
-      bankCodeName: '',
+      bankCodeName: step7Data.bankCodeName || MMKV.getString('bankCodeName') || '',
+      cardNoTypeName: step7Data.cardNoTypeName || MMKV.getString('cardNoTypeName') || '',
       cardNoTypeArray: [],
     }
   )
@@ -134,7 +141,7 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
                 initialValues={state}
                 onSubmit={onSubmit}
                 validationSchema={schema}>
-                {({ handleSubmit, isValid, setFieldValue, values }) => (
+                {({ handleSubmit, isValid, setFieldValue, values, errors }) => (
                   <>
                     <View style={PageStyles.form}>
                       <NormalPicker
@@ -152,9 +159,9 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
                         dataSource={state.bankArray}
                       />
                       <NormalPicker
-                        onChange={({ code }) => {
+                        onChange={({ code, name }) => {
                           setFieldValue('cardNoType', code)
-                          dispatch({ type: 'cardNoType', value: code })
+                          dispatch({ type: 'cardNoType', value: { code, name } })
                           behavior.setModify('P07_C01_S_CARDNOTYPE', code, state.cardNoType)
                         }}
                         key="bankCardType"
@@ -175,8 +182,8 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
                           }
                           value={state.bankCardNo}
                           field={'bankCardNo'}
-                          // TODO 动态校验
                           keyboardType="phone-pad"
+                          error={errors.bankCardNo}
                           label={t('bankCardNo.label')}
                           placeholder={t('bankCardNo.placeholder')}
                           key="bankCardNo_card"
@@ -200,6 +207,7 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
                           }
                           value={state.bankCardNo}
                           field={'bankCardNo'}
+                          error={errors.bankCardNo}
                           keyboardType="phone-pad"
                           label={t('bankCardNo.label')}
                           placeholder={t('bankCardNo.placeholder')}
@@ -272,7 +280,6 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
                   </Text>
                   <Text color="#333030" fontSize={15} fontWeight="bold" fontFamily="Arial-BoldMT">
                     {state.bankCodeName}
-                    {/* TODO 处理缓存 */}
                   </Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
@@ -283,8 +290,7 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
                     {t('cardNoType.label')}:
                   </Text>
                   <Text color="#333030" fontSize={15} fontWeight="bold" fontFamily="Arial-BoldMT">
-                    {state.cardNoType}
-                    {/*TODO 展示对应的name */}
+                    {state.cardNoTypeName}
                   </Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
@@ -355,6 +361,7 @@ interface Step7State extends FormModel {
   bankCardNo: string
   bankCode: string
   bankCodeName: string
+  cardNoTypeName: string
   cardNoTypeArray: Dict[]
 }
 
@@ -377,5 +384,5 @@ type Step7Action =
     }
   | {
       type: 'cardNoType'
-      value: string
+      value: Dict
     }

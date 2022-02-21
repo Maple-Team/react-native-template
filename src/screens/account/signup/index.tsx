@@ -78,7 +78,7 @@ export const SignupScreen = ({ route }: { route: any }) => {
           uploadJpush({
             phone: values.phone,
           })
-          na.navigate('SignIn', { phone: values.phone })
+          emitter.emit('LOGIN_SUCCESS', res)
         })
         .catch(res => {
           if (res) {
