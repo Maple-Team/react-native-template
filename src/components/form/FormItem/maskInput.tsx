@@ -1,10 +1,10 @@
-import React, { type RefObject, useRef, useState, type ReactNode } from 'react'
+import React, { type RefObject, useRef, type ReactNode } from 'react'
 import { Pressable, View, Image } from 'react-native'
 import type { KeyboardTypeOptions } from 'react-native'
 import styles from './style'
 import { Text } from '@/components'
 import { ErrorMessage } from 'formik'
-import { UseFocusOnError } from '@/hooks'
+// import { UseFocusOnError } from '@/hooks'
 import type { ScrollView } from 'react-native-gesture-handler'
 import TextInputMask from 'react-native-text-input-mask'
 
@@ -35,22 +35,22 @@ export const MaskInput = ({
   placeholder,
   keyboardType,
   mask,
-  scrollViewRef,
+  // scrollViewRef,
   Prefix,
 }: InputProps) => {
   let fieldRef = useRef<any>(null)
   let wrapperRef = useRef<View>(null)
-  const [offsetY, setOffsetY] = useState<number>(0)
+  // const [offsetY, setOffsetY] = useState<number>(0)
   // console.log({ field }, 'MaskInput rendering')
   return (
     <>
-      <UseFocusOnError
+      {/* <UseFocusOnError
         fieldRef={fieldRef}
         name={field}
         scrollViewRef={scrollViewRef}
         offsetY={offsetY}
         canFocus={true}
-      />
+      /> */}
       <View style={styles.formItem}>
         <Text styles={styles.label}>{label}</Text>
         <View
@@ -58,18 +58,18 @@ export const MaskInput = ({
           ref={wrapperRef}
           onLayout={() => {
             // TextInputMask未暴露出访问其内部textInput元素的方法，故使用其父组件的维度
-            wrapperRef.current?.measure(
-              (
-                x: number,
-                _y: number,
-                width: number,
-                height: number,
-                pageX: number,
-                pageY: number
-              ) => {
-                setOffsetY(pageY - height)
-              }
-            )
+            // wrapperRef.current?.measure(
+            //   (
+            //     x: number,
+            //     _y: number,
+            //     width: number,
+            //     height: number,
+            //     pageX: number,
+            //     pageY: number
+            //   ) => {
+            //     setOffsetY(pageY - height)
+            //   }
+            // )
           }}>
           {Prefix && <View style={styles.prefixWrap}>{Prefix}</View>}
           <TextInputMask

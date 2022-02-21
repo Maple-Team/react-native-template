@@ -1,4 +1,4 @@
-import React, { type RefObject, useCallback, useRef, useState } from 'react'
+import React, { type RefObject, useCallback, useRef } from 'react'
 import { TextInput, View, Image, Pressable } from 'react-native'
 import type { KeyboardTypeOptions } from 'react-native'
 import formItemStyles from './style'
@@ -9,7 +9,7 @@ import { selectContactPhone } from 'react-native-select-contact'
 import Contacts from 'react-native-contacts'
 import { onRequestPermission } from '@/utils/permission'
 import type { ScrollView } from 'react-native-gesture-handler'
-import { UseFocusOnError } from '@/hooks'
+// import { UseFocusOnError } from '@/hooks'
 
 interface Props {
   onChange: (text: string) => void
@@ -30,8 +30,8 @@ export function PhonePicker({
   label,
   placeholder,
   error,
-  scrollViewRef,
-}: Props) {
+}: // scrollViewRef,
+Props) {
   const { t } = useTranslation()
 
   const onSelectContacts = useCallback(async () => {
@@ -40,7 +40,7 @@ export function PhonePicker({
       // TODO UPLOAD ALL CONTACTS
     })
     const selection = await selectContactPhone()
-    console.log({ selection })
+    console.log({ selection }) // TODO 多个会默认选第一个
     if (!selection) {
       return
     }
@@ -65,30 +65,32 @@ export function PhonePicker({
   )
   // console.log({ field }, 'PhonePicker rendering')
   const fieldRef = useRef<TextInput>(null)
-  const [height, setHeight] = useState<number>(0)
+  // const [height, setHeight] = useState<number>(0)
   return (
     <>
-      <UseFocusOnError
+      {/* <UseFocusOnError
         fieldRef={fieldRef}
         name={field}
         scrollViewRef={scrollViewRef}
         offsetY={height}
-      />
+      /> */}
       <View style={formItemStyles.formItem}>
         <Text styles={formItemStyles.label}>{label}</Text>
         <View style={formItemStyles.inputWrap}>
-          <TextInput
-            ref={fieldRef}
-            editable={false}
-            onLayout={() => {
-              fieldRef.current?.measure((_x, _y, _width, _height, _pageX, pageY) => {
-                setHeight(pageY - _height)
-              })
-            }}
-            value={value}
-            placeholder={placeholder}
-            style={[formItemStyles.input, error ? { borderBottomColor: 'red' } : {}]}
-          />
+          <Pressable onPress={onRequestContactsPermission}>
+            <TextInput
+              ref={fieldRef}
+              editable={false}
+              onLayout={() => {
+                // fieldRef.current?.measure((_x, _y, _width, _height, _pageX, pageY) => {
+                //   setHeight(pageY - _height)
+                // })
+              }}
+              value={value}
+              placeholder={placeholder}
+              style={[formItemStyles.input, error ? { borderBottomColor: 'red' } : {}]}
+            />
+          </Pressable>
           <Pressable style={formItemStyles.suffixWrap} onPress={onRequestContactsPermission}>
             <Image
               style={formItemStyles.suffix}

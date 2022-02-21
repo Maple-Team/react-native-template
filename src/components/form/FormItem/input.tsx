@@ -1,10 +1,10 @@
-import React, { RefObject, useRef, useState } from 'react'
+import React, { RefObject, useRef } from 'react'
 import { Pressable, TextInput, View, Image } from 'react-native'
 import type { KeyboardTypeOptions } from 'react-native'
 import styles from './style'
 import Text from '@components/Text'
 import { ErrorMessage } from 'formik'
-import { UseFocusOnError } from '@/hooks'
+// import { UseFocusOnError } from '@/hooks'
 import type { ScrollView } from 'react-native-gesture-handler'
 
 interface InputProps {
@@ -35,14 +35,14 @@ export const Input = ({
   placeholder,
   keyboardType,
   readonly = true,
-  scrollViewRef,
-}: InputProps) => {
+}: // scrollViewRef,
+InputProps) => {
   const fieldRef = useRef<TextInput>(null)
-  const [height, setHeight] = useState<number>(0)
+  // const [height, setHeight] = useState<number>(0)
   // console.log({ field }, 'Input rendering')
   return (
     <>
-      {field && (
+      {/* {field && (
         <UseFocusOnError
           fieldRef={fieldRef}
           name={field}
@@ -50,7 +50,7 @@ export const Input = ({
           offsetY={height}
           canFocus={true}
         />
-      )}
+      )} */}
       <View style={styles.formItem}>
         <Text styles={styles.label}>{label}</Text>
         <View style={styles.inputWrap}>
@@ -62,9 +62,9 @@ export const Input = ({
             multiline={true}
             ref={fieldRef}
             onLayout={() => {
-              fieldRef.current?.measure((_x, _y, _width, _height, _pageX, pageY) => {
-                setHeight(pageY - _height)
-              })
+              // fieldRef.current?.measure((_x, _y, _width, _height, _pageX, pageY) => {
+              //   setHeight(pageY - _height)
+              // })
             }}
             placeholder={placeholder}
             style={[styles.input, { fontSize: 15 }, error ? { borderBottomColor: 'red' } : {}]}

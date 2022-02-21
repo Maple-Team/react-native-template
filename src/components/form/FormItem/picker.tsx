@@ -7,7 +7,7 @@ import { ErrorMessage } from 'formik'
 import { WheelPicker } from './wheelPicker'
 import { ModalHOC } from './modalHOC'
 import type { Dict, PickerField } from '@/typings/response'
-import { UseFocusOnError } from '@/hooks'
+// import { UseFocusOnError } from '@/hooks'
 import type { ScrollView } from 'react-native-gesture-handler'
 
 interface PickerProps<T extends Dict, U extends PickerField> {
@@ -30,38 +30,43 @@ export function NormalPicker<T extends Dict, U extends PickerField>({
   label,
   title,
   error,
-  scrollViewRef,
+  // scrollViewRef,
   placeholder,
   dataSource,
 }: PickerProps<T, U>) {
   const [visible, setVisible] = useState<boolean>(false)
   const Picker = ModalHOC(WheelPicker)
   const fieldRef = useRef<TextInput>(null)
-  const [height, setHeight] = useState<number>(0)
+  // const [height, setHeight] = useState<number>(0)
   return (
     <>
-      <UseFocusOnError
+      {/* <UseFocusOnError
         fieldRef={fieldRef}
         name={field}
         scrollViewRef={scrollViewRef}
         offsetY={height}
-      />
+      /> */}
       <View style={formItemStyles.formItem}>
         <Text styles={formItemStyles.label}>{label}</Text>
         <View style={formItemStyles.inputWrap}>
-          <TextInput
-            editable={false}
-            ref={fieldRef}
-            onLayout={() => {
-              fieldRef.current?.measure((_x, _y, _width, _height, _pageX, pageY) => {
-                setHeight(pageY - _height)
-              })
-            }}
-            value={dataSource.find(({ code }) => code === value)?.name}
-            placeholder={placeholder}
-            style={[formItemStyles.input, error ? { borderBottomColor: 'red' } : {}]}
-            placeholderTextColor={'rgba(156, 171, 185, 1)'}
-          />
+          <Pressable
+            onPress={() => {
+              setVisible(true)
+            }}>
+            <TextInput
+              editable={false}
+              ref={fieldRef}
+              onLayout={() => {
+                // fieldRef.current?.measure((_x, _y, _width, _height, _pageX, pageY) => {
+                //   // setHeight(pageY - _height)
+                // })
+              }}
+              value={dataSource.find(({ code }) => code === value)?.name}
+              placeholder={placeholder}
+              style={[formItemStyles.input, error ? { borderBottomColor: 'red' } : {}]}
+              placeholderTextColor={'rgba(156, 171, 185, 1)'}
+            />
+          </Pressable>
           <Pressable
             style={formItemStyles.suffixWrap}
             onPress={() => {
