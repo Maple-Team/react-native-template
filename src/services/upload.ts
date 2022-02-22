@@ -1,14 +1,12 @@
 import { errorCaptured } from '@/utils/util'
 import RNFetchBlob from 'rn-fetch-blob-v2'
-import DeviceInfo from 'react-native-device-info'
+import { getUserAgent, getBuildNumber } from 'react-native-device-info'
 import { MMKV } from '@/utils'
 import { KEY_APPLYID, KEY_DEVICEID, KEY_TOKEN } from '@/utils/constant'
 import { AppModule } from '@/modules'
 import type { Asset } from 'react-native-image-picker'
 import emitter from '@/eventbus'
 import { t } from 'i18next'
-
-const { getUserAgent, getBuildNumber } = DeviceInfo
 
 export default async function uploadImages({
   response,

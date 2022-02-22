@@ -115,7 +115,8 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
   const onSubmit = debounce(
     (values: FormModel) => {
       const contacts: Contact[] = []
-      for (let index = 1; index <= 3; index++) {
+      const length = fromOther === 'Y' ? 2 : 3
+      for (let index = 1; index <= length; index++) {
         contacts.push({
           //@ts-ignore
           contactName: state[`contactName${index}`],
@@ -209,7 +210,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                     placeholder={t('contactPhone.placeholder')}
                     error={errors.contactPhone1}
                   />
-                  <FormGap title="Other Contact" />
+                  <FormGap title={t('otherContact')} />
                   <NormalPicker
                     scrollViewRef={scrollviewRef}
                     onChange={({ code, name }) => {
@@ -260,57 +261,65 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                     placeholder={t('contactPhone.placeholder')}
                     error={errors.contactPhone2}
                   />
-                  <FormGap title="Other Contact" />
-                  <NormalPicker
-                    scrollViewRef={scrollviewRef}
-                    onChange={({ code, name }) => {
-                      setFieldValue('contactRelationCode3', code)
-                      dispatch({ type: 'updateContactRelation3', value: { code, name } })
-                      behavior.setModify('P03_C05_S_RELATIONSHIP', code, state.contactRelationCode3)
-                    }}
-                    title={t('contactRelationCode.label')}
-                    field={'contactRelationCode3'}
-                    key={'contactRelationCode3'}
-                    label={t('contactRelationCode.label')}
-                    placeholder={t('contactRelationCode.placeholder')}
-                    dataSource={state.otherContactRelationArray}
-                    error={errors.contactRelationCode3}
-                    value={state.contactRelationCode3}
-                  />
-                  <Input
-                    scrollViewRef={scrollviewRef}
-                    onChangeText={text => {
-                      setFieldValue('contactName3', text)
-                      dispatch({ type: 'updateContactName3', value: text })
-                    }}
-                    maxLength={100}
-                    onFocus={() =>
-                      behavior.setStartModify('P03_C03_I_CONTACTNAME', state.contactName3)
-                    }
-                    onBlur={() =>
-                      behavior.setEndModify('P03_C03_I_CONTACTNAME', state.contactName3)
-                    }
-                    value={state.contactName3}
-                    field={'contactName3'}
-                    key={'contactName3'}
-                    error={errors.contactName3}
-                    label={t('contactName.label')}
-                    placeholder={t('contactName.placeholder')}
-                  />
-                  <PhonePicker
-                    scrollViewRef={scrollviewRef}
-                    field="contactPhone3"
-                    key="contactPhone3"
-                    label={t('contactPhone.label')}
-                    onChange={text => {
-                      setFieldValue('contactPhone3', text)
-                      dispatch({ type: 'updateContactPhone3', value: text })
-                      behavior.setModify('P03_C06_S_CONTACTPHONE', text, state.contactPhone3)
-                    }}
-                    value={state.contactPhone3}
-                    placeholder={t('contactPhone.placeholder')}
-                    error={errors.contactPhone3}
-                  />
+                  {fromOther !== 'Y' && (
+                    <>
+                      <FormGap title={t('otherContact')} />
+                      <NormalPicker
+                        scrollViewRef={scrollviewRef}
+                        onChange={({ code, name }) => {
+                          setFieldValue('contactRelationCode3', code)
+                          dispatch({ type: 'updateContactRelation3', value: { code, name } })
+                          behavior.setModify(
+                            'P03_C05_S_RELATIONSHIP',
+                            code,
+                            state.contactRelationCode3
+                          )
+                        }}
+                        title={t('contactRelationCode.label')}
+                        field={'contactRelationCode3'}
+                        key={'contactRelationCode3'}
+                        label={t('contactRelationCode.label')}
+                        placeholder={t('contactRelationCode.placeholder')}
+                        dataSource={state.otherContactRelationArray}
+                        error={errors.contactRelationCode3}
+                        value={state.contactRelationCode3}
+                      />
+                      <Input
+                        scrollViewRef={scrollviewRef}
+                        onChangeText={text => {
+                          setFieldValue('contactName3', text)
+                          dispatch({ type: 'updateContactName3', value: text })
+                        }}
+                        maxLength={100}
+                        onFocus={() =>
+                          behavior.setStartModify('P03_C03_I_CONTACTNAME', state.contactName3)
+                        }
+                        onBlur={() =>
+                          behavior.setEndModify('P03_C03_I_CONTACTNAME', state.contactName3)
+                        }
+                        value={state.contactName3}
+                        field={'contactName3'}
+                        key={'contactName3'}
+                        error={errors.contactName3}
+                        label={t('contactName.label')}
+                        placeholder={t('contactName.placeholder')}
+                      />
+                      <PhonePicker
+                        scrollViewRef={scrollviewRef}
+                        field="contactPhone3"
+                        key="contactPhone3"
+                        label={t('contactPhone.label')}
+                        onChange={text => {
+                          setFieldValue('contactPhone3', text)
+                          dispatch({ type: 'updateContactPhone3', value: text })
+                          behavior.setModify('P03_C06_S_CONTACTPHONE', text, state.contactPhone3)
+                        }}
+                        value={state.contactPhone3}
+                        placeholder={t('contactPhone.placeholder')}
+                        error={errors.contactPhone3}
+                      />
+                    </>
+                  )}
                 </View>
                 <View style={PageStyles.btnWrap}>
                   <ApplyButton type={isValid ? 'primary' : 'ghost'} onPress={handleSubmit}>

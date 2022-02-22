@@ -30,9 +30,6 @@ export const UseFocusOnError = ({
   const { submitCount, isValid, errors } = useFormikContext()
   const headerHeight = useHeaderHeight()
 
-  /**
-   * 上一次提交次数 FIXME
-   */
   // const prevSubmitCountRef = useRef(submitCount)
   const errorKey = Object.keys(errors)[0]
   useEffect(() => {

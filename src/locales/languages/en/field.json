@@ -70,7 +70,7 @@
   "contactName": {
     "label": "contactName",
     "placeholder": "contact phone",
-    "invalid": "contact phone invalid",
+    "invalid": "contact name invalid",
     "required": "contact name required"
   },
   "contactPhone": {
