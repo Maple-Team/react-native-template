@@ -24,6 +24,7 @@
   "loading": "加载中...",
   "loan": "签约",
   "loanAmount": "贷款金额",
+  "loanDate": "贷款日期",
   "loanDays": "贷款天数",
   "login": {
     "success": "登录成功"
@@ -38,6 +39,7 @@
   "repayAmount": "应还金额",
   "repayDate": "应还日期",
   "repayHint": "请您保持良好的还款习惯",
+  "repaymentAmount": "Repayment amount",
   "screenTitle": {
     "payment": "Payment",
     "historyBills": "History Bills",
@@ -52,15 +54,15 @@
     "PersonInfo": "个人信息",
     "BankInfo": "银行卡信息",
     "authorizaiton": "授权说明",
-    "privacy": "隐私政策"
+    "privacy": "隐私政策",
+    "loan": "Loan"
   },
   "secondPaymentAmount": "Second repayment amount",
   "secondPaymentDate": "Second repayment date",
   "signin": "登录",
   "signup": "注册",
+  "start": "start",
   "submit": "提交",
   "transferAmount": "到手金额",
-  "validation-code-login": "验证码登录",
-  "repaymentAmount": "Repayment amount",
-  "loanDate": "贷款日期"
+  "validation-code-login": "验证码登录"
 }

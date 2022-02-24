@@ -64,7 +64,7 @@
   "companyPhone": {
     "label": "company Phone",
     "placeholder": "company phone",
-    "invalid": "company Phone invalid",
+    "invalid": "公司电话格式不正确",
     "required": "company Phone required"
   },
   "contactName": {
@@ -76,7 +76,6 @@
   "contactPhone": {
     "label": "contactPhone",
     "placeholder": "contact phone",
-    "invalid": "contact phone invalid",
     "required": "contact phone required"
   },
   "contactRelationCode": {
