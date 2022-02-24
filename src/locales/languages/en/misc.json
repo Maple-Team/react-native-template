@@ -1,55 +1,57 @@
 {
   "adPrompt": "Easy steps to get and pay for a loan:",
-  "ads": [
-    {
-      "title": "Convenient operation",
-      "text": "Fill up information within 5 mins"
-    },
-    {
-      "title": "Fast Approval",
-      "text": "Verification finished within 2 hours"
-    },
-    {
-      "title": "Get the disbursement",
-      "text": "Disbursement within 24 hours"
-    }
-  ],
+  "agreeWithMoneyya": "Agree with Moneyya",
   "authorizaiton": "authorizaiton",
   "authorizaiton-not-reading": "请阅读完",
   "bill-information": "Bill information",
+  "camera": {
+    "unavailable": "camera is unavailable",
+    "no-permission": "camera is not allow permission",
+    "other-error": "camera unknown error"
+  },
   "choose-product-prompt": "please choose loan terms",
   "copySuccessed": "Copy SUccess",
   "currentLoanInfoHint": "本次还款申请",
+  "exceedMaxAmount": "Exceed max available loan amont!",
+  "field": {
+    "short": "{{field}} is too short",
+    "long": "{{field}} is too long"
+  },
   "fillBankCodePrompt": "Please fill in bank account information of your own, or loan would fail",
   "firstPaymentAmount": "First repayment amount",
   "firstPaymentdate": "First repayment date",
   "informationConfirmed": "Information Confirmed",
+  "intlCurrency": "${{val}}",
+  "loadMore": "Loading More...",
+  "loanInfoHint": "Loan information",
   "logoutPrompt": "Logout Prompt",
   "logoutPromptContent": "Are you sure to logout?",
   "maxAvailableAmount": "The maximum amount can be borrowed",
+  "newVersion": "Update to a new Version",
   "noMessagePrompt": "Message list is empty!",
   "noMore": "No more new data available",
   "notice": "Notice",
   "numberRequired": "you must specify a number",
+  "otherContact": "Other Contact",
+  "overduePrompt": "There is one unpaid bill and {day} days overdue",
   "payment": "Payment",
+  "paymentNumPrompt": "Tasa de Tramitacion",
+  "paymentPrompt1": "我们建议您在此页面立即偿还贷款，以免影响您的下次贷款申请。",
+  "paymentPrompt2": "我们需要几分钟来处理您的还贷申请，请耐心等待。如果收不到验证码，请重新发送验证码。谢谢您的配合。",
   "permission blocked": "permission blocked",
   "permission unavailable": "permission unavailable",
   "promptRepayHint": "Maintaining a good repayment behavior will help you to increase your loan amount. 96% of users loan amount haveincreased subsequently.",
   "providehandleIDcardPrompt": "Must provide above mentioned images, otherwise application will be rejected.",
+  "refreshSuccess": "刷新成功",
+  "resetpwd": {
+    "label": "Reset Password",
+    "success": "reset pwd success"
+  },
   "restRepayAmount": "剩余应付金额",
   "signinPrompt": "Don't have an account?",
-  "tostep7": "Click here to modify bank card",
-  "warnRepayPrompt": "我们建议您在此页面立即偿还贷款，以 免影响您的下次贷款申请。",
-  "overduePrompt": "There is one unpaid bill and {day} days overdue",
-  "paymentPrompt1": "我们建议您在此页面立即偿还贷款，以免影响您的下次贷款申请。",
-  "paymentPrompt2": "我们需要几分钟来处理您的还贷申请，请耐心等待。如果收不到验证码，请重新发送验证码。谢谢您的配合。",
-  "paymentNumPrompt": "Tasa de Tramitacion",
-  "agreeWithMoneyya": "Agree with Moneyya",
   "termsofService": "Terms of Service",
-  "loanInfoHint": "Loan information",
-  "exceedMaxAmount": "Exceed max available loan amont!",
-  "refreshSuccess": "刷新成功",
   "toBottom": "到达底部了",
-  "loadMore": "Loading More...",
-  "newVersion": "Update to a new Version"
+  "tostep7": "Click here to modify bank card",
+  "upload-Failed": "upload failed",
+  "warnRepayPrompt": "我们建议您在此页面立即偿还贷款，以 免影响您的下次贷款申请。"
 }

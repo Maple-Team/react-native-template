@@ -47,7 +47,7 @@ Props) {
 
     const { selectedPhone } = selection
     const contactPhone = selectedPhone.number
-    const _value = contactPhone.replace(/[\s-]/g, '') //TODO 正则替换
+    const _value = contactPhone.replace(/[\s-]/g, '')
     onChange(_value)
   }, [onChange])
 

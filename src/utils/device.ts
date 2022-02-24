@@ -1,4 +1,4 @@
-import DeviceInfo from 'react-native-device-info'
+import {} from 'react-native-device-info'
 import RNAdvertisingId from 'react-native-advertising-id'
 import NetInfo from '@react-native-community/netinfo'
 import { getTimeSinceStartup } from 'react-native-startup-time'
@@ -16,7 +16,6 @@ const timezone = RNLocalize.getTimeZone()
  * 一部分从第三方模块中获取
  * 一部分从全局状态中获取(已经获取的，不需要重复获取)
  */
-const {} = DeviceInfo
 
 console.log(
   RNAdvertisingId,
