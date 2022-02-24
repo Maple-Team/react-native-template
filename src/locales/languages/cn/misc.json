@@ -1,5 +1,19 @@
 {
   "adPrompt": "简单几步，即可完成贷款:",
+  "ads": [
+    {
+      "title": "Convenient operation",
+      "text": "Fill up information within 5 mins"
+    },
+    {
+      "title": "Fast Approval",
+      "text": "Verification finished within 2 hours"
+    },
+    {
+      "title": "Get the disbursement",
+      "text": "Disbursement within 24 hours"
+    }
+  ],
   "agreeWithMoneyya": "Agree with Moneyya",
   "authorizaiton": "授权说明",
   "authorizaiton-not-reading": "请阅读完",
@@ -53,5 +67,17 @@
   "toBottom": "我是有底线的",
   "tostep7": "返回修改银行卡号",
   "upload-Failed": "upload failed",
-  "warnRepayPrompt": "我们建议您在此页面立即偿还贷款，以 免影响您的下次贷款申请。"
+  "warnRepayPrompt": "我们建议您在此页面立即偿还贷款，以 免影响您的下次贷款申请。",
+  "take-photo-title": "Proporciona tu INE/IFE por favor",
+  "take-photo-hint-1": "El frente de tu ID",
+  "take-photo-hint-2": "La parte trasera de tu ID",
+  "orderNumber": "订单号",
+  "fillingDate": "Filling Date",
+  "paymentDate": "Payment date",
+  "repaymentDate": "Raypayment Date",
+  "serviceFee": "Service Fee",
+  "amount-of-payment": "Amount of repayment",
+  "repayment-amount": "Repayment amount",
+  "status": "Status",
+  "stage": "Stage"
 }

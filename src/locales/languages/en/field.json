@@ -76,6 +76,7 @@
   "contactPhone": {
     "label": "contactPhone",
     "placeholder": "contact phone",
+    "invalid": "contact phone invalid",
     "required": "contact phone required"
   },
   "contactRelationCode": {

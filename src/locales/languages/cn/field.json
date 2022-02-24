@@ -76,6 +76,7 @@
   "contactPhone": {
     "label": "亲属联系人电话",
     "placeholder": "请选择亲属联系人电话",
+    "invalid": "联系人电话格式不正确",
     "required": "亲属联系人电话必须"
   },
   "contactRelationCode": {

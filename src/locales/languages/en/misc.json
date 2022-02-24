@@ -1,5 +1,19 @@
 {
   "adPrompt": "Easy steps to get and pay for a loan:",
+  "ads": [
+    {
+      "title": "Convenient operation",
+      "text": "Fill up information within 5 mins"
+    },
+    {
+      "title": "Fast Approval",
+      "text": "Verification finished within 2 hours"
+    },
+    {
+      "title": "Get the disbursement",
+      "text": "Disbursement within 24 hours"
+    }
+  ],
   "agreeWithMoneyya": "Agree with Moneyya",
   "authorizaiton": "authorizaiton",
   "authorizaiton-not-reading": "请阅读完",
@@ -53,5 +67,17 @@
   "toBottom": "到达底部了",
   "tostep7": "Click here to modify bank card",
   "upload-Failed": "upload failed",
-  "warnRepayPrompt": "我们建议您在此页面立即偿还贷款，以 免影响您的下次贷款申请。"
+  "warnRepayPrompt": "我们建议您在此页面立即偿还贷款，以 免影响您的下次贷款申请。",
+  "take-photo-title": "Proporciona tu INE/IFE por favor",
+  "take-photo-hint-1": "El frente de tu ID",
+  "take-photo-hint-2": "La parte trasera de tu ID",
+  "orderNumber": "Order Number",
+  "fillingDate": "Filling Date",
+  "paymentDate": "Payment Date",
+  "repaymentDate": "Repayment Date",
+  "serviceFee": "Service Fee",
+  "amount-of-payment": "Amount of repayment",
+  "repayment-amount": "Repayment amount",
+  "status": "Status",
+  "stage": "Stage"
 }

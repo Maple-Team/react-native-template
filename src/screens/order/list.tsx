@@ -29,7 +29,7 @@ export function BillsList() {
     setLoading(true)
     queryOrders(type)
       .then(res => {
-        setData(res)
+        res && setData(res)
       })
       .finally(() => setLoading(false))
   }, [type])
@@ -40,7 +40,9 @@ export function BillsList() {
     if (data.length < 10) {
       queryOrders(type)
         .then(res => {
-          setData(uniqBy(res.concat(data), 'applyId'))
+          if (res) {
+            setData(uniqBy(res.concat(data), 'applyId'))
+          }
           setRefreshing(false)
         })
         .finally(() => setLoading(false))
@@ -77,6 +79,7 @@ export function BillsList() {
   if (loading) {
     return <Loading />
   }
+  console.dir(data)
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar translucent={false} backgroundColor="#fff" barStyle="dark-content" />
@@ -133,7 +136,7 @@ export function BillsList() {
                       <Image
                         source={
                           getStateContent(item).state >= 0
-                            ? getStateContent(item).state === 1 || getStateContent(item).state === 2
+                            ? getStateContent(item).state === 1
                               ? require('@/assets/compressed/bills/setted.webp')
                               : require('@/assets/compressed/bills/repay1.webp')
                             : require('@/assets/compressed/bills/repay3.webp')
@@ -161,16 +164,16 @@ export function BillsList() {
                         <Text>{item.applyAmount}</Text>
                       </View>
                       <View style={{ alignItems: 'center' }}>
-                        {getStateContent(item).state === 2 ? (
+                        {getStateContent(item).state === 2 || getStateContent(item).state === 1 ? (
                           <>
                             <Text
                               styles={{
                                 //@ts-ignore
                                 marginBottom: 15,
                               }}>
-                              {t('loanDate')}
+                              {t('loanDays')}
                             </Text>
-                            <Text>{item.applyDate}</Text>
+                            <Text>{item.loanTerms}</Text>
                           </>
                         ) : (
                           <>

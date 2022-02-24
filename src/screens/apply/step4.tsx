@@ -58,12 +58,12 @@ export const Step4 = ({ navigation }: NativeStackHeaderProps) => {
               return (
                 <>
                   <View style={PageStyles.form}>
-                    <Text>Proporciona tu INE/IFE por favor</Text>
+                    <Text>{t('take-photo-title')}</Text>
                     <PhotoPicker
                       field="idcard1"
                       key="idcard1"
-                      hint="El frente de tu ID"
-                      title={'Proporciona tu INE/IFE por favor'}
+                      hint={t('take-photo-hint-1')}
+                      title={t('take-photo-title')}
                       bg={require('@assets/compressed/apply/id1.webp')}
                       imageType="INE_OR_IFE_FRONT"
                       cameraType="front"
@@ -78,7 +78,7 @@ export const Step4 = ({ navigation }: NativeStackHeaderProps) => {
                     <PhotoPicker
                       field="idcard2"
                       key="idcard2"
-                      hint="La parte trasera de tu ID"
+                      hint={t('take-photo-hint-2')}
                       bg={require('@assets/compressed/apply/id2.webp')}
                       imageType="INE_OR_IFE_BACK"
                       cameraType="back"

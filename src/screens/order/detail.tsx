@@ -115,7 +115,7 @@ export default ({ route }: { route: any }) => {
             ]}>
             <View style={style.itemWrapper}>
               <Text color="#869096" fontSize={14}>
-                Order number
+                {t('orderNumber')}
               </Text>
               <Text color="#869096" fontSize={14}>
                 {data?.applyId}
@@ -123,71 +123,71 @@ export default ({ route }: { route: any }) => {
             </View>
             <View style={style.itemWrapper}>
               <Text color="#869096" fontSize={14}>
-                Loan amount
+                {t('loanAmount')}
               </Text>
               <Text color="#869096" fontSize={14}>
-                MXN {data?.loanAmount}
-              </Text>
-            </View>
-            <View style={style.itemWrapper}>
-              <Text color="#869096" fontSize={14}>
-                Loan Term
-              </Text>
-              <Text color="#869096" fontSize={14}>
-                {data?.displayLoanDays}days
+                {data?.loanAmount ? `${t('mxn')} ${data?.loanAmount}` : '--'}
               </Text>
             </View>
             <View style={style.itemWrapper}>
               <Text color="#869096" fontSize={14}>
-                Filing date
+                {t('loanDays')}
               </Text>
               <Text color="#869096" fontSize={14}>
-                {data?.applyDate}
-              </Text>
-            </View>
-            <View style={style.itemWrapper}>
-              <Text color="#869096" fontSize={14}>
-                Payment date
-              </Text>
-              <Text color="#869096" fontSize={14}>
-                {data?.loanDate}
+                {data?.displayLoanDays ? `${data?.displayLoanDays} ${t('days')}` : '--'}
               </Text>
             </View>
             <View style={style.itemWrapper}>
               <Text color="#869096" fontSize={14}>
-                Repayment date
+                {t('fillingDate')}
               </Text>
               <Text color="#869096" fontSize={14}>
-                {data?.repayDate}
-              </Text>
-            </View>
-            <View style={style.itemWrapper}>
-              <Text color="#869096" fontSize={14}>
-                Service Fee
-              </Text>
-              <Text color="#869096" fontSize={14}>
-                MXN {toThousands(0)}
+                {data?.applyDate ?? '--'}
               </Text>
             </View>
             <View style={style.itemWrapper}>
               <Text color="#869096" fontSize={14}>
-                Amount of repayment
+                {t('paymentDate')}
               </Text>
               <Text color="#869096" fontSize={14}>
-                MXN {toThousands(data?.repayAmount)}
+                {data?.loanDate ?? '--'}
               </Text>
             </View>
             <View style={style.itemWrapper}>
               <Text color="#869096" fontSize={14}>
-                Repayment amount
+                {t('repaymentDate')}
               </Text>
               <Text color="#869096" fontSize={14}>
-                MXN {toThousands(data?.realRepayAmount)}
+                {data?.repayDate ?? '--'}
+              </Text>
+            </View>
+            <View style={style.itemWrapper}>
+              <Text color="#869096" fontSize={14}>
+                {t('serviceFee')}
+              </Text>
+              <Text color="#869096" fontSize={14}>
+                {t('mxn')} {toThousands(0)}
+              </Text>
+            </View>
+            <View style={style.itemWrapper}>
+              <Text color="#869096" fontSize={14}>
+                {t('amount-of-payment')}
+              </Text>
+              <Text color="#869096" fontSize={14}>
+                {data?.repayAmount ? `${t('mxn')} ${toThousands(data?.repayAmount)}` : '--'}
+              </Text>
+            </View>
+            <View style={style.itemWrapper}>
+              <Text color="#869096" fontSize={14}>
+                {t('repayment-amount')}
+              </Text>
+              <Text color="#869096" fontSize={14}>
+                {data?.realRepayAmount ? `${t('mxn')}${toThousands(data?.realRepayAmount)}` : '--'}
               </Text>
             </View>
             <View style={[style.itemWrapper, { borderBottomWidth: 0 }]}>
               <Text color="#869096" fontSize={14}>
-                Status
+                {t('status')}
               </Text>
               <Text color="#869096" fontSize={14}>
                 {data?.contractStatusName}
@@ -202,7 +202,9 @@ export default ({ route }: { route: any }) => {
               ]}>
               <>
                 <View style={{ paddingBottom: 10, paddingLeft: 10 }}>
-                  <Text>Stage 1/{data?.paymentSchedules?.length}</Text>
+                  <Text>
+                    {t('stage')} 1/{data?.paymentSchedules?.length}
+                  </Text>
                 </View>
                 <View
                   style={{
@@ -216,10 +218,10 @@ export default ({ route }: { route: any }) => {
                   }}>
                   <View style={[style.itemWrapper]}>
                     <Text color="#869096" fontSize={14}>
-                      第一次应还
+                      {t('firstPaymentAmount')}
                     </Text>
                     <Text color="#869096" fontSize={14}>
-                      MXN{' '}
+                      {t('mxn')}{' '}
                       {toThousands(
                         data?.paymentSchedules ? data?.paymentSchedules[0].loanTermTotalAmt : 0
                       )}
@@ -227,7 +229,7 @@ export default ({ route }: { route: any }) => {
                   </View>
                   <View style={[style.itemWrapper, { borderBottomWidth: 0 }]}>
                     <Text color="#869096" fontSize={14}>
-                      第一次还款时间
+                      {t('firstPaymentdate')}
                     </Text>
                     <Text color="#869096" fontSize={14}>
                       {data?.paymentSchedules ? data?.paymentSchedules[0].loanPmtDueDate : 0}
@@ -239,7 +241,9 @@ export default ({ route }: { route: any }) => {
               {data?.paymentSchedules?.length === 2 && (
                 <>
                   <View style={{ paddingBottom: 10, paddingLeft: 10 }}>
-                    <Text>Stage 1/{data?.paymentSchedules.length}</Text>
+                    <Text>
+                      {t('stage')} 1/{data?.paymentSchedules.length}
+                    </Text>
                   </View>
                   <View
                     style={{
@@ -252,18 +256,32 @@ export default ({ route }: { route: any }) => {
                     }}>
                     <View style={[style.itemWrapper]}>
                       <Text color="#869096" fontSize={14}>
-                        第二次应还
+                        {t('secondPaymentAmount')}
                       </Text>
                       <Text color="#869096" fontSize={14}>
-                        MXN 6.618 freeMark
+                        {t('mxn')} {data?.paymentSchedules[1].loanTermTotalAmt}{' '}
+                        {data?.paymentSchedules[1].freeMark === 'Y' && (
+                          <View
+                            style={{
+                              paddingHorizontal: 7,
+                              paddingVertical: 6,
+                              backgroundColor: Color.primary,
+                              borderRadius: 5,
+                              marginLeft: 9,
+                            }}>
+                            <Text fontSize={12} fontWeight="bold" color="#fff">
+                              {t('free')}
+                            </Text>
+                          </View>
+                        )}
                       </Text>
                     </View>
                     <View style={[style.itemWrapper, { borderBottomWidth: 0 }]}>
                       <Text color="#869096" fontSize={14}>
-                        第二次还款时间
+                        {t('secondPaymentDate')}
                       </Text>
                       <Text color="#869096" fontSize={14}>
-                        2020-12-08
+                        {data?.paymentSchedules[1].loanPmtDueDate}
                       </Text>
                     </View>
                   </View>
