@@ -28,10 +28,12 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
     contactName1: string().max(100, t('contactName.invalid')).required(t('contactName.required')),
     contactPhone1: string()
       .required(t('contactPhone.required'))
+      .typeError(t('contactPhone.invalid'))
       .matches(REGEX_PHONE, t('contactPhone.invalid')),
     contactRelationCode1: string().required(t('contactRelationCode.required')),
     contactName2: string().max(100, t('contactName.invalid')).required(t('contactName.required')),
     contactPhone2: string()
+      .typeError(t('contactPhone.invalid'))
       .required(t('contactPhone.required'))
       .matches(REGEX_PHONE, t('contactPhone.invalid')),
     contactRelationCode2: string().required(t('contactRelationCode.required')),
@@ -39,6 +41,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
     contactName3: string().max(100, t('contactName.invalid')).required(t('contactName.required')),
     contactPhone3: string()
       .required(t('contactPhone.required'))
+      .typeError(t('contactPhone.invalid'))
       .matches(REGEX_PHONE, t('contactPhone.invalid')),
     contactRelationCode3: string().required(t('contactRelationCode.required')),
   })

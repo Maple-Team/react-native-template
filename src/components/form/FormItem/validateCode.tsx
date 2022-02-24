@@ -52,9 +52,8 @@ export const ValidateCode = ({
   )
   const [count, setCount] = useState<number>(maxCount)
   // FIXME
-  const [times, setTimtes] = useState<number>(context.brand?.codeValidatecount || 5) // Brand info
+  // const [times, setTimtes] = useState<number>(context.brand?.codeValidatecount || 5) // Brand info
   const [isPlaying, setPlaying] = useState<boolean>(false)
-  console.log(times, setTimtes)
   const handlePress = debounce(
     () => {
       setPlaying(true)

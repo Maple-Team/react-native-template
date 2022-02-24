@@ -187,7 +187,7 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
                           label={t('bankCardNo.label')}
                           placeholder={t('bankCardNo.placeholder')}
                           key="bankCardNo_card"
-                          mask={'[0000] [0000] [0000] [0000] [00]'}
+                          mask={'[0000] [0000] [0000] [0000]'}
                           onChangeText={(text: string, extracted?: string) => {
                             setFieldValue('bankCardNo', extracted || '')
                             dispatch({ type: 'bankCardNo', value: extracted || '' })
@@ -212,7 +212,7 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
                           label={t('bankCardNo.label')}
                           placeholder={t('bankCardNo.placeholder')}
                           key="bankCardNo_clabe"
-                          mask={'[0000] [0000] [0000] [0000]'}
+                          mask={'[0000] [0000] [0000] [0000] [00]'}
                         />
                       )}
                     </View>

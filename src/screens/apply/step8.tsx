@@ -107,8 +107,10 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
   // 试算信息
   const [calcResult, setcalcResult] = useState<Calculate>()
   console.log({ calcResult }, params)
+  const [isWarnging, setWarn] = useState<boolean>()
+
   useEffect(() => {
-    if (loanCode && displayLoanDays > 0) {
+    if (loanCode && displayLoanDays > 0 && !isWarnging) {
       scheduleCalc({
         displayLoanDays,
         loanAmt,
@@ -119,7 +121,7 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
         res && setcalcResult(res)
       })
     }
-  }, [loanAmt, loanDay, loanCode, displayLoanDays])
+  }, [loanAmt, loanDay, loanCode, displayLoanDays, isWarnging])
   const loanTermArray: {
     day: number
     activate: boolean
@@ -147,7 +149,6 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
         : [],
     [productInfo]
   )
-  const [isWarnging, setWarn] = useState<boolean>()
   useEffect(() => {
     if (productInfo?.maxAmount) {
       if (loanAmt > productInfo?.maxAmount) {
@@ -294,7 +295,7 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
               <ListInfo
                 data={[
                   { name: t('loanAmount'), value: loanAmt, type: 'money' },
-                  { name: t('loanDays'), value: loanDay, type: 'day' },
+                  { name: t('loanDays'), value: displayLoanDays || 0, type: 'day' },
                   { name: t('transferAmount'), value: productInfo?.maxAmount || 0, type: 'money' },
                   {
                     name: t('fee'),

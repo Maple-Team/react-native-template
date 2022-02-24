@@ -190,7 +190,7 @@ export const Step71 = ({ navigation }: NativeStackHeaderProps) => {
                       label={t('bankCardNo.label')}
                       placeholder={t('bankCardNo.placeholder')}
                       key="bankCardNo_card"
-                      mask={'[0000] [0000] [0000] [0000] [00]'}
+                      mask={'[0000] [0000] [0000] [0000]'}
                       onChangeText={(text: string, extracted?: string) => {
                         setFieldValue('newBankCardNo', extracted || '')
                         dispatch({ type: 'newBankCardNo', value: extracted || '' })
@@ -214,7 +214,7 @@ export const Step71 = ({ navigation }: NativeStackHeaderProps) => {
                       label={t('bankCardNo.label')}
                       placeholder={t('bankCardNo.placeholder')}
                       key="bankCardNo_clabe"
-                      mask={'[0000] [0000] [0000] [0000]'}
+                      mask={'[0000] [0000] [0000] [0000] [00'}
                     />
                   )}
                   <ValidateCode

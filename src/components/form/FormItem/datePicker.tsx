@@ -88,7 +88,7 @@ export function NormalDatePicker({
         modal={true}
         open={visible}
         androidVariant="iosClone"
-        date={dayjs(value || initDate).toDate()}
+        date={dayjs(value?.split('-').reverse().join('-') || initDate).toDate()}
         mode="date"
         onConfirm={(date: Date) => {
           setVisible(false)
