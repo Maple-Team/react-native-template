@@ -53,7 +53,8 @@ export const Step61 = ({ navigation }: NativeStackHeaderProps) => {
   useLocation()
   const startLiveness = useCallback(() => {
     // 当前申请单活体校验次数
-    if (livenessTimes > context?.brand?.livenessAuthCount || 0) {
+    const count = context?.brand ? context?.brand.livenessAuthCount : 0
+    if (livenessTimes > count) {
       navigation.navigate('Step62')
     } else {
       Liveness.startLiveness(
@@ -84,7 +85,7 @@ export const Step61 = ({ navigation }: NativeStackHeaderProps) => {
         }
       )
     }
-  }, [context?.brand?.livenessAuthCount, errorTimes, livenessTimes, navigation, onSubmit])
+  }, [context?.brand, errorTimes, livenessTimes, navigation, onSubmit])
 
   useEffect(() => {
     if (errorTimes >= (context.brand?.livenessAuthCount || 0)) {

@@ -69,6 +69,9 @@ export function BillsList() {
       case APPLY_STATE.WAIT:
         content = { text: item.contractStatusName, color: Color.primary, state: 2 }
         break
+      case APPLY_STATE.REJECTED:
+        content = { text: item.contractStatusName, color: '#FF4800', state: 3 }
+        break
       case APPLY_STATE.SETTLE:
         content = { color: Color.primary, state: 1 }
         break
@@ -79,7 +82,6 @@ export function BillsList() {
   if (loading) {
     return <Loading />
   }
-  console.dir(data)
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar translucent={false} backgroundColor="#fff" barStyle="dark-content" />
@@ -164,7 +166,9 @@ export function BillsList() {
                         <Text>{item.applyAmount}</Text>
                       </View>
                       <View style={{ alignItems: 'center' }}>
-                        {getStateContent(item).state === 2 || getStateContent(item).state === 1 ? (
+                        {getStateContent(item).state === 3 ||
+                        getStateContent(item).state === 2 ||
+                        getStateContent(item).state === 1 ? (
                           <>
                             <Text
                               styles={{

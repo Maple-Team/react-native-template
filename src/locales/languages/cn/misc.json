@@ -79,5 +79,8 @@
   "amount-of-payment": "Amount of repayment",
   "repayment-amount": "Repayment amount",
   "status": "Status",
-  "stage": "Stage"
+  "stage": "Stage",
+  "bankCodePrompt": "Tips:ReceiptAs and repayments may be affected by bank working",
+  "backCodeValidPrompt": "If account information is incorrecctly filled,you will not be able to receive loans.",
+  "repayAmountHint": "Tasa de Tramitacion"
 }

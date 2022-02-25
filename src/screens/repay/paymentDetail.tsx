@@ -72,8 +72,10 @@ export function PaymentDetail() {
               justifyContent: 'space-between',
               paddingBottom: 18,
             }}>
-            <Text>Tasa de Tramitacion</Text>
-            <Text>{toThousands(params?.amount || 0)} MXN</Text>
+            <Text>{t('repayAmountHint')}</Text>
+            <Text>
+              {toThousands(params?.amount || 0)} {t('mxn')}
+            </Text>
           </View>
           <View
             style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -114,7 +116,6 @@ export function PaymentDetail() {
                   style={{ width: 224 }}
                   height={100}
                   source={{
-                    // TODO calculate image width
                     uri: source,
                   }}
                 />

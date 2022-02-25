@@ -130,7 +130,7 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
           <View style={{ paddingHorizontal: 37, backgroundColor: '#fff', flexDirection: 'row' }}>
             <Hint
               img={require('@/assets/compressed/apply/loan_notice.webp')}
-              hint={'Tips:ReceiptAs and repayments may be affected by bank working'}
+              hint={t('bankCodePrompt')}
               hintColor={'rgba(255, 50, 50, 1)'}
             />
           </View>
@@ -308,9 +308,7 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
               <View style={{ paddingHorizontal: 14.5, paddingBottom: 47, flexDirection: 'row' }}>
                 <Hint
                   img={require('@/assets/compressed/apply/loan_notice.webp')}
-                  hint={
-                    'If account information is incorrecctly filled,you will not be able to receive loans.'
-                  }
+                  hint={t('backCodeValidPrompt')}
                   hintColor={'rgba(255, 50, 50, 1)'}
                 />
               </View>
