@@ -55,7 +55,8 @@
     "PersonInfo": "Título de pantalla/Información personal",
     "BankInfo": "Título de pantalla/Información bancaria",
     "authorizaiton": "Título de pantalla/Autorización",
-    "privacy": "Título de pantalla/Política de privacidad"
+    "privacy": "Título de pantalla/Política de privacidad",
+    "loanDetailedRecord": "Loan detailed record"
   },
   "secondPaymentAmount": "Monto de reembolso del segundo pago",
   "secondPaymentDate": "Monto de reembolso del segundo pago y fecha",

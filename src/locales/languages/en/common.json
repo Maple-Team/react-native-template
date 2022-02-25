@@ -55,7 +55,8 @@
     "PersonInfo": "Person Info",
     "BankInfo": "Bank Info",
     "authorizaiton": "Authorizaiton",
-    "privacy": "Privacy Policy"
+    "privacy": "Privacy Policy",
+    "loanDetailedRecord": "Loan detailed record"
   },
   "secondPaymentAmount": "Second repayment amount",
   "secondPaymentDate": "Second repayment date",

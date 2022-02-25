@@ -55,7 +55,8 @@
     "BankInfo": "银行卡信息",
     "authorizaiton": "授权说明",
     "privacy": "隐私政策",
-    "loan": "Loan"
+    "loan": "Loan",
+    "loanDetailedRecord": "Loan detailed record"
   },
   "secondPaymentAmount": "Second repayment amount",
   "secondPaymentDate": "Second repayment date",

@@ -21,7 +21,7 @@ import { useTranslation } from 'react-i18next'
 
 export function BillsList() {
   const route = useRoute()
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const { type } = (route.params || { type: 'order' }) as { type: 'payment' | 'order' }
   const [data, setData] = useState<Order[]>([])
   const [loading, setLoading] = useState<boolean>()
@@ -51,6 +51,7 @@ export function BillsList() {
       setRefreshing(false)
     }
   }, [data, t, type])
+  console.log(i18n, '==========')
   /**
    * 计算出还款相关状态
    */
@@ -151,11 +152,11 @@ export function BillsList() {
                         flexDirection: 'row',
                         paddingTop: 30.5,
                         justifyContent: 'space-between',
-                        paddingHorizontal: 49.5,
+                        paddingHorizontal: i18n.language === 'es-MX' ? 5 : 49.5,
                         paddingBottom: 13,
                         width: '100%',
                       }}>
-                      <View style={{ alignItems: 'center' }}>
+                      <View style={{ alignItems: 'center', flexWrap: 'wrap', marginRight: 10 }}>
                         <Text
                           styles={{
                             //@ts-ignore
@@ -165,7 +166,7 @@ export function BillsList() {
                         </Text>
                         <Text>{item.applyAmount}</Text>
                       </View>
-                      <View style={{ alignItems: 'center' }}>
+                      <View style={{ alignItems: 'center', flexWrap: 'wrap' }}>
                         {getStateContent(item).state === 3 ||
                         getStateContent(item).state === 2 ||
                         getStateContent(item).state === 1 ? (

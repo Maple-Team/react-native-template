@@ -26,6 +26,8 @@
   "amount-of-payment": "Amount of repayment",
   "repayment-amount": "Repayment amount",
   "status": "Status",
-  "stage": "Stage"
+  "stage": "Stage",
+  "loanDetailedRecord": "Loan detailed record"
+  },
 }
 ```
