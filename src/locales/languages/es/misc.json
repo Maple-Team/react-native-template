@@ -1,0 +1,86 @@
+{
+  "adPrompt": "adPrompt,Consigue fácilmente un préstamo:",
+  "ads": [
+    {
+      "title": "Convenient operation",
+      "text": "Fill up information within 5 mins"
+    },
+    {
+      "title": "Fast Approval",
+      "text": "Verification finished within 2 hours"
+    },
+    {
+      "title": "Get the disbursement",
+      "text": "Disbursement within 24 hours"
+    }
+  ],
+  "agreeWithMoneyya": "de acuerdo con Moneyya",
+  "authorizaiton": "descripción de la autorización",
+  "authorizaiton-not-reading": "Por favor lea hsta el final.",
+  "bill-information": "Información de factura",
+  "camera": {
+    "unavailable": "Cámara no disponible",
+    "no-permission": "La cámara no está permitida",
+    "other-error": "Error desconocido de la cámara"
+  },
+  "choose-product-prompt": "por favor elija los términos del préstamo.",
+  "copySuccessed": "Copiado con éxito",
+  "currentLoanInfoHint": "本次还款申请",
+  "exceedMaxAmount": "Monto máximo del préstamo excedido",
+  "field": {
+    "short": "{{field}} El campo insertado es demasiado corto",
+    "long": "{{field}} El campo insertado es demasiado largo"
+  },
+  "fillBankCodePrompt": "Ingrese su propia información bancaria",
+  "firstPaymentAmount": "Monto del reembolso",
+  "firstPaymentdate": "Primera fecha de reembolso",
+  "informationConfirmed": "Información confirmada",
+  "intlCurrency": "Moneda internacional {{val}}",
+  "loadMore": "Cargando más",
+  "loanInfoHint": "Información del préstamo",
+  "logoutPrompt": "Solicitud de cierre de sesión",
+  "logoutPromptContent": "Está seguro de cerrar sesión?",
+  "maxAvailableAmount": "La cantidad máxima que se puede pedir prestada",
+  "newVersion": "Actualizar a una nueva versión",
+  "noMessagePrompt": "La lista de mensajes está vacía!",
+  "noMore": "No hay más datos disponibles",
+  "notice": "Aviso mensaje nuevo",
+  "numberRequired": "Debe especificar un número",
+  "otherContact": "Otro contacto",
+  "overduePrompt": "Hay una factura sin pagar y con días de retraso",
+  "payment": "Pago/Reembolso",
+  "paymentNumPrompt": "Tasa de tramitación",
+  "paymentPrompt1": "Le recomendamos que pague inmediatamente el préstamo para no afectar su próxima solicitud de préstamo",
+  "paymentPrompt2": "Tardaremos unos minutos en evaluar su aplicación. Por favor espere, si no recibe un código de verificación por favor envíelo nuevamente. Gracias por su cooperación",
+  "permission blocked": "Permiso bloqueado",
+  "permission unavailable": "Permiso no disponible",
+  "promptRepayHint": "Mantener un buen comportamiento de pago lo ayudará a aumentar el monto de su préstamo. El 96% del monto del préstamo de los usuarios aumentó posteriormente.",
+  "providehandleIDcardPrompt": "Debe proporcionar las imágenes mencionadas anteriormente; de ??lo contrario se rechazará la solicitud.",
+  "refreshSuccess": "Actualización con éxito",
+  "resetpwd": {
+    "label": "Restablecer contrase?a",
+    "success": "Restablecido con éxito"
+  },
+  "restRepayAmount": "Importe restante a pagar",
+  "signinPrompt": "Tiene una cuenta?",
+  "termsofService": "Términos de servicio",
+  "toBottom": "Ha llegado al final",
+  "tostep7": "haga clic aquí para modificar la tarjeta bancaria",
+  "upload-Failed": "Carga fallida",
+  "warnRepayPrompt": "le recomendamos que pague el préstamo inmediatamente en esta página para no afectar su próxima solicitud de préstamo.",
+  "take-photo-title": "Proporciona tu INE/IFE por favor",
+  "take-photo-hint-1": "El frente de tu ID",
+  "take-photo-hint-2": "La parte trasera de tu ID",
+  "orderNumber": "Order Number",
+  "fillingDate": "Filling Date",
+  "paymentDate": "Payment Date",
+  "repaymentDate": "Repayment Date",
+  "serviceFee": "Service Fee",
+  "amount-of-payment": "Amount of repayment",
+  "repayment-amount": "Repayment amount",
+  "status": "Status",
+  "stage": "Stage",
+  "bankCodePrompt": "Tips:ReceiptAs and repayments may be affected by bank working",
+  "backCodeValidPrompt": "If account information is incorrecctly filled,you will not be able to receive loans.",
+  "repayAmountHint": "Tasa de Tramitacion"
+}

@@ -1,0 +1,243 @@
+{
+  "authPhone": {
+    "label": "Cuenta social",
+    "placeholder": "Marcador de posición/Teléfono social",
+    "required": "Teléfono social requerido",
+    "invalid": "Teléfono social inválido"
+  },
+  "backupPhone": {
+    "required": "Teléfono de respaldo requerido",
+    "label": "Teléfono de respaldo",
+    "placeholder": "teléfono de respaldo",
+    "invalid": "Teléfono de respaldo no válido"
+  },
+  "bankCardNo": {
+    "label": "Número de tarjeta bancaria",
+    "placeholder": "Número de tarjeta bancaria",
+    "required": "Número de tarjeta bancaria requerida",
+    "invalid": "Tarjeta bancaria inválida"
+  },
+  "bankCode": {
+    "label": "Código bancario",
+    "placeholder": "Código bancario",
+    "required": "Código bancario requerido"
+  },
+  "birth": {
+    "required": "Nacimiento requerido",
+    "label": "Etiqueta de nacimiento",
+    "placeholder": "Lugar de nacimiento"
+  },
+  "cardNoType": {
+    "required": "Número de tarjeta bancaria requerida/Tipo de tarjeta",
+    "label": "Número de tarjeta bancaria requerida/Tipo de tarjeta",
+    "placeholder": "Número de tarjeta bancaria requerida/Tipo de tarjeta"
+  },
+  "comfirmPassword": {
+    "label": "Confirme la contrase?a",
+    "placeholder": "Confirme la contrase?a",
+    "invalid": "Confirme la contrase?a. inválido",
+    "required": "Es necesario confirmar la contrase?a",
+    "notSame": "Confirme que es diferente a la contrase?a"
+  },
+  "company": {
+    "label": "Nombre de la empresa",
+    "placeholder": "Marcador de posición de la empresa/Nombre de la empresa",
+    "invalid": "Nombre de la compa?ía inválido",
+    "required": "Nombre de la empresa requerido"
+  },
+  "companyAddrCityCode": {
+    "label": "Códico de ciudad de la compa?ía requerido",
+    "placeholder": "Código de ciudad de la compa?ía",
+    "required": "Código de ciudad de la compa?ía"
+  },
+  "companyAddrDetail": {
+    "label": "Detalle de la dirección de la compa?ía",
+    "placeholder": "Marcador de posición/Detalles de la dirección de la empresa",
+    "invalid": "Detalles de la dirección de la empresa inválidos",
+    "required": "Dirección detallada de la empresa requerida"
+  },
+  "companyAddrProvinceCode": {
+    "label": "Código de Provincia de la empresa",
+    "placeholder": "Dirección de la empresa/Código de Provincia",
+    "required": "Código de Provincia de la empresa requerido"
+  },
+  "companyPhone": {
+    "label": "Teléfono de la compa?ía",
+    "placeholder": "Teléfono de la compa?ía",
+    "invalid": "Formato del teléfono de la empresa incorrecto",
+    "required": "Teléfono de la empresa requerido"
+  },
+  "contactName": {
+    "label": "Número telefónico de los familiares",
+    "placeholder": "Número telefónico de los parientes",
+    "invalid": "Nombre de contacto no válido",
+    "required": "Nombre de contacto de pariente requerido"
+  },
+  "contactPhone": {
+    "label": "Nombre de contacto de pariente requerido",
+    "placeholder": "Nombre de contacto de pariente requerido",
+    "invalid": "Nombre de contacto de pariente no válido",
+    "required": "Nombre de contacto de pariente requerido"
+  },
+  "contactRelationCode": {
+    "label": "Tipo de parentesco",
+    "placeholder": "Tipo de parentesco",
+    "required": "Tipo de parentesco requerido"
+  },
+  "docType": {
+    "required": "Tipo de documento",
+    "label": "Tipo de documento",
+    "placeholder": "Tipo de documento"
+  },
+  "educationCode": {
+    "required": "Nivel educativo requerido",
+    "label": "Nivel educativo",
+    "placeholder": "Etiqueta de nivel educativo"
+  },
+  "email": {
+    "required": "Correo electrónico requerido",
+    "label": "Etiqueta de correo electrónico",
+    "invalid": "Correo electrónico inválido",
+    "placeholder": "Etiqueta de correo electrónico"
+  },
+  "firstName": {
+    "label": "Etiqueta de Primer nombre",
+    "placeholder": "Por favor ingrese su nombre",
+    "invalid": "Formato de nombre incorrecto",
+    "required": "Primer nombre requerido"
+  },
+  "gender": {
+    "required": "Genero del aplicante requerido",
+    "label": "Etiqueta género"
+  },
+  "hasAgree": {
+    "required": "Marque los términos del servicio"
+  },
+  "homeAddrCityCode": {
+    "required": "Código de",
+    "label": "Código postal",
+    "placeholder": "Código postal"
+  },
+  "homeAddrDetail": {
+    "required": "Dirección detallada de la casa requerida",
+    "label": "Dirección detallada de la casa requerida",
+    "placeholder": "Dirección detallada de la casa requerida"
+  },
+  "homeAddrProvinceCode": {
+    "required": "Código de ciudad de la casa requerido",
+    "label": "Código de ciudad de la casa requerido",
+    "placeholder": "Etiqueta Código de Provincia y dirección domicilio"
+  },
+  "idcard": {
+    "required": "Tarjeta de identificación requerida",
+    "label": "Etiqueta tarjeta de identificación",
+    "placeholder": "Etiqueta tarjeta de identificación",
+    "invalid": "Tarjeta de identificación inválida"
+  },
+  "idcard1": {
+    "label": "Etiqueta tarjeta de identificación",
+    "required": "Tarjeta de identificación requerida"
+  },
+  "idcard2": {
+    "label": "Etiqueta tarjeta de identificación",
+    "required": "Etiqueta tarjeta de identificación requerida"
+  },
+  "incumbency": {
+    "label": "Etiqueta Tiempo de trabajo",
+    "placeholder": "Etiqueta Tiempo de trabajo",
+    "required": "Requerido tiempo de trabajo"
+  },
+  "industryCode": {
+    "label": "Industria",
+    "placeholder": "Por favor seleccione la industria",
+    "required": "Tipo de industria requerido"
+  },
+  "jobTypeCode": {
+    "label": "Tipo de trabajo",
+    "placeholder": "Por favor seleccione el tipo de trabajo",
+    "required": "Tipo de trabajo requerido"
+  },
+  "lastName": {
+    "label": "Etiqueta Apellido",
+    "invalid": "Apellido inválido",
+    "required": "Apellido requerido",
+    "placeholder": "Etiqueta Apellido"
+  },
+  "lastname": {
+    "label": "Apellido paterno",
+    "placeholder": "Apellido paterno",
+    "invalid": "Apellido paterno inválido",
+    "required": "Apellido paterno requerido"
+  },
+  "liveness": {
+    "required": "liveness required"
+  },
+  "loanPurpose": {
+    "label": "Propósito del préstamo",
+    "placeholder": "Propósito del préstamo",
+    "required": "Propósito del préstamo requerido"
+  },
+  "maritalStatus": {
+    "required": "Estado civil requerido",
+    "label": "Estado civil",
+    "placeholder": "Etiqueta Estado civil"
+  },
+  "middleName": {
+    "label": "Etiqueta segundo nombre",
+    "invalid": "Segundo nombre inválido",
+    "required": "Segundo nombre requerido",
+    "placeholder": "Etiqueta segundo nombre requerido"
+  },
+  "monthlyIncome": {
+    "label": "Etiqueta Ingresos mensuales",
+    "placeholder": "Etiqueta Ingresos mensuales",
+    "required": "Etiqueta Ingresos mensuales requerido"
+  },
+  "password": {
+    "label": "Etiqueta Contrase?a requerida",
+    "placeholder": "Etiqueta Por favor ingrese una contrase?a de 6 a 12 dígitos",
+    "required": "Contrase?a requerida",
+    "invalid": "Contrase?a inválida"
+  },
+  "payAmount": {
+    "placeholder": "Etiqueta Por favor introduzca el importe de la devolución",
+    "required": "pImporte de la devolución requerido",
+    "invalid": "Importe de la devolución debe ser mayor a {val}"
+  },
+  "phone": {
+    "label": "Etiqueta Número de teléfono",
+    "placeholder": "Etiqueta Por favor ingrese el número de teléfono",
+    "invalid": "Número de teléfono inválido",
+    "required": "Número de teléfono requerido"
+  },
+  "salaryDate": {
+    "label": "Día de pago del sueldo",
+    "placeholder": "Etiqueta Día del pago del sueldo",
+    "required": "Pago del sueldo requerido"
+  },
+  "salaryType": {
+    "label": "Etiqueta Tipo de salario",
+    "placeholder": "Etiqueta Por favor seleccione Tipo de salario",
+    "required": "Tipo de salario requerido"
+  },
+  "secondCardNo": {
+    "required": "Número de teléfono adicional requerido",
+    "label": "Etiqueta Segundo número telefónico",
+    "placeholder": "Etiqueta Segundo número telefónico",
+    "invalid": "Número de teléfono adicional inválido"
+  },
+  "validateCode": {
+    "label": "Código de validación",
+    "placeholder": "Etiqueta Código de validación",
+    "invalid": "Código de validación inválido",
+    "required": "Código de validación requerido",
+    "get": "Obtener código de validación",
+    "wait": "{{num}}",
+    "maxTime": "Se ha alcanzado el número máximo de veces vuelva a intentarlo más tarde"
+  },
+  "whatsapp": {
+    "required": "WhatsApp requerido",
+    "label": "Etiqueta WhatsApp",
+    "placeholder": "Etiqueta WhatsApp requerido"
+  }
+}
