@@ -72,7 +72,7 @@ const App = () => {
     addEventListener('change', (e: any) => {
       console.error('RNLocalize', e)
     })
-    i18n.init(getI18nConfig(language))
+    i18n.init(getI18nConfig(language.toLowerCase().includes('zh') ? 'zh-CN' : 'es-MX'))
   }, [])
 
   // const [isReady, setIsReady] = useState(__DEV__ ? false : true)

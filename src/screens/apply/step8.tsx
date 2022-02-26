@@ -171,14 +171,14 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
         <Hint
           hint={t('promptRepayHint')}
           hintColor="rgba(255, 50, 50, 1)"
-          img={require('@/assets/compressed/apply/loan_notice.webp')}
+          img={require('@/assets/one/apply/loan_notice.webp')}
         />
       </View>
       <ScrollView style={PageStyles.scroll} keyboardShouldPersistTaps="handled">
         <View style={PageStyles.container}>
           <View style={[PageStyles.form, { paddingHorizontal: 0, paddingTop: 0 }]}>
             <ImageBackground
-              source={require('@/assets/compressed/apply/loan_bg.webp')}
+              source={require('@/assets/one/apply/loan_bg.webp')}
               resizeMode="stretch"
               style={{ width: '100%', height: 159 }}>
               <View style={{ alignItems: 'center', paddingTop: 23.5 }}>
@@ -207,7 +207,7 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
                   trackStyle={{ height: 5, backgroundColor: isWarnging ? WARN_COLOR : '#B3CEF2' }}
                   thumbStyle={{ alignItems: 'center', height: 34 }}
                   thumbTintColor="transparent"
-                  thumbImage={require('@/assets/compressed/apply/slider_dot.webp')}
+                  thumbImage={require('@/assets/one/apply/slider_dot.webp')}
                   maximumValue={productInfo?.maxViewAmount || 10000}
                   minimumTrackTintColor={Color.primary}
                   maximumTrackTintColor="rgba(179, 206, 242, 1)"

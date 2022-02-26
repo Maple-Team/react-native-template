@@ -61,7 +61,7 @@ export const Step62 = ({ navigation }: NativeStackHeaderProps) => {
                   <PhotoPicker
                     field="handId"
                     key="handId"
-                    bg={require('@assets/compressed/apply/id1.webp')}
+                    bg={require('@assets/one/apply/id1.webp')}
                     imageType="HANDHELD_IDCARD"
                     cameraType="front"
                     onUploadSuccess={id => {

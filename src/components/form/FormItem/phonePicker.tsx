@@ -94,7 +94,7 @@ Props) {
           <Pressable style={formItemStyles.suffixWrap} onPress={onRequestContactsPermission}>
             <Image
               style={formItemStyles.suffix}
-              source={require('@assets/compressed/apply/contacts.webp')}
+              source={require('@assets/one/apply/contacts.webp')}
               resizeMode="cover"
             />
           </Pressable>

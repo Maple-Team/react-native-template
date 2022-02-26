@@ -51,7 +51,6 @@ export function BillsList() {
       setRefreshing(false)
     }
   }, [data, t, type])
-  console.log(i18n, '==========')
   /**
    * 计算出还款相关状态
    */
@@ -95,7 +94,7 @@ export function BillsList() {
         }}>
         <View>
           <ImageBackground
-            source={require('@/assets/compressed/bills/banner.webp')}
+            source={require('@/assets/one/bills/banner.webp')}
             resizeMode="cover"
             style={{
               height: 45,
@@ -140,9 +139,9 @@ export function BillsList() {
                         source={
                           getStateContent(item).state >= 0
                             ? getStateContent(item).state === 1
-                              ? require('@/assets/compressed/bills/setted.webp')
-                              : require('@/assets/compressed/bills/repay1.webp')
-                            : require('@/assets/compressed/bills/repay3.webp')
+                              ? require('@/assets/one/bills/setted.webp')
+                              : require('@/assets/one/bills/repay1.webp')
+                            : require('@/assets/one/bills/repay3.webp')
                         }
                         resizeMode="cover"
                       />
@@ -228,10 +227,7 @@ export function BillsList() {
             />
           ) : (
             <View style={{ paddingTop: 122, alignItems: 'center' }}>
-              <Image
-                source={require('@/assets/compressed/bills/no-bill.webp')}
-                resizeMode="cover"
-              />
+              <Image source={require('@/assets/one/bills/no-bill.webp')} resizeMode="cover" />
             </View>
           )}
         </View>

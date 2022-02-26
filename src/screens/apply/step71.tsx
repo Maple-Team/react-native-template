@@ -125,7 +125,7 @@ export const Step71 = ({ navigation }: NativeStackHeaderProps) => {
       <StatusBar translucent={false} backgroundColor={Color.primary} barStyle="default" />
       <View style={{ paddingHorizontal: 37, backgroundColor: '#fff', flexDirection: 'row' }}>
         <Hint
-          img={require('@/assets/compressed/apply/loan_notice.webp')}
+          img={require('@/assets/one/apply/loan_notice.webp')}
           hint={'Tips:ReceiptAs and repayments may be affected by bank working'}
           hintColor={'rgba(255, 50, 50, 1)'}
         />
@@ -235,7 +235,7 @@ export const Step71 = ({ navigation }: NativeStackHeaderProps) => {
                       flexDirection: 'row',
                     }}>
                     <Hint
-                      img={require('@/assets/compressed/apply/loan_guarantee.webp')}
+                      img={require('@/assets/one/apply/loan_guarantee.webp')}
                       hint={t('fillBankCodePrompt')}
                       hintColor="#626366"
                     />

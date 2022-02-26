@@ -95,7 +95,7 @@ export const LetterList = () => {
             }
             ListEmptyComponent={
               <View style={{ alignItems: 'center', paddingTop: 113, flex: 1 }}>
-                <Image source={require('@/assets/compressed/additional/no-message.webp')} />
+                <Image source={require('@/assets/one/additional/no-message.webp')} />
                 <Text color="#f00" fontSize={14}>
                   {t('noMessagePrompt')}
                 </Text>
@@ -168,7 +168,7 @@ export const LetterList = () => {
                       }}>
                       <Image
                         resizeMode="cover"
-                        source={require('@/assets/compressed/additional/message.webp')}
+                        source={require('@/assets/one/additional/message.webp')}
                       />
                     </View>
                     {item.status === 'N' && (

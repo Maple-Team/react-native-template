@@ -28,12 +28,12 @@ export const TabHeader = ({ title, help, notice }: HeaderProps) => {
       <View style={headerStyles.headerLeft}>
         <Image
           style={headerStyles.logo}
-          source={require('@/assets/compressed/apply/logo.webp')}
+          source={require('@/assets/one/apply/logo.webp')}
           resizeMode="cover"
         />
         <Image
           style={headerStyles.moneyya}
-          source={title || require('@/assets/compressed/common/normal/moneyya.webp')}
+          source={title || require('@/assets/one/common/normal/moneyya.webp')}
           resizeMode="cover"
         />
       </View>
@@ -45,7 +45,7 @@ export const TabHeader = ({ title, help, notice }: HeaderProps) => {
           }}>
           <Image
             style={headerStyles.notice}
-            source={notice || require('@/assets/compressed/common/normal/notice.webp')}
+            source={notice || require('@/assets/one/common/normal/notice.webp')}
             resizeMode="cover"
           />
           {count > 0 && (
@@ -69,7 +69,7 @@ export const TabHeader = ({ title, help, notice }: HeaderProps) => {
           }}>
           <Image
             style={headerStyles.help}
-            source={help || require('@/assets/compressed/common/normal/help.webp')}
+            source={help || require('@/assets/one/common/normal/help.webp')}
             resizeMode="cover"
           />
         </Pressable>

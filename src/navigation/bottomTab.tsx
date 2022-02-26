@@ -17,8 +17,8 @@ export const BottomTab = () => (
         headerShown: false,
         tabBarIcon: ({ focused }) => {
           const src = focused
-            ? require('@/assets/compressed/common/active/home.webp')
-            : require('@/assets/compressed/common/normal/home.webp')
+            ? require('@/assets/one/common/active/home.webp')
+            : require('@/assets/one/common/normal/home.webp')
           return <Image source={src} resizeMode="cover" />
         },
       }}
@@ -31,8 +31,8 @@ export const BottomTab = () => (
         headerShown: false,
         tabBarIcon: ({ focused }) => {
           const src = focused
-            ? require('@/assets/compressed/common/active/bills.webp')
-            : require('@/assets/compressed/common/normal/bills.webp')
+            ? require('@/assets/one/common/active/bills.webp')
+            : require('@/assets/one/common/normal/bills.webp')
           return <Image source={src} resizeMode="cover" />
         },
       }}
@@ -45,8 +45,8 @@ export const BottomTab = () => (
         headerShown: false,
         tabBarIcon: ({ focused }) => {
           const src = focused
-            ? require('@/assets/compressed/common/active/account.webp')
-            : require('@/assets/compressed/common/normal/account.webp')
+            ? require('@/assets/one/common/active/account.webp')
+            : require('@/assets/one/common/normal/account.webp')
           return <Image source={src} resizeMode="cover" />
         },
       }}

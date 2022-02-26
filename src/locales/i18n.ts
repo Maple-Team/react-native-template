@@ -32,7 +32,7 @@ export const getI18nConfig = (lng: string) => ({
     escapeValue: false, // not needed for react as it escapes by default
   },
   resources,
-  fallbackLng: 'en-US',
+  fallbackLng: 'es-MX',
   supportedLngs: ['en-US', 'zh-CN', 'en', 'zh', 'zh-Hans', 'zh-Hans-CN', 'es-ES', 'es-MX', 'es'],
   // nonExplicitSupportedLngs: true,
   // lowerCaseLng: true,  en-US ⇒ en-us

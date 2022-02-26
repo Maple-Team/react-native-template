@@ -101,14 +101,14 @@ export const ValidateCode = ({
                 <Pressable onPress={onClear}>
                   <Image
                     style={styles.suffix}
-                    source={require('@assets/compressed/common/clear.webp')}
+                    source={require('@assets/one/common/clear.webp')}
                     resizeMode="cover"
                   />
                 </Pressable>
               ) : (
                 <Image
                   style={styles.suffix}
-                  source={require('@assets/compressed/common/correct.webp')}
+                  source={require('@assets/one/common/correct.webp')}
                   resizeMode="cover"
                 />
               )}

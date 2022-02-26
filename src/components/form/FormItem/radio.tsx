@@ -5,12 +5,12 @@ import StyleSheet from 'react-native-adaptive-stylesheet'
 
 const data = [
   {
-    icon: require('@assets/compressed/apply/female.webp'),
+    icon: require('@assets/one/apply/female.webp'),
     key: 'female',
     value: 'female',
   },
   {
-    icon: require('@assets/compressed/apply/male.webp'),
+    icon: require('@assets/one/apply/male.webp'),
     key: 'male',
     value: 'male',
   },
@@ -50,8 +50,8 @@ export const RadioComponent = ({
               <Image
                 source={
                   selected === _value
-                    ? require('@assets/compressed/apply/check.webp')
-                    : require('@assets/compressed/apply/uncheck.webp')
+                    ? require('@assets/one/apply/check.webp')
+                    : require('@assets/one/apply/uncheck.webp')
                 }
                 resizeMode="cover"
               />
