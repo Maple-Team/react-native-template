@@ -27,7 +27,6 @@ const rename = (o: string, n: string) =>
     await rename(`${oldName}.${ext}`, `${newName}.${ext}`)
     await rename(`${oldName}@2x.${ext}`, `${newName}@2x.${ext}`)
     await rename(`${oldName}@3x.${ext}`, `${newName}@3x.${ext}`)
-    console.log('done')
   } catch (error) {
     console.error(error)
   }

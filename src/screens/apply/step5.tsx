@@ -48,8 +48,8 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
       .max(100, t('field.long', { field: t('middleName.label') }))
       .required(t('middleName.required')),
     lastName: string()
-      .max(50, t('field.long', { field: t('lastname.label') }))
-      .required(t('lastname.required')),
+      .max(50, t('field.long', { field: t('lastName.label') }))
+      .required(t('lastName.required')),
     birth: string().required(t('birth.required')),
     sex: string().required(t('gender.required')),
     idcard: string()
@@ -67,7 +67,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
       .matches(REGEX_PHONE, t('backupPhone.invalid'))
       .required(t('backupPhone.required')),
     educationCode: string().required(t('educationCode.required')),
-    loanPurpose: string().required(t('loanPurposeCode.required')),
+    loanPurpose: string().required(t('loanPurpose.required')),
     authPhone: string().max(20, t('authPhone.invalid')).required(t('authPhone.required')),
     whatsapp: string().required(t('whatsapp.required')),
     email: string().email().required(t('email.required')),

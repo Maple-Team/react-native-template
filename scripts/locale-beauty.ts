@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import fs from 'fs'
-import beautify from 'js-beautify'
 import { Command } from 'commander'
 import path from 'path'
+import { write } from './utls'
 
 type Lang = 'en' | 'cn'
 
@@ -45,27 +45,6 @@ const getfiles = async (lang: Lang) => {
     })
   })
 }
-/**
- * 更新翻译文案
- * @param lang
- * @param data
- * @returns
- */
-const write = async (lang: Lang, data: string, file: string) => {
-  return new Promise<void>((resolve, reject) => {
-    fs.writeFile(
-      path.resolve(__dirname, `../src/locales/languages/${lang}/${file}`),
-      beautify(data, { indent_size: 2, space_in_empty_paren: true }),
-      err => {
-        if (err) {
-          reject(err)
-        } else {
-          resolve()
-        }
-      }
-    )
-  })
-}
 
 ;(async () => {
   const program = new Command()
@@ -87,7 +66,7 @@ const write = async (lang: Lang, data: string, file: string) => {
           .forEach(k => {
             result[k] = data[k]
           })
-        await write(language, JSON.stringify(result), file)
+        await write(language, file, JSON.stringify(result))
       })
   }
 })()

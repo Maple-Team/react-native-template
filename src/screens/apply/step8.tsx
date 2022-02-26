@@ -194,7 +194,14 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
                   minimumValue={productInfo?.minAmount || 3000}
                   value={loanAmt}
                   onValueChange={v => {
-                    setLoanAmt(Array.isArray(v) ? v[0] : v)
+                    if (productInfo) {
+                      // FIXME
+                      if (v <= productInfo.maxViewAmount || 10000) {
+                        setLoanAmt(Array.isArray(v) ? v[0] : v)
+                      }
+                    } else {
+                      setLoanAmt(Array.isArray(v) ? v[0] : v)
+                    }
                   }}
                   step={productInfo?.amountStep || 1000}
                   trackStyle={{ height: 5, backgroundColor: isWarnging ? WARN_COLOR : '#B3CEF2' }}
