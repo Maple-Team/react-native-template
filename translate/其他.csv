@@ -1,50 +1,70 @@
-×Ö¶ÎÃû,Ó¢ÎÄ,ÖĞÎÄ
-adPrompt,Easy steps to get and pay for a loan:,¼òµ¥¼¸²½£¬¼´¿ÉÍê³É´û¿î:
-agreeWithMoneyya,Agree with Moneyya,Agree with Moneyya
-authorizaiton,authorizaiton,ÊÚÈ¨ËµÃ÷
-authorizaiton-not-reading,ÇëÔÄ¶ÁÍê,ÇëÔÄ¶ÁÍê
-bill-information,Bill information,Bill information
-camera.unavailable,camera is unavailable,camera is unavailable
-camera.no-permission,camera is not allow permission,camera is not allow permission
-camera.other-error,camera unknown error,camera unknown error
-choose-product-prompt,please choose loan terms,ÇëÑ¡Ôñ´û¿îÆÚÏŞ
-copySuccessed,Copy SUccess,¸´ÖÆ³É¹¦£¡
-currentLoanInfoHint,±¾´Î»¹¿îÉêÇë,±¾´Î»¹¿îÉêÇë
-exceedMaxAmount,Exceed max available loan amont!,³¬³ö×î´ó¿É´û½ğ¶î
-field.short,{{field}} is too short,{{field}} is too short
-field.long,{{field}} is too long,{{field}} is too long
-fillBankCodePrompt,Please fill in bank account information of your own, or loan would fail,Please fill in bank account information of your own, or loan would fail
-firstPaymentAmount,First repayment amount,µÚÒ»ÆÚ»¹¿î½ğ¶î
-firstPaymentdate,First repayment date,µÚÒ»ÆÚ»¹¿îÈÕÆÚ
-informationConfirmed,Information Confirmed,Information Confirmed
-intlCurrency,${{val}},?{{val}}
-loadMore,Loading More...,¼ÓÔØ¸ü¶à...
-loanInfoHint,Loan information,Loan information
-logoutPrompt,Logout Prompt,ÍË³öµÇÂ¼
-logoutPromptContent,Are you sure to logout?,È·¶¨ÒªÍË³öµÇÂ¼Âğ?
-maxAvailableAmount,The maximum amount can be borrowed,The maximum amount can be borrowed
-newVersion,Update to a new Version,·¢ÏÖĞÂ°æ±¾
-noMessagePrompt,Message list is empty!,ÏûÏ¢ÁĞ±íÎª¿Õ
-noMore,No more new data available,Ã»ÓĞ¸ü¶àµÄÊı¾İÁË
-notice,Notice,ÏûÏ¢
-numberRequired,you must specify a number,±ØĞèÊäÈëÊı×Ö
-otherContact,Other Contact,Other Contact
-overduePrompt,There is one unpaid bill and {day} days overdue,There is one unpaid bill and {day} days overdue
-payment,Payment,»¹¿î
-paymentNumPrompt,Tasa de Tramitacion,Tasa de Tramitacion
-paymentPrompt1,ÎÒÃÇ½¨ÒéÄúÔÚ´ËÒ³ÃæÁ¢¼´³¥»¹´û¿î£¬ÒÔÃâÓ°ÏìÄúµÄÏÂ´Î´û¿îÉêÇë¡£,ÎÒÃÇ½¨ÒéÄúÔÚ´ËÒ³ÃæÁ¢¼´³¥»¹´û¿î£¬ÒÔÃâÓ°ÏìÄúµÄÏÂ´Î´û¿îÉêÇë¡£
-paymentPrompt2,ÎÒÃÇĞèÒª¼¸·ÖÖÓÀ´´¦ÀíÄúµÄ»¹´ûÉêÇë£¬ÇëÄÍĞÄµÈ´ı¡£Èç¹ûÊÕ²»µ½ÑéÖ¤Âë£¬ÇëÖØĞÂ·¢ËÍÑéÖ¤Âë¡£Ğ»Ğ»ÄúµÄÅäºÏ¡£,ÎÒÃÇĞèÒª¼¸·ÖÖÓÀ´´¦ÀíÄúµÄ»¹´ûÉêÇë£¬ÇëÄÍĞÄµÈ´ı¡£Èç¹ûÊÕ²»µ½ÑéÖ¤Âë£¬ÇëÖØĞÂ·¢ËÍÑéÖ¤Âë¡£Ğ»Ğ»ÄúµÄÅäºÏ¡£
-permission blocked,permission blocked,permission blocked
-permission unavailable,permission unavailable,permission unavailable
-promptRepayHint,Maintaining a good repayment behavior will help you to increase your loan amount. 96% of users loan amount haveincreased subsequently.,Maintaining a good repayment behavior will help you to increase your loan amount. 96% of users loan amount haveincreased subsequently.
-providehandleIDcardPrompt,Must provide above mentioned images, otherwise application will be rejected.,Must provide above mentioned images, otherwise application will be rejected.
-refreshSuccess,Ë¢ĞÂ³É¹¦,Ë¢ĞÂ³É¹¦
-resetpwd.label,Reset Password,ÖØÖÃÃÜÂë
-resetpwd.success,reset pwd success,reset pwd success
-restRepayAmount,Ê£ÓàÓ¦¸¶½ğ¶î,Ê£ÓàÓ¦¸¶½ğ¶î
-signinPrompt,Don't have an account?,Ã»ÓĞÕËºÅÂğ?
-termsofService,Terms of Service,Terms of Service
-toBottom,µ½´ïµ×²¿ÁË,ÎÒÊÇÓĞµ×ÏßµÄ
-tostep7,Click here to modify bank card,·µ»ØĞŞ¸ÄÒøĞĞ¿¨ºÅ
-upload-Failed,upload failed,upload failed
-warnRepayPrompt,ÎÒÃÇ½¨ÒéÄúÔÚ´ËÒ³ÃæÁ¢¼´³¥»¹´û¿î£¬ÒÔ ÃâÓ°ÏìÄúµÄÏÂ´Î´û¿îÉêÇë¡£,ÎÒÃÇ½¨ÒéÄúÔÚ´ËÒ³ÃæÁ¢¼´³¥»¹´û¿î£¬ÒÔ ÃâÓ°ÏìÄúµÄÏÂ´Î´û¿îÉêÇë¡£
+adPrompt,Easy steps to get and pay for a loan:,ç®€å•å‡ æ­¥ï¼Œå³å¯å®Œæˆè´·æ¬¾:,Consigue fÃ¡cilmente un prÃ©stamo:
+ads.0.text,Fill up information within 5 mins,Fill up information within 5 mins,Fill up information within 5 mins
+ads.0.title,Convenient operation,Convenient operation,Convenient operation
+ads.1.text,Verification finished within 2 hours,Verification finished within 2 hours,Verification finished within 2 hours
+ads.1.title,Fast Approval,Fast Approval,Fast Approval
+ads.2.title,Get the disbursement,Get the disbursement,Get the disbursement
+ads.2.text,Disbursement within 24 hours,Disbursement within 24 hours,Disbursement within 24 hours
+agreeWithMoneyya,Agree with Moneyya,Agree with Moneyya,de acuerdo con Moneyya
+amount-of-payment,Amount of repayment,Amount of repayment,Amount of repayment
+authorizaiton,authorizaiton,æˆæƒè¯´æ˜,descripciÃ³n de la autorizaciÃ³n
+authorizaiton-not-reading,è¯·é˜…è¯»å®Œ,è¯·é˜…è¯»å®Œ,Por favor lea hsta el final.
+backCodeValidPrompt,If account information is incorrecctly filled,you will not be able to receive loans.,If account information is incorrecctly filled,you will not be able to receive loans.,If account information is incorrecctly filled,you will not be able to receive loans.
+bankCodePrompt,Tips:ReceiptAs and repayments may be affected by bank working,Tips:ReceiptAs and repayments may be affected by bank working,Tips:ReceiptAs and repayments may be affected by bank working
+bill-information,Bill information,Bill information,InformaciÃ³n de factura
+camera.no-permission,camera is not allow permission,camera is not allow permission,La cÃ¡mara no estÃ¡ permitida
+camera.other-error,camera unknown error,camera unknown error,Error desconocido de la cÃ¡mara
+camera.unavailable,camera is unavailable,camera is unavailable,CÃ¡mara no disponible
+choose-product-prompt,please choose loan terms,è¯·é€‰æ‹©è´·æ¬¾æœŸé™,por favor elija los tÃ©rminos del prÃ©stamo.
+copySuccessed,Copy SUccess,å¤åˆ¶æˆåŠŸï¼,Copiado con Ã©xito
+currentLoanInfoHint,æœ¬æ¬¡è¿˜æ¬¾ç”³è¯·,æœ¬æ¬¡è¿˜æ¬¾ç”³è¯·,æœ¬æ¬¡è¿˜æ¬¾ç”³è¯·
+exceedMaxAmount,Exceed max available loan amont!,è¶…å‡ºæœ€å¤§å¯è´·é‡‘é¢,Monto mÃ¡ximo del prÃ©stamo excedido
+field.long,{{field}} is too long,{{field}} is too long,{{field}} El campo insertado es demasiado largo
+field.short,{{field}} is too short,{{field}} is too short,{{field}} El campo insertado es demasiado corto
+fillBankCodePrompt,Please fill in bank account information of your own, or loan would fail,Please fill in bank account information of your own, or loan would fail,Ingrese su propia informaciÃ³n bancaria
+fillingDate,Filling Date,Filling Date,Filling Date
+firstPaymentAmount,First repayment amount,ç¬¬ä¸€æœŸè¿˜æ¬¾é‡‘é¢,Monto del reembolso
+firstPaymentdate,First repayment date,ç¬¬ä¸€æœŸè¿˜æ¬¾æ—¥æœŸ,Primera fecha de reembolso
+informationConfirmed,Information Confirmed,Information Confirmed,InformaciÃ³n confirmada
+intlCurrency,${{val}},Â¥{{val}},Moneda internacional {{val}}
+loadMore,Loading More...,åŠ è½½æ›´å¤š...,Cargando mÃ¡s
+loanInfoHint,Loan information,Loan information,InformaciÃ³n del prÃ©stamo
+logoutPrompt,Logout Prompt,é€€å‡ºç™»å½•,Solicitud de cierre de sesiÃ³n
+logoutPromptContent,Are you sure to logout?,ç¡®å®šè¦é€€å‡ºç™»å½•å—?,EstÃ¡ seguro de cerrar sesiÃ³n?
+maxAvailableAmount,The maximum amount can be borrowed,The maximum amount can be borrowed,La cantidad mÃ¡xima que se puede pedir prestada
+newVersion,Update to a new Version,å‘ç°æ–°ç‰ˆæœ¬,Actualizar a una nueva versiÃ³n
+noMessagePrompt,Message list is empty!,æ¶ˆæ¯åˆ—è¡¨ä¸ºç©º,La lista de mensajes estÃ¡ vacÃ­a!
+noMore,No more new data available,æ²¡æœ‰æ›´å¤šçš„æ•°æ®äº†,No hay mÃ¡s datos disponibles
+notice,Notice,æ¶ˆæ¯,Aviso mensaje nuevo
+numberRequired,you must specify a number,å¿…éœ€è¾“å…¥æ•°å­—,Debe especificar un nÃºmero
+orderNumber,Order Number,è®¢å•å·,Order Number
+otherContact,Other Contact,Other Contact,Otro contacto
+overduePrompt,There is one unpaid bill and {day} days overdue,There is one unpaid bill and {day} days overdue,Hay una factura sin pagar y con dÃ­as de retraso
+payment,Payment,è¿˜æ¬¾,Pago/Reembolso
+paymentDate,Payment Date,Payment date,Payment Date
+paymentNumPrompt,Tasa de Tramitacion,Tasa de Tramitacion,Tasa de tramitaciÃ³n
+paymentPrompt1,æˆ‘ä»¬å»ºè®®æ‚¨åœ¨æ­¤é¡µé¢ç«‹å³å¿è¿˜è´·æ¬¾ï¼Œä»¥å…å½±å“æ‚¨çš„ä¸‹æ¬¡è´·æ¬¾ç”³è¯·ã€‚,æˆ‘ä»¬å»ºè®®æ‚¨åœ¨æ­¤é¡µé¢ç«‹å³å¿è¿˜è´·æ¬¾ï¼Œä»¥å…å½±å“æ‚¨çš„ä¸‹æ¬¡è´·æ¬¾ç”³è¯·ã€‚,Le recomendamos que pague inmediatamente el prÃ©stamo para no afectar su prÃ³xima solicitud de prÃ©stamo
+paymentPrompt2,æˆ‘ä»¬éœ€è¦å‡ åˆ†é’Ÿæ¥å¤„ç†æ‚¨çš„è¿˜è´·ç”³è¯·ï¼Œè¯·è€å¿ƒç­‰å¾…ã€‚å¦‚æœæ”¶ä¸åˆ°éªŒè¯ç ï¼Œè¯·é‡æ–°å‘é€éªŒè¯ç ã€‚è°¢è°¢æ‚¨çš„é…åˆã€‚,æˆ‘ä»¬éœ€è¦å‡ åˆ†é’Ÿæ¥å¤„ç†æ‚¨çš„è¿˜è´·ç”³è¯·ï¼Œè¯·è€å¿ƒç­‰å¾…ã€‚å¦‚æœæ”¶ä¸åˆ°éªŒè¯ç ï¼Œè¯·é‡æ–°å‘é€éªŒè¯ç ã€‚è°¢è°¢æ‚¨çš„é…åˆã€‚,Tardaremos unos minutos en evaluar su aplicaciÃ³n. Por favor espere, si no recibe un cÃ³digo de verificaciÃ³n por favor envÃ­elo nuevamente. Gracias por su cooperaciÃ³n
+permission-blocked,permission blocked,permission blocked,Permiso bloqueado
+permission-unavailable,permission unavailable,permission unavailable,Permiso no disponible
+promptRepayHint,Maintaining a good repayment behavior will help you to increase your loan amount. 96% of users loan amount haveincreased subsequently.,Maintaining a good repayment behavior will help you to increase your loan amount. 96% of users loan amount haveincreased subsequently.,Mantener un buen comportamiento de pago lo ayudarÃ¡ a aumentar el monto de su prÃ©stamo. El 96% del monto del prÃ©stamo de los usuarios aumentÃ³ posteriormente.
+providehandleIDcardPrompt,Must provide above mentioned images, otherwise application will be rejected.,Must provide above mentioned images, otherwise application will be rejected.,Debe proporcionar las imÃ¡genes mencionadas anteriormente; de ??lo contrario se rechazarÃ¡ la solicitud.
+refreshSuccess,åˆ·æ–°æˆåŠŸ,åˆ·æ–°æˆåŠŸ,ActualizaciÃ³n con Ã©xito
+repayAmountHint,Tasa de Tramitacion,Tasa de Tramitacion,Tasa de Tramitacion
+repayment-amount,Repayment amount,Repayment amount,Repayment amount
+repaymentDate,Repayment Date,Raypayment Date,Repayment Date
+resetpwd.label,Reset Password,é‡ç½®å¯†ç ,Restablecer contrase?a
+resetpwd.success,reset pwd success,reset pwd success,Restablecido con Ã©xito
+restRepayAmount,å‰©ä½™åº”ä»˜é‡‘é¢,å‰©ä½™åº”ä»˜é‡‘é¢,Importe restante a pagar
+serviceFee,Service Fee,Service Fee,Service Fee
+signinPrompt,Don't have an account?,æ²¡æœ‰è´¦å·å—?,Tiene una cuenta?
+stage,Stage,Stage,Stage
+status,Status,Status,Status
+take-photo-hint-1,El frente de tu ID,El frente de tu ID,El frente de tu ID
+take-photo-hint-2,La parte trasera de tu ID,La parte trasera de tu ID,La parte trasera de tu ID
+take-photo-title,Proporciona tu INE/IFE por favor,Proporciona tu INE/IFE por favor,Proporciona tu INE/IFE por favor
+termsofService,Terms of Service,Terms of Service,TÃ©rminos de servicio
+toBottom,åˆ°è¾¾åº•éƒ¨äº†,æˆ‘æ˜¯æœ‰åº•çº¿çš„,Ha llegado al final
+tostep7,Click here to modify bank card,è¿”å›ä¿®æ”¹é“¶è¡Œå¡å·,haga clic aquÃ­ para modificar la tarjeta bancaria
+upload-Failed,upload failed,upload failed,Carga fallida
+warnRepayPrompt,æˆ‘ä»¬å»ºè®®æ‚¨åœ¨æ­¤é¡µé¢ç«‹å³å¿è¿˜è´·æ¬¾ï¼Œä»¥ å…å½±å“æ‚¨çš„ä¸‹æ¬¡è´·æ¬¾ç”³è¯·ã€‚,æˆ‘ä»¬å»ºè®®æ‚¨åœ¨æ­¤é¡µé¢ç«‹å³å¿è¿˜è´·æ¬¾ï¼Œä»¥ å…å½±å“æ‚¨çš„ä¸‹æ¬¡è´·æ¬¾ç”³è¯·ã€‚,le recomendamos que pague el prÃ©stamo inmediatamente en esta pÃ¡gina para no afectar su prÃ³xima solicitud de prÃ©stamo.

@@ -21,6 +21,7 @@
     "tinify": "ts-node scripts/tinify.ts",
     "flat": "ts-node scripts/flat.ts",
     "translate": "ts-node scripts/translate.ts",
+    "update-locale": "ts-node scripts/update-locale.ts",
     "analysis": "npx react-native-bundle-visualizer"
   },
   "dependencies": {

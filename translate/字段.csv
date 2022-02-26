@@ -1,151 +1,145 @@
-×Ö¶ÎÃû,Ó¢ÎÄ,ÖĞÎÄ
-authPhone.label,scoical account,scoical account
-authPhone.placeholder,social phone ,social phone 
-authPhone.required,social phone required,social phone required
-authPhone.invalid,social phone invalid,social phone invalid
-backupPhone.required,backup phone required,backup phone required
-backupPhone.label,backup phone,backup phone
-backupPhone.placeholder,backup phone,backup phone
-backupPhone.invalid,backup Phone invalid,backup Phone invalid
-bankCardNo.label,bank Card No,bank Card No
-bankCardNo.placeholder,bank Card No,bank Card No
-bankCardNo.required,bank Card No required,bank Card No required
-bankCardNo.invalid,bank Card No invalid,bank Card No invalid
-bankCode.label,bank code,bank code
-bankCode.placeholder,bank code,bank code
-bankCode.required,back code required,back code required
-birth.required,birth required,birth required
-birth.label,birth,birth
-birth.placeholder,birth,birth
-cardNoType.required,card No Type required,card No Type required
-cardNoType.label,bank card type,bank card type
-cardNoType.placeholder,cardno type,cardno type
-comfirmPassword.label,confirmPassword,confirmPassword
-comfirmPassword.placeholder,confirmPassword,confirmPassword
-comfirmPassword.invalid,confirmPassword invalid,confirmPassword invalid
-comfirmPassword.required,confirmPassword required,confirmPassword required
-comfirmPassword.notSame,confirmPassword not same with password,confirmPassword not same with password
-company.label,company,¹«Ë¾Ãû³Æ
-company.placeholder,company name,ÇëÌîĞ´¹«Ë¾Ãû³Æ
-company.invalid,company name invalid,¹«Ë¾Ãû³ÆÎŞĞ§
-company.required,company name required,±ØĞè
-companyAddrCityCode.label,company  city,³ÇÊĞ
-companyAddrCityCode.placeholder,company city,³ÇÊĞ
-companyAddrCityCode.required,company city required,³ÇÊĞ±ØĞë
-companyAddrDetail.label,company address,¹«Ë¾ÏêÏ¸µØÖ·
-companyAddrDetail.placeholder,company address,ÇëÊäÈë¹«Ë¾ÏêÏ¸µØÖ·
-companyAddrDetail.invalid,company detail address invalid,¹«Ë¾µØÖ·ÎŞĞ§
-companyAddrDetail.required,company detail address required,±ØĞè
-companyAddrProvinceCode.label,state,¹«Ë¾ËùÔÚÊ¡·İ
-companyAddrProvinceCode.placeholder,state,ÇëÊäÈë¹«Ë¾ËùÔÚÊ¡·İ
-companyAddrProvinceCode.required,company state required,ËùÔÚÊ¡·İ±ØĞë
-companyPhone.label,company Phone,¹«Ë¾µç»°
-companyPhone.placeholder,company phone,ÇëÊäÈë¹«Ë¾µç»°
-companyPhone.invalid,¹«Ë¾µç»°¸ñÊ½²»ÕıÈ·,¹«Ë¾µç»°¸ñÊ½²»ÕıÈ·
-companyPhone.required,company Phone required,¹«Ë¾µç»°±ØĞë
-contactName.label,contactName,Ç×ÊôÁªÏµÈË
-contactName.placeholder,contact phone,ÇëÊäÈëÇ×ÊôÁªÏµÈËĞÕÃû
-contactName.invalid,contact name invalid,Ç×ÊôÁªÏµÈËĞÕÃûÎŞĞ§
-contactName.required,contact name required,Ç×ÊôÁªÏµÈËĞÕÃû±ØĞë
-contactPhone.label,contactPhone,Ç×ÊôÁªÏµÈËµç»°
-contactPhone.placeholder,contact phone,ÇëÑ¡ÔñÇ×ÊôÁªÏµÈËµç»°
-contactPhone.required,contact phone required,Ç×ÊôÁªÏµÈËµç»°±ØĞë
-contactRelationCode.label,contactRelation,Ç×ÊôÁªÏµÈË¹ØÏµ
-contactRelationCode.placeholder,contact relation,ÇëÑ¡ÔñÇ×ÊôÁªÏµÈË¹ØÏµ
-contactRelationCode.required,contact relation required,Ç×ÊôÁªÏµÈË¹ØÏµ±ØĞè
-docType.required,doctype required,doctype required
-docType.label,docType,docType
-docType.placeholder,docType,docType
-educationCode.required,education required,education required
-educationCode.label,education,education
-educationCode.placeholder,education,education
-email.required,email required,email required
-email.label,email,email
-email.invalid,email invalid,email invalid
-email.placeholder,email,email
-firstName.label,first name,ĞÕÃû
-firstName.placeholder,first name,ÇëÊäÈëĞÕÃû
-firstName.invalid,first name invalid,ĞÕÃû¸ñÊ½²»ÕıÈ·
-firstName.required,first name required,ĞÕÃû¸ñÊ½±ØĞë
-gender.required,gender required,gender required
-gender.label,gender,gender
-hasAgree.required,please agree agreement,Çë¹´Ñ¡·şÎñÌõ¿î
-homeAddrCityCode.required,home city required,home city required
-homeAddrCityCode.label,home Addr City,home Addr City
-homeAddrCityCode.placeholder,home Addr City,home Addr City
-homeAddrDetail.required,home detail required,home detail required
-homeAddrDetail.label,home Addr Detail,home Addr Detail
-homeAddrDetail.placeholder,home Addr Detail,home Addr Detail
-homeAddrProvinceCode.required,home state required,home state required
-homeAddrProvinceCode.label,homeAddrProvinceCode,homeAddrProvinceCode
-homeAddrProvinceCode.placeholder,home Addr Province,home Addr Province
-idcard.required,idcard required,idcard required
-idcard.label,idcard,idcard
-idcard.placeholder,idcard,idcard
-idcard.invalid,idcard invalid,idcard invalid
-idcard1.label,idcard1,idcard1
-idcard1.required,idcard1 required,idcard1 required
-idcard2.label,idcard2,idcard2
-idcard2.required,idcard2 Required,idcard2 Required
-incumbency.label,incumbency,ÔÚÖ°Ê±¼ä
-incumbency.placeholder,incumbency,ÇëÑ¡ÔñÔÚÖ°Ê±¼ä
-incumbency.required,incumbency required,ÔÚÖ°Ê±¼ä±ØĞë
-industryCode.label,industry,ËùÔÚĞĞÒµ
-industryCode.placeholder,industry,ÇëÑ¡ÔñËùÔÚĞĞÒµ
-industryCode.required,industry required,ËùÔÚĞĞÒµ±ØĞè
-jobTypeCode.label,job type,Ö°ÒµÀàĞÍ
-jobTypeCode.placeholder,job type,ÇëÑ¡ÔñÖ°ÒµÀàĞÍ
-jobTypeCode.required,job type required,Ö°ÒµÀàĞÍ±ØĞë
-lastName.label,last name,last name
-lastName.invalid,last name invalid,last name invalid
-lastName.required,last name required,last name required
-lastName.placeholder,last name,last name
-lastname.label,last name,¸¸Ç×ĞÕÊÏ
-lastname.placeholder,last name,ÇëÊäÈë¸¸Ç×ĞÕÊÏ
-lastname.invalid,last name invalid,¸¸Ç×ĞÕÊÏÎŞĞ§
-lastname.required,last name required,¸¸Ç×ĞÕÊÏ±ØĞë
-liveness.required,liveness required,liveness required
-loanPurpose.label,loan purpose,loan purpose
-loanPurpose.placeholder,loan purpose,loan purpose
-loanPurposeCode.required,loan purpose required,loan purpose required
-maritalStatus.required,marital status required,marital status required
-maritalStatus.label,maritalStatus,maritalStatus
-maritalStatus.placeholder,maritalStatus,maritalStatus
-middleName.label,middle name,middle name
-middleName.invalid,middle name invalid,middle name invalid
-middleName.required,middle name required,middle name required
-middleName.placeholder,middle name,middle name
-monthlyIncome.label,month income,ÊÕÈëË®Æ½
-monthlyIncome.placeholder,month income,ÇëÑ¡ÔñÊÕÈëË®Æ½
-monthlyIncome.required,monthincome required,ÊÕÈëË®Æ½±ØĞë
-password.label,password,ÃÜÂë
-password.placeholder,password,ÇëÊäÈë6-12Î»º¬×Ö·ûÊı×ÖµÄÃÜÂë
-password.invalid,,ÃÜÂë¸ñÊ½Îª
-password.required,,ÃÜÂë±ØĞë
-payAmount.placeholder,payment amount,ÇëÊäÈë»¹¿î½ğ¶î
-payAmount.required,payment amount required,»¹¿î½ğ¶î±ØĞè
-payAmount.invalid,payment amount should above {{val}} MXN,»¹¿î½ğ¶î×îĞ¡±ØĞëÎª{{val}}MXN
-phone.label,Phone,ÊÖ»úºÅ
-phone.placeholder,Phone,ÇëÊäÈëÊÖ»úºÅ
-phone.invalid,Phone invalid,ÊÖ»úºÅ¸ñÊ½²»ÕıÈ·
-phone.required,Phone Required,ÊÖ»úºÅ±ØĞë
-salaryDate.label,pay date,·¢Ğ½ÈÕ
-salaryDate.placeholder,pay date,ÇëÑ¡Ôñ·¢Ğ½ÈÕ
-salaryDate.required,salary date required,·¢Ğ½ÈÕ±ØĞë
-salaryType.label,salary type,·¢Ğ½ÀàĞÍ
-salaryType.placeholder,salary type,ÇëÑ¡Ôñ·¢Ğ½ÀàĞÍ
-salaryType.required,salary type required,·¢Ğ½ÀàĞÍ±ØĞë
-secondCardNo.required,second phone required,second phone required
-secondCardNo.label,secondCardNo,secondCardNo
-secondCardNo.placeholder,secondCardNo,secondCardNo
-secondCardNo.invalid,secondCardNo invalid,secondCardNo invalid
-validateCode.label,Validate Code,ÑéÖ¤Âë
-validateCode.placeholder,Validate Code,ÇëÊäÈëÑéÖ¤Âë
-validateCode.invalid,Validate Code Invalid,ÑéÖ¤ÂëÎŞĞ§
-validateCode.required,Validate Code Required,ÑéÖ¤Âë±ØĞë
-validateCode.get,Get Code,»ñÈ¡ÑéÖ¤Âë
-validateCode.wait,{{num}},{{num}}
-validateCode.maxTime,×î´ó´ÎÊı, ÇëÉÔºòÔÙÊÔ,´ïµ½×î´ó´ÎÊı£¬ÇëÉÔºòÔÙÊÔ
-whatsapp.required,whatsAPP required,whatsAPP required
-whatsapp.label,whatsapp,whatsapp
-whatsapp.placeholder,whatsapp,whatsapp
+authPhone.invalid,social phone invalid,social phone invalid,TelÃ©fono social invÃ¡lido
+authPhone.label,scoical account,scoical account,Cuenta social
+authPhone.placeholder,social phone ,social phone ,Marcador de posiciÃ³n/TelÃ©fono social
+authPhone.required,social phone required,social phone required,TelÃ©fono social requerido
+backupPhone.invalid,backup Phone invalid,backup Phone invalid,TelÃ©fono de respaldo no vÃ¡lido
+backupPhone.label,backup phone,backup phone,TelÃ©fono de respaldo
+backupPhone.placeholder,backup phone,backup phone,telÃ©fono de respaldo
+backupPhone.required,backup phone required,backup phone required,TelÃ©fono de respaldo requerido
+bankCardNo.invalid,bank Card No invalid,bank Card No invalid,Tarjeta bancaria invÃ¡lida
+bankCardNo.label,bank Card No,bank Card No,NÃºmero de tarjeta bancaria
+bankCardNo.placeholder,bank Card No,bank Card No,NÃºmero de tarjeta bancaria
+bankCardNo.required,bank Card No required,bank Card No required,NÃºmero de tarjeta bancaria requerida
+bankCode.label,bank code,bank code,CÃ³digo bancario
+bankCode.placeholder,bank code,bank code,CÃ³digo bancario
+bankCode.required,back code required,back code required,CÃ³digo bancario requerido
+birth.label,birth,birth,Etiqueta de nacimiento
+birth.placeholder,birth,birth,Lugar de nacimiento
+birth.required,birth required,birth required,Nacimiento requerido
+cardNoType.label,bank card type,bank card type,NÃºmero de tarjeta bancaria requerida/Tipo de tarjeta
+cardNoType.placeholder,cardno type,cardno type,NÃºmero de tarjeta bancaria requerida/Tipo de tarjeta
+cardNoType.required,card No Type required,card No Type required,NÃºmero de tarjeta bancaria requerida/Tipo de tarjeta
+comfirmPassword.invalid,confirmPassword invalid,confirmPassword invalid,Confirme la contrase?a. invÃ¡lido
+comfirmPassword.label,confirmPassword,confirmPassword,Confirme la contrase?a
+comfirmPassword.notSame,confirmPassword not same with password,confirmPassword not same with password,Confirme que es diferente a la contrase?a
+comfirmPassword.placeholder,confirmPassword,confirmPassword,Confirme la contrase?a
+comfirmPassword.required,confirmPassword required,confirmPassword required,Es necesario confirmar la contrase?a
+company.invalid,company name invalid,å…¬å¸åç§°æ— æ•ˆ,Nombre de la compa?Ã­a invÃ¡lido
+company.label,company,å…¬å¸åç§°,Nombre de la empresa
+company.placeholder,company name,è¯·å¡«å†™å…¬å¸åç§°,Marcador de posiciÃ³n de la empresa/Nombre de la empresa
+company.required,company name required,å¿…éœ€,Nombre de la empresa requerido
+companyAddrCityCode.label,company  city,åŸå¸‚,CÃ³dico de ciudad de la compa?Ã­a requerido
+companyAddrCityCode.placeholder,company city,åŸå¸‚,CÃ³digo de ciudad de la compa?Ã­a
+companyAddrCityCode.required,company city required,åŸå¸‚å¿…é¡»,CÃ³digo de ciudad de la compa?Ã­a
+companyAddrDetail.invalid,company detail address invalid,å…¬å¸åœ°å€æ— æ•ˆ,Detalles de la direcciÃ³n de la empresa invÃ¡lidos
+companyAddrDetail.label,company address,å…¬å¸è¯¦ç»†åœ°å€,Detalle de la direcciÃ³n de la compa?Ã­a
+companyAddrDetail.placeholder,company address,è¯·è¾“å…¥å…¬å¸è¯¦ç»†åœ°å€,Marcador de posiciÃ³n/Detalles de la direcciÃ³n de la empresa
+companyAddrDetail.required,company detail address required,å¿…éœ€,DirecciÃ³n detallada de la empresa requerida
+companyAddrProvinceCode.label,state,å…¬å¸æ‰€åœ¨çœä»½,CÃ³digo de Provincia de la empresa
+companyAddrProvinceCode.placeholder,state,è¯·è¾“å…¥å…¬å¸æ‰€åœ¨çœä»½,DirecciÃ³n de la empresa/CÃ³digo de Provincia
+companyAddrProvinceCode.required,company state required,æ‰€åœ¨çœä»½å¿…é¡»,CÃ³digo de Provincia de la empresa requerido
+companyPhone.invalid,å…¬å¸ç”µè¯æ ¼å¼ä¸æ­£ç¡®,å…¬å¸ç”µè¯æ ¼å¼ä¸æ­£ç¡®,Formato del telÃ©fono de la empresa incorrecto
+companyPhone.label,company Phone,å…¬å¸ç”µè¯,TelÃ©fono de la compa?Ã­a
+companyPhone.placeholder,company phone,è¯·è¾“å…¥å…¬å¸ç”µè¯,TelÃ©fono de la compa?Ã­a
+companyPhone.required,company Phone required,å…¬å¸ç”µè¯å¿…é¡»,TelÃ©fono de la empresa requerido
+contactName.invalid,contact name invalid,äº²å±è”ç³»äººå§“åæ— æ•ˆ,Nombre de contacto no vÃ¡lido
+contactName.label,contactName,äº²å±è”ç³»äºº,NÃºmero telefÃ³nico de los familiares
+contactName.placeholder,contact phone,è¯·è¾“å…¥äº²å±è”ç³»äººå§“å,NÃºmero telefÃ³nico de los parientes
+contactName.required,contact name required,äº²å±è”ç³»äººå§“åå¿…é¡»,Nombre de contacto de pariente requerido
+contactPhone.invalid,contact phone invalid,è”ç³»äººç”µè¯æ ¼å¼ä¸æ­£ç¡®,Nombre de contacto de pariente no vÃ¡lido
+contactPhone.label,contactPhone,äº²å±è”ç³»äººç”µè¯,Nombre de contacto de pariente requerido
+contactPhone.placeholder,contact phone,è¯·é€‰æ‹©äº²å±è”ç³»äººç”µè¯,Nombre de contacto de pariente requerido
+contactPhone.required,contact phone required,äº²å±è”ç³»äººç”µè¯å¿…é¡»,Nombre de contacto de pariente requerido
+contactRelationCode.label,contactRelation,äº²å±è”ç³»äººå…³ç³»,Tipo de parentesco
+contactRelationCode.placeholder,contact relation,è¯·é€‰æ‹©äº²å±è”ç³»äººå…³ç³»,Tipo de parentesco
+contactRelationCode.required,contact relation required,äº²å±è”ç³»äººå…³ç³»å¿…éœ€,Tipo de parentesco requerido
+docType.label,docType,docType,Tipo de documento
+docType.placeholder,docType,docType,Tipo de documento
+docType.required,doctype required,doctype required,Tipo de documento
+educationCode.label,education,education,Nivel educativo
+educationCode.placeholder,education,education,Etiqueta de nivel educativo
+educationCode.required,education required,education required,Nivel educativo requerido
+email.invalid,email invalid,email invalid,Correo electrÃ³nico invÃ¡lido
+email.label,email,email,Etiqueta de correo electrÃ³nico
+email.placeholder,email,email,Etiqueta de correo electrÃ³nico
+email.required,email required,email required,Correo electrÃ³nico requerido
+firstName.invalid,first name invalid,å§“åæ ¼å¼ä¸æ­£ç¡®,Formato de nombre incorrecto
+firstName.label,first name,å§“å,Etiqueta de Primer nombre
+firstName.placeholder,first name,è¯·è¾“å…¥å§“å,Por favor ingrese su nombre
+firstName.required,first name required,å§“åæ ¼å¼å¿…é¡»,Primer nombre requerido
+gender.label,gender,gender,Etiqueta gÃ©nero
+gender.required,gender required,gender required,Genero del aplicante requerido
+hasAgree.required,please agree agreement,è¯·å‹¾é€‰æœåŠ¡æ¡æ¬¾,Marque los tÃ©rminos del servicio
+homeAddrCityCode.label,home Addr City,home Addr City,CÃ³digo postal
+homeAddrCityCode.placeholder,home Addr City,home Addr City,CÃ³digo postal
+homeAddrCityCode.required,home city required,home city required,CÃ³digo de
+homeAddrDetail.label,home Addr Detail,home Addr Detail,DirecciÃ³n detallada de la casa requerida
+homeAddrDetail.placeholder,home Addr Detail,home Addr Detail,DirecciÃ³n detallada de la casa requerida
+homeAddrDetail.required,home detail required,home detail required,DirecciÃ³n detallada de la casa requerida
+homeAddrProvinceCode.label,homeAddrProvinceCode,homeAddrProvinceCode,CÃ³digo de ciudad de la casa requerido
+homeAddrProvinceCode.placeholder,home Addr Province,home Addr Province,Etiqueta CÃ³digo de Provincia y direcciÃ³n domicilio
+homeAddrProvinceCode.required,home state required,home state required,CÃ³digo de ciudad de la casa requerido
+idcard.invalid,idcard invalid,idcard invalid,Tarjeta de identificaciÃ³n invÃ¡lida
+idcard.label,idcard,idcard,Etiqueta tarjeta de identificaciÃ³n
+idcard.placeholder,idcard,idcard,Etiqueta tarjeta de identificaciÃ³n
+idcard.required,idcard required,idcard required,Tarjeta de identificaciÃ³n requerida
+idcard1.required,idcard1 required,idcard1 required,Tarjeta de identificaciÃ³n requerida
+idcard2.required,idcard2 Required,idcard2 Required,Etiqueta tarjeta de identificaciÃ³n requerida
+incumbency.label,incumbency,åœ¨èŒæ—¶é—´,Etiqueta Tiempo de trabajo
+incumbency.placeholder,incumbency,è¯·é€‰æ‹©åœ¨èŒæ—¶é—´,Etiqueta Tiempo de trabajo
+incumbency.required,incumbency required,åœ¨èŒæ—¶é—´å¿…é¡»,Requerido tiempo de trabajo
+industryCode.label,industry,æ‰€åœ¨è¡Œä¸š,Industria
+industryCode.placeholder,industry,è¯·é€‰æ‹©æ‰€åœ¨è¡Œä¸š,Por favor seleccione la industria
+industryCode.required,industry required,æ‰€åœ¨è¡Œä¸šå¿…éœ€,Tipo de industria requerido
+jobTypeCode.label,job type,èŒä¸šç±»å‹,Tipo de trabajo
+jobTypeCode.placeholder,job type,è¯·é€‰æ‹©èŒä¸šç±»å‹,Por favor seleccione el tipo de trabajo
+jobTypeCode.required,job type required,èŒä¸šç±»å‹å¿…é¡»,Tipo de trabajo requerido
+lastName.invalid,last name invalid,çˆ¶äº²å§“æ°æ— æ•ˆ,Apellido invÃ¡lido
+lastName.label,last name,çˆ¶äº²å§“æ°,Etiqueta Apellido
+lastName.placeholder,last name,è¯·è¾“å…¥çˆ¶äº²å§“æ°,Etiqueta Apellido
+lastName.required,last name required,çˆ¶äº²å§“æ°å¿…é¡»,Apellido requerido
+liveness.required,liveness required,liveness required,liveness required
+loanPurpose.label,loan purpose,loan purpose,PropÃ³sito del prÃ©stamo
+loanPurpose.placeholder,loan purpose,loan purpose,PropÃ³sito del prÃ©stamo
+loanPurpose.required,loan purpose required,loan purpose required,PropÃ³sito del prÃ©stamo requerido
+maritalStatus.label,maritalStatus,maritalStatus,Estado civil
+maritalStatus.placeholder,maritalStatus,maritalStatus,Etiqueta Estado civil
+maritalStatus.required,marital status required,marital status required,Estado civil requerido
+middleName.invalid,middle name invalid,middle name invalid,Segundo nombre invÃ¡lido
+middleName.label,middle name,middle name,Etiqueta segundo nombre
+middleName.placeholder,middle name,middle name,Etiqueta segundo nombre requerido
+middleName.required,middle name required,middle name required,Segundo nombre requerido
+monthlyIncome.label,month income,æ”¶å…¥æ°´å¹³,Etiqueta Ingresos mensuales
+monthlyIncome.placeholder,month income,è¯·é€‰æ‹©æ”¶å…¥æ°´å¹³,Etiqueta Ingresos mensuales
+monthlyIncome.required,monthincome required,æ”¶å…¥æ°´å¹³å¿…é¡»,Etiqueta Ingresos mensuales requerido
+password.invalid,password invalid,å¯†ç æ ¼å¼ä¸º,Contrase?a invÃ¡lida
+password.label,password,å¯†ç ,Etiqueta Contrase?a requerida
+password.placeholder,password,è¯·è¾“å…¥6-12ä½å«å­—ç¬¦æ•°å­—çš„å¯†ç ,Etiqueta Por favor ingrese una contrase?a de 6 a 12 dÃ­gitos
+password.required,password required,å¯†ç å¿…é¡»,Contrase?a requerida
+payAmount.invalid,payment amount should above {{val}} MXN,è¿˜æ¬¾é‡‘é¢æœ€å°å¿…é¡»ä¸º{{val}}MXN,Importe de la devoluciÃ³n debe ser mayor a {val}
+payAmount.placeholder,payment amount,è¯·è¾“å…¥è¿˜æ¬¾é‡‘é¢,Etiqueta Por favor introduzca el importe de la devoluciÃ³n
+payAmount.required,payment amount required,è¿˜æ¬¾é‡‘é¢å¿…éœ€,pImporte de la devoluciÃ³n requerido
+phone.invalid,Phone invalid,æ‰‹æœºå·æ ¼å¼ä¸æ­£ç¡®,NÃºmero de telÃ©fono invÃ¡lido
+phone.label,Phone,æ‰‹æœºå·,Etiqueta NÃºmero de telÃ©fono
+phone.placeholder,Phone,è¯·è¾“å…¥æ‰‹æœºå·,Etiqueta Por favor ingrese el nÃºmero de telÃ©fono
+phone.required,Phone Required,æ‰‹æœºå·å¿…é¡»,NÃºmero de telÃ©fono requerido
+salaryDate.label,pay date,å‘è–ªæ—¥,DÃ­a de pago del sueldo
+salaryDate.placeholder,pay date,è¯·é€‰æ‹©å‘è–ªæ—¥,Etiqueta DÃ­a del pago del sueldo
+salaryDate.required,salary date required,å‘è–ªæ—¥å¿…é¡»,Pago del sueldo requerido
+salaryType.label,salary type,å‘è–ªç±»å‹,Etiqueta Tipo de salario
+salaryType.placeholder,salary type,è¯·é€‰æ‹©å‘è–ªç±»å‹,Etiqueta Por favor seleccione Tipo de salario
+salaryType.required,salary type required,å‘è–ªç±»å‹å¿…é¡»,Tipo de salario requerido
+secondCardNo.invalid,secondCardNo invalid,secondCardNo invalid,NÃºmero de telÃ©fono adicional invÃ¡lido
+secondCardNo.label,secondCardNo,secondCardNo,Etiqueta Segundo nÃºmero telefÃ³nico
+secondCardNo.placeholder,secondCardNo,secondCardNo,Etiqueta Segundo nÃºmero telefÃ³nico
+secondCardNo.required,second phone required,second phone required,NÃºmero de telÃ©fono adicional requerido
+validateCode.get,Get Code,è·å–éªŒè¯ç ,Obtener cÃ³digo de validaciÃ³n
+validateCode.invalid,Validate Code Invalid,éªŒè¯ç æ— æ•ˆ,CÃ³digo de validaciÃ³n invÃ¡lido
+validateCode.label,Validate Code,éªŒè¯ç ,CÃ³digo de validaciÃ³n
+validateCode.maxTime,æœ€å¤§æ¬¡æ•°, è¯·ç¨å€™å†è¯•,è¾¾åˆ°æœ€å¤§æ¬¡æ•°ï¼Œè¯·ç¨å€™å†è¯•,Se ha alcanzado el nÃºmero mÃ¡ximo de veces vuelva a intentarlo mÃ¡s tarde
+validateCode.placeholder,Validate Code,è¯·è¾“å…¥éªŒè¯ç ,Etiqueta CÃ³digo de validaciÃ³n
+validateCode.required,Validate Code Required,éªŒè¯ç å¿…é¡»,CÃ³digo de validaciÃ³n requerido
+validateCode.wait,{{num}},{{num}},{{num}}
+whatsapp.label,whatsapp,whatsapp,Etiqueta WhatsApp
+whatsapp.placeholder,whatsapp,whatsapp,Etiqueta WhatsApp requerido
+whatsapp.required,whatsAPP required,whatsAPP required,WhatsApp requerido

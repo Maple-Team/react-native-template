@@ -1,61 +1,60 @@
-×Ö¶ÎÃû,Ó¢ÎÄ,ÖĞÎÄ
-$,$,$
-account,Account,Account
-applyAmount,Apply amount,Apply amount
-applyState.apply,apply,ÉêÇë
-applyState.check,Check,²é¿´
-applyState.repay,Repay,»¹¿î
-applyState.continueLoan,Continue Loan,Ğø´û
-availableAmount,Available balance,Available balance
-back,·µ»Ø,·µ»Ø
-bankCard,Collection bank card,Collection bank card
-cancel,È¡Ïû,È¡Ïû
-close,Close,Close
-confirm,Confirm,Confirm
-copy,copy,copy
-days,days,days
-done,Done,Done
-fee,Fee,Fee
-forget-password,Íü¼ÇÃÜÂë,Íü¼ÇÃÜÂë
-free,Free,free
-home,Home,Ê×Ò³
-loading,Loading...,¼ÓÔØÖĞ...
-loan,Loan,Ç©Ô¼
-loanAmount,Loan Amount,´û¿î½ğ¶î
-loanDate,Loan Date,´û¿îÈÕÆÚ
-loanDays,Loan Days,´û¿îÌìÊı
-login.success,µÇÂ¼³É¹¦,µÇÂ¼³É¹¦
-logout,Logout,ÍË³öµÇÂ¼
-modify,Modify,ĞŞ¸Ä
-mxn,MXN,MXN
-ok,OK,È·¶¨
-old,old,¾É
-order,Order,¶©µ¥
-password-login,ÃÜÂëµÇÂ¼,ÃÜÂëµÇÂ¼
-repayAmount,repay Amount,Ó¦»¹½ğ¶î
-repayDate,repayDate,Ó¦»¹ÈÕÆÚ
-repayHint,ÇëÄú±£³ÖÁ¼ºÃµÄ»¹¿îÏ°¹ß,ÇëÄú±£³ÖÁ¼ºÃµÄ»¹¿îÏ°¹ß
-repaymentAmount,Repayment amount,Repayment amount
-screenTitle.payment,,Payment
-screenTitle.historyBills,,History Bills
-screenTitle.myCard,,My Card
-screenTitle.contactUs,,Contact Us
-screenTitle.aboutUs,,About Moneyya
-screenTitle.faceRecognition,,Face Recognition
-screenTitle.holdIDPhoto,,Hold ID Photo
-screenTitle.WorkInfo,,¹¤×÷ĞÅÏ¢
-screenTitle.RelativeInfo,,Ç×ÊôĞÅÏ¢
-screenTitle.IdcardImage,,Ó°ÏñĞÅÏ¢
-screenTitle.PersonInfo,,¸öÈËĞÅÏ¢
-screenTitle.BankInfo,,ÒøĞĞ¿¨ĞÅÏ¢
-screenTitle.authorizaiton,,ÊÚÈ¨ËµÃ÷
-screenTitle.privacy,,ÒşË½Õş²ß
-screenTitle.loan,,Loan
-secondPaymentAmount,Second repayment amount,Second repayment amount
-secondPaymentDate,Second repayment date,Second repayment date
-signin,µÇÂ¼,µÇÂ¼
-signup,×¢²á,×¢²á
-start,start,start
-submit,Ìá½»,Ìá½»
-transferAmount,Transfer amount,µ½ÊÖ½ğ¶î
-validation-code-login,ÑéÖ¤ÂëµÇÂ¼,ÑéÖ¤ÂëµÇÂ¼
+$,$,$,$
+account,Account,Account,Cuenta
+applyAmount,Apply amount,Apply amount,Aplicar cantidad
+applyState.apply,apply,ç”³è¯·,Aplicar
+applyState.check,Check,æŸ¥çœ‹,Revisar
+applyState.continueLoan,Continue Loan,ç»­è´·,RenovaciÃ³n de PrÃ©stamo
+applyState.repay,Repay,è¿˜æ¬¾,Reembolso
+availableAmount,Available balance,Available balance,Saldo disponible
+back,è¿”å›,è¿”å›,Retorno
+bankCard,Collection bank card,Collection bank card,Cobro de tarjeta bancaria
+cancel,å–æ¶ˆ,å–æ¶ˆ,Cancelar
+close,Close,Close,Cerrar
+confirm,Confirm,Confirm,Confirmar
+copy,copy,copy,Copiar
+days,days,days,DÃ­as
+fee,Fee,Fee,Tarifa
+forget-password,å¿˜è®°å¯†ç ,å¿˜è®°å¯†ç ,OlvidÃ³ la contrase?a
+free,Free,free,Gratis
+home,Home,é¦–é¡µ,PÃ¡gina de inicio
+loading,Loading...,åŠ è½½ä¸­...,Cargando...
+loan,Loan,ç­¾çº¦,Contrato
+loanAmount,Loan Amount,è´·æ¬¾é‡‘é¢,Monto del prÃ©stamo
+loanDate,Loan Date,è´·æ¬¾æ—¥æœŸ,Fecha de prÃ©stamo
+loanDays,Loan Days,è´·æ¬¾å¤©æ•°,DÃ­as de prÃ©stamo
+login.success,ç™»å½•æˆåŠŸ,ç™»å½•æˆåŠŸ,Inicio de sesiÃ³n correcto
+logout,Logout,é€€å‡ºç™»å½•,Desconectar
+modify,Modify,ä¿®æ”¹,Modificar
+mxn,MXN,MXN,MXN
+ok,OK,ç¡®å®š,OK
+old,old,æ—§,Viejo
+order,Order,è®¢å•,Orden No.
+password-login,å¯†ç ç™»å½•,å¯†ç ç™»å½•,Contrase?a de acceso
+repayAmount,repay Amount,åº”è¿˜é‡‘é¢,Monto adeudado
+repayDate,repayDate,åº”è¿˜æ—¥æœŸ,Fecha de vencimiento
+repayHint,è¯·æ‚¨ä¿æŒè‰¯å¥½çš„è¿˜æ¬¾ä¹ æƒ¯,è¯·æ‚¨ä¿æŒè‰¯å¥½çš„è¿˜æ¬¾ä¹ æƒ¯,Por favor mantenga buenos hÃ¡bitos de pago
+repaymentAmount,Repayment amount,Repayment amount,Monto de reembolso
+screenTitle.BankInfo,Bank Info,é“¶è¡Œå¡ä¿¡æ¯,TÃ­tulo de pantalla/InformaciÃ³n bancaria
+screenTitle.IdcardImage,Image of Idard,å½±åƒä¿¡æ¯,TÃ­tulo de pantalla/Imagen de la Tarjeta de identificaciÃ³n
+screenTitle.PersonInfo,Person Info,ä¸ªäººä¿¡æ¯,TÃ­tulo de pantalla/InformaciÃ³n personal
+screenTitle.RelativeInfo,Relative's Info,äº²å±ä¿¡æ¯,TÃ­tulo de pantalla/InformaciÃ³n de los parientes
+screenTitle.WorkInfo,Work Info,å·¥ä½œä¿¡æ¯,TÃ­tulo de pantalla/InformaciÃ³n de trabajo
+screenTitle.aboutUs,About Moneyya,About Moneyya,Acerca de nosotros acerca de Moneyya
+screenTitle.authorizaiton,Authorizaiton,æˆæƒè¯´æ˜,TÃ­tulo de pantalla/AutorizaciÃ³n
+screenTitle.contactUs,Contact Us,Contact Us,TÃ­tulo de pantalla/ContÃ¡ctenos
+screenTitle.faceRecognition,Face Recognition,Face Recognition,Face Recognition;TÃ­tulo de pantalla/Reconocimiento facial
+screenTitle.historyBills,History Bills,History Bills,TÃ­tulo de pantalla/Facturas histÃ³ricas
+screenTitle.holdIDPhoto,Hold ID Photo,Hold ID Photo,TÃ­tulo de pantalla/Foto de la identificaciÃ³n
+screenTitle.loan,Loan,Loan,TÃ­tulo de pantalla/PrÃ©stamo
+screenTitle.loanDetailRecord,Loan detailed record,è´·æ¬¾è¯¦æƒ…,Loan detailed record
+screenTitle.myCard,My Card,My Card,TÃ­tulo de pantalla/Mi tarjeta
+screenTitle.payment,Payment,Payment,TÃ­tulo de pantalla/ Pago
+screenTitle.privacy,Privacy Policy,éšç§æ”¿ç­–,TÃ­tulo de pantalla/PolÃ­tica de privacidad
+secondPaymentAmount,Second repayment amount,Second repayment amount,Monto de reembolso del segundo pago
+secondPaymentDate,Second repayment date,Second repayment date,Monto de reembolso del segundo pago y fecha
+signin,ç™»å½•,ç™»å½•,Iniciar sesiÃ³n
+signup,æ³¨å†Œ,æ³¨å†Œ,Registrarse
+start,start,start,Comienzo
+submit,æäº¤,æäº¤,Enviar
+transferAmount,Transfer amount,åˆ°æ‰‹é‡‘é¢,Cantidad en mano
+validation-code-login,éªŒè¯ç ç™»å½•,éªŒè¯ç ç™»å½•,Inicio de sesiÃ³n con cÃ³digo de verificaciÃ³n
