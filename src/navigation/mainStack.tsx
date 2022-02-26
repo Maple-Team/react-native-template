@@ -45,7 +45,7 @@ export function MainStack() {
         key="BillsDetail"
         component={BillsDetail}
         options={() => ({
-          title: 'Loan detailed record',
+          title: t('screenTitle.loanDetailRecord'),
           headerRight: () => (
             <HeaderRight
               onPress={() => {

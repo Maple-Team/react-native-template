@@ -1,10 +1,9 @@
 #!/usr/bin/env node
 import fs from 'fs'
-import beautify from 'js-beautify'
 import { Command } from 'commander'
 import path from 'path'
+import { Lang, write } from './utls'
 
-type Lang = 'en' | 'cn'
 type FieldValue = {
   label: string
   placeholder: string
@@ -30,27 +29,6 @@ const getLanguagesFields = async (lang: Lang) => {
           } catch (error) {
             reject(error)
           }
-        }
-      }
-    )
-  })
-}
-/**
- * 更新翻译文案
- * @param lang
- * @param data
- * @returns
- */
-const write = async (lang: Lang, data: string) => {
-  return new Promise<void>((resolve, reject) => {
-    fs.writeFile(
-      path.resolve(__dirname, `../src/locales/languages/${lang}/field.json`),
-      beautify(data, { indent_size: 2, space_in_empty_paren: true }),
-      err => {
-        if (err) {
-          reject(err)
-        } else {
-          resolve()
         }
       }
     )
@@ -85,6 +63,6 @@ const write = async (lang: Lang, data: string) => {
       .forEach(k => {
         result[k] = data[k]
       })
-    await write(language, JSON.stringify(result))
+    await write(language, 'field', JSON.stringify(result))
   }
 })()

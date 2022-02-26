@@ -19,6 +19,7 @@
     "beauty-locale": "ts-node scripts/locale-beauty.ts",
     "rn": "ts-node scripts/change-name.ts",
     "tinify": "ts-node scripts/tinify.ts",
+    "flat": "ts-node scripts/flat.ts",
     "translate": "ts-node scripts/translate.ts",
     "analysis": "npx react-native-bundle-visualizer"
   },

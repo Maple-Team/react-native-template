@@ -54,8 +54,8 @@ Props) {
   const onRequestContactsPermission = useCallback(
     () =>
       onRequestPermission({
-        blockedMessage: t('permission blocked'),
-        unavailableMessage: t('permission unavailable'),
+        blockedMessage: t('permission-blocked'),
+        unavailableMessage: t('permission-unavailable'),
         permission: 'android.permission.READ_CONTACTS',
         onGranted: () => {
           onSelectContacts()
