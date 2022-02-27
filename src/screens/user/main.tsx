@@ -33,15 +33,15 @@ export function UserCenter() {
       <View style={{ paddingTop: 0, paddingHorizontal: 0 }}>
         <View>
           <ImageBackground
-            source={require('@/assets/one/user-center/bg.webp')}
+            source={require('@/assets/compressed/user-center/bg.webp')}
             resizeMode="cover"
             style={{
               height: 220,
             }}>
             <TabHeader
-              title={require('@/assets/one/common/active/moneyya.webp')}
-              notice={require('@/assets/one/common/active/notice.webp')}
-              help={require('@/assets/one/common/active/help.webp')}
+              title={require('@/assets/compressed/common/active/moneyya.webp')}
+              notice={require('@/assets/compressed/common/active/notice.webp')}
+              help={require('@/assets/compressed/common/active/help.webp')}
             />
             <View
               style={{
@@ -49,7 +49,10 @@ export function UserCenter() {
                 justifyContent: 'space-between',
                 paddingVertical: 26,
               }}>
-              <Image source={require('@/assets/one/user-center/avatar.webp')} resizeMode="cover" />
+              <Image
+                source={require('@/assets/compressed/user-center/avatar.webp')}
+                resizeMode="cover"
+              />
               <Text color="#fff" fontSize={18}>
                 {context.user?.name || 'moneyya'}
               </Text>
@@ -71,7 +74,7 @@ export function UserCenter() {
           }}>
           {[
             {
-              img: require('@/assets/one/user-center/Payment.webp'),
+              img: require('@/assets/compressed/user-center/Payment.webp'),
               title: t('screenTitle.payment'),
               onPress: () => {
                 //@ts-ignore
@@ -79,7 +82,7 @@ export function UserCenter() {
               },
             },
             {
-              img: require('@/assets/one/user-center/History-Bills.webp'),
+              img: require('@/assets/compressed/user-center/History-Bills.webp'),
               title: t('screenTitle.historyBills'),
               onPress: () => {
                 //@ts-ignore
@@ -87,7 +90,7 @@ export function UserCenter() {
               },
             },
             {
-              img: require('@/assets/one/user-center/My-Card.webp'),
+              img: require('@/assets/compressed/user-center/My-Card.webp'),
               title: t('screenTitle.myCard'),
               onPress: () => {},
             },
@@ -112,17 +115,17 @@ export function UserCenter() {
           }}>
           {[
             {
-              img: require('@/assets/one/user-center/Contact-Us.webp'),
+              img: require('@/assets/compressed/user-center/Contact-Us.webp'),
               title: t('screenTitle.contactUs'),
               onPress: () => {},
             },
             {
-              img: require('@/assets/one/user-center/About-Moneyya.webp'),
+              img: require('@/assets/compressed/user-center/About-Moneyya.webp'),
               title: t('screenTitle.aboutUs'),
               onPress: () => {},
             },
             {
-              img: require('@/assets/one/user-center/Logout.webp'),
+              img: require('@/assets/compressed/user-center/Logout.webp'),
               title: t('logout'),
               onPress: () => {
                 Modal.alert(t('logoutPrompt'), t('logoutPromptContent'), [
@@ -162,7 +165,7 @@ export function UserCenter() {
                   </Text>
                   <Image
                     resizeMode="cover"
-                    source={require('@/assets/one/user-center/right.webp')}
+                    source={require('@/assets/compressed/user-center/right.webp')}
                   />
                 </Pressable>
               </View>

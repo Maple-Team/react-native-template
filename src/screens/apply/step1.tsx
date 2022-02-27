@@ -183,7 +183,7 @@ export function Step1() {
         keyboardShouldPersistTaps="handled">
         <View>
           <ImageBackground
-            source={require('@/assets/one/apply/banner.webp')}
+            source={require('@/assets/compressed/apply/banner.webp')}
             resizeMode="cover"
             style={{
               height: 284,
@@ -200,7 +200,7 @@ export function Step1() {
                     }
                   : {},
               ]}>
-              <Image source={require('@/assets/one/apply/cash.webp')} resizeMode="cover" />
+              <Image source={require('@/assets/compressed/apply/cash.webp')} resizeMode="cover" />
             </View>
             <View style={Styles.loanInfoPrompt}>
               <Text fontSize={14} color="rgba(1, 0, 56, 1)">
@@ -332,25 +332,25 @@ const Slider = () => (
 
 const ads = [
   {
-    key: 'one',
+    key: 'compressed',
     title: t('ads.0.title'),
     text: t('ads.0.text'),
-    ad: require('@/assets/one/apply/ad1.webp'),
-    num: require('@/assets/one/apply/1.webp'),
+    ad: require('@/assets/compressed/apply/ad1.webp'),
+    num: require('@/assets/compressed/apply/1.webp'),
   },
   {
     key: 'two',
     title: t('ads.1.title'),
     text: t('ads.1.text'),
-    ad: require('@/assets/one/apply/ad2.webp'),
-    num: require('@/assets/one/apply/2.webp'),
+    ad: require('@/assets/compressed/apply/ad2.webp'),
+    num: require('@/assets/compressed/apply/2.webp'),
   },
   {
     key: 'three',
     title: t('ads.2.title'),
     text: t('ads.2.text'),
-    ad: require('@/assets/one/apply/ad3.webp'),
-    num: require('@/assets/one/apply/3.webp'),
+    ad: require('@/assets/compressed/apply/ad3.webp'),
+    num: require('@/assets/compressed/apply/3.webp'),
   },
 ]
 const dot = (

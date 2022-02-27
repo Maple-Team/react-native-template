@@ -75,7 +75,7 @@ export function NormalPicker<T extends Dict, U extends PickerField>({
             pressRetentionOffset={{ top: 20, left: 20, right: 20, bottom: 20 }}>
             <Image
               style={formItemStyles.suffix}
-              source={require('@assets/one/common/right.webp')}
+              source={require('@assets/compressed/common/right.webp')}
               resizeMode="cover"
             />
           </Pressable>

@@ -208,7 +208,7 @@ const PermissionHint = ({ check }: { check?: boolean }) => {
         }}>
         {check ? (
           <Pressable style={{ marginRight: 5 }}>
-            <Image source={require('@/assets/one/account/check.webp')} resizeMode="cover" />
+            <Image source={require('@/assets/compressed/account/check.webp')} resizeMode="cover" />
           </Pressable>
         ) : (
           <Pressable
@@ -217,7 +217,10 @@ const PermissionHint = ({ check }: { check?: boolean }) => {
               //@ts-ignore
               na.navigate('Terms', { url: brand?.channelInfo.serviceUrl })
             }}>
-            <Image source={require('@/assets/one/account/uncheck.webp')} resizeMode="cover" />
+            <Image
+              source={require('@/assets/compressed/account/uncheck.webp')}
+              resizeMode="cover"
+            />
           </Pressable>
         )}
         <Text fontSize={13} color="rgba(144, 146, 155, 1)">

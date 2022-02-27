@@ -153,7 +153,7 @@ export function PhotoPicker({
                 onGranted: takePicture,
               })
             }}>
-            <Image source={require('@assets/one/apply/camera.webp')} resizeMode="cover" />
+            <Image source={require('@assets/compressed/apply/camera.webp')} resizeMode="cover" />
           </Pressable>
         </ImageBackground>
         {/* <ErrorMessage name={field}>

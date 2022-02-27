@@ -72,7 +72,7 @@ export function Payment() {
         <ScrollView style={[PageStyles.scroll, { paddingHorizontal: 0, paddingTop: 26.5 }]}>
           <View style={{ alignItems: 'center', justifyContent: 'center' }}>
             <Image
-              source={require('@/assets/one/additional/cash.webp')}
+              source={require('@/assets/compressed/additional/cash.webp')}
               resizeMode="cover"
               style={{ marginBottom: 18.5 }}
             />
@@ -120,7 +120,7 @@ export function Payment() {
               <Image
                 style={style.payimg}
                 resizeMode="cover"
-                source={require('@/assets/one/additional/spe.webp')}
+                source={require('@/assets/compressed/additional/spe.webp')}
               />
               <View style={[style.payinfo, { borderBottomColor: '#D0DEE4', borderBottomWidth: 1 }]}>
                 <View style={style.payinfoText}>
@@ -139,7 +139,7 @@ export function Payment() {
                 <Image
                   style={style.payright}
                   resizeMode="cover"
-                  source={require('@/assets/one/user-center/right.webp')}
+                  source={require('@/assets/compressed/user-center/right.webp')}
                 />
               </View>
             </Pressable>
@@ -153,7 +153,7 @@ export function Payment() {
               <Image
                 style={style.payimg}
                 resizeMode="cover"
-                source={require('@/assets/one/additional/oxxo.webp')}
+                source={require('@/assets/compressed/additional/oxxo.webp')}
               />
               <View style={style.payinfo}>
                 <View style={style.payinfoText}>
@@ -171,7 +171,7 @@ export function Payment() {
                 <Image
                   style={style.payright}
                   resizeMode="cover"
-                  source={require('@/assets/one/user-center/right.webp')}
+                  source={require('@/assets/compressed/user-center/right.webp')}
                 />
               </View>
             </Pressable>
@@ -211,7 +211,7 @@ export function Payment() {
                           }}>
                           <Image
                             style={{ marginRight: 18 }}
-                            source={require('@/assets/one/additional/note.webp')}
+                            source={require('@/assets/compressed/additional/note.webp')}
                           />
                           <Text color="#333030" fontSize={18}>
                             {t('restRepayAmount')}{' '}
@@ -259,13 +259,13 @@ export function Payment() {
                                       style={{ marginLeft: 10 }}
                                       hitSlop={{ bottom: 10, left: 10, right: 10, top: 10 }}>
                                       <Image
-                                        source={require('@assets/one/common/clear.webp')}
+                                        source={require('@assets/compressed/common/clear.webp')}
                                         resizeMode="cover"
                                       />
                                     </Pressable>
                                   ) : (
                                     <Image
-                                      source={require('@assets/one/common/correct.webp')}
+                                      source={require('@assets/compressed/common/correct.webp')}
                                       resizeMode="cover"
                                     />
                                   )}

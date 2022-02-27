@@ -129,7 +129,7 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
         <>
           <View style={{ paddingHorizontal: 37, backgroundColor: '#fff', flexDirection: 'row' }}>
             <Hint
-              img={require('@/assets/one/apply/loan_notice.webp')}
+              img={require('@/assets/compressed/apply/loan_notice.webp')}
               hint={t('bankCodePrompt')}
               hintColor={'rgba(255, 50, 50, 1)'}
             />
@@ -261,7 +261,10 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
                     justifyContent: 'center',
                     position: 'absolute',
                   }}>
-                  <Image source={require('@/assets/one/additional/bank.webp')} resizeMode="cover" />
+                  <Image
+                    source={require('@/assets/compressed/additional/bank.webp')}
+                    resizeMode="cover"
+                  />
                 </View>
                 <Text color="#333030" fontSize={18} fontFamily="Arial-BoldMT" fontWeight="bold">
                   {t('informationConfirmed')}
@@ -304,7 +307,7 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
               </View>
               <View style={{ paddingHorizontal: 14.5, paddingBottom: 47, flexDirection: 'row' }}>
                 <Hint
-                  img={require('@/assets/one/apply/loan_notice.webp')}
+                  img={require('@/assets/compressed/apply/loan_notice.webp')}
                   hint={t('backCodeValidPrompt')}
                   hintColor={'rgba(255, 50, 50, 1)'}
                 />

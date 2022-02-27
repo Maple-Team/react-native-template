@@ -64,7 +64,7 @@ export const Step4 = ({ navigation }: NativeStackHeaderProps) => {
                       key="idcard1"
                       hint={t('take-photo-hint-1')}
                       title={t('take-photo-title')}
-                      bg={require('@assets/one/apply/id1.webp')}
+                      bg={require('@assets/compressed/apply/id1.webp')}
                       imageType="INE_OR_IFE_FRONT"
                       cameraType="front"
                       onUploadSuccess={id => setFieldValue('idcard1', id)}
@@ -79,7 +79,7 @@ export const Step4 = ({ navigation }: NativeStackHeaderProps) => {
                       field="idcard2"
                       key="idcard2"
                       hint={t('take-photo-hint-2')}
-                      bg={require('@assets/one/apply/id2.webp')}
+                      bg={require('@assets/compressed/apply/id2.webp')}
                       imageType="INE_OR_IFE_BACK"
                       cameraType="back"
                       onUploadSuccess={id => setFieldValue('idcard2', id)}

@@ -74,7 +74,7 @@ export function NormalDatePicker({
             }}>
             <Image
               style={formItemStyles.suffix}
-              source={require('@assets/one/apply/calendar.webp')}
+              source={require('@assets/compressed/apply/calendar.webp')}
               resizeMode="cover"
             />
           </Pressable>

@@ -94,7 +94,10 @@ export default ({ route }: { route: any }) => {
                   justifyContent: 'center',
                   position: 'absolute',
                 }}>
-                <Image source={require('@/assets/one/additional/bill.webp')} resizeMode="cover" />
+                <Image
+                  source={require('@/assets/compressed/additional/bill.webp')}
+                  resizeMode="cover"
+                />
               </View>
             </View>
           </View>
