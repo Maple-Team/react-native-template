@@ -1,4 +1,7 @@
-import { Home } from '@screens/apply'
+import {
+  Home,
+  // ValidateCode
+} from '@screens/apply'
 import { UserStack } from './userStack'
 import React from 'react'
 import { Image } from 'react-native'

@@ -205,7 +205,7 @@ export interface Product {
   unSupportItem?: any
 }
 
-interface ProductItem {
+export interface ProductItem {
   /**
    * 金额步长
    */

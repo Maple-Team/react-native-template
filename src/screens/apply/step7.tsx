@@ -92,7 +92,7 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
       bankCode: step7Data.bankCode || '',
       cardNoType: step7Data.cardNoType || 'CARD',
       bankCodeName: step7Data.bankCodeName || MMKV.getString('bankCodeName') || '',
-      cardNoTypeName: step7Data.cardNoTypeName || MMKV.getString('cardNoTypeName') || '',
+      cardNoTypeName: step7Data.cardNoTypeName || MMKV.getString('cardNoTypeName') || 'CARD',
       cardNoTypeArray: [],
     }
   )

@@ -9,6 +9,7 @@ import { Linking } from 'react-native'
 import { default as MoneyyaContext } from '@/state'
 import { useNavigation } from '@react-navigation/native'
 import { LetterList, LetterDetail } from '@screens/letter'
+import { ValidateCode } from '@screens/apply/validateCode'
 import { useTranslation } from 'react-i18next'
 
 const Stack = createNativeStackNavigator()
@@ -58,7 +59,8 @@ export function MainStack() {
           headerLeft: () => (
             <HeaderLeft
               onPress={() => {
-                na.goBack()
+                //@ts-ignore
+                na.navigate('Order')
               }}
             />
           ),
@@ -90,6 +92,7 @@ export function MainStack() {
         })}
       />
       <Stack.Screen name="LetterDetail" key="LetterDetail" component={LetterDetail} />
+      <Stack.Screen name="ValidateCode" key="ValidateCode" component={ValidateCode} />
     </Stack.Navigator>
   )
 }

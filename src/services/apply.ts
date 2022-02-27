@@ -181,12 +181,49 @@ export async function updateBankInfo(data: BankInfoParameter) {
   })
 }
 
-// TODO
-export async function uploadAllContacts(data: any[]) {
+export async function uploadAllContacts(data: ContactParameter) {
   return request<BaseResponse>({
-    url: '',
+    url: '/smart-loan/app/customer/Contacts',
     method: 'POST',
     data,
   })
 }
-//  TODO 全部APP 安装信息
+export async function uploadAllApp(data: AppParameter) {
+  return request<BaseResponse>({
+    url: '/smart-loan/app/customer/appInfo',
+    method: 'POST',
+    data,
+  })
+}
+
+interface AppParameter {
+  appInfos: AppInfo[]
+  applyId: number
+  deviceId: string
+}
+
+interface AppInfo {
+  appInstallTime: string
+  icon: string
+  isAppActive: string
+  isSystem: string
+  name: string
+  packageName: string
+  packagePath: string
+  versionCode: number
+  versionName: string
+}
+interface ContactParameter {
+  applyId: number
+  idcard: string
+  list: MoneyyaContact[]
+  phone: string
+}
+
+export interface MoneyyaContact {
+  contactCallCount: string
+  contactLastCallTime: string
+  contactName: string
+  contactPhone: string
+  contactRelation: string
+}

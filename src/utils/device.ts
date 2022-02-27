@@ -1,4 +1,16 @@
-import {} from 'react-native-device-info'
+import // getMacAddress,
+// getTotalMemory,
+// getFreeDiskStorage,
+// getTotalMemory,
+// getTotalDiskCapacity,
+// getFreeDiskStorage,
+// getVersion, // string
+// getUsedMemory, // number
+// getUniqueId, // string
+// getBrand, // string
+// getDevice,
+// getSystemVersion, // string
+'react-native-device-info'
 import RNAdvertisingId from 'react-native-advertising-id'
 import NetInfo from '@react-native-community/netinfo'
 import { getTimeSinceStartup } from 'react-native-startup-time'

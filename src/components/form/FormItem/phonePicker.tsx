@@ -9,6 +9,9 @@ import { selectContactPhone } from 'react-native-select-contact'
 import Contacts from 'react-native-contacts'
 import { onRequestPermission } from '@/utils/permission'
 import type { ScrollView } from 'react-native-gesture-handler'
+import { MMKV } from '@/utils'
+import { KEY_CONTACTS } from '@/utils/constant'
+import { Modal } from '@ant-design/react-native'
 // import { UseFocusOnError } from '@/hooks'
 
 interface Props {
@@ -36,19 +39,48 @@ Props) {
 
   const onSelectContacts = useCallback(async () => {
     Contacts.getAll().then(contacts => {
-      console.log({ contacts })
-      // TODO UPLOAD ALL CONTACTS
+      const data = contacts
+        .map(contact => {
+          return contact.phoneNumbers.map(phone => {
+            return {
+              contactCallCount: 0,
+              contactLastCallTime: '',
+              contactName:
+                `${contact.givenName} ${contact.middleName} ${contact.familyName}`.trim(),
+              contactPhone: phone.number.replace(/[\s-]/g, ''),
+              contactRelation: 'default',
+            }
+          })
+        })
+        .reduce((prev, curr) => prev.concat(curr), [])
+      MMKV.setArrayAsync(KEY_CONTACTS, data)
     })
     const selection = await selectContactPhone()
-    console.log({ selection }) // TODO 多个会默认选第一个
     if (!selection) {
       return
     }
 
-    const { selectedPhone } = selection
-    const contactPhone = selectedPhone.number
-    const _value = contactPhone.replace(/[\s-]/g, '')
-    onChange(_value)
+    const {
+      selectedPhone,
+      contact: { phones },
+    } = selection
+    if (phones.length > 1) {
+      Modal.operation(
+        phones.map(({ number }) => {
+          return {
+            text: number,
+            onPress: () => {
+              const _phone = number.replace(/[\s-]/g, '')
+              onChange(_phone)
+            },
+          }
+        })
+      )
+    } else {
+      const contactPhone = selectedPhone.number
+      const _value = contactPhone.replace(/[\s-]/g, '')
+      onChange(_value)
+    }
   }, [onChange])
 
   const onRequestContactsPermission = useCallback(

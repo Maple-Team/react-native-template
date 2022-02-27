@@ -118,7 +118,7 @@ export function Step1() {
           // NOTE JPUSH get userinfo
           uploadJpush({
             phone: u.phone,
-            customerId: `${u.customerDto.customerId}` || '',
+            customerId: `${u.customerDto?.customerId}` || '',
           })
         })
         .finally(() => setLoading(false))
@@ -157,6 +157,9 @@ export function Step1() {
             totalSteps: TOTAL_STEPS,
           }).then(res => {
             MMKV.setString(KEY_APPLYID, `${res.applyId}`)
+            navigation.getParent()?.navigate('ValidateCode', {
+              phone: user?.phone || '',
+            })
             // NOTE 快捷通道
             if (user?.continuedLoan === 'Y') {
               navigation.getParent()?.dispatch(StackActions.replace('Step8'))

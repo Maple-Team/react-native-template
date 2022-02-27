@@ -12,15 +12,22 @@ import {
   DEBOUNCE_OPTIONS,
   DEBOUNCE_WAIT,
   KEY_APPLYID,
+  KEY_CONTACTS,
   KEY_GPS,
   KEY_LIVENESS,
   TOTAL_STEPS,
 } from '@/utils/constant'
 import { ApplyButton } from '@components/form/FormItem'
 import { Color } from '@/styles/color'
-import type { Calculate, Product } from '@/typings/apply'
+import type { Calculate, Product, ProductItem } from '@/typings/apply'
 import { useBehavior, useLocation } from '@/hooks'
-import { queryProduct, scheduleCalc, submit } from '@/services/apply'
+import {
+  MoneyyaContact,
+  queryProduct,
+  scheduleCalc,
+  submit,
+  uploadAllContacts,
+} from '@/services/apply'
 import { MMKV } from '@/utils'
 import { default as MoneyyaContext } from '@/state'
 import emitter from '@/eventbus'
@@ -34,40 +41,55 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
   const [productLoading, setProductLoading] = useState<boolean>()
   const onSubmit = debounce(
     () => {
-      if (!loanCode || !productCode) {
+      if (!product) {
         emitter.emit('SHOW_MESSAGE', { type: 'info', message: t('choose-product-prompt') })
         return
       }
+      const applyId = +(MMKV.getString(KEY_APPLYID) || '0')
       submit<'8'>({
         gps: MMKV.getString(KEY_GPS) || '0,0',
-        loanCode,
+        loanCode: product.loanCode,
         loanTerms: loanDay,
-        displayLoanDays,
+        displayLoanDays: product.displayLoanDays,
         applyAmount: loanAmt,
         maxApplyAmount: productInfo?.maxViewAmount || 0,
-        productCode,
-        applyId: +(MMKV.getString(KEY_APPLYID) || '0'),
+        productCode: product.productCode,
+        applyId,
         currentStep: 8,
         totalSteps: TOTAL_STEPS,
       }).then(() => {
-        // 先提交
-        // TODO 获取userinfo userStatus === 'N' 需要再次验证验证码 type: CONFIRM=>  跳转一个新的页面 -> 不强制, 点击返回-> 合同详情
-        // TODO 提交/smart-loan/app/validate/kaptcha
         // NOTE JPUSH 签约
+        const userStatus = context.user?.userAuthStatus
+        const step5Data = MMKV.getMap('step5Data') as { idcard: string }
+        const phone = context?.user?.phone || ''
         uploadJpush({
-          phone: context?.user?.phone || '',
-          custId: context?.user?.idcard || '',
+          phone,
+          custId: step5Data.idcard || '',
         })
-        ;['Step2Data', 'Step3Data', 'Step5Data', 'Step7Data'].forEach(k => {
+          .then(r => console.log('---------------uploadJpush--------------', r))
+          .catch(console.error)
+        uploadAllContacts({
+          list: (MMKV.getArray(KEY_CONTACTS) as MoneyyaContact[]) || [],
+          applyId,
+          idcard: step5Data.idcard,
+          phone,
+        })
+          .then(r => console.log('----------------uploadAllContacts--------------', r))
+          .catch(console.error)
+        ;['step2Data', 'step3Data', 'step5Data', 'step7Data'].forEach(k => {
           MMKV.removeItem(k)
         })
         MMKV.removeItem(KEY_LIVENESS)
-        navigation.navigate('BottomTab', {
-          screen: 'BillsDetail',
-          params: {
+        if (userStatus === 'N') {
+          // 二次验证码校验 validateCode
+          navigation.getParent()?.navigate('ValidateCode', {
+            phone,
+          })
+        } else {
+          navigation.getParent()?.navigate('BillsDetail', {
             applyId: MMKV.getString(KEY_APPLYID),
-          },
-        })
+          })
+        }
       })
     },
     DEBOUNCE_WAIT,
@@ -79,10 +101,7 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
   const [productInfo, setProductInfo] = useState<Product>()
   const [loanAmt, setLoanAmt] = useState<number>(0)
   const [loanDay, setLoanDay] = useState<number>(0)
-
-  const [displayLoanDays, setDisplayLoanDays] = useState<number>(0)
-  const [loanCode, setLoanCode] = useState<string>('')
-  const [productCode, setProductCode] = useState<string>('')
+  const [product, setProduct] = useState<ProductItem>()
 
   // 获取产品信息
   useEffect(() => {
@@ -95,9 +114,7 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
           setLoanAmt(res.maxAmount)
           const firstProduct = res.products.find(({ available }) => available === 'Y')
           if (firstProduct) {
-            setLoanCode(firstProduct.loanCode)
-            setProductCode(firstProduct.productCode)
-            setDisplayLoanDays(firstProduct.displayLoanDays)
+            setProduct(firstProduct)
             setLoanDay(firstProduct.loanTerms)
           }
         })
@@ -106,22 +123,21 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
   }, [context.user?.phone])
   // 试算信息
   const [calcResult, setcalcResult] = useState<Calculate>()
-  console.log({ calcResult }, params)
   const [isWarnging, setWarn] = useState<boolean>()
 
   useEffect(() => {
-    if (loanCode && displayLoanDays > 0 && !isWarnging) {
+    if (product && loanAmt <= product.maxAmount) {
       scheduleCalc({
-        displayLoanDays,
+        displayLoanDays: product.displayLoanDays,
         loanAmt,
-        loanCode,
+        loanCode: product.loanCode,
         loanDay,
       }).then(res => {
         console.log('calc', res)
         res && setcalcResult(res)
       })
     }
-  }, [loanAmt, loanDay, loanCode, displayLoanDays, isWarnging])
+  }, [loanAmt, loanDay, product])
   const loanTermArray: {
     day: number
     activate: boolean
@@ -150,19 +166,20 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
     [productInfo]
   )
   useEffect(() => {
-    if (productInfo?.maxAmount) {
-      if (loanAmt > productInfo?.maxAmount) {
+    if (product) {
+      if (loanAmt > product.maxAmount || 0) {
         setWarn(true)
       } else {
         setWarn(false)
       }
     }
-  }, [loanAmt, productInfo?.maxAmount])
+  }, [loanAmt, product])
   useEffect(() => {
     if (isWarnging) {
       Toast.info(t('exceedMaxAmount'))
     }
   }, [isWarnging, t])
+
   return (
     <SafeAreaView style={PageStyles.sav}>
       <StatusBar translucent={false} backgroundColor={Color.primary} barStyle="default" />
@@ -191,24 +208,18 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
                 </Text>
                 <Slider
                   containerStyle={{ width: 330, height: 34 }}
-                  minimumValue={productInfo?.minAmount || 3000}
+                  minimumValue={product?.minAmount || 3000}
                   value={loanAmt}
                   onValueChange={v => {
-                    if (productInfo) {
-                      // FIXME
-                      if (v <= productInfo.maxViewAmount || 10000) {
-                        setLoanAmt(Array.isArray(v) ? v[0] : v)
-                      }
-                    } else {
-                      setLoanAmt(Array.isArray(v) ? v[0] : v)
-                    }
+                    const amount = Array.isArray(v) ? v[0] : v
+                    setLoanAmt(amount)
                   }}
                   step={productInfo?.amountStep || 1000}
                   trackStyle={{ height: 5, backgroundColor: isWarnging ? WARN_COLOR : '#B3CEF2' }}
                   thumbStyle={{ alignItems: 'center', height: 34 }}
                   thumbTintColor="transparent"
                   thumbImage={require('@/assets/compressed/apply/slider_dot.webp')}
-                  maximumValue={productInfo?.maxViewAmount || 10000}
+                  maximumValue={product?.maxViewAmount || 10000}
                   minimumTrackTintColor={Color.primary}
                   maximumTrackTintColor="rgba(179, 206, 242, 1)"
                 />
@@ -248,21 +259,16 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
               </View>
               <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
                 {loanTermArray.map(
-                  ({
-                    day,
-                    activate,
-                    loanCode: _loanCode,
-                    productCode: _productCode,
-                    loanTerms,
-                  }) => (
+                  (
+                    { day, activate, loanCode: _loanCode, productCode: _productCode, loanTerms },
+                    index
+                  ) => (
                     <Pressable
                       key={`${day}`}
                       disabled={!activate}
                       onPress={() => {
-                        setDisplayLoanDays(day)
                         setLoanDay(loanTerms)
-                        setLoanCode(_loanCode)
-                        setProductCode(_productCode)
+                        setProduct(productInfo?.products[index])
                       }}
                       style={{
                         backgroundColor: activate
@@ -301,9 +307,22 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
               <RightBottomDot />
               <ListInfo
                 data={[
-                  { name: t('loanAmount'), value: loanAmt, type: 'money' },
-                  { name: t('loanDays'), value: displayLoanDays || 0, type: 'day' },
-                  { name: t('transferAmount'), value: productInfo?.maxAmount || 0, type: 'money' },
+                  {
+                    name: t('loanAmount'),
+                    value:
+                      loanAmt > (product ? product.maxAmount : 0)
+                        ? product
+                          ? product.maxAmount
+                          : 0
+                        : loanAmt,
+                    type: 'money',
+                  },
+                  { name: t('loanDays'), value: product?.displayLoanDays || 0, type: 'day' },
+                  {
+                    name: t('transferAmount'),
+                    value: calcResult?.actualAmount || 0,
+                    type: 'money',
+                  },
                   {
                     name: t('fee'),
                     value: calcResult?.svcFee ? calcResult?.svcFee : 0,

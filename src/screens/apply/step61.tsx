@@ -75,6 +75,7 @@ export const Step61 = ({ navigation }: NativeStackHeaderProps) => {
             .then(id => {
               setValid(true)
               onSubmit(id)
+              console.log('upload image Id', id)
             })
             .finally(() => setLoading(false))
         },
