@@ -8,12 +8,18 @@ import { Formik } from 'formik'
 import { object, string } from 'yup'
 import debounce from 'lodash.debounce'
 import { PageStyles, Text, FormGap } from '@/components'
-import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT, KEY_APPLYID, TOTAL_STEPS } from '@/utils/constant'
+import {
+  DEBOUNCE_OPTIONS,
+  DEBOUNCE_WAIT,
+  KEY_APPLYID,
+  KEY_CONTACTS,
+  TOTAL_STEPS,
+} from '@/utils/constant'
 import { MMKV, REGEX_PHONE } from '@/utils'
 import { ApplyButton, Input, NormalPicker, PhonePicker } from '@components/form/FormItem'
 import { Color } from '@/styles/color'
 import { useBehavior, useLocation } from '@/hooks'
-import { fetchDict, submit } from '@/services/apply'
+import { fetchDict, MoneyyaContact, submit, uploadAllContacts } from '@/services/apply'
 import { default as MoneyyaContext } from '@/state'
 import type { ApplyParameter, ApplyStep3Parameter, Contact } from '@/typings/apply'
 import type { Dict, DictField } from '@/typings/response'
@@ -138,6 +144,14 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
         totalSteps: TOTAL_STEPS,
       }).then(() => {
         MMKV.setMapAsync('step3Data', values)
+        uploadAllContacts({
+          list: (MMKV.getArray(KEY_CONTACTS) as MoneyyaContact[]) || [],
+          applyId: +(MMKV.getString(KEY_APPLYID) || '0'),
+          idcard: '',
+          phone: '',
+        })
+          .then(r => console.log('----------------uploadAllContacts--------------', r))
+          .catch(console.error)
         navigation.navigate('Step4')
       })
     },

@@ -2,6 +2,7 @@ import { BaseResponse, request } from '@/utils/http'
 import type { ZhanneiLetter } from '@/typings/user'
 import { MMKV } from '@/utils'
 import { KEY_JPUSH_ID } from '@/utils/constant'
+import type { ValidateCodeType } from '@/typings/request'
 
 /**
  * 站内信数量未读 展示红点
@@ -83,5 +84,24 @@ export async function uploadJpush(data: JpushParameter) {
       appName: 'MONEYYA_APP',
       deviceType: 'android',
     },
+  })
+}
+interface ValidateValidateCodeParameter {
+  phone: string
+  appId: string
+  kaptcha: string
+  skipValidate: 'N'
+  type: ValidateCodeType
+}
+/**
+ * 校验验证码
+ * @param data
+ * @returns
+ */
+export async function validateValidCode(data: ValidateValidateCodeParameter) {
+  return request<BaseResponse>({
+    url: '/smart-loan/app/validate/kaptcha',
+    method: 'POST',
+    data,
   })
 }

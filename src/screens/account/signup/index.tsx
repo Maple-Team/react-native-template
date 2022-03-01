@@ -121,18 +121,6 @@ export const SignupScreen = ({ route }: { route: any }) => {
                       mask={'[0000] [000] [000]'}
                       Prefix={<Text color={Color.primary}>+52</Text>}
                     />
-                    <ValidateCode
-                      field="validateCode"
-                      label={t('validateCode.label')}
-                      onChangeText={handleChange('validateCode')}
-                      value={values.validateCode}
-                      onClear={() => setFieldValue('validateCode', '')}
-                      placeholder={t('validateCode.placeholder')}
-                      error={errors.validateCode}
-                      validateCodeType="REGISTER"
-                      keyboardType="number-pad"
-                      phone={values.phone}
-                    />
                     <PasswordInput
                       field="password"
                       label={t('password.label')}
@@ -154,6 +142,18 @@ export const SignupScreen = ({ route }: { route: any }) => {
                       error={errors.comfirmPassword}
                       showPwd={showConfirmPwd}
                       onToggle={() => setShowConfirmPwd(!showConfirmPwd)}
+                    />
+                    <ValidateCode
+                      field="validateCode"
+                      label={t('validateCode.label')}
+                      onChangeText={handleChange('validateCode')}
+                      value={values.validateCode}
+                      onClear={() => setFieldValue('validateCode', '')}
+                      placeholder={t('validateCode.placeholder')}
+                      error={errors.validateCode}
+                      validateCodeType="REGISTER"
+                      keyboardType="number-pad"
+                      phone={values.phone}
                     />
                     <PermissionHint check={values.hasAgree} />
                     <View>

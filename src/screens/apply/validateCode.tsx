@@ -13,6 +13,7 @@ import { DEBOUNCE_WAIT, DEBOUNCE_OPTIONS } from '@/utils/constant'
 import { debounce } from 'lodash'
 import { default as MoneyyaContext } from '@/state'
 import { useInterval } from 'usehooks-ts'
+import type { SendChannel } from '@/typings/request'
 
 export const ValidateCode = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
@@ -27,12 +28,12 @@ export const ValidateCode = ({ navigation }: NativeStackHeaderProps) => {
   // FIXME
   // const [times, setTimtes] = useState<number>(context.brand?.codeValidatecount || 5) // Brand info
   const [isPlaying, setPlaying] = useState<boolean>(false)
-  const handlePress = debounce(
-    () => {
+  const handleValidateCodePress = debounce(
+    (type: SendChannel) => {
       if (params?.phone) {
         setPlaying(true)
         getValidateCode({
-          sendChannel: 'SMS',
+          sendChannel: type,
           phone: params?.phone || '',
           type: 'CONFIRM',
         }).then(code => {
@@ -44,17 +45,9 @@ export const ValidateCode = ({ navigation }: NativeStackHeaderProps) => {
     DEBOUNCE_OPTIONS
   )
   useEffect(() => {
-    if (params?.phone) {
-      setPlaying(true)
-      getValidateCode({
-        sendChannel: 'SMS',
-        phone: params?.phone || '',
-        type: 'CONFIRM',
-      }).then(code => {
-        console.log({ kaptcha: code.kaptcha })
-      })
-    }
-  }, [params?.phone])
+    setPlaying(true)
+    handleValidateCodePress('SMS')
+  }, [handleValidateCodePress])
   useInterval(
     () => {
       let _count = count - 1
@@ -102,7 +95,7 @@ export const ValidateCode = ({ navigation }: NativeStackHeaderProps) => {
               <Text color={!isPlaying ? '#eee' : '#fff'}>{count}s</Text>
             </View>
           </View>
-          <VerifyCode
+          <VerifyCodeInput
             onChangeText={te => {
               console.log(te, t('account'))
               navigation.navigate('')
@@ -119,6 +112,7 @@ export const ValidateCode = ({ navigation }: NativeStackHeaderProps) => {
             </Text>
             <View style={{ marginTop: 20 }}>
               <Pressable
+                onPress={() => handleValidateCodePress('IVR')}
                 style={{
                   backgroundColor: Color.primary,
                   paddingHorizontal: 10,
@@ -130,7 +124,7 @@ export const ValidateCode = ({ navigation }: NativeStackHeaderProps) => {
                 <Text color="#fff">Receive code by call</Text>
               </Pressable>
               <Pressable
-                onPress={handlePress}
+                onPress={() => handleValidateCodePress('SMS')}
                 style={{
                   backgroundColor: Color.primary,
                   paddingHorizontal: 10,
@@ -148,7 +142,10 @@ export const ValidateCode = ({ navigation }: NativeStackHeaderProps) => {
   )
 }
 
-const VerifyCode = (props: { verifyCodeLength: number; onChangeText: (text: string) => void }) => {
+const VerifyCodeInput = (props: {
+  verifyCodeLength: number
+  onChangeText: (text: string) => void
+}) => {
   const { verifyCodeLength, onChangeText } = props
   const [code, setCode] = useState<string>()
   const paddedValue = code?.padEnd(verifyCodeLength, ' ') || ''

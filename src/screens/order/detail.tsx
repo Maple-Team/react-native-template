@@ -166,7 +166,8 @@ export default ({ route }: { route: any }) => {
                 {t('serviceFee')}
               </Text>
               <Text color="#869096" fontSize={14}>
-                {t('mxn')} {toThousands(0)}
+                {/* {t('mxn')} {toThousands(0)} */}
+                {'--'}
               </Text>
             </View>
             <View style={style.itemWrapper}>
@@ -237,7 +238,7 @@ export default ({ route }: { route: any }) => {
                   </View>
                 </View>
               </>
-              {/*分期长度最多两期*/}
+              {/*NOTE 分期长度最多两期*/}
               {data?.paymentSchedules?.length === 2 && (
                 <>
                   <View style={{ paddingBottom: 10, paddingLeft: 10 }}>

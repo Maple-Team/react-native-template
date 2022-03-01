@@ -63,9 +63,9 @@ export type ValidateCodeType =
   | 'MODIFY_PASSWORD'
   | 'MODIFY_BANKCARD'
   | 'CONFIRM'
-
+export type SendChannel = 'SMS' | 'IVR'
 export interface ValidateCodeParameter {
   phone: string
-  sendChannel: 'SMS'
+  sendChannel: SendChannel
   type: ValidateCodeType
 }

@@ -12,7 +12,6 @@ import {
   DEBOUNCE_OPTIONS,
   DEBOUNCE_WAIT,
   KEY_APPLYID,
-  KEY_CONTACTS,
   KEY_GPS,
   KEY_LIVENESS,
   TOTAL_STEPS,
@@ -21,13 +20,7 @@ import { ApplyButton } from '@components/form/FormItem'
 import { Color } from '@/styles/color'
 import type { Calculate, Product, ProductItem } from '@/typings/apply'
 import { useBehavior, useLocation } from '@/hooks'
-import {
-  MoneyyaContact,
-  queryProduct,
-  scheduleCalc,
-  submit,
-  uploadAllContacts,
-} from '@/services/apply'
+import { queryProduct, scheduleCalc, submit } from '@/services/apply'
 import { MMKV } from '@/utils'
 import { default as MoneyyaContext } from '@/state'
 import emitter from '@/eventbus'
@@ -61,20 +54,13 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
         // NOTE JPUSH 签约
         const userStatus = context.user?.userAuthStatus
         const step5Data = MMKV.getMap('step5Data') as { idcard: string }
+        const idcard = step5Data.idcard.replace(/\s/g, '')
         const phone = context?.user?.phone || ''
         uploadJpush({
           phone,
-          custId: step5Data.idcard || '',
+          custId: idcard || '',
         })
           .then(r => console.log('---------------uploadJpush--------------', r))
-          .catch(console.error)
-        uploadAllContacts({
-          list: (MMKV.getArray(KEY_CONTACTS) as MoneyyaContact[]) || [],
-          applyId,
-          idcard: step5Data.idcard,
-          phone,
-        })
-          .then(r => console.log('----------------uploadAllContacts--------------', r))
           .catch(console.error)
         ;['step2Data', 'step3Data', 'step5Data', 'step7Data'].forEach(k => {
           MMKV.removeItem(k)
