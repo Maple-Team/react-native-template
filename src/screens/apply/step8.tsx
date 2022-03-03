@@ -70,6 +70,7 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
           // 二次验证码校验 validateCode
           navigation.getParent()?.navigate('ValidateCode', {
             phone,
+            applyId,
           })
         } else {
           navigation.getParent()?.navigate('BillsDetail', {
@@ -98,10 +99,10 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
           console.log('productInfo', res)
           setProductInfo(res)
           setLoanAmt(res.maxAmount)
-          const firstProduct = res.products.find(({ available }) => available === 'Y')
-          if (firstProduct) {
-            setProduct(firstProduct)
-            setLoanDay(firstProduct.loanTerms)
+          const defaultProduct = res.products.find(({ available }) => available === 'Y')
+          if (defaultProduct) {
+            setProduct(defaultProduct)
+            setLoanDay(defaultProduct.loanTerms)
           }
         })
         .finally(() => setProductLoading(false))
@@ -151,6 +152,7 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
         : [],
     [productInfo]
   )
+
   useEffect(() => {
     if (product) {
       if (loanAmt > product.maxAmount || 0) {
@@ -160,6 +162,7 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
       }
     }
   }, [loanAmt, product])
+
   useEffect(() => {
     if (isWarnging) {
       Toast.info(t('exceedMaxAmount'))

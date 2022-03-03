@@ -1,13 +1,13 @@
 import { WebViewScreen, Loading } from '@/components'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import emitter from '@/eventbus'
 import { queryBrand } from '@/services/apply'
 import type { Brand } from '@/typings/response'
+import { StackActions, useNavigation } from '@react-navigation/native'
 
 export default () => {
   const { t } = useTranslation()
-
+  const na = useNavigation()
   const [brand, setBrand] = useState<Brand>()
   const [loading, setLoading] = useState<boolean>()
   useEffect(() => {
@@ -37,7 +37,7 @@ export default () => {
           color: '#eee',
           backgroundColor: '#8e8f90',
           onPress: () => {
-            emitter.emit('UPDATE_HAS_INIT', true)
+            na.dispatch(StackActions.replace('Permission'))
           },
         },
       ]}

@@ -51,6 +51,7 @@
   "screenTitle.myCard": "My Card",
   "screenTitle.payment": "Payment",
   "screenTitle.privacy": "Privacy Policy",
+  "screenTitle.permission": "",
   "secondPaymentAmount": "Second repayment amount",
   "secondPaymentDate": "Second repayment date",
   "signin": "登录",
@@ -58,5 +59,6 @@
   "start": "start",
   "submit": "提交",
   "transferAmount": "Transfer amount",
-  "validation-code-login": "验证码登录"
+  "validation-code-login": "验证码登录",
+  "allow": "Allow"
 }

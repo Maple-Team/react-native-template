@@ -35,44 +35,49 @@ export const onRequestPermission = async ({
   }
 }
 
-const permissions = [
+export const permissions = [
   PERMISSIONS.ANDROID.READ_PHONE_STATE,
   PERMISSIONS.ANDROID.READ_CONTACTS,
   PERMISSIONS.ANDROID.CAMERA,
   PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
   PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
 ]
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const PermissionContent = {
-  location: {
+interface PermissionContent {
+  name: string
+  permissionName: string
+  content: string
+  hint: string
+}
+export const permissionContent: Record<string, PermissionContent> = {
+  'android.permission.ACCESS_FINE_LOCATION': {
     name: 'location',
     permissionName: PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
     content:
       'After receiving and processing your Location, we can assist in quickly filling out your loan application.',
     hint: 'Please allow us for accessing your Location, your privacy security will be under strict protection;',
   },
-  phone: {
+  'android.permission.READ_PHONE_STATE': {
     name: 'device',
     permissionName: PERMISSIONS.ANDROID.READ_PHONE_STATE, // fixme
     content:
       'After receiving and processing your Phone Information, we can more quickly process your loan application.',
     hint: 'Please allow us for accessing your Device, your privacy security will be under strict protection;',
   },
-  contacts: {
+  'android.permission.READ_CONTACTS': {
     name: 'contacts',
     permissionName: PERMISSIONS.ANDROID.READ_CONTACTS,
     content:
       'After receiving and processing access to your Contacts, we can help you with phoning functionalities.',
     hint: 'Please allow us for accessing your Contacts, your privacy security will be under strict protection;',
   },
-  camera: {
+  'android.permission.CAMERA': {
     name: 'camera',
     permissionName: PERMISSIONS.ANDROID.CAMERA,
     content:
       'After receiving and processing access to your Camera, we can accept your uploaded photos.',
     hint: 'Please allow us for accessing your Camera, your privacy security will be under strict protection;',
   },
-  file: {
+  'android.permission.WRITE_EXTERNAL_STORAGE': {
     name: 'file',
     permissionName: PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
     content: '',

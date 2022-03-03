@@ -51,6 +51,7 @@
   "screenTitle.myCard": "Título de pantalla/Mi tarjeta",
   "screenTitle.payment": "Título de pantalla/ Pago",
   "screenTitle.privacy": "Título de pantalla/Política de privacidad",
+  "screenTitle.permission": "",
   "secondPaymentAmount": "Monto de reembolso del segundo pago",
   "secondPaymentDate": "Monto de reembolso del segundo pago y fecha",
   "signin": "Iniciar sesión",
@@ -58,5 +59,6 @@
   "start": "Comienzo",
   "submit": "Enviar",
   "transferAmount": "Cantidad en mano",
-  "validation-code-login": "Inicio de sesión con código de verificación"
+  "validation-code-login": "Inicio de sesión con código de verificación",
+  "allow": ""
 }

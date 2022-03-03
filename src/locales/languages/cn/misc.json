@@ -73,5 +73,10 @@
   "toBottom": "我是有底线的",
   "tostep7": "返回修改银行卡号",
   "upload-Failed": "影像信息上传失败",
-  "warnRepayPrompt": "我们建议您在此页面立即偿还贷款，以 免影响您的下次贷款申请。"
+  "warnRepayPrompt": "我们建议您在此页面立即偿还贷款，以 免影响您的下次贷款申请。",
+  "verify-your-phone-number": "验证你的手机号",
+  "send-verify-code-prompt": "请输入接收到的手机验证码:",
+  "unreceived-phone-hint": "没有收到验证码？ 请检查您的手机信号或者使用其他的方式！",
+  "receive-code-by-call": "获取语音验证码",
+  "re-acquire-verfication-code": "重新获取验证码"
 }

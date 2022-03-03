@@ -14,11 +14,12 @@ import { debounce } from 'lodash'
 import { default as MoneyyaContext } from '@/state'
 import { useInterval } from 'usehooks-ts'
 import type { SendChannel } from '@/typings/request'
+import { validateValidCode } from '@/services/misc'
 
 export const ValidateCode = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
   const route = useRoute()
-  const params = route.params as { phone: string }
+  const params = route.params as { phone: string; applyId: string }
   const context = useContext(MoneyyaContext)
   const maxCount = useMemo(
     () => context.brand?.smsWaitInterval || 60,
@@ -61,7 +62,20 @@ export const ValidateCode = ({ navigation }: NativeStackHeaderProps) => {
     // Delay in milliseconds or null to stop it
     isPlaying ? 1000 : null
   )
-
+  const [code, setCode] = useState<string>('')
+  useEffect(() => {
+    if (code.length === 4 && params) {
+      validateValidCode({
+        phone: params.phone,
+        appId: params.applyId,
+        kaptcha: code,
+        skipValidate: 'N',
+        type: 'LOGIN',
+      }).then(() => {
+        navigation.navigate('BillDetail')
+      })
+    }
+  }, [code, navigation, params])
   return (
     <SafeAreaView style={PageStyles.sav}>
       <StatusBar translucent={false} backgroundColor={Color.primary} barStyle="default" />
@@ -78,9 +92,9 @@ export const ValidateCode = ({ navigation }: NativeStackHeaderProps) => {
             color="#000"
             //@ts-ignore
             styles={{ marginBottom: 20 }}>
-            Verify Your Phone Number
+            {t('verify-your-phone-number')}
           </Text>
-          <Text>please type the verfication code sent to: </Text>
+          <Text>{'send-verify-code-prompt'}</Text>
           <View style={{ flexDirection: 'row', marginTop: 10 }}>
             <Text color={Color.primary} fontSize={16}>
               +52 <Text color="#000">{params?.phone}</Text>
@@ -95,21 +109,9 @@ export const ValidateCode = ({ navigation }: NativeStackHeaderProps) => {
               <Text color={!isPlaying ? '#eee' : '#fff'}>{count}s</Text>
             </View>
           </View>
-          <VerifyCodeInput
-            onChangeText={te => {
-              console.log(te, t('account'))
-              navigation.navigate('')
-              if (te) {
-              } else {
-              }
-            }}
-            verifyCodeLength={4}
-          />
+          <VerifyCodeInput onChangeText={te => setCode(te)} verifyCodeLength={4} />
           <View>
-            <Text>
-              can't receive the verification code? Your can also check your Mobile Phone signal or
-              try the following ways!
-            </Text>
+            <Text>{t('unreceived-phone-hint')}</Text>
             <View style={{ marginTop: 20 }}>
               <Pressable
                 onPress={() => handleValidateCodePress('IVR')}
@@ -121,7 +123,7 @@ export const ValidateCode = ({ navigation }: NativeStackHeaderProps) => {
                   alignItems: 'center',
                   marginBottom: 20,
                 }}>
-                <Text color="#fff">Receive code by call</Text>
+                <Text color="#fff">{t('receive-code-by-call')}</Text>
               </Pressable>
               <Pressable
                 onPress={() => handleValidateCodePress('SMS')}
@@ -132,7 +134,7 @@ export const ValidateCode = ({ navigation }: NativeStackHeaderProps) => {
                   borderRadius: 10,
                   alignItems: 'center',
                 }}>
-                <Text color="#fff">Re-acquire verfication code</Text>
+                <Text color="#fff">{t('re-acquire-verfication-code')}</Text>
               </Pressable>
             </View>
           </View>

@@ -1,12 +1,13 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React from 'react'
-import { AuthorizationScreen, PrivacyScreen } from '@screens/init'
+import { AuthorizationScreen, PrivacyScreen, PermissionModal } from '@screens/init'
 import { useTranslation } from 'react-i18next'
 import { Color } from '@/styles/color'
 
 export type InitStackParams = {
   Authorization: undefined
   Privacy: undefined
+  Permission: undefined
 }
 const Stack = createNativeStackNavigator<InitStackParams>()
 
@@ -43,6 +44,14 @@ export function InitStack() {
         component={PrivacyScreen}
         options={{
           title: t('screenTitle.privacy'),
+        }}
+      />
+      <Stack.Screen
+        key="Permission"
+        name="Permission"
+        component={PermissionModal}
+        options={{
+          title: t('screenTitle.permission'),
         }}
       />
     </Stack.Navigator>

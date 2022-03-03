@@ -73,5 +73,10 @@
   "toBottom": "到达底部了",
   "tostep7": "Click here to modify bank card",
   "upload-Failed": "upload failed",
-  "warnRepayPrompt": "我们建议您在此页面立即偿还贷款，以 免影响您的下次贷款申请。"
+  "warnRepayPrompt": "我们建议您在此页面立即偿还贷款，以 免影响您的下次贷款申请。",
+  "verify-your-phone-number": "Verify Your Phone Number",
+  "send-verify-code-prompt": "please type the verfication code sent to:",
+  "unreceived-phone-hint": "can't receive the verification code? Your can also check your Mobile Phone signal or try the following ways!",
+  "receive-code-by-call": "Receive code by call",
+  "re-acquire-verfication-code": "Re-acquire verfication code"
 }
