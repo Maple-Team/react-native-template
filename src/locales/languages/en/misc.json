@@ -78,5 +78,13 @@
   "send-verify-code-prompt": "please type the verfication code sent to:",
   "unreceived-phone-hint": "can't receive the verification code? Your can also check your Mobile Phone signal or try the following ways!",
   "receive-code-by-call": "Receive code by call",
-  "re-acquire-verfication-code": "Re-acquire verfication code"
+  "re-acquire-verfication-code": "Re-acquire verfication code",
+  "permission.location.hint": "Please allow us for accessing your Location, your privacy security will be under strict protection",
+  "permission.camera.hint": "Please allow us for accessing your Camera, your privacy security will be under strict protection",
+  "permission.phone.hint": "Please allow us for accessing your Device, your privacy security will be under strict protection",
+  "permission.contacts.hint": "Please allow us for accessing your contacts, your privacy security will be under strict protection",
+  "permission.storage.hint": "Please allow us for accessing your storage, your privacy security will be under strict protection",
+  "are-you-sure-want-to-exit": "Are you sure want to exit?",
+  "notion": "Notion",
+  "exist-same-relation-phone": "exist same relation phone"
 }

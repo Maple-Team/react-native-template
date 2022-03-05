@@ -19,7 +19,6 @@ export function MainStack() {
   const context = useContext(MoneyyaContext)
   const na = useNavigation()
   const { t } = useTranslation()
-
   return (
     <Stack.Navigator
       initialRouteName="Apply"

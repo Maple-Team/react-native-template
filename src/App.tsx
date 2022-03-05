@@ -1,7 +1,7 @@
 import React, { useEffect, useReducer, useState } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { Provider, Toast } from '@ant-design/react-native'
-import { BackHandler, Alert, AsyncStorage, Linking, Platform } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { getLocales, addEventListener } from 'react-native-localize'
 import { MainStack } from '@/navigation/mainStack'
 import { AccountStack } from '@/navigation/accountStack'
@@ -17,7 +17,8 @@ import JPush from 'jpush-react-native'
 import { InitStack } from '@navigation/initStack'
 import { uploadJpush } from './services/misc'
 import { navigationRef } from '@navigation/rootNavigation'
-import { t } from 'i18next'
+import dayjs from 'dayjs'
+import { Linking, Platform } from 'react-native'
 
 // Authentication flows: https://reactnavigation.org/docs/auth-flow/
 Toast.config({
@@ -44,41 +45,27 @@ const App = () => {
     dispatch,
   ] = useReducer(reducer, moneyyaState)
 
+  useEffect(() => {
+    MMKV.setInt('startTime', dayjs().unix())
+  }, [])
   useEventListener()
   useEffect(() => {
     SplashScreen.hide()
-  }, [])
-  // FIXME 处理实体键返回逻辑
-  useEffect(() => {
-    const backAction = () => {
-      Alert.alert('Hold on!', 'Are you sure you want to go back?', [
-        {
-          text: t('cancel'),
-          onPress: () => null,
-          style: 'cancel',
-        },
-        { text: t('confirm'), onPress: () => BackHandler.exitApp() },
-      ])
-      return true
-    }
-    const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction)
-    return () => backHandler.remove()
   }, [])
 
   // 处理语言
   useEffect(() => {
     const locales = getLocales()
     const language = locales[0].languageTag
-    // FIXME 'i18next: init: i18next is already initialized. You should call init just once!'
     addEventListener('change', (e: any) => {
       console.error('RNLocalize', e)
     })
     i18n.init(getI18nConfig(language.toLowerCase().includes('zh') ? 'zh-CN' : 'es-MX'))
   }, [])
+  // useFlipper(navigationRef)
 
   const [isReady, setIsReady] = useState(__DEV__ ? false : true)
   const [initialState, setInitialState] = useState()
-  // useFlipper(navigationRef)
   // NOTE 处理用户上一次打开的页面(进件过程), 开发环境? https://reactnavigation.org/docs/state-persistence
   useEffect(() => {
     const restoreState = async () => {

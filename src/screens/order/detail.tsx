@@ -1,6 +1,6 @@
 import { queryOrderDetail } from '@/services/order'
-import React, { useEffect, useMemo, useState } from 'react'
-import { SafeAreaView, StatusBar, View, Image, type ViewStyle } from 'react-native'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { SafeAreaView, StatusBar, View, Image, type ViewStyle, BackHandler } from 'react-native'
 import { Loading, PageStyles, Text } from '@/components'
 import { Order } from '@/typings/order'
 import { useTranslation } from 'react-i18next'
@@ -12,7 +12,8 @@ interface Status {
   onPress?: () => void
   text?: string
 }
-export default ({ route }: { route: any }) => {
+export default () => {
+  const route = useRoute()
   const { applyId } = route.params as { applyId: string }
   const [data, setData] = useState<Order>()
   const [loading, setLoading] = useState<boolean>()
@@ -28,6 +29,17 @@ export default ({ route }: { route: any }) => {
   }, [applyId])
   const { t } = useTranslation()
   const na = useNavigation()
+  useFocusEffect(
+    useCallback(() => {
+      const onBackPress = () => {
+        //@ts-ignore
+        na.navigate('BillsList')
+        return true
+      }
+      BackHandler.addEventListener('hardwareBackPress', onBackPress)
+      return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress)
+    }, [na])
+  )
   const status: Status = useMemo(() => {
     let value: Status = {}
     switch (data?.contractStatus) {
@@ -126,7 +138,7 @@ export default ({ route }: { route: any }) => {
                 {t('loanAmount')}
               </Text>
               <Text color="#869096" fontSize={14}>
-                {data?.loanAmount ? `${t('mxn')} ${data?.loanAmount}` : '--'}
+                {data?.applyAmount ? `${t('mxn')} ${data?.applyAmount}` : '--'}
               </Text>
             </View>
             <View style={style.itemWrapper}>
@@ -308,7 +320,7 @@ export default ({ route }: { route: any }) => {
 
 import StyleSheet from 'react-native-adaptive-stylesheet'
 import { Color } from '@/styles/color'
-import { useNavigation } from '@react-navigation/native'
+import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native'
 import { APPLY_STATE } from '@/state/enum'
 import { toThousands } from '@/utils/util'
 

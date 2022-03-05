@@ -119,6 +119,7 @@ android {
       versionNameSuffix '-Debug'
       debuggable true
       buildConfigField "String", "ENVIRONMENT", "\"development\""
+      buildConfigField("String", "BUILD_TIME", "\"" + System.currentTimeMillis().toString()+"\"" )
       resValue "string", "app_name", "MoneyYa debug"
     }
     release {
@@ -129,6 +130,7 @@ android {
       shrinkResources true
       signingConfig signingConfigs.release
       buildConfigField "String", "ENVIRONMENT", "\"production\""
+      buildConfigField("String", "BUILD_TIME",  "\"" + System.currentTimeMillis().toString()+"\"" )
       minifyEnabled enableProguardInReleaseBuilds
       proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
     }
@@ -165,6 +167,7 @@ dependencies {
   implementation 'com.facebook.fresco:webpsupport:2.5.0'
   implementation project(':react-native-splash-screen')
   implementation project(':react-native-advertising-id')
+  implementation project(':react-native-carrier-info')
   implementation project(":liveness")
   implementation project(":liveness_rn")
   implementation project(':jpush-react-native')  // 添加 jpush 依赖

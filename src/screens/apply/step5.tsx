@@ -544,6 +544,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       value={state.email}
                       field={'email'}
                       key={'email'}
+                      error={errors.email}
                       label={t('email.label')}
                       placeholder={t('email.placeholder')}
                     />

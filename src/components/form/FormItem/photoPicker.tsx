@@ -147,8 +147,10 @@ export function PhotoPicker({
             style={{ zIndex: 999 }}
             onPress={() => {
               onRequestPermission({
-                blockedMessage: '',
-                unavailableMessage: '',
+                blockedMessage: t('permission-blocked', { permission: t('permission.contact') }),
+                unavailableMessage: t('permission-unavailable', {
+                  permission: t('permission.contact'),
+                }),
                 permission: 'android.permission.CAMERA',
                 onGranted: takePicture,
               })

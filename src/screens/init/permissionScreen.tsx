@@ -3,25 +3,31 @@ import emitter from '@/eventbus'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { ScrollView } from 'react-native-gesture-handler'
 import { PermissionModal } from '@components/permission'
-import { request, type Permission } from 'react-native-permissions'
+import { request, RESULTS, type Permission } from 'react-native-permissions'
 import { permissionContent, permissions } from '@/utils/permission'
+import { useCustomBack } from '@/hooks'
 
+interface Result {
+  isShow: boolean
+  hasPermission: boolean
+}
 export default () => {
-  //
+  useCustomBack()
   const permissionObj = useMemo(() => {
     //@ts-ignore
-    const map: Record<Permission, boolean> = {}
+    const map: Record<Permission, Result> = {}
     permissions.forEach(p => {
-      map[p] = false
+      map[p] = { hasPermission: false, isShow: false }
     })
-    //@ts-ignore
-    permissions['android.permission.READ_PHONE_STATE'] = true
+    map['android.permission.READ_PHONE_STATE'].isShow = true
     return map
   }, [])
   const [permissionState, setPermissionState] = useState(permissionObj)
   useEffect(() => {
-    //@ts-ignore
-    const everyModalIsShow = Object.keys(permissionState).every(k => permissionState[k])
+    const everyModalIsShow = Object.keys(permissionState).every(
+      //@ts-ignore
+      (k: Permission) => permissionState[k].hasPermission
+    )
     if (everyModalIsShow) {
       emitter.emit('UPDATE_HAS_INIT', true)
     }
@@ -29,26 +35,43 @@ export default () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView style={{ width: '100%', flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}>
-        {permissions.map((permission, index) => (
-          <PermissionModal
-            icon={0}
-            key={permission}
-            hint={permissionContent[permission].hint}
-            visible={permissionObj[permission]}
-            onPress={async () => {
-              request(permission).finally(() => {
-                if (permissions[index + 1]) {
-                  setPermissionState({
-                    ...permissionObj,
-                    [permission]: false,
-                    [permissions[index + 1]]: true,
+        {permissions.map((permission, index) => {
+          return (
+            <PermissionModal
+              icon={permissionContent[permission].icon}
+              key={permission}
+              hint={permissionContent[permission].hint}
+              visible={
+                !permissionState[permission].hasPermission && permissionState[permission].isShow
+              }
+              onPress={async () => {
+                request(permission)
+                  .then(status => {
+                    if (status === RESULTS.GRANTED || status === RESULTS.BLOCKED) {
+                      const res = {
+                        ...permissionState,
+                        [permission]: { hasPermission: true, isShow: false },
+                      }
+                      if (permissions[index + 1]) {
+                        res[permissions[index + 1]] = { hasPermission: false, isShow: true }
+                      }
+                      setPermissionState(res)
+                    } else if (status === RESULTS.DENIED) {
+                      const res = {
+                        ...permissionState,
+                        [permission]: { hasPermission: false, isShow: false },
+                      }
+                      if (permissions[index + 1]) {
+                        res[permissions[index + 1]] = { hasPermission: false, isShow: true }
+                      }
+                      setPermissionState(res)
+                    }
                   })
-                }
-              })
-            }}
-            iconStyle={{}}
-          />
-        ))}
+                  .catch(console.error)
+              }}
+            />
+          )
+        })}
       </ScrollView>
     </SafeAreaView>
   )

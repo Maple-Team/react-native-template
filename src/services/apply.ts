@@ -1,5 +1,4 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
-
 import type {
   ApplyResponse,
   ApplyStep1Parameter,
@@ -111,9 +110,10 @@ export async function submit<T extends Steps>(data: ApplyStep<T>) {
  * @param params
  * @returns
  */
-export async function submitDevice(data: Device) {
+export async function uploadDeviceInfo(data: Device) {
+  console.log('device', data)
   return request<null>({
-    url: '/smart-loan/login/deviceInfo',
+    url: '/smart-loan/app/customer/deviceInfo',
     method: 'POST',
     data,
   })
@@ -202,7 +202,7 @@ interface AppParameter {
   deviceId: string
 }
 
-interface AppInfo {
+export interface AppInfo {
   appInstallTime: string
   icon: string
   isAppActive: string

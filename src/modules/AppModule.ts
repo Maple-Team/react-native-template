@@ -1,4 +1,4 @@
-import { BOOL } from '@/typings/common'
+import { AppInfo } from '@/services/apply'
 import { NativeModules } from 'react-native'
 
 const { AppModule } = NativeModules
@@ -11,18 +11,7 @@ interface SomeInfo {
   isBreakPrison: string
   photoNum: number
 }
-interface APPInfo {
-  packageName: string
-  versionName: string
-  versionCode: number
-  firstInstallTime: number
-  lastUpdateTime: number
-  appName: string
-  apkDir: string
-  size: number
-  isSystem: BOOL
-  isAppActive: boolean
-}
+
 /**
  * App基础信息模块
  */
@@ -35,14 +24,17 @@ interface AppModuleInterface {
    * 获取baseURL
    */
   getBaseUrl(): string
+  getBuildDate(): string
   getVersionID(): number
   getInfo(): Promise<SomeInfo>
-  getApps(): Promise<APPInfo>
+  getApps(): Promise<AppInfo[]>
   /**
    * @deprecated
    */
   getImei(): Promise<string[]>
   getBrightnessLevel(): Promise<number>
   carrierName(): Promise<string>
+  mobileCountryCode(): Promise<string>
+  mobileNetworkCode(): Promise<string>
 }
 export default AppModule as AppModuleInterface

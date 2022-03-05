@@ -1,5 +1,5 @@
 import type { NativeStackHeaderProps } from '@react-navigation/native-stack'
-import React, { type Reducer, useContext, useEffect, useReducer, useRef } from 'react'
+import React, { type Reducer, useContext, useEffect, useReducer, useRef, useMemo } from 'react'
 import { View, StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useTranslation } from 'react-i18next'
@@ -23,34 +23,59 @@ import { fetchDict, MoneyyaContact, submit, uploadAllContacts } from '@/services
 import { default as MoneyyaContext } from '@/state'
 import type { ApplyParameter, ApplyStep3Parameter, Contact } from '@/typings/apply'
 import type { Dict, DictField } from '@/typings/response'
+import emitter from '@/eventbus'
 
 export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
-  //TODO fromOther==='Y' 少填一个联系人
   const context = useContext(MoneyyaContext)
   const fromOther = context.user?.fromOther
-  console.log(fromOther)
-  const schema = object().shape({
-    contactName1: string().max(100, t('contactName.invalid')).required(t('contactName.required')),
-    contactPhone1: string()
-      .required(t('contactPhone.required'))
-      .typeError(t('contactPhone.invalid'))
-      .matches(REGEX_PHONE, t('contactPhone.invalid')),
-    contactRelationCode1: string().required(t('contactRelationCode.required')),
-    contactName2: string().max(100, t('contactName.invalid')).required(t('contactName.required')),
-    contactPhone2: string()
-      .typeError(t('contactPhone.invalid'))
-      .required(t('contactPhone.required'))
-      .matches(REGEX_PHONE, t('contactPhone.invalid')),
-    contactRelationCode2: string().required(t('contactRelationCode.required')),
-    // fromOther==='Y'
-    contactName3: string().max(100, t('contactName.invalid')).required(t('contactName.required')),
-    contactPhone3: string()
-      .required(t('contactPhone.required'))
-      .typeError(t('contactPhone.invalid'))
-      .matches(REGEX_PHONE, t('contactPhone.invalid')),
-    contactRelationCode3: string().required(t('contactRelationCode.required')),
-  })
+  const schema = useMemo(() => {
+    return fromOther === 'Y'
+      ? object().shape({
+          contactName1: string()
+            .max(100, t('contactName.invalid'))
+            .required(t('contactName.required')),
+          contactPhone1: string()
+            .required(t('contactPhone.required'))
+            .typeError(t('contactPhone.invalid'))
+            .matches(REGEX_PHONE, t('contactPhone.invalid')),
+          contactRelationCode1: string().required(t('contactRelationCode.required')),
+          contactName2: string()
+            .max(100, t('contactName.invalid'))
+            .required(t('contactName.required')),
+          contactPhone2: string()
+            .typeError(t('contactPhone.invalid'))
+            .required(t('contactPhone.required'))
+            .matches(REGEX_PHONE, t('contactPhone.invalid')),
+          contactRelationCode2: string().required(t('contactRelationCode.required')),
+        })
+      : object().shape({
+          contactName1: string()
+            .max(100, t('contactName.invalid'))
+            .required(t('contactName.required')),
+          contactPhone1: string()
+            .required(t('contactPhone.required'))
+            .typeError(t('contactPhone.invalid'))
+            .matches(REGEX_PHONE, t('contactPhone.invalid')),
+          contactRelationCode1: string().required(t('contactRelationCode.required')),
+          contactName2: string()
+            .max(100, t('contactName.invalid'))
+            .required(t('contactName.required')),
+          contactPhone2: string()
+            .typeError(t('contactPhone.invalid'))
+            .required(t('contactPhone.required'))
+            .matches(REGEX_PHONE, t('contactPhone.invalid')),
+          contactRelationCode2: string().required(t('contactRelationCode.required')),
+          contactName3: string()
+            .max(100, t('contactName.invalid'))
+            .required(t('contactName.required')),
+          contactPhone3: string()
+            .required(t('contactPhone.required'))
+            .typeError(t('contactPhone.invalid'))
+            .matches(REGEX_PHONE, t('contactPhone.invalid')),
+          contactRelationCode3: string().required(t('contactRelationCode.required')),
+        })
+  }, [fromOther, t])
 
   const step3Data = (MMKV.getMap('step3Data') as Partial<Step3State>) || {}
   const [state, dispatch] = useReducer<Reducer<Step3State, Step3Action>>(
@@ -125,6 +150,14 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
     (values: FormModel) => {
       const contacts: Contact[] = []
       const length = fromOther === 'Y' ? 2 : 3
+      const phones = [values.contactPhone1, values.contactPhone2]
+      if (length === 3) {
+        phones.push(values.contactPhone3)
+      }
+      if (Array.from(new Set(phones)).length !== length) {
+        emitter.emit('SHOW_MESSAGE', { type: 'fail', message: t('exist-same-relation-phone') })
+        return
+      }
       for (let index = 1; index <= length; index++) {
         contacts.push({
           //@ts-ignore
@@ -147,8 +180,8 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
         uploadAllContacts({
           list: (MMKV.getArray(KEY_CONTACTS) as MoneyyaContact[]) || [],
           applyId: +(MMKV.getString(KEY_APPLYID) || '0'),
-          idcard: '',
-          phone: '',
+          idcard: context.user?.idcard || '',
+          phone: context.user?.phone || '',
         })
           .then(r => console.log('----------------uploadAllContacts--------------', r))
           .catch(console.error)

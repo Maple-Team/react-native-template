@@ -78,5 +78,13 @@
   "send-verify-code-prompt": "",
   "unreceived-phone-hint": "",
   "receive-code-by-call": "",
-  "re-acquire-verfication-code": ""
+  "re-acquire-verfication-code": "",
+  "permission.location.hint": "",
+  "permission.camera.hint": "",
+  "permission.phone.hint": "",
+  "permission.contacts.hint": "",
+  "permission.storage.hint": "",
+  "are-you-sure-want-to-exit": "",
+  "notion": "",
+  "exist-same-relation-phone": ""
 }

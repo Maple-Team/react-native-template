@@ -14,7 +14,7 @@ import { default as MoneyyaContext } from '@/state'
 import { MMKV } from '@/utils/storage'
 import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT, KEY_APPLYID, TOTAL_STEPS } from '@/utils/constant'
 import debounce from 'lodash.debounce'
-import { useLocation } from '@/hooks'
+import { useCustomBack, useLocation } from '@/hooks'
 import { toThousands } from '@/utils/util'
 import { APPLY_STATE } from '@/state/enum'
 import emitter from '@/eventbus'
@@ -37,7 +37,7 @@ export function Step1() {
   useEffect(() => {
     pv(user?.userId ? `${user?.userId}` : '')
   }, [user?.userId])
-
+  useCustomBack()
   const location = useLocation()
 
   useFocusEffect(
@@ -157,9 +157,6 @@ export function Step1() {
             totalSteps: TOTAL_STEPS,
           }).then(res => {
             MMKV.setString(KEY_APPLYID, `${res.applyId}`)
-            navigation.getParent()?.navigate('ValidateCode', {
-              phone: user?.phone || '',
-            })
             // NOTE 快捷通道
             if (user?.continuedLoan === 'Y') {
               navigation.getParent()?.dispatch(StackActions.replace('Step8'))

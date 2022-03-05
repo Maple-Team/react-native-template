@@ -78,5 +78,13 @@
   "send-verify-code-prompt": "请输入接收到的手机验证码:",
   "unreceived-phone-hint": "没有收到验证码？ 请检查您的手机信号或者使用其他的方式！",
   "receive-code-by-call": "获取语音验证码",
-  "re-acquire-verfication-code": "重新获取验证码"
+  "re-acquire-verfication-code": "重新获取验证码",
+  "permission.location.hint": "请同意MoneayYa访问定位权限，您的隐私安全将处于严格保护之下",
+  "permission.camera.hint": "请同意MoneayYa访问拍照权限，您的隐私安全将处于严格保护之下",
+  "permission.phone.hint": "请同意MoneayYa访问手机状态权限，您的隐私安全将处于严格保护之下",
+  "permission.contacts.hint": "请同意MoneayYa访问联系人权限，您的隐私安全将处于严格保护之下",
+  "permission.storage.hint": "请同意MoneayYa访问存储权限，您的隐私安全将处于严格保护之下",
+  "are-you-sure-want-to-exit": "您确定要退出APP吗？",
+  "notion": "提示",
+  "exist-same-relation-phone": "存在相同的联系人电话"
 }

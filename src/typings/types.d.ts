@@ -1,4 +1,7 @@
-declare module '@adrianso/react-native-device-brightness'
+declare module '@adrianso/react-native-device-brightness' {
+  export function getSystemBrightnessLevel(): Promise<number>
+}
+
 declare module 'react-native-advertising-id'
 
 declare module 'react-native-exif' {

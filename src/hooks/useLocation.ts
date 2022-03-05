@@ -1,6 +1,7 @@
 import { MMKV } from '@/utils'
 import { KEY_GPS } from '@/utils/constant'
 import { onRequestPermission } from '@/utils/permission'
+import { t } from 'i18next'
 import { useEffect, useState } from 'react'
 import Geolocation from 'react-native-geolocation-service'
 
@@ -37,8 +38,9 @@ export const useLocation = () => {
       // }).catch(console.error),
       onRequestPermission({
         permission: 'android.permission.ACCESS_FINE_LOCATION',
-        blockedMessage: '权限被禁止',
-        unavailableMessage: '定位权限不可用',
+        blockedMessage: t('permission-blocked', { permission: t('permission.location') }),
+        unavailableMessage: t('permission-unavailable', { permission: t('permission.location') }),
+
         onGranted: () => {
           onGetLocation()
         },

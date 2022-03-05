@@ -84,7 +84,6 @@ export default class Behavior<T extends PAGE_ID> {
   setStartModify(id: MatchedIDs<T, InputTypeID>, val: string) {
     this.tempRecord.startTime = this.getNowTime()
     this.tempRecord.value = val || ''
-    console.log('setStartModify', this.tempRecord)
   }
 
   /**
@@ -105,7 +104,6 @@ export default class Behavior<T extends PAGE_ID> {
       startTime: this.tempRecord.startTime,
       endTime: this.getNowTime(),
     })
-    console.log('setEndModify', this.tempRecord)
     this.save2storage()
   }
   /**
@@ -121,7 +119,6 @@ export default class Behavior<T extends PAGE_ID> {
       newValue: (newValue || '').toString(),
       startTime: this.getNowTime(),
     })
-    console.log('setModify', id, newValue, oldValue)
     this.save2storage()
   }
   /**
@@ -182,6 +179,7 @@ export default class Behavior<T extends PAGE_ID> {
     let data = this.getSendMsg(id)
     if (data.records && data.records.length) {
       await uploadBehavior(data)
+      console.log(data, 'behavior')
       this.clearSendMsg(id)
     }
   }

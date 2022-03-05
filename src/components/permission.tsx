@@ -27,7 +27,7 @@ export function PermissionModal({
   hint: string
   visible: boolean
   onPress: () => void
-  iconStyle: ImageStyle
+  iconStyle?: ImageStyle
   onDenyPrress?: () => void
 }) {
   const { t } = useTranslation()
@@ -44,12 +44,14 @@ export function PermissionModal({
           <Image style={[styles.icon, iconStyle]} source={icon} />
         </View>
         <View style={styles.hint}>
-          <Text styles={styles.hintText}>{hint}</Text>
+          <Text color="#181818" fontSize={16} styles={styles.hintText}>
+            {hint}
+          </Text>
         </View>
       </View>
       <View style={styles.btnWrap}>
         <Pressable style={styles.btn} onPress={onPress}>
-          <Text fontSize={16} styles={styles.btnText}>
+          <Text fontSize={16} color="#fff" styles={styles.btnText}>
             {t('allow')}
           </Text>
         </Pressable>
@@ -74,11 +76,12 @@ const styles = StyleSheet.create<{
 }>({
   bodyStyle: {
     paddingHorizontal: 0,
+    paddingVertical: 20,
   },
   modalContainer: {
     width: 340,
     borderRadius: 6,
-    paddingVertical: 27,
+    paddingTop: 0,
     justifyContent: 'space-between',
     backgroundColor: '#ffffff',
   },
@@ -95,6 +98,7 @@ const styles = StyleSheet.create<{
   content: {
     paddingHorizontal: 20,
     flexDirection: 'row',
+    paddingTop: 20,
     justifyContent: 'space-between',
   },
   iconView: {
@@ -103,26 +107,25 @@ const styles = StyleSheet.create<{
     justifyContent: 'center',
   },
   icon: {
-    width: 22,
-    height: 22,
+    width: 44,
+    height: 44,
   },
   hint: {
+    paddingRight: 5,
     marginLeft: 19,
   },
-  hintText: {
-    color: '#181818',
-    fontSize: 16,
-  },
+  hintText: {},
   btnWrap: {
     marginTop: 21,
     justifyContent: 'center',
     flexDirection: 'row',
-    // paddingHorizontal: 19,
   },
   btn: {
     borderRadius: 5,
-    width: 140,
+    width: '70%',
     backgroundColor: Color.primary,
+    alignItems: 'center',
+    padding: 10,
   },
   btnText: {
     textTransform: 'uppercase',

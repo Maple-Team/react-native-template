@@ -15,7 +15,7 @@ import { Input, NormalPicker } from '@components/form/FormItem'
 import { ApplyButton } from '@components/form/FormItem/applyButton'
 import { Color } from '@/styles/color'
 import type { ApplyParameter, ApplyStep2Parameter } from '@/typings/apply'
-import { useBehavior, useLocation } from '@/hooks'
+import { useBehavior, useCustomBack, useLocation } from '@/hooks'
 import type { Shape } from '@/typings/common'
 import { fetchDict, submit } from '@/services/apply'
 import type { Dict, DictField } from '@/typings/response'
@@ -24,6 +24,7 @@ import { filterArrayKey } from '@/utils/util'
 
 export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
+  useCustomBack()
   const schema = object<Shape<FormModel>>({
     industryCode: string().required(t('industryCode.required')),
     jobTypeCode: string().required(t('jobTypeCode.required')),

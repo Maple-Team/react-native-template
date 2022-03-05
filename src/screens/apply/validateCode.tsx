@@ -7,7 +7,7 @@ import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 
 import { PageStyles, Text } from '@/components'
 import { Color } from '@/styles/color'
-import { useRoute } from '@react-navigation/native'
+import { StackActions, useRoute } from '@react-navigation/native'
 import { getValidateCode } from '@/services/user'
 import { DEBOUNCE_WAIT, DEBOUNCE_OPTIONS } from '@/utils/constant'
 import { debounce } from 'lodash'
@@ -48,7 +48,8 @@ export const ValidateCode = ({ navigation }: NativeStackHeaderProps) => {
   useEffect(() => {
     setPlaying(true)
     handleValidateCodePress('SMS')
-  }, [handleValidateCodePress])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   useInterval(
     () => {
       let _count = count - 1
@@ -70,10 +71,16 @@ export const ValidateCode = ({ navigation }: NativeStackHeaderProps) => {
         appId: params.applyId,
         kaptcha: code,
         skipValidate: 'N',
-        type: 'LOGIN',
-      }).then(() => {
-        navigation.navigate('BillDetail')
+        type: 'CONFIRM',
       })
+        .then(() => {
+          navigation.getParent()?.dispatch(
+            StackActions.replace('BillsDetail', {
+              applyId: params.applyId,
+            })
+          )
+        })
+        .catch(console.error)
     }
   }, [code, navigation, params])
   return (
@@ -94,7 +101,7 @@ export const ValidateCode = ({ navigation }: NativeStackHeaderProps) => {
             styles={{ marginBottom: 20 }}>
             {t('verify-your-phone-number')}
           </Text>
-          <Text>{'send-verify-code-prompt'}</Text>
+          <Text>{t('send-verify-code-prompt')}</Text>
           <View style={{ flexDirection: 'row', marginTop: 10 }}>
             <Text color={Color.primary} fontSize={16}>
               +52 <Text color="#000">{params?.phone}</Text>

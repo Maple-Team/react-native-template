@@ -8,12 +8,14 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import { Modal } from '@ant-design/react-native'
 import { useTranslation } from 'react-i18next'
 import { queryUserinfo } from '@/services/user'
+import { useCustomBack } from '@/hooks'
 
 export function UserCenter() {
   const context = useContext(MoneyyaContext)
   const na = useNavigation()
   const { t } = useTranslation()
   const [loading, setLoading] = useState<boolean>()
+  useCustomBack()
   useFocusEffect(
     useCallback(() => {
       setLoading(true)

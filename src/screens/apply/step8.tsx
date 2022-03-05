@@ -6,32 +6,45 @@ import { useTranslation } from 'react-i18next'
 import { ScrollView } from 'react-native-gesture-handler'
 import debounce from 'lodash.debounce'
 import { Slider } from '@miblanchard/react-native-slider'
-
+import { isEmulator } from 'react-native-device-info'
 import { PageStyles, Text, Hint, ToastLoading } from '@/components'
 import {
   DEBOUNCE_OPTIONS,
   DEBOUNCE_WAIT,
   KEY_APPLYID,
+  KEY_DEVICEID,
   KEY_GPS,
+  KEY_INTERIP,
   KEY_LIVENESS,
+  KEY_OUTERIP,
   TOTAL_STEPS,
 } from '@/utils/constant'
 import { ApplyButton } from '@components/form/FormItem'
 import { Color } from '@/styles/color'
 import type { Calculate, Product, ProductItem } from '@/typings/apply'
-import { useBehavior, useLocation } from '@/hooks'
-import { queryProduct, scheduleCalc, submit } from '@/services/apply'
+import { useBehavior, useLocation, useSensor } from '@/hooks'
+import {
+  queryProduct,
+  scheduleCalc,
+  submit,
+  uploadAllApp,
+  uploadDeviceInfo,
+} from '@/services/apply'
 import { MMKV } from '@/utils'
 import { default as MoneyyaContext } from '@/state'
 import emitter from '@/eventbus'
 import { Toast } from '@ant-design/react-native'
 import { uploadJpush } from '@/services/misc'
+import { AppModule } from '@/modules'
+import { getDeviceInfo } from '@/utils/device'
+import { StackActions } from '@react-navigation/native'
 
 const WARN_COLOR = '#f00'
 export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
   const params = (route.params as { bankCardNo?: string }) || {}
   const [productLoading, setProductLoading] = useState<boolean>()
+  const sensor = useSensor()
   const onSubmit = debounce(
     () => {
       if (!product) {
@@ -39,6 +52,7 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
         return
       }
       const applyId = +(MMKV.getString(KEY_APPLYID) || '0')
+      const key = Toast.loading(t('loading'), 0)
       submit<'8'>({
         gps: MMKV.getString(KEY_GPS) || '0,0',
         loanCode: product.loanCode,
@@ -50,7 +64,7 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
         applyId,
         currentStep: 8,
         totalSteps: TOTAL_STEPS,
-      }).then(() => {
+      }).then(async () => {
         // NOTE JPUSH 签约
         const userStatus = context.user?.userAuthStatus
         const step5Data = MMKV.getMap('step5Data') as { idcard: string }
@@ -65,7 +79,28 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
         ;['step2Data', 'step3Data', 'step5Data', 'step7Data'].forEach(k => {
           MMKV.removeItem(k)
         })
+        const apps = await AppModule.getApps()
+        const deviceId = MMKV.getString(KEY_DEVICEID) || ''
+        uploadAllApp({ appInfos: apps, applyId, deviceId })
+        const device = await getDeviceInfo()
+        const _isEmulator = await isEmulator()
+        uploadDeviceInfo({
+          ...device,
+          anglex: sensor?.angleX || '',
+          angley: sensor?.angleY || '',
+          anglez: sensor?.angleZ || '',
+          applyId: `${applyId}`,
+          deviceId,
+          googleAdvertisingId: deviceId,
+          gpsInfo: MMKV.getString(KEY_GPS) || '0,0',
+          idcard,
+          intranetIP: MMKV.getString(KEY_INTERIP) || '',
+          isSimulator: _isEmulator ? 'Y' : 'N',
+          phone,
+          requestIp: MMKV.getString(KEY_OUTERIP) || '',
+        })
         MMKV.removeItem(KEY_LIVENESS)
+        Toast.remove(key)
         if (userStatus === 'N') {
           // 二次验证码校验 validateCode
           navigation.getParent()?.navigate('ValidateCode', {
@@ -73,9 +108,11 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
             applyId,
           })
         } else {
-          navigation.getParent()?.navigate('BillsDetail', {
-            applyId: MMKV.getString(KEY_APPLYID),
-          })
+          navigation.getParent()?.dispatch(
+            StackActions.replace('BillsDetail', {
+              applyId: MMKV.getString(KEY_APPLYID),
+            })
+          )
         }
       })
     },

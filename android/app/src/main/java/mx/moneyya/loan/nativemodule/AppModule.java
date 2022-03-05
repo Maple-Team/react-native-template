@@ -34,6 +34,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import mx.moneyya.loan.BuildConfig;
 
@@ -60,6 +61,10 @@ public class AppModule extends ReactContextBaseJavaModule {
   @ReactMethod(isBlockingSynchronousMethod = true)
   public String getEnv(){
     return BuildConfig.ENVIRONMENT; //
+  }
+  @ReactMethod(isBlockingSynchronousMethod = true)
+  public String getBuildDate(){
+    return BuildConfig.BUILD_TIME; //
   }
   @ReactMethod(isBlockingSynchronousMethod = true)
   public String getBaseUrl(){
@@ -279,25 +284,22 @@ public class AppModule extends ReactContextBaseJavaModule {
       return;
     }
 
-    activity.runOnUiThread(new Runnable() {
-      @Override
-      public void run() {
-        WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
-        lp.screenBrightness = brightnessLevel;
-        activity.getWindow().setAttributes(lp);
-      }
+    activity.runOnUiThread(() -> {
+      WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
+      lp.screenBrightness = brightnessLevel;
+      activity.getWindow().setAttributes(lp);
     });
   }
 
   @ReactMethod
   public void getBrightnessLevel(Promise promise) {
-    WindowManager.LayoutParams lp = ((Activity)reactContext.getApplicationContext()).getWindow().getAttributes();
+    WindowManager.LayoutParams lp = Objects.requireNonNull(getCurrentActivity()).getWindow().getAttributes();
     promise.resolve(lp.screenBrightness);
   }
 
   @ReactMethod
   public void getSystemBrightnessLevel(Promise promise){
-    String brightness = Settings.System.getString(((Activity)reactContext.getApplicationContext()).getContentResolver(), "screen_brightness");
+    String brightness = Settings.System.getString(reactContext.getApplicationContext().getContentResolver(), "screen_brightness");
     promise.resolve(Integer.parseInt(brightness)/255f);
   }
 

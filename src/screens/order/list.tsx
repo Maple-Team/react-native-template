@@ -18,9 +18,11 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 import emitter from '@/eventbus'
 import uniqBy from 'lodash.uniqby'
 import { useTranslation } from 'react-i18next'
+import { useCustomBack } from '@/hooks'
 
 export function BillsList() {
   const route = useRoute()
+  useCustomBack()
   const { t, i18n } = useTranslation()
   const { type } = (route.params || { type: 'order' }) as { type: 'payment' | 'order' }
   const [data, setData] = useState<Order[]>([])

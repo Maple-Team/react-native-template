@@ -34,7 +34,6 @@ const Stack = createNativeStackNavigator<AccountStackParams>()
 export function AccountStack() {
   const { t } = useTranslation()
   usePersmission()
-
   useEffect(() => {
     const versionID = AppModule.getVersionID()
     emitter.emit('UPDATE_VERSIONID', versionID)
