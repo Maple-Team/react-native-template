@@ -7,7 +7,6 @@ import com.facebook.react.ReactApplication;
 
 import cn.jiguang.plugins.push.JPushModule;
 
-import com.ianlin.RNCarrierInfo.RNCarrierInfoPackage;
 import com.wheelpicker.WheelPickerPackage;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;

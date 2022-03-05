@@ -167,7 +167,6 @@ dependencies {
   implementation 'com.facebook.fresco:webpsupport:2.5.0'
   implementation project(':react-native-splash-screen')
   implementation project(':react-native-advertising-id')
-  implementation project(':react-native-carrier-info')
   implementation project(":liveness")
   implementation project(":liveness_rn")
   implementation project(':jpush-react-native')  // 添加 jpush 依赖
