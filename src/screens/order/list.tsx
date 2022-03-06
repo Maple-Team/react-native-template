@@ -1,58 +1,40 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import {
-  FlatList,
-  Image,
-  View,
-  StatusBar,
-  ImageBackground,
-  Pressable,
-  RefreshControl,
-} from 'react-native'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { FlatList, Image, View, ImageBackground, Pressable, Dimensions } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { Loading, TabHeader, Text } from '@/components'
+import { Loading, TabHeader, Text, ToastLoading } from '@/components'
 import { Color } from '@/styles/color'
 import { queryOrders } from '@/services/order'
 import { Order } from '@/typings/order'
 import { APPLY_STATE } from '@/state/enum'
 import { useNavigation, useRoute } from '@react-navigation/native'
-import emitter from '@/eventbus'
 import uniqBy from 'lodash.uniqby'
 import { useTranslation } from 'react-i18next'
-import { useCustomBack } from '@/hooks'
+import { useCustomBack, UserFocusStatusBar } from '@/hooks'
+import { useHeaderHeight } from '@react-navigation/elements'
+import RefreshListView, { RefreshState } from '@screens/letter/refreshListView'
 
 export function BillsList() {
   const route = useRoute()
-  useCustomBack()
+
   const { t, i18n } = useTranslation()
   const { type } = (route.params || { type: 'order' }) as { type: 'payment' | 'order' }
   const [data, setData] = useState<Order[]>([])
-  const [loading, setLoading] = useState<boolean>()
-  useEffect(() => {
-    setLoading(true)
-    queryOrders(type)
-      .then(res => {
-        res && setData(res)
-      })
-      .finally(() => setLoading(false))
-  }, [type])
+  const [loading] = useState<boolean>(false)
+  const headerHeight = useHeaderHeight()
+  const [page, setPage] = useState<number>(1)
+
+  // 每页最大数量
+  const ListNums = useMemo(() => {
+    const window = Dimensions.get('window')
+    const listNum = (window.height - headerHeight) / 173 // 计算而来
+    return Math.ceil(listNum)
+  }, [headerHeight])
+
   const na = useNavigation()
-  const [refreshing, setRefreshing] = useState<boolean>(false)
-  const onRefresh = useCallback(async () => {
-    setRefreshing(true)
-    if (data.length < 10) {
-      queryOrders(type)
-        .then(res => {
-          if (res) {
-            setData(uniqBy(res.concat(data), 'applyId'))
-          }
-          setRefreshing(false)
-        })
-        .finally(() => setLoading(false))
-    } else {
-      emitter.emit('SHOW_MESSAGE', { type: 'info', message: t('noMore') })
-      setRefreshing(false)
-    }
-  }, [data, t, type])
+  useCustomBack(() => {
+    //@ts-ignore
+    na.navigate('BottomTab')
+  })
   /**
    * 计算出还款相关状态
    */
@@ -81,12 +63,49 @@ export function BillsList() {
 
     return content
   }, [])
-  if (loading) {
-    return <Loading />
-  }
+  const viewRef = useRef<View>(null)
+
+  const ref = useRef<FlatList>(null)
+  const [refreshState, setRefreshState] = useState<number>(RefreshState.Idle)
+
+  const onHeaderRefresh = useCallback(() => {
+    setRefreshState(RefreshState.HeaderRefreshing)
+    queryOrders(type, { currentPage: 1, pageSize: ListNums })
+      .then(res => {
+        if (res) {
+          setData(uniqBy(res.concat(data), 'id'))
+          setRefreshState(res.length < 1 ? RefreshState.NoMoreData : RefreshState.Idle)
+        }
+      })
+      .catch(() => {
+        setRefreshState(RefreshState.Failure)
+      })
+  }, [data, ListNums, type])
+
+  useEffect(() => {
+    onHeaderRefresh()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const onFooterRefresh = useCallback(() => {
+    setRefreshState(RefreshState.FooterRefreshing)
+
+    queryOrders(type, { currentPage: page, pageSize: ListNums })
+      .then(res => {
+        if (res) {
+          setData(uniqBy(res.concat(data), 'id'))
+          setRefreshState(res.length >= ListNums ? RefreshState.Idle : RefreshState.NoMoreData)
+          setPage(page + 1)
+        }
+      })
+      .catch(() => {
+        setRefreshState(RefreshState.Failure)
+      })
+  }, [data, ListNums, type, page])
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <StatusBar translucent={false} backgroundColor="#fff" barStyle="dark-content" />
+      <UserFocusStatusBar translucent={false} backgroundColor="#fff" barStyle="dark-content" />
+      <ToastLoading animating={loading} />
       <View
         style={{
           paddingTop: 0,
@@ -104,138 +123,148 @@ export function BillsList() {
             <TabHeader />
           </ImageBackground>
         </View>
-        <View>
-          {data.length > 0 ? (
-            <FlatList
-              refreshControl={
-                <RefreshControl
-                  colors={[Color.primary]}
-                  refreshing={refreshing}
-                  onRefresh={onRefresh}
-                />
-              }
-              style={{ paddingHorizontal: 47.5 }}
-              data={data}
-              renderItem={({ item }) => (
-                <View style={{ paddingTop: 35.5, marginTop: 24.5 }}>
+        {loading ? (
+          <Loading />
+        ) : (
+          <RefreshListView
+            paddingHorizontal={47.5}
+            data={data}
+            loading={loading}
+            listRef={ref}
+            refreshState={refreshState}
+            renderItem={(item: Order) => (
+              <View
+                style={{ paddingTop: 35.5, marginTop: 24.5 }}
+                ref={viewRef}
+                onLayout={() => {
+                  viewRef.current?.measure(() => {
+                    // console.log(h, '=========') // 173
+                  })
+                }}>
+                <View
+                  style={{
+                    backgroundColor: '#fff',
+                    borderRadius: 14,
+                    alignItems: 'center',
+                  }}>
+                  <Pressable
+                    onPress={() => {
+                      //@ts-ignore
+                      na.navigate('BillsDetail', {
+                        applyId: item.applyId,
+                      })
+                    }}
+                    style={{
+                      top: -35.5,
+                      alignItems: 'center',
+                      position: 'absolute',
+                      width: '100%',
+                    }}>
+                    <Image
+                      source={
+                        getStateContent(item).state >= 0
+                          ? getStateContent(item).state === 1
+                            ? require('@/assets/compressed/bills/setted.webp')
+                            : require('@/assets/compressed/bills/repay1.webp')
+                          : require('@/assets/compressed/bills/repay3.webp')
+                      }
+                      resizeMode="cover"
+                    />
+                  </Pressable>
                   <View
                     style={{
-                      backgroundColor: '#fff',
-                      borderRadius: 14,
-                      alignItems: 'center',
+                      flexDirection: 'row',
+                      paddingTop: 30.5,
+                      justifyContent: 'space-between',
+                      paddingHorizontal: i18n.language === 'es-MX' ? 5 : 49.5,
+                      paddingBottom: 13,
+                      width: '100%',
                     }}>
+                    <View style={{ alignItems: 'center', flexWrap: 'wrap', marginRight: 10 }}>
+                      <Text
+                        styles={{
+                          //@ts-ignore
+                          marginBottom: 15,
+                        }}>
+                        {t('loanAmount')}
+                      </Text>
+                      <Text>{item.applyAmount}</Text>
+                    </View>
+                    <View style={{ alignItems: 'center', flexWrap: 'wrap' }}>
+                      {getStateContent(item).state === 3 ||
+                      getStateContent(item).state === 2 ||
+                      getStateContent(item).state === 1 ? (
+                        <>
+                          <Text
+                            styles={{
+                              //@ts-ignore
+                              marginBottom: 15,
+                            }}>
+                            {t('loanDays')}
+                          </Text>
+                          <Text>{item.loanTerms}</Text>
+                        </>
+                      ) : (
+                        <>
+                          <Text
+                            styles={{
+                              //@ts-ignore
+                              marginBottom: 15,
+                            }}>
+                            {t('repayDate')}
+                          </Text>
+                          <Text>{item.repayDate}</Text>
+                        </>
+                      )}
+                    </View>
+                  </View>
+
+                  {getStateContent(item).state !== 1 && (
                     <Pressable
-                      onPress={() => {
+                      onPress={() =>
                         //@ts-ignore
                         na.navigate('BillsDetail', {
                           applyId: item.applyId,
                         })
-                      }}
+                      }
                       style={{
-                        top: -35.5,
+                        backgroundColor: getStateContent(item).color,
+                        paddingVertical: 11,
+                        borderBottomLeftRadius: 14,
+                        borderBottomRightRadius: 14,
+                        borderTopLeftRadius: 8,
+                        borderTopRightRadius: 8,
                         alignItems: 'center',
-                        position: 'absolute',
+                        justifyContent: 'center',
                         width: '100%',
                       }}>
-                      <Image
-                        source={
-                          getStateContent(item).state >= 0
-                            ? getStateContent(item).state === 1
-                              ? require('@/assets/compressed/bills/setted.webp')
-                              : require('@/assets/compressed/bills/repay1.webp')
-                            : require('@/assets/compressed/bills/repay3.webp')
-                        }
-                        resizeMode="cover"
-                      />
+                      <Text
+                        color="#fff"
+                        //@ts-ignore
+                        styles={{ textTransform: 'capitalize' }}>
+                        {getStateContent(item).text}
+                      </Text>
                     </Pressable>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        paddingTop: 30.5,
-                        justifyContent: 'space-between',
-                        paddingHorizontal: i18n.language === 'es-MX' ? 5 : 49.5,
-                        paddingBottom: 13,
-                        width: '100%',
-                      }}>
-                      <View style={{ alignItems: 'center', flexWrap: 'wrap', marginRight: 10 }}>
-                        <Text
-                          styles={{
-                            //@ts-ignore
-                            marginBottom: 15,
-                          }}>
-                          {t('loanAmount')}
-                        </Text>
-                        <Text>{item.applyAmount}</Text>
-                      </View>
-                      <View style={{ alignItems: 'center', flexWrap: 'wrap' }}>
-                        {getStateContent(item).state === 3 ||
-                        getStateContent(item).state === 2 ||
-                        getStateContent(item).state === 1 ? (
-                          <>
-                            <Text
-                              styles={{
-                                //@ts-ignore
-                                marginBottom: 15,
-                              }}>
-                              {t('loanDays')}
-                            </Text>
-                            <Text>{item.loanTerms}</Text>
-                          </>
-                        ) : (
-                          <>
-                            <Text
-                              styles={{
-                                //@ts-ignore
-                                marginBottom: 15,
-                              }}>
-                              {t('repayDate')}
-                            </Text>
-                            <Text>{item.repayDate}</Text>
-                          </>
-                        )}
-                      </View>
-                    </View>
-
-                    {getStateContent(item).state !== 1 && (
-                      <Pressable
-                        onPress={() =>
-                          //@ts-ignore
-                          na.navigate('BillsDetail', {
-                            applyId: item.applyId,
-                          })
-                        }
-                        style={{
-                          backgroundColor: getStateContent(item).color,
-                          paddingVertical: 11,
-                          borderBottomLeftRadius: 14,
-                          borderBottomRightRadius: 14,
-                          borderTopLeftRadius: 8,
-                          borderTopRightRadius: 8,
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          width: '100%',
-                        }}>
-                        <Text
-                          color="#fff"
-                          //@ts-ignore
-                          styles={{ textTransform: 'capitalize' }}>
-                          {getStateContent(item).text}
-                        </Text>
-                      </Pressable>
-                    )}
-                  </View>
+                  )}
                 </View>
-              )}
-            />
-          ) : (
-            <View style={{ paddingTop: 122, alignItems: 'center' }}>
-              <Image
-                source={require('@/assets/compressed/bills/no-bill.webp')}
-                resizeMode="cover"
-              />
-            </View>
-          )}
-        </View>
+              </View>
+            )}
+            ListEmptyComponent={
+              <View style={{ paddingTop: 122, alignItems: 'center' }}>
+                <Image
+                  source={require('@/assets/compressed/bills/no-bill.webp')}
+                  resizeMode="cover"
+                />
+              </View>
+            }
+            keyExtractor={(item: Order) => `${item.applyId}`}
+            onFooterRefresh={onFooterRefresh}
+            footerRefreshingText={t('loadMore')}
+            footerFailureText={t('loadFailure')}
+            footerNoMoreDataText={`- ${t('toBottom')} -`}
+            footerEmptyDataText={t('noMessagePrompt')}
+          />
+        )}
       </View>
     </SafeAreaView>
   )

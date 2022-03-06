@@ -59,7 +59,7 @@ export function MainStack() {
             <HeaderLeft
               onPress={() => {
                 //@ts-ignore
-                na.navigate('Order')
+                na.navigate('BottomTab', { screen: 'Order' })
               }}
             />
           ),

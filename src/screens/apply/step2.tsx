@@ -24,7 +24,10 @@ import { filterArrayKey } from '@/utils/util'
 
 export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
-  useCustomBack()
+  useCustomBack(() => {
+    //@ts-ignore
+    navigation.navigate('BottomTab')
+  })
   const schema = object<Shape<FormModel>>({
     industryCode: string().required(t('industryCode.required')),
     jobTypeCode: string().required(t('jobTypeCode.required')),

@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useState } from 'react'
-import { View, ImageBackground, Image, Pressable, StatusBar } from 'react-native'
+import { View, ImageBackground, Image, Pressable } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { TabHeader, Text, ToastLoading, Update } from '@/components'
 import emitter from '@/eventbus'
@@ -8,14 +8,18 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import { Modal } from '@ant-design/react-native'
 import { useTranslation } from 'react-i18next'
 import { queryUserinfo } from '@/services/user'
-import { useCustomBack } from '@/hooks'
+import { useCustomBack, UserFocusStatusBar } from '@/hooks'
+import { Color } from '@/styles/color'
 
 export function UserCenter() {
   const context = useContext(MoneyyaContext)
   const na = useNavigation()
   const { t } = useTranslation()
   const [loading, setLoading] = useState<boolean>()
-  useCustomBack()
+  useCustomBack(() => {
+    //@ts-ignore
+    na.navigate('BottomTab')
+  })
   useFocusEffect(
     useCallback(() => {
       setLoading(true)
@@ -27,9 +31,16 @@ export function UserCenter() {
       return () => {}
     }, [])
   )
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <StatusBar translucent={true} barStyle="default" />
+      <UserFocusStatusBar
+        animated={false}
+        translucent={true}
+        barStyle={'light-content'}
+        showHideTransition="fade"
+        backgroundColor={Color.primary}
+      />
       <ToastLoading animating={loading} />
       <Update />
       <View style={{ paddingTop: 0, paddingHorizontal: 0 }}>

@@ -30,6 +30,7 @@ type NaviType = NativeStackNavigationProp<AccountStackParams, 'SignUp'>
 
 export const SignupScreen = ({ route }: { route: any }) => {
   const params = route.params || ({ phone: '' } as { phone?: string })
+
   const schema = object().shape({
     phone: string()
       .min(10, t('field.short', { field: 'Phone' }))
@@ -69,6 +70,7 @@ export const SignupScreen = ({ route }: { route: any }) => {
   }
 
   const na = useNavigation<NaviType>()
+
   const onSubmit = debounce(
     (values: RegisterParameter) => {
       register(values)

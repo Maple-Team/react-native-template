@@ -28,7 +28,6 @@ interface MessageListParameter {
  * @returns
  */
 export async function queryZhanLetterList(data: MessageListParameter) {
-  console.log('queryZhanLetterList', data)
   return request<ZhanneiLetter[]>({
     url: '/smart-loan/system/message/list',
     method: 'POST',

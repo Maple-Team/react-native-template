@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from 'react'
+import React, { useEffect, useReducer } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { Provider, Toast } from '@ant-design/react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -18,7 +18,6 @@ import { InitStack } from '@navigation/initStack'
 import { uploadJpush } from './services/misc'
 import { navigationRef } from '@navigation/rootNavigation'
 import dayjs from 'dayjs'
-import { Linking, Platform } from 'react-native'
 
 // Authentication flows: https://reactnavigation.org/docs/auth-flow/
 Toast.config({
@@ -64,31 +63,31 @@ const App = () => {
   }, [])
   // useFlipper(navigationRef)
 
-  const [isReady, setIsReady] = useState(__DEV__ ? false : true)
-  const [initialState, setInitialState] = useState()
+  // const [isReady, setIsReady] = useState(__DEV__ ? false : true)
+  // const [initialState, setInitialState] = useState()
   // NOTE 处理用户上一次打开的页面(进件过程), 开发环境? https://reactnavigation.org/docs/state-persistence
-  useEffect(() => {
-    const restoreState = async () => {
-      try {
-        const initialUrl = await Linking.getInitialURL()
-        if (Platform.OS !== 'web' && initialUrl == null) {
-          // Only restore state if there's no deep link and we're not on web
-          const savedStateString = await AsyncStorage.getItem(PERSISTENCE_KEY)
-          const urlState = savedStateString ? JSON.parse(savedStateString) : undefined
+  // useEffect(() => {
+  //   const restoreState = async () => {
+  //     try {
+  //       const initialUrl = await Linking.getInitialURL()
+  //       if (Platform.OS !== 'web' && initialUrl == null) {
+  //         // Only restore state if there's no deep link and we're not on web
+  //         const savedStateString = await AsyncStorage.getItem(PERSISTENCE_KEY)
+  //         const urlState = savedStateString ? JSON.parse(savedStateString) : undefined
 
-          if (urlState !== undefined) {
-            setInitialState(urlState)
-          }
-        }
-      } finally {
-        setIsReady(true)
-      }
-    }
+  //         if (urlState !== undefined) {
+  //           setInitialState(urlState)
+  //         }
+  //       }
+  //     } finally {
+  //       setIsReady(true)
+  //     }
+  //   }
 
-    if (!isReady) {
-      restoreState()
-    }
-  }, [isReady])
+  //   if (!isReady) {
+  //     restoreState()
+  //   }
+  // }, [isReady])
 
   useEffect(() => {
     emitter.on('EXISTED_USER', message => {
@@ -189,7 +188,7 @@ const App = () => {
         <MoneyyaContext.Provider value={moneyyaState}>
           <NavigationContainer
             ref={navigationRef}
-            initialState={initialState}
+            // initialState={initialState}
             onStateChange={_ => AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(_))}>
             {!hasInit ? <InitStack /> : accessToken ? <MainStack /> : <AccountStack />}
           </NavigationContainer>

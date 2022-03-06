@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
-import { View, Image, StatusBar, ImageBackground } from 'react-native'
+import { View, Image, ImageBackground } from 'react-native'
 import { StackActions, useFocusEffect, useNavigation } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { TabHeader, Text, ToastLoading, Update } from '@/components'
@@ -14,7 +14,7 @@ import { default as MoneyyaContext } from '@/state'
 import { MMKV } from '@/utils/storage'
 import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT, KEY_APPLYID, TOTAL_STEPS } from '@/utils/constant'
 import debounce from 'lodash.debounce'
-import { useCustomBack, useLocation } from '@/hooks'
+import { useCustomBack, useLocation, UserFocusStatusBar } from '@/hooks'
 import { toThousands } from '@/utils/util'
 import { APPLY_STATE } from '@/state/enum'
 import emitter from '@/eventbus'
@@ -37,7 +37,10 @@ export function Step1() {
   useEffect(() => {
     pv(user?.userId ? `${user?.userId}` : '')
   }, [user?.userId])
-  useCustomBack()
+  useCustomBack(() => {
+    //@ts-ignore
+    navigation.navigate('BottomTab')
+  })
   const location = useLocation()
 
   useFocusEffect(
@@ -175,7 +178,7 @@ export function Step1() {
   )
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <StatusBar translucent={false} backgroundColor="#fff" barStyle="dark-content" />
+      <UserFocusStatusBar translucent={false} backgroundColor="#fff" barStyle="dark-content" />
       <ToastLoading animating={loading} />
       <Update />
       <ScrollView

@@ -8,17 +8,11 @@ const accountStackRoutes = ['Entry']
 const mainStackRoutes = ['Home', 'BillsList', 'UserCenter']
 const canExitRoutes = [...initStackRoutes, ...accountStackRoutes, ...mainStackRoutes]
 
-export function useCustomBack() {
+export function useCustomBack(customBack: () => void) {
   const route = useRoute()
   const navigation = useNavigation()
   useFocusEffect(
     useCallback(() => {
-      console.log(
-        '=================not exit routes====================',
-        route.name,
-        navigation.canGoBack(),
-        '============'
-      )
       const onBackPress = () => {
         if (canExitRoutes.includes(route.name)) {
           Alert.alert(t('notion'), t('are-you-sure-want-to-exit'), [
@@ -31,10 +25,10 @@ export function useCustomBack() {
           ])
         } else {
           if (navigation.canGoBack()) {
+            console.log(route.name, navigation.canGoBack(), '==')
             navigation.goBack()
           } else {
-            // @ts-ignore
-            navigation.navigate('BottomTab')
+            customBack()
           }
         }
         return true
@@ -43,6 +37,6 @@ export function useCustomBack() {
       BackHandler.addEventListener('hardwareBackPress', onBackPress)
 
       return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress)
-    }, [navigation, route.name])
+    }, [customBack, navigation, route.name])
   )
 }

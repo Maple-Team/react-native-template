@@ -46,6 +46,9 @@ export const useLocation = () => {
         },
       }).catch(console.error),
     ])
+    return () => {
+      Geolocation.stopObserving()
+    }
   }, [])
   useEffect(() => {
     const { latitude, longitude } = location

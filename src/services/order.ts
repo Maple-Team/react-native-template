@@ -7,17 +7,25 @@ import { request } from '@/utils/http'
  * @param params
  * @returns
  */
-export async function queryOrders(type: 'payment' | 'order') {
+export async function queryOrders(
+  type: 'payment' | 'order',
+  data: {
+    currentPage: number
+    pageSize: number
+  }
+) {
   switch (type) {
     case 'payment':
       return request<Order[]>({
         url: '/smart-loan/contract/repayList',
         method: 'POST',
+        data,
       })
     case 'order':
       return request<Order[]>({
         url: '/smart-loan/contract/list',
         method: 'POST',
+        data,
       })
   }
 }
