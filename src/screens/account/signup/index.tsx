@@ -9,8 +9,8 @@ import debounce from 'lodash.debounce'
 import { PageStyles, Text, ToastLoading } from '@/components'
 import { REGEX_PASSWORD, REGEX_PHONE, REGEX_VALIDATE_CODE } from '@/utils/reg'
 import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT, KEY_INTERIP, KEY_OUTERIP } from '@/utils/constant'
-import { MaskInput, PasswordInput, ValidateCode } from '@components/form/FormItem'
-import { ApplyButton } from '@components/form/FormItem/applyButton'
+import { MaskInput, PasswordInput, ValidateCode } from '@components/form'
+import { ApplyButton } from '@components/form/applyButton'
 import { Color } from '@/styles/color'
 import type { RegisterParameter } from '@/typings/request'
 import { register } from '@/services/user'
@@ -30,27 +30,46 @@ type NaviType = NativeStackNavigationProp<AccountStackParams, 'SignUp'>
 
 export const SignupScreen = ({ route }: { route: any }) => {
   const params = route.params || ({ phone: '' } as { phone?: string })
+  const [showValidateCode, updateShowValidateCode] = useState<boolean>(true)
+  const schema = useMemo(() => {
+    return showValidateCode
+      ? object().shape({
+          phone: string()
+            .min(10, t('field.short', { field: 'Phone' }))
+            .max(10, t('field.long', { field: 'Phone' }))
+            .matches(REGEX_PHONE, t('phone.invalid'))
+            .required(t('phone.required')),
+          password: string()
+            .matches(REGEX_PASSWORD, t('password.invalid'))
+            .required(t('password.required')),
+          comfirmPassword: string()
+            .matches(REGEX_PASSWORD, t('comfirmPassword.invalid'))
+            .required(t('comfirmPassword.required'))
+            .oneOf([ref('password'), null], t('comfirmPassword.notSame')),
+          validateCode: string()
+            .min(4, t('field.short', { field: 'Validate Code' }))
+            .max(4, t('field.long', { field: 'Validate Code' }))
+            .matches(REGEX_VALIDATE_CODE, t('validateCode.invalid'))
+            .required(t('validateCode.required')),
+          hasAgree: boolean().required(t('hasAgree.required')),
+        })
+      : object().shape({
+          phone: string()
+            .min(10, t('field.short', { field: 'Phone' }))
+            .max(10, t('field.long', { field: 'Phone' }))
+            .matches(REGEX_PHONE, t('phone.invalid'))
+            .required(t('phone.required')),
+          password: string()
+            .matches(REGEX_PASSWORD, t('password.invalid'))
+            .required(t('password.required')),
+          comfirmPassword: string()
+            .matches(REGEX_PASSWORD, t('comfirmPassword.invalid'))
+            .required(t('comfirmPassword.required'))
+            .oneOf([ref('password'), null], t('comfirmPassword.notSame')),
+          hasAgree: boolean().required(t('hasAgree.required')),
+        })
+  }, [showValidateCode])
 
-  const schema = object().shape({
-    phone: string()
-      .min(10, t('field.short', { field: 'Phone' }))
-      .max(10, t('field.long', { field: 'Phone' }))
-      .matches(REGEX_PHONE, t('phone.invalid'))
-      .required(t('phone.required')),
-    password: string()
-      .matches(REGEX_PASSWORD, t('password.invalid'))
-      .required(t('password.required')),
-    comfirmPassword: string()
-      .matches(REGEX_PASSWORD, t('comfirmPassword.invalid'))
-      .required(t('comfirmPassword.required'))
-      .oneOf([ref('password'), null], t('comfirmPassword.notSame')),
-    validateCode: string()
-      .min(4, t('field.short', { field: 'Validate Code' }))
-      .max(4, t('field.long', { field: 'Validate Code' }))
-      .matches(REGEX_VALIDATE_CODE, t('validateCode.invalid'))
-      .required(t('validateCode.required')),
-    hasAgree: boolean().required(t('hasAgree.required')),
-  })
   type Model = RegisterParameter & {
     hasAgree?: boolean
   }
@@ -60,6 +79,7 @@ export const SignupScreen = ({ route }: { route: any }) => {
       password: '',
       comfirmPassword: '',
       validateCode: '',
+      isValidateCode: 'Y',
     }),
     [params?.phone]
   )
@@ -73,7 +93,14 @@ export const SignupScreen = ({ route }: { route: any }) => {
 
   const onSubmit = debounce(
     (values: RegisterParameter) => {
-      register(values)
+      let parameter: Partial<RegisterParameter> = {}
+      if (showValidateCode) {
+        parameter = { ...values }
+      } else {
+        delete values.validateCode
+        parameter = { ...values, isValidateCode: 'N', validateCode: 'N' }
+      }
+      register(parameter as RegisterParameter)
         .then(res => {
           MMKV.setString(KEY_OUTERIP, res.ip)
           // NOTE JPUSH register Success
@@ -145,18 +172,21 @@ export const SignupScreen = ({ route }: { route: any }) => {
                       showPwd={showConfirmPwd}
                       onToggle={() => setShowConfirmPwd(!showConfirmPwd)}
                     />
-                    <ValidateCode
-                      field="validateCode"
-                      label={t('validateCode.label')}
-                      onChangeText={handleChange('validateCode')}
-                      value={values.validateCode}
-                      onClear={() => setFieldValue('validateCode', '')}
-                      placeholder={t('validateCode.placeholder')}
-                      error={errors.validateCode}
-                      validateCodeType="REGISTER"
-                      keyboardType="number-pad"
-                      phone={values.phone}
-                    />
+                    {showValidateCode && (
+                      <ValidateCode
+                        field="validateCode"
+                        label={t('validateCode.label')}
+                        onChangeText={handleChange('validateCode')}
+                        value={values.validateCode}
+                        onClear={() => setFieldValue('validateCode', '')}
+                        placeholder={t('validateCode.placeholder')}
+                        error={errors.validateCode}
+                        validateCodeType="REGISTER"
+                        keyboardType="number-pad"
+                        phone={values.phone}
+                        onMaxSMS={() => updateShowValidateCode(false)}
+                      />
+                    )}
                     <PermissionHint check={values.hasAgree} />
                     <View>
                       {errors.hasAgree && (

@@ -1,8 +1,11 @@
+import type { BOOL } from './common'
+
 export interface RegisterParameter {
   phone: string
   password: string
   comfirmPassword: string
-  validateCode: string
+  validateCode?: string
+  isValidateCode: BOOL
 }
 export type APPLY_SOURCE = 'APP' | 'H5'
 export interface CommonHeader {

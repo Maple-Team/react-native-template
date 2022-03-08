@@ -10,13 +10,7 @@ import debounce from 'lodash.debounce'
 
 import { Hint, PageStyles, Text } from '@/components'
 import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT } from '@/utils/constant'
-import {
-  ApplyButton,
-  NormalPicker,
-  MaskInput,
-  Input,
-  ValidateCode,
-} from '@components/form/FormItem'
+import { ApplyButton, NormalPicker, MaskInput, Input, ValidateCode } from '@components/form'
 import { Color } from '@/styles/color'
 import type { BankInfoParameter } from '@/typings/apply'
 import { useBehavior, useLocation } from '@/hooks'

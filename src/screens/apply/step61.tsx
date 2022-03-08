@@ -14,7 +14,7 @@ import {
   KEY_LIVENESS,
   TOTAL_STEPS,
 } from '@/utils/constant'
-import { ApplyButton, LivenessPicker } from '@components/form/FormItem'
+import { ApplyButton, LivenessPicker } from '@components/form'
 import { Color } from '@/styles/color'
 import { useLocation } from '@/hooks'
 import { submit } from '@/services/apply'

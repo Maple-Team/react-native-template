@@ -4,7 +4,7 @@ import { SafeAreaView, StatusBar, View, Image, type ViewStyle, BackHandler } fro
 import { Loading, PageStyles, Text } from '@/components'
 import { Order } from '@/typings/order'
 import { useTranslation } from 'react-i18next'
-import { ApplyButton } from '@components/form/FormItem'
+import { ApplyButton } from '@components/form'
 import { ScrollView } from 'react-native-gesture-handler'
 
 interface Status {

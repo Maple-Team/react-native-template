@@ -1,9 +1,4 @@
-import React, {
-  useContext,
-  // useContext,
-  useMemo,
-  useState,
-} from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { Pressable, TextInput, View, Image } from 'react-native'
 import type { KeyboardTypeOptions } from 'react-native'
 import { ErrorMessage } from 'formik'
@@ -30,6 +25,10 @@ interface InputProps {
   keyboardType?: KeyboardTypeOptions
   phone: string
   validateCodeType: ValidateCodeType
+  /**
+   * 达到最大短信验证次数
+   */
+  onMaxSMS?: () => void
 }
 // 后台数据动态处理
 export const ValidateCode = ({
@@ -42,21 +41,23 @@ export const ValidateCode = ({
   error,
   phone,
   onClear,
+  onMaxSMS,
   validateCodeType,
 }: InputProps) => {
   const { t } = useTranslation()
   const context = useContext(MoneyyaContext)
-  const maxCount = useMemo(
+  const maxInterval = useMemo(
     () => context.brand?.smsWaitInterval || 60,
     [context.brand?.smsWaitInterval]
   )
-  const [count, setCount] = useState<number>(maxCount)
-  // FIXME
-  // const [times, setTimtes] = useState<number>(context.brand?.codeValidatecount || 5) // Brand info
+  const [interval, setInterval] = useState<number>(maxInterval)
+  const maxTimes = context.brand?.codeValidatecount || 100
+  const [times, setTimtes] = useState<number>(0)
   const [isPlaying, setPlaying] = useState<boolean>(false)
   const handlePress = debounce(
     () => {
       setPlaying(true)
+      setTimtes(times + 1)
       getValidateCode({ sendChannel: 'SMS', phone, type: validateCodeType }).then(code => {
         console.log({ kaptcha: code.kaptcha })
       })
@@ -64,15 +65,19 @@ export const ValidateCode = ({
     DEBOUNCE_WAIT,
     DEBOUNCE_OPTIONS
   )
-
+  useEffect(() => {
+    if (times >= maxTimes) {
+      onMaxSMS && onMaxSMS()
+    }
+  }, [maxTimes, onMaxSMS, times])
   useInterval(
     () => {
-      let _count = count - 1
+      let _count = interval - 1
       if (_count <= 0) {
         setPlaying(false)
-        setCount(maxCount)
+        setInterval(maxInterval)
       } else {
-        setCount(_count)
+        setInterval(_count)
       }
     },
     // Delay in milliseconds or null to stop it
@@ -90,7 +95,7 @@ export const ValidateCode = ({
           maxLength={4}
           value={value}
           placeholder={placeholder}
-          keyboardType={keyboardType}
+          keyboardType={keyboardType || 'number-pad'}
           style={[styles.input, error ? { borderBottomColor: 'red' } : {}]}
           placeholderTextColor={'rgba(156, 171, 185, 1)'}
         />
@@ -116,15 +121,14 @@ export const ValidateCode = ({
           ) : (
             <></>
           )}
-          {count !== maxCount ? (
+          {interval !== maxInterval ? (
             <Pressable style={[styles.validBtnWrap, { backgroundColor: '#eee' }]}>
-              <Text styles={[styles.validBtn]}>{t('validateCode.wait', { num: count })}</Text>
+              <Text styles={[styles.validBtn]}>{t('validateCode.wait', { num: interval })}</Text>
             </Pressable>
           ) : (
             <Pressable
               disabled={!isPhoneValid}
               style={[styles.validBtnWrap, !isPhoneValid ? styles.validBtnWrapDisabled : {}]}
-              android_disableSound={false}
               onPress={handlePress}>
               <Text styles={styles.validBtn}>{t('validateCode.get')}</Text>
             </Pressable>

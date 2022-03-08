@@ -10,7 +10,7 @@ import debounce from 'lodash.debounce'
 
 import { PageStyles, Text } from '@/components'
 import { DEBOUNCE_OPTIONS, DEBOUNCE_WAIT, KEY_APPLYID, TOTAL_STEPS } from '@/utils/constant'
-import { ApplyButton, PhotoPicker } from '@components/form/FormItem'
+import { ApplyButton, PhotoPicker } from '@components/form'
 import { Color } from '@/styles/color'
 import type { ApplyParameter, ApplyStep6Parameter } from '@/typings/apply'
 import { useBehavior, useLocation } from '@/hooks'

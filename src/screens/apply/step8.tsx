@@ -19,7 +19,7 @@ import {
   KEY_OUTERIP,
   TOTAL_STEPS,
 } from '@/utils/constant'
-import { ApplyButton } from '@components/form/FormItem'
+import { ApplyButton } from '@components/form'
 import { Color } from '@/styles/color'
 import type { Calculate, Product, ProductItem } from '@/typings/apply'
 import { useBehavior, useLocation, useSensor } from '@/hooks'

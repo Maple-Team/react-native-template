@@ -8,7 +8,7 @@ import uniqBy from 'lodash.uniqby'
 import type { ZhanneiLetter } from '@/typings/user'
 import { useNavigation } from '@react-navigation/native'
 import { useHeaderHeight } from '@react-navigation/elements'
-import RefreshListView, { RefreshState } from './refreshListView'
+import RefreshListView, { RefreshState } from '../../components/refreshListView'
 
 // 上拉加载，下拉刷新
 export const LetterList = () => {

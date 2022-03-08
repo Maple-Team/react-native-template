@@ -11,7 +11,7 @@ import uniqBy from 'lodash.uniqby'
 import { useTranslation } from 'react-i18next'
 import { useCustomBack, UserFocusStatusBar } from '@/hooks'
 import { useHeaderHeight } from '@react-navigation/elements'
-import RefreshListView, { RefreshState } from '@screens/letter/refreshListView'
+import RefreshListView, { RefreshState } from '@components/refreshListView'
 
 export function BillsList() {
   const route = useRoute()

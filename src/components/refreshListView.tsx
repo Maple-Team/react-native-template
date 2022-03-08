@@ -41,7 +41,7 @@ type Props<T> = {
   footerFailureText?: string
   footerNoMoreDataText?: string
   footerEmptyDataText?: string
-  keyExtractor: Function
+  keyExtractor: (item: T, index: number) => string
   footerRefreshingComponent?: View
   footerFailureComponent?: View
   footerNoMoreDataComponent?: View

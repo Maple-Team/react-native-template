@@ -25,7 +25,7 @@ import {
   DatePicker,
   RadioInput,
   MaskInput,
-} from '@components/form/FormItem'
+} from '@components/form'
 import { Color } from '@/styles/color'
 import type { ApplyParameter, ApplyStep5Parameter, OcrResult } from '@/typings/apply'
 import { useBehavior, useLocation } from '@/hooks'

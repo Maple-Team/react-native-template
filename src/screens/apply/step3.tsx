@@ -16,7 +16,7 @@ import {
   TOTAL_STEPS,
 } from '@/utils/constant'
 import { MMKV, REGEX_PHONE } from '@/utils'
-import { ApplyButton, Input, NormalPicker, PhonePicker } from '@components/form/FormItem'
+import { ApplyButton, Input, NormalPicker, PhonePicker } from '@components/form'
 import { Color } from '@/styles/color'
 import { useBehavior, useLocation } from '@/hooks'
 import { fetchDict, MoneyyaContact, submit, uploadAllContacts } from '@/services/apply'

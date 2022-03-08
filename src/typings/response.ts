@@ -39,7 +39,6 @@ export interface Brand {
   channelInfo: ChannelInfo
   /**
    * 注册环节验证次数，如果1次，读秒结束跳过不校验
-   * TODO 验证几次后跳过
    */
   codeValidatecount: number
   /**
