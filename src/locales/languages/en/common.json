@@ -1,6 +1,7 @@
 {
   "$": "$",
   "account": "Account",
+  "allow": "Allow",
   "applyAmount": "Apply amount",
   "applyState.apply": "apply",
   "applyState.check": "Check",
@@ -50,8 +51,8 @@
   "screenTitle.loanDetailRecord": "Loan detailed record",
   "screenTitle.myCard": "My Card",
   "screenTitle.payment": "Payment",
-  "screenTitle.privacy": "Privacy Policy",
   "screenTitle.permission": "Permission Authorized",
+  "screenTitle.privacy": "Privacy Policy",
   "secondPaymentAmount": "Second repayment amount",
   "secondPaymentDate": "Second repayment date",
   "signin": "登录",
@@ -59,6 +60,5 @@
   "start": "start",
   "submit": "提交",
   "transferAmount": "Transfer amount",
-  "validation-code-login": "验证码登录",
-  "allow": "Allow"
+  "validation-code-login": "验证码登录"
 }

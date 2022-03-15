@@ -54,7 +54,6 @@ api.interceptors.request.use(
 
 api.interceptors.response.use(
   (response: AxiosResponse) => {
-    console.log(response)
     if (response.config.url === '/ap-web/jpush/saveCustomerJpushInfo') {
       return Promise.resolve('极光保存信息成功')
     }

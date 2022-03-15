@@ -221,7 +221,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                     field={'contactRelationCode1'}
                     key={'contactRelationCode1'}
                     label={t('contactRelationCode.label')}
-                    placeholder={t('contactRelationCode.placeholder')}
+                    placeholder={t('contactRelationCode.label')}
                     dataSource={state.contactRelationArray}
                     error={errors.contactRelationCode1}
                     value={state.contactRelationCode1}
@@ -244,7 +244,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                     key={'contactName1'}
                     label={t('contactName.label')}
                     error={errors.contactName1}
-                    placeholder={t('contactName.placeholder')}
+                    placeholder={t('contactName.label')}
                   />
                   <PhonePicker
                     scrollViewRef={scrollviewRef}
@@ -257,7 +257,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                       behavior.setModify('P03_C02_S_CONTACTPHONE', text, state.contactPhone1)
                     }}
                     value={state.contactPhone1}
-                    placeholder={t('contactPhone.placeholder')}
+                    placeholder={t('contactPhone.label')}
                     error={errors.contactPhone1}
                   />
                   <FormGap title={t('otherContact')} />
@@ -272,7 +272,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                     field={'contactRelationCode2'}
                     key={'contactRelationCode2'}
                     label={t('contactRelationCode.label')}
-                    placeholder={t('contactRelationCode.placeholder')}
+                    placeholder={t('contactRelationCode.label')}
                     dataSource={state.otherContactRelationArray}
                     error={errors.contactRelationCode2}
                     value={state.contactRelationCode2}
@@ -295,7 +295,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                     key={'contactName2'}
                     error={errors.contactName2}
                     label={t('contactName.label')}
-                    placeholder={t('contactName.placeholder')}
+                    placeholder={t('contactName.label')}
                   />
                   <PhonePicker
                     scrollViewRef={scrollviewRef}
@@ -308,7 +308,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                       behavior.setModify('P03_C04_S_CONTACTPHONE', text, state.contactPhone2)
                     }}
                     value={state.contactPhone2}
-                    placeholder={t('contactPhone.placeholder')}
+                    placeholder={t('contactPhone.label')}
                     error={errors.contactPhone2}
                   />
                   {fromOther !== 'Y' && (
@@ -329,7 +329,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                         field={'contactRelationCode3'}
                         key={'contactRelationCode3'}
                         label={t('contactRelationCode.label')}
-                        placeholder={t('contactRelationCode.placeholder')}
+                        placeholder={t('contactRelationCode.label')}
                         dataSource={state.otherContactRelationArray}
                         error={errors.contactRelationCode3}
                         value={state.contactRelationCode3}
@@ -352,7 +352,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                         key={'contactName3'}
                         error={errors.contactName3}
                         label={t('contactName.label')}
-                        placeholder={t('contactName.placeholder')}
+                        placeholder={t('contactName.label')}
                       />
                       <PhonePicker
                         scrollViewRef={scrollviewRef}
@@ -365,7 +365,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
                           behavior.setModify('P03_C06_S_CONTACTPHONE', text, state.contactPhone3)
                         }}
                         value={state.contactPhone3}
-                        placeholder={t('contactPhone.placeholder')}
+                        placeholder={t('contactPhone.label')}
                         error={errors.contactPhone3}
                       />
                     </>

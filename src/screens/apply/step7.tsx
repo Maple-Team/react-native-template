@@ -155,7 +155,7 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
                         title={t('bankCode.label')}
                         field={'bankCode'}
                         label={t('bankCode.label')}
-                        placeholder={t('bankCode.placeholder')}
+                        placeholder={t('bankCode.label')}
                         dataSource={state.bankArray}
                       />
                       <NormalPicker
@@ -169,7 +169,7 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
                         title={t('cardNoType.label')}
                         field={'cardNoType'}
                         label={t('cardNoType.label')}
-                        placeholder={t('cardNoType.placeholder')}
+                        placeholder={t('cardNoType.label')}
                         dataSource={state.cardNoTypeArray}
                       />
                       {state.cardNoType === 'CARD' ? (
@@ -185,7 +185,7 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
                           keyboardType="phone-pad"
                           error={errors.bankCardNo}
                           label={t('bankCardNo.label')}
-                          placeholder={t('bankCardNo.placeholder')}
+                          placeholder={t('bankCardNo.label')}
                           key="bankCardNo_card"
                           mask={'[0000] [0000] [0000] [0000]'}
                           onChangeText={(text: string, extracted?: string) => {
@@ -210,7 +210,7 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
                           error={errors.bankCardNo}
                           keyboardType="phone-pad"
                           label={t('bankCardNo.label')}
-                          placeholder={t('bankCardNo.placeholder')}
+                          placeholder={t('bankCardNo.label')}
                           key="bankCardNo_clabe"
                           mask={'[0000] [0000] [0000] [0000] [00]'}
                         />

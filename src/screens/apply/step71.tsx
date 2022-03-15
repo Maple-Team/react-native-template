@@ -145,7 +145,7 @@ export const Step71 = ({ navigation }: NativeStackHeaderProps) => {
                     title={t('bankCode.label')}
                     field={'bankCode'}
                     label={t('bankCode.label')}
-                    placeholder={t('bankCode.placeholder')}
+                    placeholder={t('bankCode.label')}
                     dataSource={state.bankArray}
                   />
                   <NormalPicker
@@ -159,7 +159,7 @@ export const Step71 = ({ navigation }: NativeStackHeaderProps) => {
                     title={t('cardNoType.label')}
                     field={'cardNoType'}
                     label={t('cardNoType.label')}
-                    placeholder={t('cardNoType.placeholder')}
+                    placeholder={t('cardNoType.label')}
                     dataSource={state.cardNoTypeArray}
                   />
                   <Input
@@ -167,7 +167,7 @@ export const Step71 = ({ navigation }: NativeStackHeaderProps) => {
                     readonly={false}
                     keyboardType="phone-pad"
                     label={t('old') + t('bankCardNo.label')}
-                    placeholder={t('bankCardNo.placeholder')}
+                    placeholder={t('bankCardNo.label')}
                     key="bankCardNo_card_old"
                   />
                   {state.cardNoType === 'CARD' ? (
@@ -182,7 +182,7 @@ export const Step71 = ({ navigation }: NativeStackHeaderProps) => {
                       field={'newBankCardNo'}
                       keyboardType="phone-pad"
                       label={t('bankCardNo.label')}
-                      placeholder={t('bankCardNo.placeholder')}
+                      placeholder={t('bankCardNo.label')}
                       key="bankCardNo_card"
                       mask={'[0000] [0000] [0000] [0000]'}
                       onChangeText={(text: string, extracted?: string) => {
@@ -206,7 +206,7 @@ export const Step71 = ({ navigation }: NativeStackHeaderProps) => {
                       field={'newBankCardNo'}
                       keyboardType="phone-pad"
                       label={t('bankCardNo.label')}
-                      placeholder={t('bankCardNo.placeholder')}
+                      placeholder={t('bankCardNo.label')}
                       key="bankCardNo_clabe"
                       mask={'[0000] [0000] [0000] [0000] [00'}
                     />
@@ -217,7 +217,7 @@ export const Step71 = ({ navigation }: NativeStackHeaderProps) => {
                     onChangeText={handleChange('validateCode')}
                     value={values.validateCode}
                     onClear={() => setFieldValue('validateCode', '')}
-                    placeholder={t('validateCode.placeholder')}
+                    placeholder={t('validateCode.label')}
                     error={errors.validateCode}
                     validateCodeType="MODIFY_BANKCARD"
                     phone={context.user?.phone || ''}

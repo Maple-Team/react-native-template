@@ -282,7 +282,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       field={'firstName'}
                       key={'firstName'}
                       label={t('firstName.label')}
-                      placeholder={t('firstName.placeholder')}
+                      placeholder={t('firstName.label')}
                     />
                     <Input
                       scrollViewRef={scrollviewRef}
@@ -300,7 +300,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       maxLength={100}
                       key={'middleName'}
                       label={t('middleName.label')}
-                      placeholder={t('middleName.placeholder')}
+                      placeholder={t('middleName.label')}
                     />
                     <Input
                       scrollViewRef={scrollviewRef}
@@ -316,7 +316,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       maxLength={50}
                       key={'lastName'}
                       label={t('lastName.label')}
-                      placeholder={t('lastName.placeholder')}
+                      placeholder={t('lastName.label')}
                     />
                     <DatePicker
                       scrollViewRef={scrollviewRef}
@@ -330,7 +330,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       key={'birth'}
                       label={t('birth.label')}
                       value={state.birth}
-                      placeholder={t('birth.placeholder')}
+                      placeholder={t('birth.label')}
                     />
                     <RadioInput
                       onChange={text => {
@@ -362,7 +362,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       maxLength={18 + 4} // 格式化输入
                       label={t('idcard.label')}
                       scrollViewRef={scrollviewRef}
-                      placeholder={t('idcard.placeholder')}
+                      placeholder={t('idcard.label')}
                     />
                     <NormalPicker
                       onChange={({ code }) => {
@@ -375,7 +375,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       field={'maritalStatus'}
                       key={'maritalStatus'}
                       label={t('maritalStatus.label')}
-                      placeholder={t('maritalStatus.placeholder')}
+                      placeholder={t('maritalStatus.label')}
                       dataSource={state.maritalStatusArray}
                       scrollViewRef={scrollviewRef}
                     />
@@ -395,7 +395,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       field={'homeAddrProvinceCode'}
                       key={'homeAddrProvinceCode'}
                       label={t('homeAddrProvinceCode.label')}
-                      placeholder={t('homeAddrProvinceCode.placeholder')}
+                      placeholder={t('homeAddrProvinceCode.label')}
                       dataSource={state.homeAddrProvinceArray}
                       scrollViewRef={scrollviewRef}
                     />
@@ -414,7 +414,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       field={'homeAddrCityCode'}
                       key={'homeAddrCityCode'}
                       label={t('homeAddrCityCode.label')}
-                      placeholder={t('homeAddrCityCode.placeholder')}
+                      placeholder={t('homeAddrCityCode.label')}
                       dataSource={state.homeAddrCityArray}
                       scrollViewRef={scrollviewRef}
                     />
@@ -435,7 +435,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       key={'homeAddrDetail'}
                       maxLength={200}
                       label={t('homeAddrDetail.label')}
-                      placeholder={t('homeAddrDetail.placeholder')}
+                      placeholder={t('homeAddrDetail.label')}
                     />
                     <NormalPicker
                       onChange={({ code }) => {
@@ -448,7 +448,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       field={'docType'}
                       key={'docType'}
                       label={t('docType.label')}
-                      placeholder={t('docType.placeholder')}
+                      placeholder={t('docType.label')}
                       dataSource={state.docTypeArray}
                     />
                     <MaskInput
@@ -458,7 +458,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                         dispatch({ type: 'backupPhone', value: extracted || '' })
                       }}
                       value={state.backupPhone}
-                      placeholder={t('phone.placeholder')}
+                      placeholder={t('phone.label')}
                       error={errors.backupPhone}
                       keyboardType="phone-pad"
                       mask={'[0000] [000] [000]'}
@@ -483,7 +483,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       field={'educationCode'}
                       key={'educationCode'}
                       label={t('educationCode.label')}
-                      placeholder={t('educationCode.placeholder')}
+                      placeholder={t('educationCode.label')}
                       dataSource={state.educationArray}
                     />
                     <NormalPicker
@@ -497,7 +497,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       field={'loanPurpose'}
                       key={'loanPurpose'}
                       label={t('loanPurpose.label')}
-                      placeholder={t('loanPurpose.placeholder')}
+                      placeholder={t('loanPurpose.label')}
                       dataSource={state.loanPurposeArray}
                     />
                     <Input
@@ -516,7 +516,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       key={'authPhone'}
                       maxLength={100}
                       label={t('authPhone.label')}
-                      placeholder={t('authPhone.placeholder')}
+                      placeholder={t('authPhone.label')}
                     />
                     <Input
                       onChangeText={(text: string) => {
@@ -530,7 +530,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       field={'whatsapp'}
                       key={'whatsapp'}
                       label={t('whatsapp.label')}
-                      placeholder={t('whatsapp.placeholder')}
+                      placeholder={t('whatsapp.label')}
                     />
                     <Input
                       onChangeText={(text: string) => {
@@ -546,7 +546,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       key={'email'}
                       error={errors.email}
                       label={t('email.label')}
-                      placeholder={t('email.placeholder')}
+                      placeholder={t('email.label')}
                     />
                     <Input
                       onChangeText={(text: string) => {
@@ -565,7 +565,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
                       key={'secondCardNo'}
                       maxLength={20}
                       label={t('secondCardNo.label')}
-                      placeholder={t('secondCardNo.placeholder')}
+                      placeholder={t('secondCardNo.label')}
                     />
                   </View>
                   <View style={PageStyles.btnWrap}>

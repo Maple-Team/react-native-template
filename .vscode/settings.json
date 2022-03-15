@@ -7,10 +7,20 @@
   "i18n-ally.keystyle": "nested",
   "i18n-ally.sourceLanguage": "en",
   "i18n-ally.enabledParsers": [
-    "js",
     "ts",
-    "json"
+    "json",
+    "js"
   ],
   "i18n-ally.autoDetection": true,
-  "i18n-ally.review.enabled": true
+  "i18n-ally.review.enabled": true,
+  "i18n-ally.extract.autoDetect": true,
+  "i18n-ally.extract.keyMaxLength": 100,
+  "i18n-ally.fullReloadOnChanged": true,
+  "i18n-ally.dirStructure": "auto",
+  "i18n-ally.displayLanguage": "zh-CN",
+  "i18n-ally.enabledFrameworks": [
+    "react",
+    "vue"
+  ],
+  "i18n-ally.ignoredLocales": [],
 }

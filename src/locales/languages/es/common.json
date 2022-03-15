@@ -1,6 +1,7 @@
 {
   "$": "$",
   "account": "Cuenta",
+  "allow": "",
   "applyAmount": "Aplicar cantidad",
   "applyState.apply": "Aplicar",
   "applyState.check": "Revisar",
@@ -50,8 +51,8 @@
   "screenTitle.loanDetailRecord": "Loan detailed record",
   "screenTitle.myCard": "Título de pantalla/Mi tarjeta",
   "screenTitle.payment": "Título de pantalla/ Pago",
-  "screenTitle.privacy": "Título de pantalla/Política de privacidad",
   "screenTitle.permission": "",
+  "screenTitle.privacy": "Título de pantalla/Política de privacidad",
   "secondPaymentAmount": "Monto de reembolso del segundo pago",
   "secondPaymentDate": "Monto de reembolso del segundo pago y fecha",
   "signin": "Iniciar sesión",
@@ -59,6 +60,5 @@
   "start": "Comienzo",
   "submit": "Enviar",
   "transferAmount": "Cantidad en mano",
-  "validation-code-login": "Inicio de sesión con código de verificación",
-  "allow": ""
+  "validation-code-login": "Inicio de sesión con código de verificación"
 }

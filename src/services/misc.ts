@@ -71,7 +71,7 @@ export async function uploadJpush(data: JpushParameter) {
     return
   }
   return request<BaseResponse>({
-    baseURL: 'https://sms.walletnaira.com', // TODO change url
+    baseURL: 'https://sms.loannaira.com', // TODO change url
     url: '/ap-web/jpush/saveCustomerJpushInfo',
     method: 'POST',
     data: {

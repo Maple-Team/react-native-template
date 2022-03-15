@@ -144,7 +144,7 @@ export const SignupScreen = ({ route }: { route: any }) => {
                         setFieldValue('phone', extracted)
                       }}
                       value={values.phone}
-                      placeholder={t('phone.placeholder')}
+                      placeholder={t('phone.label')}
                       error={errors.phone}
                       keyboardType="phone-pad"
                       mask={'[0000] [000] [000]'}
@@ -167,7 +167,7 @@ export const SignupScreen = ({ route }: { route: any }) => {
                       onChangeText={handleChange('comfirmPassword')}
                       value={values.comfirmPassword}
                       onClear={() => setFieldValue('comfirmPassword', '')}
-                      placeholder={t('comfirmPassword.placeholder')}
+                      placeholder={t('comfirmPassword.label')}
                       error={errors.comfirmPassword}
                       showPwd={showConfirmPwd}
                       onToggle={() => setShowConfirmPwd(!showConfirmPwd)}
@@ -179,7 +179,7 @@ export const SignupScreen = ({ route }: { route: any }) => {
                         onChangeText={handleChange('validateCode')}
                         value={values.validateCode}
                         onClear={() => setFieldValue('validateCode', '')}
-                        placeholder={t('validateCode.placeholder')}
+                        placeholder={t('validateCode.label')}
                         error={errors.validateCode}
                         validateCodeType="REGISTER"
                         keyboardType="number-pad"
@@ -235,7 +235,7 @@ const PermissionHint = ({ check }: { check?: boolean }) => {
       <View
         style={{
           flexDirection: 'row',
-          flexWrap: 'wrap',
+          // flexWrap: 'wrap',
           justifyContent: 'flex-start',
         }}>
         {check ? (
@@ -255,18 +255,25 @@ const PermissionHint = ({ check }: { check?: boolean }) => {
             />
           </Pressable>
         )}
-        <Text fontSize={13} color="rgba(144, 146, 155, 1)">
-          {t('agreeWithMoneyya')}{' '}
-        </Text>
-        <Pressable
-          onPress={() => {
-            //@ts-ignore
-            na.navigate('Terms', { url: brand?.channelInfo.serviceUrl })
+        <View
+          style={{
+            alignItems: 'center',
+            flexDirection: 'row',
+            flexWrap: 'wrap',
           }}>
-          <Text fontSize={13} color={Color.primary}>
-            {t('termsofService')}
+          <Text fontSize={13} color="rgba(144, 146, 155, 1)">
+            {t('agreeWithMoneyya')}{' '}
           </Text>
-        </Pressable>
+          <Pressable
+            onPress={() => {
+              //@ts-ignore
+              na.navigate('Terms', { url: brand?.channelInfo.serviceUrl })
+            }}>
+            <Text fontSize={13} color={Color.primary}>
+              {t('termsofService')}
+            </Text>
+          </Pressable>
+        </View>
       </View>
     </>
   )

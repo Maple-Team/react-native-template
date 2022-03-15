@@ -109,6 +109,7 @@ export default ({
   if (color) {
     return (
       <Text
+        android_hyphenationFrequency="full"
         style={[textStyle.text, styles, { fontSize, color, fontWeight, fontFamily }]}
         onPress={onPress}>
         {children}
@@ -116,7 +117,10 @@ export default ({
     )
   }
   return (
-    <Text style={[textStyle.text, styles, { fontSize, fontWeight, fontFamily }]} onPress={onPress}>
+    <Text
+      android_hyphenationFrequency="full"
+      style={[textStyle.text, styles, { fontSize, fontWeight, fontFamily }]}
+      onPress={onPress}>
       {children}
     </Text>
   )

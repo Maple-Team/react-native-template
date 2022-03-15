@@ -157,7 +157,7 @@ const PasswdTab = ({
                 setFieldValue('phone', extracted)
               }}
               value={values.phone}
-              placeholder={t('phone.placeholder')}
+              placeholder={t('phone.label')}
               error={errors.phone}
               keyboardType="phone-pad"
               mask={'[0000] [000] [000]'}
@@ -249,7 +249,7 @@ const ValidTab = ({
                 setFieldValue('phone', extracted)
               }}
               value={values.phone}
-              placeholder={t('phone.placeholder')}
+              placeholder={t('phone.label')}
               error={errors.phone}
               keyboardType="phone-pad"
               mask={'[0000] [000] [000]'}
@@ -261,7 +261,7 @@ const ValidTab = ({
               onChangeText={handleChange('code')}
               value={values.code}
               onClear={() => setFieldValue('code', '')}
-              placeholder={t('validateCode.placeholder')}
+              placeholder={t('validateCode.label')}
               error={errors.code}
               validateCodeType="LOGIN"
               phone={values.phone}

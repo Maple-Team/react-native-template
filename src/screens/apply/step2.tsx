@@ -222,7 +222,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                       behavior.setModify('P02_C01_S_INDUSTRYCODE', code, state.industryCode)
                     }}
                     value={state.industryCode}
-                    placeholder={t('industryCode.placeholder')}
+                    placeholder={t('industryCode.label')}
                     error={errors.industryCode}
                     scrollViewRef={scrollViewRef}
                     dataSource={state.industryArray}
@@ -240,7 +240,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                       behavior.setModify('P02_C02_S_JOBTYPECODE', code, state.jobTypeCode)
                     }}
                     value={state.jobTypeCode}
-                    placeholder={t('jobTypeCode.placeholder')}
+                    placeholder={t('jobTypeCode.label')}
                     error={errors.jobTypeCode}
                     dataSource={state.jobTypeArray}
                     title={t('jobTypeCode.label')}
@@ -256,7 +256,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                       behavior.setModify('P02_C03_S_MONTHLYINCOME', code, state.monthlyIncome)
                     }}
                     value={state.monthlyIncome}
-                    placeholder={t('monthlyIncome.placeholder')}
+                    placeholder={t('monthlyIncome.label')}
                     error={errors.monthlyIncome}
                     dataSource={state.monthlyIncomeArray}
                     title={t('monthlyIncome.label')}
@@ -272,7 +272,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                       behavior.setModify('P02_C04_S_SALARYTYPE', code, state.salaryType)
                     }}
                     value={state.salaryType}
-                    placeholder={t('salaryType.placeholder')}
+                    placeholder={t('salaryType.label')}
                     error={errors.salaryType}
                     dataSource={[
                       { name: 'DAILY', code: 'DAILY' },
@@ -296,7 +296,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                         behavior.setModify('P02_C05_S_SALARYDATE', code, state.salaryDate)
                       }}
                       value={state.salaryDate}
-                      placeholder={t('salaryDate.placeholder')}
+                      placeholder={t('salaryDate.label')}
                       error={errors.salaryDate}
                       dataSource={state.salaryDateArray}
                       title={t('salaryDate.label')}
@@ -317,7 +317,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     key={'company'}
                     label={t('company.label')}
                     error={errors.company}
-                    placeholder={t('company.placeholder')}
+                    placeholder={t('company.label')}
                   />
                   <Input
                     scrollViewRef={scrollViewRef}
@@ -339,7 +339,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     keyboardType="phone-pad"
                     error={errors.companyPhone}
                     label={t('companyPhone.label')}
-                    placeholder={t('companyPhone.placeholder')}
+                    placeholder={t('companyPhone.label')}
                   />
                   <NormalPicker
                     scrollViewRef={scrollViewRef}
@@ -350,11 +350,11 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                       behavior.setModify('P02_C06_S_STATE', code, state.companyAddrProvinceCode)
                     }}
                     value={state.companyAddrProvinceCode}
-                    title={t('companyAddrProvinceCode.label')}
+                    title={t('address.province')}
                     field={'companyAddrProvinceCode'}
                     key={'companyAddrProvinceCode'}
                     label={t('companyAddrProvinceCode.label')}
-                    placeholder={t('companyAddrProvinceCode.placeholder')}
+                    placeholder={t('companyAddrProvinceCode.label')}
                     dataSource={state.provinceArray}
                     error={errors.companyAddrProvinceCode}
                   />
@@ -365,12 +365,12 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                       dispatch({ type: 'updateCity', value: { code, name } })
                       behavior.setModify('P02_C07_S_CITY', code, state.companyAddrCityCode)
                     }}
-                    title={t('companyAddrCityCode.label')}
+                    title={t('address.city')}
                     field={'companyAddrCityCode'}
                     key={'companyAddrCityCode'}
                     value={state.companyAddrCityCode}
                     label={t('companyAddrCityCode.label')}
-                    placeholder={t('companyAddrCityCode.placeholder')}
+                    placeholder={t('companyAddrCityCode.label')}
                     dataSource={state.cityArray}
                     error={errors.companyAddrCityCode}
                   />
@@ -396,7 +396,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                     label={t('companyAddrDetail.label')}
                     error={errors.companyAddrDetail}
                     maxLength={200}
-                    placeholder={t('companyAddrDetail.placeholder')}
+                    placeholder={t('companyAddrDetail.label')}
                   />
                   <NormalPicker
                     scrollViewRef={scrollViewRef}
@@ -409,7 +409,7 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
                       behavior.setModify('P02_C08_S_INCUMBENCY', code, state.incumbency)
                     }}
                     value={state.incumbency}
-                    placeholder={t('incumbency.placeholder')}
+                    placeholder={t('incumbency.label')}
                     error={errors.incumbency}
                     dataSource={state.incumbencyArray}
                     title={t('incumbency.label')}

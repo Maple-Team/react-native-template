@@ -75,7 +75,7 @@ export const EntryScreen = ({ navigation }: NativeStackHeaderProps) => {
                             setPhone(extracted)
                           }}
                           value={values.phone}
-                          placeholder={t('phone.placeholder')}
+                          placeholder={t('phone.label')}
                           error={errors.phone}
                           keyboardType="phone-pad"
                           mask={'[0000] [000] [000]'}

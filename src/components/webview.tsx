@@ -100,9 +100,13 @@ export const WebViewScreen = ({ actions, warnMessage, content, type = 'uri' }: P
             style={[
               {
                 backgroundColor,
-                paddingHorizontal: 55,
+                // paddingHorizontal: 55,
+                // width: '50%',
+                flex: 1,
                 paddingVertical: 20,
                 borderRadius: 14,
+                alignItems: 'center',
+                justifyContent: 'center',
                 borderColor: '#eee',
                 borderWidth: 1,
               },
@@ -296,3 +300,4 @@ const cn = `<html>
   </body>
 </html>
 `
+// TODO 西班牙语的授权说明

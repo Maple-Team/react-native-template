@@ -62,5 +62,5 @@ const obj2array = (map: Record<string, string>, prefix?: string) => {
       return
     })
   }, Promise.resolve())
-  writeFileXLSX(workbook, 'translate/语言包.xlsx')
+  writeFileXLSX(workbook, '../translate/语言包.xlsx')
 })()

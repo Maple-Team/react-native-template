@@ -12,7 +12,7 @@ interface Result {
   hasPermission: boolean
 }
 export default () => {
-  useCustomBack()
+  useCustomBack(() => {})
   const permissionObj = useMemo(() => {
     //@ts-ignore
     const map: Record<Permission, Result> = {}

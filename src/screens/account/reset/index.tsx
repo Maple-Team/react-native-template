@@ -82,7 +82,7 @@ export const ResetScreen = ({ navigation }: NativeStackHeaderProps) => {
                       setFieldValue('phone', extracted)
                     }}
                     value={values.phone}
-                    placeholder={t('phone.placeholder')}
+                    placeholder={t('phone.label')}
                     error={errors.phone}
                     keyboardType="phone-pad"
                     mask={'[0000] [000] [000]'}
@@ -94,7 +94,7 @@ export const ResetScreen = ({ navigation }: NativeStackHeaderProps) => {
                     onChangeText={handleChange('validateCode')}
                     value={values.validateCode}
                     onClear={() => setFieldValue('validateCode', '')}
-                    placeholder={t('validateCode.placeholder')}
+                    placeholder={t('validateCode.label')}
                     error={errors.validateCode}
                     validateCodeType="MODIFY_PASSWORD"
                     phone={values.phone}
@@ -117,7 +117,7 @@ export const ResetScreen = ({ navigation }: NativeStackHeaderProps) => {
                     onChangeText={handleChange('comfirmPassword')}
                     value={values.comfirmPassword}
                     onClear={() => setFieldValue('comfirmPassword', '')}
-                    placeholder={t('comfirmPassword.placeholder')}
+                    placeholder={t('comfirmPassword.label')}
                     error={errors.comfirmPassword}
                     showPwd={showConfirmPwd}
                     onToggle={() => setShowConfirmPwd(!showConfirmPwd)}

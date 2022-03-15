@@ -4,7 +4,7 @@ import { Command } from 'commander'
 import path from 'path'
 import { write } from './utls'
 
-type Lang = 'en' | 'cn'
+type Lang = 'en' | 'cn' | 'es'
 
 /**
  * 读取已有的翻译文案
@@ -50,7 +50,7 @@ const getfiles = async (lang: Lang) => {
   const program = new Command()
   program.option('-l, --language <languages...>', 'locale需要排序的语言')
   program.parse(process.argv)
-  const languages = (program.opts().language as Lang[]) || ['en', 'cn']
+  const languages = (program.opts().language as Lang[]) || ['en', 'cn', 'es']
 
   for (const language of languages) {
     const files: string[] = (await getfiles(language)) as string[]
