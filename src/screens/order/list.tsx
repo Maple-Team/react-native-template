@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
 import { FlatList, Image, View, ImageBackground, Pressable, Dimensions } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Loading, TabHeader, Text, ToastLoading } from '@/components'
@@ -6,7 +6,7 @@ import { Color } from '@/styles/color'
 import { queryOrders } from '@/services/order'
 import { Order } from '@/typings/order'
 import { APPLY_STATE } from '@/state/enum'
-import { useNavigation, useRoute } from '@react-navigation/native'
+import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native'
 import uniqBy from 'lodash.uniqby'
 import { useTranslation } from 'react-i18next'
 import { useCustomBack, UserFocusStatusBar } from '@/hooks'
@@ -19,7 +19,7 @@ export function BillsList() {
   const { t, i18n } = useTranslation()
   const { type } = (route.params || { type: 'order' }) as { type: 'payment' | 'order' }
   const [data, setData] = useState<Order[]>([])
-  const [loading] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false)
   const headerHeight = useHeaderHeight()
   const [page, setPage] = useState<number>(1)
 
@@ -67,25 +67,26 @@ export function BillsList() {
 
   const ref = useRef<FlatList>(null)
   const [refreshState, setRefreshState] = useState<number>(RefreshState.Idle)
-
   const onHeaderRefresh = useCallback(() => {
     setRefreshState(RefreshState.HeaderRefreshing)
+    setLoading(true)
     queryOrders(type, { currentPage: 1, pageSize: ListNums })
       .then(res => {
         if (res) {
-          setData(uniqBy(res.concat(data), 'id'))
+          setData(_data => uniqBy(res.concat(_data), 'id'))
           setRefreshState(res.length < 1 ? RefreshState.NoMoreData : RefreshState.Idle)
+        } else {
+          setData([])
+          setRefreshState(RefreshState.Idle)
         }
       })
       .catch(() => {
         setRefreshState(RefreshState.Failure)
       })
-  }, [data, ListNums, type])
+      .finally(() => setLoading(false))
+  }, [ListNums, type])
 
-  useEffect(() => {
-    onHeaderRefresh()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  useFocusEffect(onHeaderRefresh)
 
   const onFooterRefresh = useCallback(() => {
     setRefreshState(RefreshState.FooterRefreshing)
@@ -93,7 +94,7 @@ export function BillsList() {
     queryOrders(type, { currentPage: page, pageSize: ListNums })
       .then(res => {
         if (res) {
-          setData(uniqBy(res.concat(data), 'id'))
+          setData(_data => uniqBy(res.concat(_data), 'id'))
           setRefreshState(res.length >= ListNums ? RefreshState.Idle : RefreshState.NoMoreData)
           setPage(page + 1)
         }
@@ -101,7 +102,7 @@ export function BillsList() {
       .catch(() => {
         setRefreshState(RefreshState.Failure)
       })
-  }, [data, ListNums, type, page])
+  }, [ListNums, type, page])
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <UserFocusStatusBar translucent={false} backgroundColor="#fff" barStyle="dark-content" />
@@ -137,9 +138,9 @@ export function BillsList() {
                 style={{ paddingTop: 35.5, marginTop: 24.5 }}
                 ref={viewRef}
                 onLayout={() => {
-                  viewRef.current?.measure(() => {
-                    // console.log(h, '=========') // 173
-                  })
+                  // viewRef.current?.measure(() => {
+                  // console.log(h, '=========') // 173
+                  // })
                 }}>
                 <View
                   style={{
@@ -259,6 +260,7 @@ export function BillsList() {
             }
             keyExtractor={(item: Order) => `${item.applyId}`}
             onFooterRefresh={onFooterRefresh}
+            onHeaderRefresh={onHeaderRefresh}
             footerRefreshingText={t('loadMore')}
             footerFailureText={t('loadFailure')}
             footerNoMoreDataText={`- ${t('toBottom')} -`}

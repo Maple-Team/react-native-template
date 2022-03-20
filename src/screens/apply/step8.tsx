@@ -42,7 +42,11 @@ import { StackActions } from '@react-navigation/native'
 const WARN_COLOR = '#f00'
 export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
-  const params = (route.params as { bankCardNo?: string }) || {}
+  const params = route.params as {
+    cardNoType: string
+    bankCardNo: string
+    bankCode: string
+  }
   const [productLoading, setProductLoading] = useState<boolean>()
   const sensor = useSensor()
   const onSubmit = debounce(
@@ -102,6 +106,7 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
         MMKV.removeItem(KEY_LIVENESS)
         Toast.remove(key)
         if (userStatus === 'N') {
+          //FIXME
           // 二次验证码校验 validateCode
           navigation.getParent()?.navigate('ValidateCode', {
             phone,
@@ -371,7 +376,7 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
                 <Pressable
                   onPress={() => {
                     // @ts-ignore
-                    navigation.navigate('Step71')
+                    navigation.navigate('Step71', params)
                   }}>
                   <Text fontSize={10} color={Color.primary}>
                     {'->'}

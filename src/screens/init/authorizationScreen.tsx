@@ -13,13 +13,13 @@ export default () => {
           text: t('cancel'),
           color: '#bbbcbd',
           backgroundColor: '#fff',
-          onPress: () => {},
+          cb: () => {},
         },
         {
           text: t('ok'),
           color: '#eee',
           backgroundColor: '#8e8f90',
-          onPress: () => {
+          cb: () => {
             na.dispatch(StackActions.replace('Privacy'))
           },
         },

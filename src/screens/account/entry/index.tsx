@@ -24,7 +24,6 @@ import { StackActions } from '@react-navigation/native'
 interface FormModel {
   phone: string
 }
-// TODO 请求权限
 export const EntryScreen = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
   const schema = object().shape({

@@ -59,6 +59,8 @@ export const Step7 = ({ navigation }: NativeStackHeaderProps) => {
         })
         navigation.navigate('Step8', {
           bankCardNo: state.bankCardNo,
+          bankCode: state.bankCode,
+          cardNoType: state.cardNoType,
         })
       })
     },

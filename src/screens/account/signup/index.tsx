@@ -1,8 +1,8 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { View, StatusBar, Image, Pressable } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { ScrollView } from 'react-native-gesture-handler'
-import { Formik } from 'formik'
+import { Formik, type FormikProps } from 'formik'
 import { object, string, ref, boolean } from 'yup'
 import debounce from 'lodash.debounce'
 
@@ -120,7 +120,17 @@ export const SignupScreen = ({ route }: { route: any }) => {
   )
   const [showPwd, setShowPwd] = useState<boolean>(false)
   const [showConfirmPwd, setShowConfirmPwd] = useState<boolean>(false)
-
+  const formRef = useRef<FormikProps<Model>>(null)
+  useEffect(() => {
+    const fn = () => {
+      formRef.current?.setFieldValue('hasAgree', true)
+      setCheck(true)
+    }
+    emitter.on('AGREE_WITH_TERMS', fn)
+    return () => {
+      emitter.off('AGREE_WITH_TERMS', fn)
+    }
+  }, [])
   useLocation()
   const [, setCheck] = useState<boolean>(false)
   return (
@@ -128,12 +138,12 @@ export const SignupScreen = ({ route }: { route: any }) => {
       <StatusBar translucent backgroundColor={Color.primary} barStyle="default" />
       <ScrollView style={PageStyles.scroll} keyboardShouldPersistTaps="handled">
         <View style={PageStyles.container}>
-          <Formik<Model> initialValues={initialValue} onSubmit={onSubmit} validationSchema={schema}>
+          <Formik<Model>
+            innerRef={formRef}
+            initialValues={initialValue}
+            onSubmit={onSubmit}
+            validationSchema={schema}>
             {({ handleChange, handleSubmit, values, setFieldValue, errors, isValid }) => {
-              emitter.on('AGREE_WITH_TERMS', () => {
-                setFieldValue('hasAgree', true)
-                setCheck(true)
-              })
               return (
                 <>
                   <View style={PageStyles.form}>

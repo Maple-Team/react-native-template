@@ -7,10 +7,12 @@ import { BillsDetail, BillsList } from '@/screens/order'
 import { HeaderRight, HeaderLeft } from '@components/header'
 import { Linking } from 'react-native'
 import { default as MoneyyaContext } from '@/state'
-import { useNavigation } from '@react-navigation/native'
+import { StackActions, useNavigation } from '@react-navigation/native'
 import { LetterList, LetterDetail } from '@screens/letter'
-import { ValidateCode } from '@screens/apply/validateCode'
+import { ValidateCodeScreen } from '@screens/apply/validateCodeScreen'
 import { useTranslation } from 'react-i18next'
+import { MMKV } from '@/utils'
+import { KEY_APPLYID } from '@/utils/constant'
 
 const Stack = createNativeStackNavigator()
 // https://reactnavigation.org/docs/hiding-tabbar-in-screens
@@ -59,7 +61,12 @@ export function MainStack() {
             <HeaderLeft
               onPress={() => {
                 //@ts-ignore
-                na.navigate('BottomTab', { screen: 'Order' })
+                na.navigate('Apply', {
+                  screen: 'BottomTab',
+                  params: {
+                    screen: 'Order',
+                  },
+                })
               }}
             />
           ),
@@ -91,7 +98,22 @@ export function MainStack() {
         })}
       />
       <Stack.Screen name="LetterDetail" key="LetterDetail" component={LetterDetail} />
-      <Stack.Screen name="ValidateCode" key="ValidateCode" component={ValidateCode} />
+      <Stack.Screen
+        name="ValidateCode"
+        key="ValidateCode"
+        component={ValidateCodeScreen}
+        options={() => ({
+          headerLeft: () => (
+            <HeaderLeft
+              onPress={() => {
+                na.dispatch(
+                  StackActions.replace('BillsDetail', { applyId: MMKV.getString(KEY_APPLYID) })
+                )
+              }}
+            />
+          ),
+        })}
+      />
     </Stack.Navigator>
   )
 }

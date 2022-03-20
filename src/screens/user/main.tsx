@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useState } from 'react'
-import { View, ImageBackground, Image, Pressable } from 'react-native'
+import { View, ImageBackground, Image, Pressable, Dimensions, Linking } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { TabHeader, Text, ToastLoading, Update } from '@/components'
 import emitter from '@/eventbus'
@@ -16,6 +16,7 @@ export function UserCenter() {
   const na = useNavigation()
   const { t } = useTranslation()
   const [loading, setLoading] = useState<boolean>()
+  const width = Dimensions.get('window').width
   useCustomBack(() => {
     //@ts-ignore
     na.navigate('BottomTab')
@@ -80,7 +81,7 @@ export function UserCenter() {
             marginBottom: 13,
             flexDirection: 'row',
             justifyContent: 'space-between',
-            paddingHorizontal: 30,
+            // paddingHorizontal: 30,
             paddingVertical: 29,
             borderRadius: 13,
             backgroundColor: '#fff',
@@ -103,13 +104,25 @@ export function UserCenter() {
               },
             },
             {
-              img: require('@/assets/compressed/user-center/My-Card.webp'),
-              title: t('screenTitle.myCard'),
-              onPress: () => {},
+              img: require('@/assets/compressed/user-center/about-us1.webp'),
+              title: t('screenTitle.aboutUs'),
+              onPress: () => {
+                //@ts-ignore
+                na.navigate('About')
+              },
             },
           ].map(({ img, title, onPress }) => (
-            <Pressable key={title} style={{ alignItems: 'center' }} onPress={onPress}>
-              <Image source={img} resizeMode="cover" style={{ marginBottom: 14.5 }} />
+            <Pressable
+              key={title}
+              style={{ alignItems: 'center', width: width / 3 }}
+              onPress={onPress}>
+              <Image
+                source={img}
+                resizeMode="cover"
+                style={{ marginBottom: 14.5 }}
+                width={39}
+                height={39}
+              />
               <Text fontSize={16} color="rgba(51, 50, 48, 1)">
                 {title}
               </Text>
@@ -130,12 +143,10 @@ export function UserCenter() {
             {
               img: require('@/assets/compressed/user-center/Contact-Us.webp'),
               title: t('screenTitle.contactUs'),
-              onPress: () => {},
-            },
-            {
-              img: require('@/assets/compressed/user-center/About-Moneyya.webp'),
-              title: t('screenTitle.aboutUs'),
-              onPress: () => {},
+              onPress: () => {
+                context.brand?.serviceInfo.ccphone &&
+                  Linking.openURL(`tel:${context.brand?.serviceInfo.ccphone}`)
+              },
             },
             {
               img: require('@/assets/compressed/user-center/Logout.webp'),

@@ -36,6 +36,7 @@ export interface UserInfo {
   userId: number
   videoAuthFlag: string
   fromOther?: string
+  expireDays: number | null
   /**
    * 最大可选金额
    */
@@ -59,7 +60,7 @@ export interface UserInfo {
   /**
    * 申请日期
    */
-  ApplyDate: string
+  applyDate: string
 
   /**
    * 还款日期

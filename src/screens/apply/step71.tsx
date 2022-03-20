@@ -15,14 +15,20 @@ import { Color } from '@/styles/color'
 import type { BankInfoParameter } from '@/typings/apply'
 import { useBehavior, useLocation } from '@/hooks'
 import type { Dict, DictField } from '@/typings/response'
-import { MMKV } from '@/utils'
 import { fetchDict, updateBankInfo } from '@/services/apply'
 import { REGEX_BANK_CARD, REGEX_BANK_CLABE, REGEX_VALIDATE_CODE } from '@/utils/reg'
 import { filterArrayKey, fourGap } from '@/utils/util'
 import { default as MoneyyaContext } from '@/state'
+import { useRoute } from '@react-navigation/native'
 
 export const Step71 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
+  const route = useRoute()
+  const params = route.params as {
+    cardNoType: string
+    bankCardNo: string
+    bankCode: string
+  }
   const schema = object().shape({
     newBankCardNo: string()
       .when('cardNoType', {
@@ -53,13 +59,14 @@ export const Step71 = ({ navigation }: NativeStackHeaderProps) => {
       ).then(() => {
         navigation.navigate('Step8', {
           bankCardNo: state.newBankCardNo,
+          bankCode: state.bankCode,
+          cardNoType: state.cardNoType,
         })
       })
     },
     DEBOUNCE_WAIT,
     DEBOUNCE_OPTIONS
   )
-  const step7Data = (MMKV.getMap('step7Data') as Partial<Step7State>) || {}
   const context = useContext(MoneyyaContext)
   const [state, dispatch] = useReducer<Reducer<Step7State, Step7Action>>(
     (s, { type, value }) => {
@@ -80,13 +87,13 @@ export const Step71 = ({ navigation }: NativeStackHeaderProps) => {
     },
     {
       bankArray: [],
-      bankCardNo: step7Data.bankCardNo || '',
-      bankCode: step7Data.bankCode || '',
+      bankCardNo: params.bankCardNo || '',
+      bankCode: params.bankCode || '',
       cardNoTypeArray: [],
       validateCode: '',
       autoRepayment: false,
       customerId: +(context.user?.customerId || '0'),
-      cardNoType: step7Data.cardNoType || '',
+      cardNoType: params.cardNoType || '',
       newBankCardNo: '',
     }
   )
@@ -163,7 +170,7 @@ export const Step71 = ({ navigation }: NativeStackHeaderProps) => {
                     dataSource={state.cardNoTypeArray}
                   />
                   <Input
-                    value={fourGap(state.bankCardNo)} // old
+                    value={fourGap(state.bankCardNo)} // old card no
                     readonly={false}
                     keyboardType="phone-pad"
                     label={t('old') + t('bankCardNo.label')}
@@ -181,6 +188,7 @@ export const Step71 = ({ navigation }: NativeStackHeaderProps) => {
                       value={state.newBankCardNo}
                       field={'newBankCardNo'}
                       keyboardType="phone-pad"
+                      error={errors.newBankCardNo}
                       label={t('bankCardNo.label')}
                       placeholder={t('bankCardNo.label')}
                       key="bankCardNo_card"
@@ -202,13 +210,14 @@ export const Step71 = ({ navigation }: NativeStackHeaderProps) => {
                       onBlur={() =>
                         behavior.setEndModify('P07_C01_I_BANKCARDNO', state.newBankCardNo)
                       }
+                      error={errors.newBankCardNo}
                       value={state.newBankCardNo}
                       field={'newBankCardNo'}
                       keyboardType="phone-pad"
                       label={t('bankCardNo.label')}
                       placeholder={t('bankCardNo.label')}
                       key="bankCardNo_clabe"
-                      mask={'[0000] [0000] [0000] [0000] [00'}
+                      mask={'[0000] [0000] [0000] [0000] [00]'}
                     />
                   )}
                   <ValidateCode

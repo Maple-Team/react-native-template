@@ -87,5 +87,7 @@
   "unreceived-phone-hint": "can't receive the verification code? Your can also check your Mobile Phone signal or try the following ways!",
   "upload-Failed": "upload failed",
   "verify-your-phone-number": "Verify Your Phone Number",
-  "warnRepayPrompt": "我们建议您在此页面立即偿还贷款，以 免影响您的下次贷款申请。"
+  "warnRepayPrompt": "我们建议您在此页面立即偿还贷款，以 免影响您的下次贷款申请。",
+  "service-agreement": "Services Agreement",
+  "privacy-policy": "Privacy Policy"
 }

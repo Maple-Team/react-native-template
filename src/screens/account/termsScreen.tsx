@@ -10,6 +10,7 @@ export default () => {
   const context = useContext(MoneyyaContext)
   const na = useNavigation()
   const params = useRoute().params as { url?: string }
+
   return (
     <WebViewScreen
       actions={[
@@ -17,7 +18,7 @@ export default () => {
           text: t('cancel'),
           color: '#bbbcbd',
           backgroundColor: '#fff',
-          onPress: () => {
+          cb: () => {
             na.goBack()
           },
         },
@@ -25,7 +26,7 @@ export default () => {
           text: t('ok'),
           color: '#eee',
           backgroundColor: '#8e8f90',
-          onPress: () => {
+          cb: () => {
             emitter.emit('AGREE_WITH_TERMS', true)
             na.goBack()
           },

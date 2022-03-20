@@ -155,6 +155,7 @@ const PasswdTab = ({
               label={t('phone.label')}
               onChangeText={(formatted, extracted) => {
                 setFieldValue('phone', extracted)
+                extracted && onPhoneChange(extracted)
               }}
               value={values.phone}
               placeholder={t('phone.label')}
@@ -247,6 +248,7 @@ const ValidTab = ({
               label={t('phone.label')}
               onChangeText={(formatted, extracted) => {
                 setFieldValue('phone', extracted)
+                extracted && onPhoneChange(extracted)
               }}
               value={values.phone}
               placeholder={t('phone.label')}

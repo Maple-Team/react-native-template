@@ -9,7 +9,7 @@ import type { ViewStyle } from 'react-native'
 import StyleSheet from 'react-native-adaptive-stylesheet'
 import { HeaderLeft, HeaderRight } from '@components/header'
 import { BottomTab } from './bottomTab'
-import { useNavigation, useNavigationState } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
 import emitter from '@/eventbus'
 import { queryBrand } from '@/services/apply'
 import { MMKV } from '@/utils'
@@ -34,7 +34,6 @@ const Stack = createNativeStackNavigator()
 
 export function ApplyStack() {
   useEventListener()
-  console.log(useNavigationState(state => state))
   useEffect(() => {
     queryBrand().then(brand => {
       emitter.emit('UPDATE_BRAND', brand)

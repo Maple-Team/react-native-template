@@ -18,7 +18,8 @@
     "sync-locale": "ts-node scripts/sync-locale.ts",
     "beauty-locale": "ts-node scripts/locale-beauty.ts",
     "rn": "ts-node scripts/change-name.ts",
-    "analysis": "npx react-native-bundle-visualizer"
+    "analysis": "npx react-native-bundle-visualizer",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@adrianso/react-native-device-brightness": "^1.2.5",
@@ -100,7 +101,7 @@
     "@types/react-native": "^0.66.4",
     "@types/react-test-renderer": "^17.0.1",
     "@types/rimraf": "^3.0.2",
-    "@typescript-eslint/eslint-plugin": "^5.7.0",
+    "@typescript-eslint/eslint-plugin": "^5.15.0",
     "babel-jest": "^27.4.5",
     "babel-plugin-import": "^1.13.3",
     "babel-plugin-module-resolver": "^4.1.0",
@@ -117,6 +118,7 @@
     "lint-staged": ">=10",
     "metro-react-native-babel-preset": "^0.66.2",
     "mockjs": "^1.1.0",
+    "patch-package": "^6.4.7",
     "prettier": "^2.5.1",
     "react-native-bundle-visualizer": "^3.1.1",
     "react-native-flipper": "^0.131.1",

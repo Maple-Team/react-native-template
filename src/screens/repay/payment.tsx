@@ -1,6 +1,6 @@
 import { Color } from '@/styles/color'
 import { PageStyles, Text } from '@/components'
-import React, { useContext, useMemo, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import {
   SafeAreaView,
   StatusBar,
@@ -54,17 +54,8 @@ export function Payment() {
     DEBOUNCE_WAIT,
     DEBOUNCE_OPTIONS
   )
-  /**
-   * FIXME
-   * 逾期日期
-   */
-  const day = useMemo(() => {
-    const repayDate = context.user?.repayDate
-    if (repayDate) {
-      return dayjs(repayDate).diff(dayjs(), 'days')
-    }
-    return '--'
-  }, [context.user?.repayDate])
+
+  const day = context.user?.expireDays
   return (
     <SafeAreaView style={PageStyles.sav}>
       <StatusBar translucent={false} backgroundColor={Color.primary} barStyle="default" />
@@ -88,9 +79,11 @@ export function Payment() {
               color="#26272B">
               {t('mxn')} {toThousands(params?.repayAmount || 0)}
             </Text>
-            <Text fontFamily="ArialMT" fontSize={12} color="#26272B">
-              {t('overduePrompt', { day })}
-            </Text>
+            {day && (
+              <Text fontFamily="ArialMT" fontSize={12} color="#26272B">
+                {t('overduePrompt', { day })}
+              </Text>
+            )}
           </View>
           <View
             style={{
@@ -327,7 +320,6 @@ export function Payment() {
 
 import StyleSheet from 'react-native-adaptive-stylesheet'
 import { toThousands } from '@/utils/util'
-import dayjs from 'dayjs'
 
 const style = StyleSheet.create<{
   payitem: ViewStyle

@@ -5,24 +5,29 @@ import { Color } from '@/styles/color'
 import { WebView } from 'react-native-webview'
 import { useTranslation } from 'react-i18next'
 import { ScrollView } from 'react-native-gesture-handler'
+import { useNavigation } from '@react-navigation/native'
 
 interface Action {
   text: string
   backgroundColor: string
   color: string
-  onPress: () => void
+  cb?: () => void
 }
 interface Props {
   actions: Action[]
-  title: string
-  warnMessage: string
+  title?: string
+  warnMessage?: string
   /**
    * url链接或者html string
    */
   content: string
   type: 'html' | 'uri'
 }
-export const WebViewScreen = ({ actions, warnMessage, content, type = 'uri' }: Props) => {
+export const WebViewScreen = ({ actions, warnMessage, content, type = 'uri', title }: Props) => {
+  // FIXME  Warning: Cannot update a component (`NativeStackNavigator`)
+  // while rendering a different component (`WebViewScreen`).
+  // To locate the bad setState() call inside `WebViewScreen`,
+  // follow the stack trace as described in https://reactjs.org/link/setstate-in-render
   const { i18n } = useTranslation()
   const filename = useMemo(() => {
     switch (i18n.language) {
@@ -34,6 +39,10 @@ export const WebViewScreen = ({ actions, warnMessage, content, type = 'uri' }: P
     }
   }, [i18n.language])
   const ref = useRef<WebView>(null)
+  const na = useNavigation()
+  na.setOptions({
+    title,
+  })
   const [has2Bottom, setHas2Bottom] = useState<boolean>()
   return (
     <>
@@ -63,66 +72,72 @@ export const WebViewScreen = ({ actions, warnMessage, content, type = 'uri' }: P
           }}
         />
       </ScrollView>
-      <View
-        style={{
-          borderBottomColor: Color.primary,
-          borderBottomWidth: 1,
-          marginVertical: 16,
-          paddingBottom: 10,
-          paddingHorizontal: 10,
-          flexWrap: 'wrap',
-        }}>
-        <Text color="red" fontSize={14}>
-          {has2Bottom === false ? warnMessage : ' '}
-        </Text>
-      </View>
-      <View
-        style={{
-          alignItems: 'center',
-          flexDirection: 'row',
-          paddingHorizontal: 20,
-          paddingBottom: 10,
-          justifyContent: 'space-between',
-        }}>
-        {actions.map(({ text, backgroundColor, color, onPress }, index) => (
-          <Pressable
-            onPress={
-              index === 0
-                ? onPress
-                : () => {
-                    if (!has2Bottom) {
-                      setHas2Bottom(false)
-                    } else {
-                      onPress()
-                    }
-                  }
-            }
-            style={[
-              {
-                backgroundColor,
-                // paddingHorizontal: 55,
-                // width: '50%',
-                flex: 1,
-                paddingVertical: 20,
-                borderRadius: 14,
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderColor: '#eee',
-                borderWidth: 1,
-              },
-              index === 0
-                ? { marginRight: 30 }
-                : has2Bottom
-                ? { backgroundColor: Color.primary, borderColor: Color.primary }
-                : {},
-            ]}
-            key={text}>
-            <Text color={color} fontSize={18}>
-              {text}
+      {actions.length ? (
+        <>
+          <View
+            style={{
+              borderBottomColor: Color.primary,
+              borderBottomWidth: 1,
+              marginVertical: 16,
+              paddingBottom: 10,
+              paddingHorizontal: 10,
+              flexWrap: 'wrap',
+            }}>
+            <Text color="red" fontSize={14}>
+              {has2Bottom === false ? warnMessage : ' '}
             </Text>
-          </Pressable>
-        ))}
-      </View>
+          </View>
+          <View
+            style={{
+              alignItems: 'center',
+              flexDirection: 'row',
+              paddingHorizontal: 20,
+              paddingBottom: 10,
+              justifyContent: 'space-between',
+            }}>
+            {actions.map(({ text, backgroundColor, color, cb }, index) => (
+              <Pressable
+                onPress={
+                  index === 0
+                    ? cb
+                    : () => {
+                        if (!has2Bottom) {
+                          setHas2Bottom(false)
+                        } else {
+                          cb && cb()
+                        }
+                      }
+                }
+                style={[
+                  {
+                    backgroundColor,
+                    // paddingHorizontal: 55,
+                    // width: '50%',
+                    flex: 1,
+                    paddingVertical: 20,
+                    borderRadius: 14,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderColor: '#eee',
+                    borderWidth: 1,
+                  },
+                  index === 0
+                    ? { marginRight: 30 }
+                    : has2Bottom
+                    ? { backgroundColor: Color.primary, borderColor: Color.primary }
+                    : {},
+                ]}
+                key={text}>
+                <Text color={color} fontSize={18}>
+                  {text}
+                </Text>
+              </Pressable>
+            ))}
+          </View>
+        </>
+      ) : (
+        <></>
+      )}
     </>
   )
 }

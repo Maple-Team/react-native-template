@@ -386,4 +386,5 @@ export interface BankInfoParameter {
   customerId: number
   validateCode: string
   autoRepayment: false
+  newBankCardNo?: string
 }

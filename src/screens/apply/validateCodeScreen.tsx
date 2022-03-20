@@ -16,7 +16,7 @@ import { useInterval } from 'usehooks-ts'
 import type { SendChannel } from '@/typings/request'
 import { validateValidCode } from '@/services/misc'
 
-export const ValidateCode = ({ navigation }: NativeStackHeaderProps) => {
+export const ValidateCodeScreen = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
   const route = useRoute()
   const params = route.params as { phone: string; applyId: string }
@@ -26,8 +26,6 @@ export const ValidateCode = ({ navigation }: NativeStackHeaderProps) => {
     [context.brand?.smsWaitInterval]
   )
   const [count, setCount] = useState<number>(maxCount)
-  // FIXME
-  // const [times, setTimtes] = useState<number>(context.brand?.codeValidatecount || 5) // Brand info
   const [isPlaying, setPlaying] = useState<boolean>(false)
   const handleValidateCodePress = debounce(
     (type: SendChannel) => {
@@ -158,7 +156,9 @@ const VerifyCodeInput = (props: {
   const { verifyCodeLength, onChangeText } = props
   const [code, setCode] = useState<string>()
   const paddedValue = code?.padEnd(verifyCodeLength, ' ') || ''
-  const valueArray: string[] = paddedValue.split('')
+  const valueArray: string[] = paddedValue
+    ? paddedValue.split('')
+    : Array.from({ length: verifyCodeLength }, () => ' ')
   const textInputRef = useRef<TextInput>(null)
   return (
     <View
@@ -186,31 +186,23 @@ const VerifyCodeInput = (props: {
           top: 0,
           zIndex: 999,
         }}>
-        {valueArray.map((digit, index) => (
-          <View
-            key={index}
-            style={
-              digit === ' '
-                ? {
-                    width: 40,
-                    borderBottomWidth: 1,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    borderBottomColor: '#888888',
-                  }
-                : {
-                    width: 40,
-                    borderBottomWidth: 1,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    borderBottomColor: '#282828',
-                  }
-            }>
-            <Text fontSize={52} color={Color.primary}>
-              {digit}
-            </Text>
-          </View>
-        ))}
+        {valueArray.map((digit, index) => {
+          return (
+            <View
+              key={index}
+              style={{
+                width: 40,
+                borderBottomWidth: 1,
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderBottomColor: digit === ' ' ? '#888888' : '#282828',
+              }}>
+              <Text fontSize={52} color={Color.primary}>
+                {digit}
+              </Text>
+            </View>
+          )
+        })}
       </TouchableOpacity>
       <TextInput
         ref={textInputRef}

@@ -33,18 +33,17 @@ export const LetterList = () => {
     setRefreshState(RefreshState.HeaderRefreshing)
     queryZhanLetterList({ currentPage: 1, pageSize: listNums })
       .then(res => {
-        setData(uniqBy(res.concat(data), 'id'))
+        setData(_data => uniqBy(res.concat(_data), 'id'))
         setRefreshState(res.length < 1 ? RefreshState.NoMoreData : RefreshState.Idle)
       })
       .catch(() => {
         setRefreshState(RefreshState.Failure)
       })
-  }, [data, listNums])
+  }, [listNums])
 
   useEffect(() => {
     onHeaderRefresh()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [onHeaderRefresh])
 
   const onFooterRefresh = useCallback(() => {
     setRefreshState(RefreshState.FooterRefreshing)

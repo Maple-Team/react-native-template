@@ -1,7 +1,5 @@
 import { ToastAndroid } from 'react-native'
 
-// TODO 判断ant-design是否符合要求 toast是否正在showing,
-// FIXME maxCount?
 // 开启一个新toast的当前时间，用于对比是否已经展示了足够时间
 export const showToast = (message: string) => {
   ToastAndroid.show(message, ToastAndroid.SHORT)

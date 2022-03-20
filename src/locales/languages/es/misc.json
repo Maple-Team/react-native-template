@@ -87,5 +87,7 @@
   "unreceived-phone-hint": "",
   "upload-Failed": "Carga fallida",
   "verify-your-phone-number": "",
-  "warnRepayPrompt": "le recomendamos que pague el préstamo inmediatamente en esta página para no afectar su próxima solicitud de préstamo."
+  "warnRepayPrompt": "le recomendamos que pague el préstamo inmediatamente en esta página para no afectar su próxima solicitud de préstamo.",
+  "service-agreement": "[Services Agreement]",
+  "privacy-policy": "[Privacy Policy]"
 }

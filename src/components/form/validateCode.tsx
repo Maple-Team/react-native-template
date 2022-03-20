@@ -46,10 +46,7 @@ export const ValidateCode = ({
 }: InputProps) => {
   const { t } = useTranslation()
   const context = useContext(MoneyyaContext)
-  const maxInterval = useMemo(
-    () => context.brand?.smsWaitInterval || 60,
-    [context.brand?.smsWaitInterval]
-  )
+  const maxInterval = context.brand?.smsWaitInterval || 60
   const [interval, setInterval] = useState<number>(maxInterval)
   const maxTimes = context.brand?.codeValidatecount || 100
   const [times, setTimtes] = useState<number>(0)
@@ -57,8 +54,8 @@ export const ValidateCode = ({
   const handlePress = debounce(
     () => {
       setPlaying(true)
-      setTimtes(times + 1)
       getValidateCode({ sendChannel: 'SMS', phone, type: validateCodeType }).then(code => {
+        setTimtes(times + 1)
         console.log({ kaptcha: code.kaptcha })
       })
     },
@@ -66,7 +63,7 @@ export const ValidateCode = ({
     DEBOUNCE_OPTIONS
   )
   useEffect(() => {
-    if (times >= maxTimes) {
+    if (times > maxTimes) {
       onMaxSMS && onMaxSMS()
     }
   }, [maxTimes, onMaxSMS, times])

@@ -147,14 +147,14 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
     queryDict()
   }, [])
   const onSubmit = debounce(
-    (values: FormModel) => {
+    () => {
       const contacts: Contact[] = []
       const length = fromOther === 'Y' ? 2 : 3
-      const phones = [values.contactPhone1, values.contactPhone2]
+      const phones = [state.contactPhone1, state.contactPhone2]
       if (length === 3) {
-        phones.push(values.contactPhone3)
+        phones.push(state.contactPhone3)
       }
-      if (Array.from(new Set(phones)).length !== length) {
+      if (Array.from(new Set(phones.filter(Boolean))).length !== length) {
         emitter.emit('SHOW_MESSAGE', { type: 'fail', message: t('exist-same-relation-phone') })
         return
       }
@@ -176,7 +176,7 @@ export const Step3 = ({ navigation }: NativeStackHeaderProps) => {
         currentStep: 3,
         totalSteps: TOTAL_STEPS,
       }).then(() => {
-        MMKV.setMapAsync('step3Data', values)
+        MMKV.setMapAsync('step3Data', state)
         uploadAllContacts({
           list: (MMKV.getArray(KEY_CONTACTS) as MoneyyaContact[]) || [],
           applyId: +(MMKV.getString(KEY_APPLYID) || '0'),
