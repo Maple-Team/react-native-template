@@ -21,6 +21,7 @@ import java.util.List;
 import ai.advance.liveness.lib.GuardianLivenessDetectionSDK;
 import ai.advance.liveness.lib.Market;
 import ai.advance.liveness.sdk.rn.LivenessReactPackage;
+import io.invertase.firebase.app.ReactNativeFirebaseAppPackage;
 import mx.moneyya.loan.nativemodule.MoneyyaPackage;
 
 public class MainApplication extends Application implements ReactApplication {
@@ -46,6 +47,7 @@ public class MainApplication extends Application implements ReactApplication {
          packages.add(new MoneyyaPackage());
          packages.add(new WheelPickerPackage());
          packages.add(new LivenessReactPackage());
+         packages.add(new ReactNativeFirebaseAppPackage());
         return packages;
       }
 

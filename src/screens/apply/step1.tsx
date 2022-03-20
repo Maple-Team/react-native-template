@@ -3,6 +3,7 @@ import { View, Image, ImageBackground } from 'react-native'
 import { StackActions, useFocusEffect, useNavigation } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { TabHeader, Text, ToastLoading, Update } from '@/components'
+
 import { ScrollView } from 'react-native-gesture-handler'
 import { Button } from '@ant-design/react-native'
 import { Color } from '@/styles/color'

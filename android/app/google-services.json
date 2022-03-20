@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "842993700630",
+    "project_id": "moneyya-46e7c",
+    "storage_bucket": "moneyya-46e7c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:842993700630:android:4e0aa68d786954b3914a37",
+        "android_client_info": {
+          "package_name": "mx.moneyya.loan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "842993700630-freugfgdjsc98r7hb29l5n8i3uqbfam4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3YOasVP2M6ULb39JQf9UZJxT2osOm-vY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "842993700630-freugfgdjsc98r7hb29l5n8i3uqbfam4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

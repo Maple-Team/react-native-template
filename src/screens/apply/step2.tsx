@@ -21,6 +21,8 @@ import { fetchDict, submit } from '@/services/apply'
 import type { Dict, DictField } from '@/typings/response'
 import { MMKV } from '@/utils/storage'
 import { filterArrayKey } from '@/utils/util'
+import analytics from '@react-native-firebase/analytics'
+import { AppEventsLogger } from 'react-native-fbsdk-next'
 
 export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
@@ -129,7 +131,9 @@ export const Step2 = ({ navigation }: NativeStackHeaderProps) => {
         applyId: +(MMKV.getString(KEY_APPLYID) || '0'),
         currentStep: 2,
         totalSteps: TOTAL_STEPS,
-      }).then(() => {
+      }).then(async () => {
+        await analytics().logEvent('steps_jobauth')
+        AppEventsLogger.logEvent('steps_jobauth')
         MMKV.setMapAsync('step2Data', data)
         navigation.navigate('Step3')
       })

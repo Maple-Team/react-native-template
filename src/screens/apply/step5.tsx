@@ -35,6 +35,8 @@ import { MMKV } from '@/utils/storage'
 import { useRoute } from '@react-navigation/native'
 import type { Gender } from '@/typings/user'
 import { fetchDict, submit } from '@/services/apply'
+import analytics from '@react-native-firebase/analytics'
+import { AppEventsLogger } from 'react-native-fbsdk-next'
 
 export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
@@ -185,7 +187,9 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
           },
         ],
         name: `${values.firstName.trim()} ${values.middleName.trim()} ${values.lastName.trim()}`,
-      }).then(() => {
+      }).then(async () => {
+        await analytics().logEvent('steps_realnameauth')
+        AppEventsLogger.logEvent('steps_realnameauth')
         MMKV.setMapAsync('step5Data', data)
         if (context.brand?.livenessAuthEnable === 'Y') {
           const livenessTimes = MMKV.getInt(KEY_LIVENESS) || 0
