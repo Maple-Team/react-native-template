@@ -30,7 +30,7 @@ release/
 local.properties
 *.iml
 *.hprof
-# *.apk
+*.apk
 
 # node.js
 #

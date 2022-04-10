@@ -115,7 +115,7 @@ android {
           abiFilters nativeArchitectures.split(',')
         }
       }
-      applicationIdSuffix ".debug"
+//      applicationIdSuffix ".debug"
       versionNameSuffix '-Debug'
       debuggable true
       buildConfigField "String", "ENVIRONMENT", "\"development\""
