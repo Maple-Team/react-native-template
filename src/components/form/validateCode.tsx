@@ -55,7 +55,7 @@ export const ValidateCode = ({
     () => {
       setPlaying(true)
       getValidateCode({ sendChannel: 'SMS', phone, type: validateCodeType }).then(code => {
-        setTimtes(times + 1)
+        setTimtes(_ => _ + 1)
         console.log({ kaptcha: code.kaptcha })
       })
     },
@@ -73,6 +73,9 @@ export const ValidateCode = ({
       if (_count <= 0) {
         setPlaying(false)
         setInterval(maxInterval)
+        if (times >= maxTimes && !value) {
+          onMaxSMS && onMaxSMS()
+        }
       } else {
         setInterval(_count)
       }

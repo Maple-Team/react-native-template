@@ -155,7 +155,7 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
   const [isWarnging, setWarn] = useState<boolean>()
 
   useEffect(() => {
-    if (product && loanAmt <= product.maxAmount) {
+    if (product && loanAmt <= product.maxAmount && loanDay !== 0) {
       scheduleCalc({
         displayLoanDays: product.displayLoanDays,
         loanAmt,

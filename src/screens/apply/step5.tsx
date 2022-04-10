@@ -73,7 +73,7 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
     authPhone: string().max(20, t('authPhone.invalid')).required(t('authPhone.required')),
     whatsapp: string().required(t('whatsapp.required')),
     email: string().email().required(t('email.required')),
-    secondCardNo: string().max(20, t('secondCardNo.invalid')).required(t('secondCardNo.required')),
+    secondCardNo: string().max(20, t('secondCardNo.invalid')),
   })
   const context = useContext(MoneyyaContext)
   const step5Data = (MMKV.getMap('step5Data') as Partial<Step5State>) || {}

@@ -92,9 +92,9 @@ export const permissionContent: Record<string, PermissionContent> = {
     hint: t('permission.storage.hint'),
   },
 }
-export const usePersmission = () => {
+export const usePersmission = (_permissions = permissions) => {
   useEffect(() => {
-    permissions.reduce((prev, curr) => {
+    _permissions.reduce((prev, curr) => {
       return prev.then(() => {
         return new Promise(async resolve => {
           const state = await check(curr)
@@ -123,5 +123,5 @@ export const usePersmission = () => {
         })
       })
     }, Promise.resolve())
-  }, [])
+  }, [_permissions])
 }

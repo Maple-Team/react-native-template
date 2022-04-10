@@ -15,6 +15,8 @@ import { default as MoneyyaContext } from '@/state'
 import { useInterval } from 'usehooks-ts'
 import type { SendChannel } from '@/typings/request'
 import { validateValidCode } from '@/services/misc'
+import { useCustomBack } from '@/hooks'
+import { MMKV } from '@/utils'
 
 export const ValidateCodeScreen = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
@@ -25,6 +27,12 @@ export const ValidateCodeScreen = ({ navigation }: NativeStackHeaderProps) => {
     () => context.brand?.smsWaitInterval || 60,
     [context.brand?.smsWaitInterval]
   )
+  useCustomBack(() => {
+    //@ts-ignore
+    navigation.dispatch(
+      StackActions.replace('BillsDetail', { applyId: MMKV.getString(params.applyId) })
+    )
+  })
   const [count, setCount] = useState<number>(maxCount)
   const [isPlaying, setPlaying] = useState<boolean>(false)
   const handleValidateCodePress = debounce(

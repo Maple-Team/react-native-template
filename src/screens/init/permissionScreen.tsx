@@ -3,14 +3,15 @@ import emitter from '@/eventbus'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { ScrollView } from 'react-native-gesture-handler'
 import { PermissionModal } from '@components/permission'
-import { request, RESULTS, type Permission } from 'react-native-permissions'
-import { permissionContent, permissions } from '@/utils/permission'
+import { request, RESULTS, type Permission, PERMISSIONS } from 'react-native-permissions'
+import { permissionContent } from '@/utils/permission'
 import { useCustomBack } from '@/hooks'
 
 interface Result {
   isShow: boolean
   hasPermission: boolean
 }
+const permissions = [PERMISSIONS.ANDROID.READ_PHONE_STATE]
 export default () => {
   useCustomBack(() => {})
   const permissionObj = useMemo(() => {

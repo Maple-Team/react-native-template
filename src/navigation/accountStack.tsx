@@ -17,6 +17,7 @@ import DeviceInfo from 'react-native-device-info'
 import { usePersmission } from '@/utils/permission'
 import { StackActions } from '@react-navigation/native'
 import { Color } from '@/styles/color'
+import { PERMISSIONS } from 'react-native-permissions'
 
 export type AccountStackParams = {
   Entry: undefined
@@ -33,7 +34,7 @@ const Stack = createNativeStackNavigator<AccountStackParams>()
 
 export function AccountStack() {
   const { t } = useTranslation()
-  usePersmission()
+  usePersmission([PERMISSIONS.ANDROID.READ_PHONE_STATE, PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION])
   useEffect(() => {
     const versionID = AppModule.getVersionID()
     emitter.emit('UPDATE_VERSIONID', versionID)
