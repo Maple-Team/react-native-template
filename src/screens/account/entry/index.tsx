@@ -10,10 +10,10 @@ import { object, string } from 'yup'
 import debounce from 'lodash.debounce'
 
 import { Logo } from '@/components/logo'
-import Text from '@/components/Text'
+import { Text } from '@/components'
 import styles from './style'
 import { REGEX_PHONE } from '@/utils/reg'
-import { DEBOUNCE_WAIT, DEBOUNCE_OPTIONS, KEY_BRAND } from '@/utils/constant'
+import { DEBOUNCE_WAIT, DEBOUNCE_OPTIONS, KEY_BRAND, KEY_USER_AGENT } from '@/utils/constant'
 import { MaskInput } from '@components/form'
 import { Color } from '@/styles/color'
 import emitter from '@/eventbus'
@@ -21,6 +21,7 @@ import { queryBrand } from '@/services/apply'
 import { MMKV } from '@/utils'
 import { StackActions } from '@react-navigation/native'
 
+import DeviceInfo from 'react-native-device-info'
 interface FormModel {
   phone: string
 }
@@ -43,6 +44,11 @@ export const EntryScreen = ({ navigation }: NativeStackHeaderProps) => {
   )
 
   useEffect(() => {
+    DeviceInfo.getUserAgent()
+      .then(res => {
+        MMKV.setString(KEY_USER_AGENT, res)
+      })
+      .catch(console.error)
     queryBrand().then(brand => {
       emitter.emit('UPDATE_BRAND', brand)
       MMKV.setMap(KEY_BRAND, brand)

@@ -25,6 +25,7 @@ export const KEY_OUTERIP = 'moneyya_Outerip'
 export const KEY_JPUSH_ID = 'moneyya_jpush_id'
 export const KEY_CONTACTS = 'moneyya_contacts'
 export const KEY_ID = 'moneyya_id'
+export const KEY_USER_AGENT = 'moneyya_useragent'
 /**
  * 活体校验次数，跟随申请单
  */

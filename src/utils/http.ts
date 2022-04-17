@@ -1,12 +1,11 @@
 import axios from 'axios'
 import type { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
-
 import { AppModule } from '@/modules'
 import type { Status } from '@/typings/response'
 import { API_CODE, APPLY_STATE } from '@/state/enum'
 import emitter from '@/eventbus'
 import { DispatchRVMap } from '@/eventbus/type'
-import { AXIOS_TIMEOUT, KEY_DEVICEID, KEY_GPS, KEY_TOKEN } from '@/utils/constant'
+import { AXIOS_TIMEOUT, KEY_DEVICEID, KEY_GPS, KEY_TOKEN, KEY_USER_AGENT } from '@/utils/constant'
 import { moneyyaState } from '@/state'
 import { MMKV } from './storage'
 export interface Response<T = any> {
@@ -35,6 +34,7 @@ api.interceptors.request.use(
       config.headers.gps = MMKV.getString(KEY_GPS) || gps
       config.headers.merchantId = merchantId
       config.headers.source = source
+      config.headers['User-Agent'] = MMKV.getString(KEY_USER_AGENT) || ''
       config.headers.versionId = `${versionId}`
       if (channel) {
         config.headers.channel = channel

@@ -41,7 +41,7 @@ import { AppEventsLogger } from 'react-native-fbsdk-next'
 export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
   const { t } = useTranslation()
   const route = useRoute()
-  const { orcResult } = route.params as { orcResult?: OcrResult }
+  const { ocrResult } = route.params as { ocrResult?: OcrResult }
   const schema = object().shape({
     firstName: string()
       .max(50, t('field.long', { field: t('firstName.label') }))
@@ -133,25 +133,25 @@ export const Step5 = ({ navigation }: NativeStackHeaderProps) => {
       }
     },
     {
-      firstName: orcResult?.userName || step5Data.firstName || '',
-      middleName: orcResult?.mothersurname || step5Data.middleName || '',
-      lastName: orcResult?.fathersurname || step5Data.lastName || '',
+      firstName: ocrResult?.userName || step5Data.firstName || '',
+      middleName: ocrResult?.mothersurname || step5Data.middleName || '',
+      lastName: ocrResult?.fathersurname || step5Data.lastName || '',
       educationCode: step5Data.educationCode || '',
       email: step5Data.email || '',
       homeAddrCity: step5Data.homeAddrCity || '',
       homeAddrCityCode: step5Data.homeAddrCityCode || '',
-      homeAddrDetail: orcResult?.addressAll || step5Data.homeAddrDetail || '',
+      homeAddrDetail: ocrResult?.addressAll || step5Data.homeAddrDetail || '',
       homeAddrProvince: step5Data.homeAddrProvince || '',
       homeAddrProvinceCode: step5Data.homeAddrProvinceCode || '',
       backupPhone: step5Data.backupPhone || '',
-      birth: orcResult?.birthday || step5Data.birth || '',
+      birth: ocrResult?.birthday || step5Data.birth || '',
       docType: step5Data.docType || '',
-      idcard: orcResult?.idCard || step5Data.idcard || '',
+      idcard: ocrResult?.idCard || step5Data.idcard || '',
       loanPurpose: step5Data.loanPurpose || '',
       maritalStatus: step5Data.maritalStatus || '',
       name: '',
       secondCardNo: step5Data.secondCardNo || '',
-      sex: (orcResult?.gender as Gender) || step5Data.sex || '',
+      sex: (ocrResult?.gender as Gender) || step5Data.sex || '',
       maritalStatusArray: [],
       homeAddrProvinceArray: [],
       homeAddrCityArray: [],

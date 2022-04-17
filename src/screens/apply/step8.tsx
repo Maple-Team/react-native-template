@@ -38,6 +38,8 @@ import { uploadJpush } from '@/services/misc'
 import { AppModule } from '@/modules'
 import { getDeviceInfo } from '@/utils/device'
 import { StackActions } from '@react-navigation/native'
+import analytics from '@react-native-firebase/analytics'
+import { AppEventsLogger } from 'react-native-fbsdk-next'
 
 const WARN_COLOR = '#f00'
 export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
@@ -69,6 +71,8 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
         currentStep: 8,
         totalSteps: TOTAL_STEPS,
       }).then(async () => {
+        await analytics().logEvent('steps_confirm')
+        AppEventsLogger.logEvent('steps_confirm')
         // NOTE JPUSH 签约
         const userStatus = context.user?.userAuthStatus
         const step5Data = MMKV.getMap('step5Data') as { idcard: string }
@@ -432,9 +436,9 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
                         },
                         {
                           name: t('secondPaymentAmount'),
-                          value: calcResult.termSchedules[1].totalAmt,
+                          value: calcResult.svcFee,
                           type: 'money',
-                          extra: (
+                          extra: calcResult.termSchedules[1].freeMark === 'Y' && (
                             <View
                               style={{
                                 paddingHorizontal: 7,
@@ -443,11 +447,17 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
                                 borderRadius: 5,
                                 marginLeft: 9,
                               }}>
+                              c
                               <Text fontSize={12} fontWeight="bold" color="#fff">
                                 {t('free')}
                               </Text>
                             </View>
                           ),
+                        },
+                        {
+                          name: t('interest'),
+                          value: calcResult.interest,
+                          type: 'money',
                         },
                       ]
                     : []

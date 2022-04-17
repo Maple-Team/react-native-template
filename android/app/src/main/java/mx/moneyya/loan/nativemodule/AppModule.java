@@ -182,16 +182,17 @@ public class AppModule extends ReactContextBaseJavaModule {
         } else {
           appInfo.putDouble("versionCode", packageInfo.versionCode);
         }
-        appInfo.putDouble("firstInstallTime", (packageInfo.firstInstallTime));
+        appInfo.putDouble("appInstallTime", (packageInfo.firstInstallTime));
         appInfo.putDouble("lastUpdateTime", (packageInfo.lastUpdateTime));
-        appInfo.putString("appName", ((String) packageInfo.applicationInfo.loadLabel(pm)).trim());
-        appInfo.putBoolean("isAppActive", isAppRunning(reactContext, packageInfo.packageName)
-          || isProcessRunning(reactContext, getPackageUid(reactContext, packageInfo.packageName)));
+        appInfo.putString("name", ((String) packageInfo.applicationInfo.loadLabel(pm)).trim());
+        boolean isAppActive = isAppRunning(reactContext, packageInfo.packageName)
+          || isProcessRunning(reactContext, getPackageUid(reactContext, packageInfo.packageName));
+        appInfo.putString("isAppActive", isAppActive ? "Y":"N");
         Drawable icon = pm.getApplicationIcon(packageInfo.applicationInfo);
         // appInfo.putString("icon", Utility.convert(icon));
 
         String apkDir = packageInfo.applicationInfo.publicSourceDir;
-        appInfo.putString("apkDir", apkDir);
+        appInfo.putString("packagePath", apkDir);
 
         File file = new File(apkDir);
         double size = file.length();

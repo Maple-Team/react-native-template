@@ -154,7 +154,7 @@ const en = `<html>
     <h2 style="text-align: center">Authorization agreement</h2>
     <p>You need to open the following permissions:</p>
     <p>
-      You are welcome to use LoanNaira, a loan APP which belongs to Rubystar Global Ltd. We will use
+      You are welcome to use MoneyYa, a loan APP which belongs to Rubystar Global Ltd. We will use
       the "Privacy Policy" to help you understand our collection, use, and storage of personal
       information and your related rights. We need you to authorize the following device permissions
       in order to provide you with better services.

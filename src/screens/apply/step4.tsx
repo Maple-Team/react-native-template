@@ -36,7 +36,7 @@ export const Step4 = ({ navigation }: NativeStackHeaderProps) => {
         currentStep: 4,
         totalSteps: TOTAL_STEPS,
       }).then(res => {
-        navigation.navigate('Step5', { orc: res.ocrResult })
+        navigation.navigate('Step5', { ocrResult: res.ocrResult })
       })
     },
     DEBOUNCE_WAIT,
