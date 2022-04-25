@@ -7260,10 +7260,10 @@ react-native-fbsdk-next@^7.3.3:
     "@expo/config-plugins" "^4.0.4"
     xml2js "^0.4.23"
 
-react-native-flipper@^0.131.1:
-  version "0.131.1"
-  resolved "https://registry.npmmirror.com/react-native-flipper/-/react-native-flipper-0.131.1.tgz#b1a43e40a442187fa78c5ed6d478471ff4a2686c"
-  integrity sha512-X65VbZgwVRVYAc3OBdHi0h8dJR/Mgxdg8WoQLGgaYyhHcaqsF06GjOzBJLwNjN3TK5Gih228IFqLqI9Rwl2dEA==
+react-native-flipper@^0.143.0:
+  version "0.143.0"
+  resolved "https://registry.npmmirror.com/react-native-flipper/-/react-native-flipper-0.143.0.tgz#7370c3dc3d784d5e0a210073b1335056e8f79e8a"
+  integrity sha512-SjjdKv1kcImBhM3ueI2YR2IvKWBSznhXfw5LVdn81K/UOMvjosxp74rxOWqL/SVXwV+cTErzZvfFrq/EHcC0NQ==
 
 react-native-geolocation-service@^5.3.0-beta.4:
   version "5.3.0-beta.4"

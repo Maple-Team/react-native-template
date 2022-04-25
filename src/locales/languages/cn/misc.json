@@ -90,5 +90,8 @@
   "warnRepayPrompt": "我们建议您在此页面立即偿还贷款，以免影响您的下次贷款申请。",
   "service-agreement": "服务条款",
   "privacy-policy": "隐私协议",
-  "interest": "利息"
+  "interest": "利息",
+  "bottomTab.account": "我的",
+  "bottomTab.bills": "订单",
+  "bottomTab.home": "首页"
 }
