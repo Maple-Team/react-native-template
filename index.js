@@ -1,3 +1,4 @@
+import './wdyr'
 import { AppRegistry, LogBox } from 'react-native'
 import 'intl-pluralrules'
 import App from './src/App'
