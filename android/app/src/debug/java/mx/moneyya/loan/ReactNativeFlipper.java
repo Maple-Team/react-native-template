@@ -37,12 +37,8 @@ public class ReactNativeFlipper {
 
       NetworkFlipperPlugin networkFlipperPlugin = new NetworkFlipperPlugin();
       NetworkingModule.setCustomClientBuilder(
-          new NetworkingModule.CustomClientBuilder() {
-            @Override
-            public void apply(OkHttpClient.Builder builder) {
-              builder.addNetworkInterceptor(new FlipperOkhttpInterceptor(networkFlipperPlugin));
-            }
-          });
+        builder -> builder.addNetworkInterceptor(new FlipperOkhttpInterceptor(networkFlipperPlugin)));
+
       client.addPlugin(networkFlipperPlugin);
       client.start();
 

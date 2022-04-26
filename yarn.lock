@@ -7296,10 +7296,10 @@ react-native-localize@^2.1.6:
   resolved "https://registry.npmmirror.com/react-native-localize/-/react-native-localize-2.1.9.tgz#47b13b2d7f8fea95a0e784cdc0269e2028c88857"
   integrity sha512-n2Bi5P0cII8BrnG23Fs9PmpYcufD3JRbr1IBn3ArIA3Z3cGWg4eebv6am+CgdFC4kTPWUlVzX9fEgEMA+X8d6w==
 
-react-native-mmkv-storage@^0.6.10:
-  version "0.6.12"
-  resolved "https://registry.npmmirror.com/react-native-mmkv-storage/-/react-native-mmkv-storage-0.6.12.tgz#e9e052e26c3dea6818211919d2586cb260ee8e24"
-  integrity sha512-9gJlnGSAJkeWanNE24GPqEn4NMiNFVBpPsTZAQ5YDEKEX/gG7bGdHCTNkXc6L826QxLEPKjpPmf9ZqgPM2G8TQ==
+react-native-mmkv-storage@^0.7.1:
+  version "0.7.1"
+  resolved "https://registry.npmmirror.com/react-native-mmkv-storage/-/react-native-mmkv-storage-0.7.1.tgz#01fbf4986d78f62addc477503b3a181f2a30e9c0"
+  integrity sha512-kpntUpELPZU+lJngJJq5VCvjUyuTCtZMfcXgAQ+HQ5Jy+ICZM9V5V7GNhljzyk+2Nm44irWqN1jDY+blupxL7Q==
 
 react-native-modal-popover@^2.0.1:
   version "2.1.0"
