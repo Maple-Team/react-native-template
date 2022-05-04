@@ -6,7 +6,7 @@ import { Text } from '@/components'
 import { ErrorMessage } from 'formik'
 import { useTranslation } from 'react-i18next'
 import { selectContactPhone } from 'react-native-select-contact'
-import Contacts from 'react-native-contacts'
+import { getAll as getAllContacts } from 'react-native-contacts'
 import { onRequestPermission } from '@/utils/permission'
 import type { ScrollView } from 'react-native-gesture-handler'
 import { MMKV } from '@/utils'
@@ -38,7 +38,7 @@ Props) {
   const { t } = useTranslation()
 
   const onSelectContacts = useCallback(async () => {
-    Contacts.getAll().then(contacts => {
+    getAllContacts().then(contacts => {
       const data = contacts
         .map(contact => {
           return contact.phoneNumbers.map(phone => {

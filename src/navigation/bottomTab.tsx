@@ -16,10 +16,11 @@ export const BottomTab = () => {
   return (
     <Tab.Navigator>
       <Tab.Screen
-        name={t('bottomTab.home')}
+        name="Home"
         key="Home"
         component={Home}
         options={{
+          title: t('bottomTab.home'),
           headerShown: false,
           tabBarIcon: ({ focused }) => {
             const src = focused
@@ -30,10 +31,11 @@ export const BottomTab = () => {
         }}
       />
       <Tab.Screen
-        name={t('bottomTab.bills')}
+        name="Order"
         key="Order"
         component={BillsList}
         options={{
+          title: t('bottomTab.bills'),
           headerShown: false,
           tabBarIcon: ({ focused }) => {
             const src = focused
@@ -44,10 +46,11 @@ export const BottomTab = () => {
         }}
       />
       <Tab.Screen
-        name={t('bottomTab.account')}
+        name="Account"
         key="Account"
         component={UserStack}
         options={{
+          title: t('bottomTab.account'),
           headerShown: false,
           tabBarIcon: ({ focused }) => {
             const src = focused

@@ -135,13 +135,15 @@ export function Step1() {
       switch (applyStatus) {
         case APPLY_STATE.LOAN:
         case APPLY_STATE.WAIT:
-          navigation.getParent()?.navigate('Order', {
+          // @ts-ignore
+          navigation?.navigate('Order', {
             type: 'order',
           })
           break
         case APPLY_STATE.NORMAL:
         case APPLY_STATE.OVERDUE:
-          navigation.getParent()?.navigate('Order', {
+          // @ts-ignore
+          navigation?.navigate('Order', {
             type: 'payment',
           })
           break

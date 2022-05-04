@@ -360,12 +360,17 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
                   },
                   {
                     name: t('fee'),
-                    value: calcResult?.svcFee ? calcResult?.svcFee : 0,
+                    value: calcResult?.serviceFee ?? 0,
+                    type: 'money',
+                  },
+                  {
+                    name: t('interest'),
+                    value: calcResult?.interest ?? 0,
                     type: 'money',
                   },
                   {
                     name: t('bankCard'),
-                    value: params.bankCardNo ? params.bankCardNo : 0,
+                    value: params.bankCardNo ?? 0,
                     type: 'bank',
                   },
                 ]}
@@ -453,11 +458,6 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
                               </Text>
                             </View>
                           ),
-                        },
-                        {
-                          name: t('interest'),
-                          value: calcResult.interest,
-                          type: 'money',
                         },
                       ]
                     : []

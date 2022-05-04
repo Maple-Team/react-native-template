@@ -107,6 +107,7 @@ export const SignupScreen = ({ route }: { route: any }) => {
           uploadJpush({
             phone: values.phone,
           })
+          MMKV.removeItem('entry_phone')
           emitter.emit('LOGIN_SUCCESS', res)
         })
         .catch(res => {
@@ -150,7 +151,7 @@ export const SignupScreen = ({ route }: { route: any }) => {
                     <MaskInput
                       field="phone"
                       label={t('phone.label')}
-                      onChangeText={(formatted, extracted) => {
+                      onChangeText={(_, extracted) => {
                         setFieldValue('phone', extracted)
                       }}
                       value={values.phone}
@@ -194,7 +195,12 @@ export const SignupScreen = ({ route }: { route: any }) => {
                         validateCodeType="REGISTER"
                         keyboardType="number-pad"
                         phone={values.phone}
-                        onMaxSMS={() => updateShowValidateCode(false)}
+                        onMaxSMS={() => {
+                          updateShowValidateCode(false)
+                          setTimeout(() => {
+                            handleSubmit()
+                          }, 100)
+                        }}
                       />
                     )}
                     <PermissionHint check={values.hasAgree} />

@@ -113,23 +113,26 @@ export const ValidateCodeScreen = ({ navigation }: NativeStackHeaderProps) => {
               +52 <Text color="#000">{params?.phone}</Text>
               {'  '}
             </Text>
-            <View
-              style={{
-                backgroundColor: !isPlaying ? Color.primary : '#888',
-                padding: 4,
-                borderRadius: 5,
-              }}>
-              <Text color={!isPlaying ? '#eee' : '#fff'}>{count}s</Text>
-            </View>
+            {count !== 30 && (
+              <View
+                style={{
+                  backgroundColor: !isPlaying ? Color.primary : '#888',
+                  padding: 4,
+                  borderRadius: 5,
+                }}>
+                <Text color={!isPlaying ? '#eee' : '#fff'}>{count}s</Text>
+              </View>
+            )}
           </View>
           <VerifyCodeInput onChangeText={te => setCode(te)} verifyCodeLength={4} />
           <View>
             <Text>{t('unreceived-phone-hint')}</Text>
             <View style={{ marginTop: 20 }}>
               <Pressable
+                disabled={isPlaying}
                 onPress={() => handleValidateCodePress('IVR')}
                 style={{
-                  backgroundColor: Color.primary,
+                  backgroundColor: isPlaying ? '#999' : Color.primary,
                   paddingHorizontal: 10,
                   paddingVertical: 10,
                   borderRadius: 10,
@@ -139,9 +142,10 @@ export const ValidateCodeScreen = ({ navigation }: NativeStackHeaderProps) => {
                 <Text color="#fff">{t('receive-code-by-call')}</Text>
               </Pressable>
               <Pressable
+                disabled={isPlaying}
                 onPress={() => handleValidateCodePress('SMS')}
                 style={{
-                  backgroundColor: Color.primary,
+                  backgroundColor: isPlaying ? '#999' : Color.primary,
                   paddingHorizontal: 10,
                   paddingVertical: 10,
                   borderRadius: 10,

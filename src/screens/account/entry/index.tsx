@@ -33,8 +33,8 @@ export const EntryScreen = ({ navigation }: NativeStackHeaderProps) => {
       .max(10, t('field.long', { field: 'Phone' }))
       .matches(REGEX_PHONE, t('phone.invalid')),
   })
-  const initialValue: FormModel = { phone: '' }
-  const [phone, setPhone] = useState<string>()
+  const initialValue: FormModel = { phone: MMKV.getString('entry_phone') || '' }
+  const [phone, setPhone] = useState<string>(initialValue.phone)
   const onSubmit = debounce(
     (values: FormModel) => {
       navigation.dispatch(StackActions.replace('SignIn', { phone: values.phone }))
@@ -75,9 +75,10 @@ export const EntryScreen = ({ navigation }: NativeStackHeaderProps) => {
                         <MaskInput
                           field="phone"
                           label={t('phone.label')}
-                          onChangeText={(formatted, extracted) => {
+                          onChangeText={(_, extracted) => {
                             setFieldValue('phone', extracted)
-                            setPhone(extracted)
+                            setPhone(extracted || '')
+                            MMKV.setString('entry_phone', extracted || '')
                           }}
                           value={values.phone}
                           placeholder={t('phone.label')}

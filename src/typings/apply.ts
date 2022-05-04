@@ -294,6 +294,7 @@ export interface Calculate {
    * 服务费率
    */
   svcFee: number
+  serviceFee?: number
   term?: any
 
   termAmount: number
