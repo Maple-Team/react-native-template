@@ -25,6 +25,7 @@
   "currentLoanInfoHint": "本次还款申请",
   "exceedMaxAmount": "Exceed max available loan amont!",
   "exist-same-relation-phone": "exist same relation phone",
+  "expired-date": "到期日",
   "field.long": "{{field}} is too long",
   "field.short": "{{field}} is too short",
   "fillBankCodePrompt": "Please fill in bank account information of your own, or loan would fail",

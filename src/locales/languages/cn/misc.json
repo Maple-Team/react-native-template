@@ -25,6 +25,7 @@
   "currentLoanInfoHint": "本次还款申请",
   "exceedMaxAmount": "超出最大可贷金额",
   "exist-same-relation-phone": "存在相同的联系人电话",
+  "expired-date": "到期日",
   "field.long": "{{field}}输入太长了",
   "field.short": "{{field}}输入太短了",
   "fillBankCodePrompt": "请完成填写您的的银行卡账户信息，否则您的申请可能失败",
@@ -93,6 +94,5 @@
   "unreceived-phone-hint": "没有收到验证码？ 请检查您的手机信号或者使用其他的方式！",
   "upload-Failed": "影像信息上传失败",
   "verify-your-phone-number": "验证你的手机号",
-  "warnRepayPrompt": "我们建议您在此页面立即偿还贷款，以免影响您的下次贷款申请。",
-  "expired-date": "到期日"
+  "warnRepayPrompt": "我们建议您在此页面立即偿还贷款，以免影响您的下次贷款申请。"
 }
