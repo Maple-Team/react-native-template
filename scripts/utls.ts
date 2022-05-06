@@ -37,7 +37,7 @@ export const getContent = async (lang: string, filename: string) => {
 export const write = async (lang: Lang, file: string, data: string) => {
   return new Promise<void>((resolve, reject) => {
     fs.writeFile(
-      path.resolve(__dirname, `../src/locales/languages/${lang}/${file}.json`),
+      path.resolve(__dirname, `../src/locales/languages/${lang}/${file}`),
       beautify(data, { indent_size: 2, space_in_empty_paren: true }),
       err => {
         if (err) {
