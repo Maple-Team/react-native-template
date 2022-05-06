@@ -166,7 +166,7 @@ export function UserCenter() {
               },
             },
           ].map(({ img, title, onPress }, i) => {
-            const boderWidth: number = i === 2 ? 0 : 1
+            const boderWidth: number = i === 1 ? 0 : 1
             return (
               <View key={title} style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Image resizeMode="cover" source={img} />

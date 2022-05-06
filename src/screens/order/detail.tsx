@@ -35,7 +35,9 @@ export default () => {
     useCallback(() => {
       const onBackPress = () => {
         //@ts-ignore
-        na.navigate('BillsList')
+        na.navigate('Apply', {
+          screen: { BottomTab: { screen: 'Order', params: { type: 'order' } } },
+        })
         return true
       }
       BackHandler.addEventListener('hardwareBackPress', onBackPress)

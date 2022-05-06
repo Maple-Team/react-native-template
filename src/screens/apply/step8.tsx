@@ -417,6 +417,16 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
                     : [
                         { name: t('loanAmount'), value: loanAmt, type: 'money' },
                         { name: t('loanDays'), value: loanDay, type: 'day' },
+                        {
+                          name: t('repayAmount'),
+                          value: calcResult?.totalAmt || 0,
+                          type: 'money',
+                        },
+                        {
+                          name: t('expired-date'),
+                          value: +(calcResult?.loanPmtDueDate || '0'),
+                          type: 'day',
+                        },
                       ]
                 }
               />
@@ -441,7 +451,7 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
                         },
                         {
                           name: t('secondPaymentAmount'),
-                          value: calcResult.svcFee,
+                          value: calcResult.termSchedules[1].loanTermSvcFee,
                           type: 'money',
                           extra: calcResult.termSchedules[1].freeMark === 'Y' && (
                             <View
@@ -452,7 +462,6 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
                                 borderRadius: 5,
                                 marginLeft: 9,
                               }}>
-                              c
                               <Text fontSize={12} fontWeight="bold" color="#fff">
                                 {t('free')}
                               </Text>
