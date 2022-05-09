@@ -17,7 +17,7 @@ export function BillsList() {
   const route = useRoute()
 
   const { t, i18n } = useTranslation()
-  const { type } = (route.params || { type: 'order' }) as { type: 'payment' | 'order' }
+  const { type } = (route.params || { type: 'payment' }) as { type: 'payment' | 'order' }
   const [data, setData] = useState<Order[]>([])
   const [loading, setLoading] = useState<boolean>(false)
   const headerHeight = useHeaderHeight()

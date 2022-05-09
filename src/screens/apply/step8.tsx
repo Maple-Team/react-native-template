@@ -425,7 +425,7 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
                         {
                           name: t('expired-date'),
                           value: +(calcResult?.loanPmtDueDate || '0'),
-                          type: 'day',
+                          type: 'date',
                         },
                       ]
                 }
@@ -451,7 +451,7 @@ export const Step8 = ({ navigation, route }: NativeStackHeaderProps) => {
                         },
                         {
                           name: t('secondPaymentAmount'),
-                          value: calcResult.termSchedules[1].loanTermSvcFee,
+                          value: calcResult.termSchedules[1].totalAmt,
                           type: 'money',
                           extra: calcResult.termSchedules[1].freeMark === 'Y' && (
                             <View

@@ -36,7 +36,7 @@ export default () => {
       const onBackPress = () => {
         //@ts-ignore
         na.navigate('Apply', {
-          screen: { BottomTab: { screen: 'Order', params: { type: 'order' } } },
+          screen: { BottomTab: { screen: 'Order', params: { type: 'payment' } } },
         })
         return true
       }
